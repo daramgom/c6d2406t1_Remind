@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.itwillbs.mapper.ReceivingMapper">
+ 	<!-- namespace를 사용해서 mapper 파일을 찾아오는 주소 설정 -->
+ 	 	
+ <!-- 입고 요청 정보 입력 -->
+    <insert id="insertRcv" parameterType="com.itwillbs.domain.ReceivingVO">
+        INSERT INTO receiving_table ( 
+            RCV_COUNT, 
+            RCV_STATUS, 
+            RCV_NUMBER, 
+            RCV_ID, 
+            RCV_DATE, 
+            QUANTITY, 
+            RCV_MANAGER_ID, 
+            RCV_SUPERVISOR_ID, 
+            RCV_REMARKS, 
+            ORD_NUMBER, 
+            COMPANY_CODE, 
+            RCV_PRICE, 
+            ORD_DATE
+        ) VALUES (
+            #{RCV_COUNT}, 
+            #{RCV_STATUS}, 
+            #{RCV_NUMBER}, 
+            #{RCV_ID}, 
+            #{RCV_DATE}, 
+            #{QUANTITY}, 
+            #{RCV_MANAGER_ID}, 
+            #{RCV_SUPERVISOR_ID}, 
+            #{RCV_REMARKS}, 
+            #{ORD_NUMBER}, 
+            #{COMPANY_CODE}, 
+            #{RCV_PRICE}, 
+            #{ORD_DATE}
+        )
+    </insert>
+ 
+ </mapper>

@@ -9,4 +9,4 @@ public interface ReceivingService {
 	//입고요청 동작
 	public void rcvRQ(ReceivingVO VO);
 
-}
+}// 

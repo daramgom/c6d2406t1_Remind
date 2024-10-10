@@ -39,11 +39,11 @@ public class ProdServiceImpl implements ProdService {
 	
 	// 제품등록
 	@Override
-	public void insertProdS(ProdVO vo) {
+	public void insertProd(ProdVO vo) {
+		
+		StringBuilder prodSb = new StringBuilder(); // 연결연산자 대신 문자열 연결하기 위해서 사용
 		
 		/* 이미지 업로드 처리후 파일 경로를 prod_image에 전달하려고 함 */
-		
-		StringBuilder fileSb = new StringBuilder(); // 연결연산자 대신 문자열 연결하기 위해서 사용
 		
 		File dir = new File(uploadDir); // 업로드 디렉토리 객체 생성
 		if(!dir.exists()) { // 디렉토리가 존재하지 않으면 생성하는 조건문
@@ -60,17 +60,17 @@ public class ProdServiceImpl implements ProdService {
 				// 파일 확장자를 얻기 위해 String 메서드 사용 --> 파일 이름 가져올 때 중복이 되어서 우선 제외
 				
 				UUID uuid = UUID.randomUUID(); // 파일 이름 저장시 중복방지를 위해 고유한 식별자 생성
-				fileSb.append(dir).append(File.separator)// File.separator 파일 구분자(\) 반환
+				prodSb.append(dir).append(File.separator)// File.separator 파일 구분자(\) 반환
 				.append(uuid.toString()).append("_").append(orgFileName);
 				// File desFile = new File(dir, uuid.toString() + "_" + orgFileName); // 파일 저장 경로 생성
-				File desFile = new File(fileSb.toString()); // 파일 저장 경로 생성
-				fileSb.setLength(0); // 데이터 비우기 처리
+				File desFile = new File(prodSb.toString()); // 파일 저장 경로 생성
+				prodSb.setLength(0); // 데이터 비우기 처리
 				
-				fileSb.append("/uploads/").append(uuid.toString())
+				prodSb.append("/uploads/").append(uuid.toString())
 				.append("_").append(orgFileName);// 업로드한 파일의 URL 경로 설정
 				// String imageUrl = "/uploads/" + uuid.toString() + "_" + orgFileName; // 웹에서 접근할 수 있는 경로
-				vo.setProd_image(fileSb.toString()); // VO에 경로 저장
-				fileSb.setLength(0); // 데이터 비우기 처리
+				vo.setProd_image(prodSb.toString()); // VO에 경로 저장
+				prodSb.setLength(0); // 데이터 비우기 처리
 				
 				try {
 					file.transferTo(desFile);// 파일복사 메서드
@@ -87,6 +87,12 @@ public class ProdServiceImpl implements ProdService {
 		
 		/* 이미지 업로드 처리후 파일의 URL 경로를 prod_image에 전달하려고 함 */
 		
+		
+		/* 제품 식별 코드 생성 메서드 */
+        prodSb.append(vo.getProd_name()).append(vo.getProd_category()).append(vo.getCompany_code());
+        vo.setProd_id(prodSb.toString());
+		prodSb.setLength(0); // 데이터 비우기 처리
+		/* 제품 식별 코드 생성 메서드 */
 		
 		logger.debug("( •̀ ω •́ )✧ 컨트롤러 - 서비스 - DAO");
 		pdao.insertProd(vo);

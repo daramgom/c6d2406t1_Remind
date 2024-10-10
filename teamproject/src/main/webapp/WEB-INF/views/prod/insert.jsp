@@ -48,6 +48,11 @@
     		align-items: center;
     		background-color: #f9f9f9; /* 배경색 */
         }
+        
+        #prodForm label {
+        	font-size: 20px !important;
+        }
+        
 </style>
 
 <!-- CSS Files -->
@@ -88,18 +93,23 @@
 
 							<div class="card-body d-flex flex-column align-items-center">
 								<div class="row">
-									<div class="col-md-6 col-lg-12">
+									<div class="col-md-12">
 									<form id="prodForm" action="" method="post" enctype="multipart/form-data">
-										<div class="form-group d-flex" style="gap: 20px;">
-											<div style="flex: 1;">
+										<div class="form-group d-flex" style="gap: 40px;">
+											<!-- <div style="flex: 1;">
 												<label for="prod_id" class="col-form-label" style="font-size: 1.5rem;">제품식별코드</label>
 												<input type="text" class="form-control input-full"
 													id="prod_id" name="prod_id" placeholder="제품식별코드" />
-											</div>
+											</div> -->
 											<div style="flex: 1;">
-												<label for="prod_name" class="col-form-label">제품명</label>
+												<label for="prod_name" class="col-form-label-lg">제품명</label>
 												<input type="text" class="form-control input-full"
 													id="prod_name" name="prod_name" placeholder="제품명" />
+											</div>
+											<div style="flex: 1;">
+												<label for="prod_category" class="col-form-label-lg">제품카테고리</label>
+												<input type="text" class="form-control input-full"
+													id="prod_category" name="prod_category" placeholder="제품카테고리" />
 											</div>
 											<!-- <div style="flex: 1;">
 												<label for="prod_reguser" class="col-form-label">등록작업자</label>
@@ -112,38 +122,39 @@
 													id="prod_upduser" name="prod_upduser" placeholder="수정작업자" />
 											</div> -->
 										</div>
-										<div class="form-group d-flex" style="gap: 20px;">
+										<div class="form-group d-flex" style="gap: 40px;">
+											
 											<div style="flex: 1;">
-												<label for="prod_category" class="col-form-label">제품카테고리</label>
-												<input type="text" class="form-control input-full"
-													id="prod_category" name="prod_category" placeholder="제품카테고리" />
-											</div>
-											<div style="flex: 1;">
-												<label for="prod_brand" class="col-form-label">제품브랜드</label>
+												<label for="prod_brand" class="col-form-label-lg">제품브랜드</label>
 												<input type="text" class="form-control input-full"
 													id="prod_brand" name="prod_brand" placeholder="제품브랜드" />
 											</div>
-										</div>
-										<div class="form-group d-flex" style="gap: 20px;">
 											<div style="flex: 1;">
-												<label for="prod_price" class="col-form-label">입고가</label>
+												<label for="prod_price" class="col-form-label-lg">입고가</label>
 												<input type="number" class="form-control input-full"
 													id="prod_price" name="prod_price" placeholder="입고가" />
 											</div>
+										</div>
+										<div class="form-group d-flex" style="gap: 40px;">
+											
 											<div style="flex: 1;">
-												<label for="prod_qty" class="col-form-label">제품수량</label>
+												<label for="prod_qty" class="col-form-label-lg">제품수량</label>
 												<input type="number" class="form-control input-full"
 													id="prod_qty" name="prod_qty" placeholder="제품수량" />
 											</div>
-										</div>
-										<div class="form-group d-flex" style="gap: 20px;">
-											<div style="flex: .7;">
-												<label for="company_code" class="col-form-label">입고처</label>
+											<div style="flex: 1;">
+												<label for="company_code" class="col-form-label-lg">입고처</label>
 												<input type="text" class="form-control input-full"
 													id="company_code" name="company_code" placeholder="입고처" />
 											</div>
+										</div>
+										<div class="form-group d-flex" style="gap: 40px;">
+											<div>
+												<label for="prod_remarks" class="col-form-label-lg">비고</label>
+												<textarea id="prod_remarks" name="prod_remarks" rows="4" cols="30" class="form-control"></textarea>
+											</div>
 											<div style="flex: 1;">
-												<label for="uploadfile" class="col-form-label">제품이미지</label>
+												<label for="uploadfile" class="col-form-label-lg">제품이미지</label>
 												<input type="file" class="form-control input-full"
 													id="uploadfile" name="uploadfile" accept=".jpeg, .jpg, .png, .gif" />
 											</div>
@@ -270,6 +281,7 @@
 	                    swal("성공!", "제품이 등록되었습니다!", "success");
 	                    $('input').val('');
 	                    $('#uploadfile').val('');
+	                    $('#prod_remarks').val('');
 	                    $('#previewimg').hide();
 	                },
 	                error: function (error) {
@@ -301,6 +313,7 @@
 	                    // 입력 필드 비우기 로직
 	                    $('input').val('');
 	                    $('#uploadfile').val('');
+	                    $('#prod_remarks').val('');
 	                    $('#previewimg').hide();
 
 	                    swal({

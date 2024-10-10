@@ -63,7 +63,7 @@ public class ProdController {
 		// pdao.insertProd(vo);
 		
 		// ProdService 객체를 주입 -> 해당동작 수행
-		pService.insertProdS(vo);
+		pService.insertProd(vo);
 		logger.debug(" ( •̀ ω •́ )✧ 제품등록 성공 ");
 		
 	}

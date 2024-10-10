@@ -49,6 +49,7 @@
 	
 	<!-- DataSource : DB연결정보를 저장하는 객체 -->
 	
+	
 	<!-- SqlSessionFactory : connection생성( + 연결정보) , SQL 쿼리 실행  , Mybatis , 해당 객체 타입의 이름 소문자로 씀 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
 	
@@ -62,8 +63,8 @@
 	</bean>
 	<!-- SqlSessionFactory : connection생성( + 연결정보) , SQL 쿼리 실행 -->
 
-	<!-- SqlSession (SqlSessionTemplate) : (자동)connection생성( + 연결정보) , SQL 쿼리 실행  , Mybatis , 
-											자원해제(자동) -->
+
+	<!-- SqlSession (SqlSessionTemplate) : (자동)connection생성( + 연결정보) , SQL 쿼리 실행  , Mybatis ,자원해제(자동) -->
 	<bean id="sqlSession" 
 		class="org.mybatis.spring.SqlSessionTemplate" 
 		destroy-method="clearCache"
@@ -72,6 +73,8 @@
 	</bean>
 	
 	<!-- SqlSession (SqlSessionTemplate) : connection생성( + 연결정보) , SQL 쿼리 실행  , Mybatis , 자원해제(자동) -->
+	
+	
 	<!--  mail  -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 	    <property name="host" value="smtp.gmail.com"/>
@@ -92,8 +95,15 @@
 	        </props>
 	    </property>
 	</bean>
+	<!--  mail  -->
 	
-
+	
+	<!-- CommonsMultipartResolver 설정 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10485760"/> <!-- 10*1024*1024 = 10MB -->
+        <property name="maxUploadSizePerFile" value="5242880"/> <!-- 5*1024*1024 = 5MB -->
+    </bean>
+	<!-- CommonsMultipartResolver 설정 -->
   
 
 	

@@ -55,13 +55,7 @@ public class SNSLogin {
 		user.setName(resNode.get("name").asText());
 		user.setGender(resNode.get("gender").asText());
 		user.setEmail(resNode.get("email").asText());
-		
-		// 전화번호에서 하이픈 제거 및 13자리로 제한
-	    String mobile = resNode.get("mobile").asText().replace("-", "");
-	    if (mobile.length() > 13) {
-	        mobile = mobile.substring(0, 13);
-	    }
-	    user.setTel(mobile);
+		user.setTel(resNode.get("mobile").asText());
 		user.setBirth(resNode.get("birthyear").asText() + "-" +resNode.get("birthday").asText());
 		
 		return user;

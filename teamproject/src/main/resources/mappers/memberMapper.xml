@@ -38,7 +38,7 @@
  	<!-- 회원정보 조회 -->
  	<select id="getMemberTel" resultType="MemberVO">
  		select * from member
- 		where member_tel=#{member_tel}
+ 		where member_tel=#{tel}
  	</select>
  	
  	<!-- 회원정보 수정 -->

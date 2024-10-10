@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public MemberVO getBySns(String tell) {
-		return dao.getBySns(tell);
+	public MemberVO getBySns(String tel) {
+		return dao.getBySns(tel);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,21 +38,31 @@ public class SignupController {
 	
 	@Inject
 	private MemberService service;
+	
 	// http://localhost:8088/signup
 	@RequestMapping(value ="signup" , method=RequestMethod.GET)
-	public void signupGet() {
+	public void signupGet( HttpSession session) {
 		logger.info("signupPage get 실행 ");
+		session.setAttribute("isFirstVisit", false );
 	}
+	
 	// http://localhost:8088/signup
 	@RequestMapping(value ="signup" , method=RequestMethod.POST)
-	public String signUpPost(MemberVO vo) {
+	public ResponseEntity<Map<String, String>> signUpPost(@RequestBody MemberVO vo) {
 		logger.info("signupPage POST 실행 ");
 		
 		
 		logger.info("vo : "+ vo);
+		logger.info("vo tel!!!!!!! : "+ vo.getMember_tel());
 		MemberVO vo2 = service.memberInfoTel(vo.getMember_tel());
+		
+		Map<String, String> response = new HashMap<>();
+		logger.debug("vo2 = :: "+ vo2);
 		if(vo2 != null) {
-			return "redirect:/signup"; // 중복된 전화번호
+			logger.debug("vo2 = "+ vo2);
+			response.put("message", "이미 등록된 전화번호 입니다.");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);// 400 BAD REQUEST 응답  
+	
 		}
 		
 		try {
@@ -65,8 +76,8 @@ public class SignupController {
 		// 회원가입 실행.
 		service.memberJoin(vo);
 		
-		
-		return "redirect:/login";
+		response.put("message", "회원가입이 성공적으로 완료되었습니다!");
+		return ResponseEntity.ok(response); // 200 OK 응답  
 	}
 	
 	@RequestMapping(value ="/checkUserId" , method=RequestMethod.POST)

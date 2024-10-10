@@ -20,13 +20,13 @@ public class UserDAOImpl implements UserDAO {
 	
 
 	@Override
-	public MemberVO getBySns(String tell) {
-		System.out.println(" DAO : getBySns(String tel) " + tell);
+	public MemberVO getBySns(String tel) {
+		System.out.println(" DAO : getBySns(String tel) " + tel);
 		
 	
 	
 		// member테이블에 sns정보가 있는지 확인하는 쿼리 짜면 될듯
-		return sqlSession.selectOne(NAMESPACE+".getMemberTel", tell);
+		return sqlSession.selectOne(NAMESPACE+".getMemberTel", tel);
 		
 		
 	}

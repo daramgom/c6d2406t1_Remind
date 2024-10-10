@@ -161,6 +161,7 @@ public class MemberDAOImpl implements MemberDAO{
 	@Override
 	public MemberVO getMemberTel(String tel) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(NAMESPACE+".getMemberTel");
+		System.out.println("tel : DAO "+ tel);
+		return sqlSession.selectOne(NAMESPACE+".getMemberTel", tel);
 	}
 }

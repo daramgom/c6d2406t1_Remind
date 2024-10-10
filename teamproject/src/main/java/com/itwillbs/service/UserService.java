@@ -5,5 +5,5 @@ import com.itwillbs.domain.MemberVO;
 public interface UserService {
 
 	
-	public MemberVO getBySns(String tell);
+	public MemberVO getBySns(String tel);
 }

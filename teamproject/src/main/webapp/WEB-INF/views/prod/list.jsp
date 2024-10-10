@@ -113,7 +113,7 @@
                             <th>수량</th>
                             <th>입고가</th>
                             <th>거래처</th>
-                            <th>제품이미지</th>
+                            <!-- <th>제품이미지</th> -->
                           </tr>
                         </tfoot>
                         <tbody>
@@ -186,10 +186,14 @@
         	pageLength: 5, // 기본 페이지 길이
         	lengthMenu: [20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
         	initComplete: function () {
-        		this.api()
-        		.columns()
-        		.every(function () {
-	                var column = this;
+        		var table = this.api();
+
+                // 필터를 적용할 열 인덱스 배열 (예: 두 번째 열과 세 번째 열)
+                var columnsToFilter = [0,1,2,3,4,5];
+
+                // 각 열에 대해 필터 추가
+                columnsToFilter.forEach(function (index) {
+                    var column = table.column(index); // 특정 열 선택
 	                var select = $(
 	                  '<select class="form-select"><option value=""></option></select>'
                 	)

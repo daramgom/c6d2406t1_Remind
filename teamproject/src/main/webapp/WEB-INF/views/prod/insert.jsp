@@ -53,6 +53,10 @@
         	font-size: 20px !important;
         }
         
+        #prodForm button {
+        	font-size: 20px;
+        }
+        
 </style>
 
 <!-- CSS Files -->

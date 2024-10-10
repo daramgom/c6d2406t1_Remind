@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,16 +35,17 @@ public class ProdServiceImpl implements ProdService {
 	@Inject
 	private ProdDAO pdao;
 	
-	private String uploadDir = "C:\\Users\\ITWILL\\git\\teamproject\\teamproject\\src\\main\\webapp\\uploads"; // 업로드 경로
+	// private String uploadDir = "C:\\Users\\ITWILL\\git\\Team1\\teamproject\\src\\main\\webapp\\uploads"; // 업로드 경로
 	private static final Logger logger = LoggerFactory.getLogger(ProdServiceImpl.class);
 	
 	
 	// 제품등록
 	@Override
-	public void insertProd(ProdVO vo) {
+	public void insertProd(ProdVO vo, HttpServletRequest req) {
 		
+		String uploadDir = req.getRealPath("/uploads");
+		logger.debug("( •̀ ω •́ )✧ uploadDir : "+uploadDir);
 		StringBuilder prodSb = new StringBuilder(); // 연결연산자 대신 문자열 연결하기 위해서 사용
-		
 		/* 이미지 업로드 처리후 파일 경로를 prod_image에 전달하려고 함 */
 		
 		File dir = new File(uploadDir); // 업로드 디렉토리 객체 생성
@@ -89,7 +92,7 @@ public class ProdServiceImpl implements ProdService {
 		
 		
 		/* 제품 식별 코드 생성 메서드 */
-        prodSb.append(vo.getProd_name()).append(vo.getProd_category()).append(vo.getCompany_code());
+        prodSb.append(vo.getProd_name()).append(vo.getProd_brand()).append(vo.getProd_category()).append(vo.getCompany_code());
         vo.setProd_id(prodSb.toString());
 		prodSb.setLength(0); // 데이터 비우기 처리
 		/* 제품 식별 코드 생성 메서드 */

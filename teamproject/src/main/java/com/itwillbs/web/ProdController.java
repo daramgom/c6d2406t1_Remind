@@ -5,6 +5,7 @@ package com.itwillbs.web;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +51,7 @@ public class ProdController {
 	
 	// 제품등록 - 정보처리
 	@RequestMapping(value = "/insert",method = RequestMethod.POST)
-	public void insertProdPost(ProdVO vo) {
+	public void insertProdPost(ProdVO vo,HttpServletRequest req) {
 		logger.debug(" ( •̀ ω •́ )✧ /prod/insert -> insertProdPost() 실행 ");
 		// 한글 인코딩 처리
 		// 	--> web.xml filter 처리
@@ -63,7 +64,7 @@ public class ProdController {
 		// pdao.insertProd(vo);
 		
 		// ProdService 객체를 주입 -> 해당동작 수행
-		pService.insertProd(vo);
+		pService.insertProd(vo,req);
 		logger.debug(" ( •̀ ω •́ )✧ 제품등록 성공 ");
 		
 	}

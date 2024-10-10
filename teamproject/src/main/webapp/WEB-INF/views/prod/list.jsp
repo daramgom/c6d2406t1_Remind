@@ -40,11 +40,11 @@
 
 <!-- CSS Files -->
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" />
+	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/plugins.min.css" />
+	href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/kaiadmin.min.css" />
+	href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
 
 
 </head>
@@ -52,10 +52,10 @@
 	<div class="wrapper">
 
 		<!-- Header -->
-		<jsp:include page="/resources/inc/header.jsp" />
+		<jsp:include page="${pageContext.request.contextPath}/resources/inc/header.jsp" />
 
 		<!-- Sidebar -->
-		<jsp:include page="/resources/inc/sidebar.jsp" />
+		<jsp:include page="${pageContext.request.contextPath}/resources/inc/sidebar.jsp" />
 
 		<!-- Main Content -->
 		<div class="container">
@@ -118,7 +118,7 @@
                         </tfoot>
                         <tbody>
                       <c:forEach var="p" items="${plistVO}">
-                        <tr>
+                        <tr class="prod_detail">
 					        <td>${p.prod_id}</td>
 					        <td>${p.prod_name}</td>
 					        <td>${p.prod_category}</td>
@@ -130,6 +130,92 @@
                       </c:forEach>
                         </tbody>
                       </table>
+                      
+					<!-- Modal -->
+                    <div
+                      class="modal fade"
+                      id="myModal"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header border-0">
+                            <h5 class="modal-title">
+                              <span class="fw-mediumbold"> 제품상세정보 </span>
+                            </h5>
+                            <button
+                              type="button"
+                              class="close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p class="small">
+                              제품의 상세정보가 표시됩니다.
+                            </p>
+                            <form>
+                              <div class="row">
+                                <div class="col-sm-12">
+                                  <div class="form-group form-group-default">
+                                    <label>제품식별코드</label>
+                                    <input
+                                      id="prod_id"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="fill name"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6 pe-0">
+                                  <div class="form-group form-group-default">
+                                    <label>Position</label>
+                                    <input
+                                      id="addPosition"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="fill position"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group form-group-default">
+                                    <label>Office</label>
+                                    <input
+                                      id="addOffice"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="fill office"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                          <div class="modal-footer border-0">
+                            <button
+                              type="button"
+                              id="addRowButton"
+                              class="btn btn-primary"
+                            >
+                              수정하기
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-danger"
+                              data-bs-dismiss="modal"
+                            >
+                              닫기
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+					
                     </div>
                   </div>
                 </div>
@@ -139,7 +225,7 @@
         </div>
 		
 		<!-- Footer -->
-		<jsp:include page="/resources/inc/footer.jsp" />
+		<jsp:include page="${pageContext.request.contextPath}/resources/inc/footer.jsp" />
 	</div>
 
 	<!--   Core JS Files   -->
@@ -183,8 +269,8 @@
 	<script type="text/javascript">
 	$(document).ready(function () {
         $("#multi-filter-select").DataTable({
-        	pageLength: 5, // 기본 페이지 길이
-        	lengthMenu: [20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
+        	pageLength: 10, // 기본 페이지 길이
+        	lengthMenu: [10, 20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
         	initComplete: function () {
         		var table = this.api();
 
@@ -218,7 +304,25 @@
               	});
           },
        });
+        
+        
+     	// <tr> 클릭 시 모달 열기
+        $(".prod_detail").click(function() {
+            var row = $(this); // 클릭한 <tr>
+            var prodId = row.find('td:eq(0)').text(); // 제품 식별 코드
+            
 
+            // 모달에 데이터 설정
+            $("#prod_id").val(prodId);
+            
+
+            // 모달 열기
+            $("#myModal").modal('show'); // Bootstrap 모달 열기
+        });
+
+        
+        
+        
       });//jquery DOM 준비
     </script>
   

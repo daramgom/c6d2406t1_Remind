@@ -30,22 +30,22 @@ public class MemberVO {
 	// private String uId; // getUId() x
 	// private String userId; // getUserId() o 웬만하면 x
 	
-	private String member_id;
-	private String member_pw;
-	private String member_name;
-	private String member_email;
-	private String member_tel;
+	private String member_id; // 아이디
+	private String member_pw; // 비밀번호
+	private String member_name; // 사용자 이름
+	private String member_email; // 이메일
+	private String member_tel; // 사용자 전화번호
 	// 
-	private String member_birth;
+	private String member_birth; // 사용자 생일 
 	// 
-	private String department_id;
-	private String employee_rank;
-	private Timestamp create_date;
-	private Timestamp update_date;
-	private String permission_id;
-	private String member_state;
-	private String is_company;
-	private String approval_status;
+	private String department_id; // 부서번호
+	private String employee_rank; // 직급
+	private Timestamp create_date; // 회원가입일
+	private Timestamp update_date; // 회원정보 수정일
+	private String permission_id; // 사용자 권한. user admin
+	
+	private String member_state; // 근무 , 휴직 , 퇴사 , 거래처  
+	private String approval_status; // 회원가입 미승인 , 승인.
 	
 	
 	

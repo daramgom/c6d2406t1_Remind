@@ -12,8 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.ProdVO;
 import com.itwillbs.persistence.ProdDAO;
@@ -85,6 +88,16 @@ public class ProdController {
 		
 		logger.debug(" ( •̀ ω •́ )✧ 연결된 뷰페이지로 이동 /views/prod/list.jsp ");
 		
+	}
+	
+	
+	// 제품 조회
+	// http://localhost:8088/prod/find
+	@PostMapping(value = "/find")
+	@ResponseBody
+	public ProdVO findProdPost(@RequestBody ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : findProdPost(@RequestBody ProdVO vo) 실행 ");
+		return pService.findProd(vo);
 	}
 	
 	

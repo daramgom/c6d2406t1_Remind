@@ -33,6 +33,9 @@ public class ProdVO {
 	private String prod_image;
 	private MultipartFile uploadfile;
 	private String company_code;
+	private int wh_number;
 	private String prod_remarks;
+	private String formatted_regdate;
+	private String formatted_upddate;
 
 }

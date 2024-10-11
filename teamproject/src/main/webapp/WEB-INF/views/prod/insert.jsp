@@ -53,8 +53,13 @@
         	font-size: 20px !important;
         }
         
-        #prodForm button {
-        	font-size: 20px;
+        #prodForm i {
+        	font-size: 18px;
+        	line-height: 2;
+        }
+        
+        .btn-warning {
+        	color: #fff !important;
         }
         
 </style>
@@ -167,9 +172,17 @@
 											</div>
 										</div>
 										<div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
-											<button type="submit" class="btn btn-success" id="alert_demo_3_3">제품 등록</button>
+											<button type="submit" class="btn btn-primary" id="alert_demo_3_3">
+												<span class="btn-label">
+													<i class="fa fa-plus"> 제품 등록</i>
+												</span>
+											</button>
 											<!-- 리셋버튼추가 -->
-											<button type="button" class="btn btn-danger" id="alert_demo_7">입력 초기화</button>
+											<button type="button" class="btn btn-warning" id="alert_demo_7">
+												<span class="btn-label">
+													<i class="fa fa-exclamation-circle"> 입력 초기화</i>
+												</span>
+											</button>
 										</div>
 									</form>
 									</div>
@@ -282,7 +295,14 @@
 	                contentType: false, // jQuery가 Content-Type을 설정하지 않도록 설정
 	                success: function (response) {
 	                    // 성공 시 SweetAlert 모달 표시
-	                    swal("성공!", "제품이 등록되었습니다!", "success");
+	                    swal({
+	                    	title: "성공!",
+	                    	text: "제품이 등록되었습니다!",
+	                    	icon: "success",
+	                    	buttons: {
+	                    		text: "확인",
+	                    	}
+	                    });
 	                    $('input').val('');
 	                    $('#uploadfile').val('');
 	                    $('#prod_remarks').val('');
@@ -290,7 +310,11 @@
 	                },
 	                error: function (error) {
 	                    // 오류 시 SweetAlert 모달 표시
-	                    swal("오류!", "제품 등록에 실패했습니다.", "error");
+	                    swal({
+	                    	title: "오류!",
+	                    	text: "제품 등록에 실패했습니다.",
+	                    	icon: "error"
+	                    });
 	                }
 	            });
 	        });
@@ -304,7 +328,7 @@
 	                buttons: {
 	                    confirm: {
 	                        text: "네, 지우겠습니다.",
-	                        className: "btn btn-success",
+	                        className: "btn btn-warning",
 	                    },
 	                    cancel: {
 	                    	visible: true,
@@ -326,7 +350,7 @@
 	                        type: "success",
 	                        buttons: {
 	                            confirm: {
-	                                className: "btn btn-success",
+	                                className: "btn btn-primary",
 	                            },
 	                        },
 	                    });

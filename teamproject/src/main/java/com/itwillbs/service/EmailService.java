@@ -51,7 +51,7 @@ public class EmailService {
     }
 
     public boolean verifyCode(String email, String code) {
-    	VerificationEntry entry = verificationCodes.get("\""+email.trim().toLowerCase()+"\"");
+    	VerificationEntry entry = verificationCodes.get(email.trim().toLowerCase());
 
         
         System.out.println("ㅇ왜 못찾노 :" + verificationCodes);

@@ -20,9 +20,10 @@ pageEncoding="UTF-8"%>
 	            icon: 'info',
 	            confirmButtonText: '확인'
 	        }).then((result) => {
-	            if (result.isConfirmed) {
-	                window.location.href = redirectUrl;
-	            }
+	        	 if (result.isConfirmed) {
+	                    // 폼 제출
+	                    $('#signupForm').submit();
+	                }
 	        });
 	    };
 
@@ -36,5 +37,11 @@ pageEncoding="UTF-8"%>
     </script>
 </head>
 <body>
+ <form id="signupForm" action="/signup" method="post">
+	 <input type="hidden" name="tel" value="${userInfo.tel}" />
+      <input type="hidden" name="email" value="${userInfo.email}" /> 
+      <input type="hidden" name="name" value="${userInfo.name}" /> 
+</form>
+
 </body>
 </html>

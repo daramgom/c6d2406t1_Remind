@@ -56,10 +56,12 @@ public class MemberServiceImpl implements MemberService{
 	
 	
 	@Override
-	public MemberVO memberInfo(String member_id) {
+	public MemberVO memberIdCheck(String member_id) {
 		logger.debug("(●'◡'●) memberInfo(String member_id) 실행 " + member_id);
 		return mdao.getMember(member_id);
 	}
+	
+	
 	
 	@Override
 	public MemberVO memberEmailSearch(String email) {

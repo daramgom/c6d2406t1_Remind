@@ -56,6 +56,14 @@ public class ProdDAOImpl implements ProdDAO {
 		return sqlSession.selectList(NAMESPACE + ".listProd");
 	}
 
+
+	// 제품조회 메서드
+	@Override
+	public ProdVO findProd(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO : findProd(ProdVO vo) 실행");
+		return sqlSession.selectOne(NAMESPACE + ".findProd", vo);
+	}
+
 	
 	
 	

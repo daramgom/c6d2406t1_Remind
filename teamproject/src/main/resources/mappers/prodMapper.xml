@@ -15,8 +15,16 @@
 
 <!-- 제품 목록(List) -->
 <select id="listProd" resultType="ProdVO">
-	select * from prod where prod_status != '02'
+	select * 
+	 from prod 
+	  where prod_status != '02';
 </select>
 
+<!-- 제품 조회 -->
+<select id="findProd" resultType="ProdVO">
+	select *, date_format(prod_regdate, '%Y-%m-%d (%a) %H:%i') as formatted_regdate, 
+	 date_format(prod_upddate, '%Y-%m-%d (%a) %H:%i') as formatted_upddate 
+	  from prod where prod_id = #{prod_id}
+</select>
 
 </mapper>

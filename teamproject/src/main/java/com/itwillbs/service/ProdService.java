@@ -14,4 +14,7 @@ public interface ProdService {
 	// 제품목록
 	public List<ProdVO> listProd();
 	
+	// 제품조회
+	public ProdVO findProd(ProdVO vo);
+	
 }

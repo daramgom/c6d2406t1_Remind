@@ -109,6 +109,17 @@ public class ProdServiceImpl implements ProdService {
 		logger.debug(" ( •̀ ω •́ )✧ Service : listProd() 실행 ");
 		return pdao.listProd();
 	}
+
+
+	// 제품조회
+	@Override
+	public ProdVO findProd(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ Service : findProd(ProdVO vo) 실행 ");
+		return pdao.findProd(vo);
+	}
+	
+	
+	
 	
 	
 

@@ -5,9 +5,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.mail.VerificationCodeGenerator;
@@ -36,15 +39,38 @@ public class EmailService {
         System.out.println("map : "+verificationCodes);
         System.out.println("생성된 인증코드 : "+verificationCode);
 
-        String subject = "이메일 인증 코드";
-//       여기서 태그를 꾸밀 수 있음.
-        String body = "다음 인증 코드를 입력하세요: " + verificationCode;
+        String subject = "부산 ITWILL 재고관리 시스템 이메일 인증 코드";
+//       여기서 태그를 꾸밀 수 있음.ㅍ verificationCode
+        String body = "<!DOCTYPE html>"
+                + "<html lang=\"ko\">"
+                + "<head>"
+                + "    <meta charset=\"UTF-8\">"
+                + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+                + "</head>"
+                + "<body style=\"font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;\">"
+                + "    <div style=\"background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 20px; padding: 20px;\">"
+                + "        <h1 style=\"font-size: 24px; color: #333; margin-bottom: 10px;\">이메일 인증</h1>"
+                + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">안녕하세요! 재고관시 시스템 입니다.</p>"
+                + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">다음 인증 코드를 입력하세요 : <div style=\"font-size: 20px; font-weight: bold; color: #007BFF; margin: 20px 0;\">" + verificationCode + "</div></p>"
+                + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">위 코드를 입력하여 인증을 완료해 주세요.</p>"
+                + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">감사합니다!</p>"
+                + "    </div>"
+                + "</body>"
+                + "</html>";
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        mailSender.send(message);
+        try {
+            // MimeMessage를 사용하여 HTML 이메일 전송
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(body, true); // 두 번째 인자를 true로 설정하여 HTML 본문 사용
+
+            mailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         // 6분 후에 인증 코드를 삭제하는 작업 예약
         scheduler.schedule(() -> verificationCodes.remove(to), 6, TimeUnit.MINUTES);

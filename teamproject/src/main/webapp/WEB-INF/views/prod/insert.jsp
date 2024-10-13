@@ -95,21 +95,16 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<div class="card">
+						<div class="card w-100">
 							<div class="card-header">
 								<div class="card-title">제품등록</div>
 							</div>
 
-							<div class="card-body d-flex flex-column align-items-center">
+							<div class="card-body d-flex flex-column">
 								<div class="row">
-									<div class="col-md-12">
+									<div class="col-md-12"">
 									<form id="prodForm" action="" method="post" enctype="multipart/form-data">
-										<div class="form-group d-flex" style="gap: 40px;">
-											<!-- <div style="flex: 1;">
-												<label for="prod_id" class="col-form-label" style="font-size: 1.5rem;">제품식별코드</label>
-												<input type="text" class="form-control input-full"
-													id="prod_id" name="prod_id" placeholder="제품식별코드" />
-											</div> -->
+										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
 											<div style="flex: 1;">
 												<label for="prod_name" class="col-form-label-lg">제품명</label>
 												<input type="text" class="form-control input-full"
@@ -120,18 +115,12 @@
 												<input type="text" class="form-control input-full"
 													id="prod_category" name="prod_category" placeholder="제품카테고리" />
 											</div>
-											<!-- <div style="flex: 1;">
-												<label for="prod_reguser" class="col-form-label">등록작업자</label>
-												<input type="text" class="form-control input-full"
-													id="prod_reguser" name="prod_reguser" placeholder="등록작업자" />
-											</div>
-											<div style="flex: 1;">
-												<label for="prod_upduser" class="col-form-label">수정작업자</label>
-												<input type="text" class="form-control input-full"
-													id="prod_upduser" name="prod_upduser" placeholder="수정작업자" />
-											</div> -->
+												<input type="hidden" id="prod_reguser" name="prod_reguser" 
+													value="테스터1" placeholder="등록작업자" />
+												<input type="hidden" id="prod_upduser" name="prod_upduser" 
+													value="테스터1" placeholder="수정작업자" />
 										</div>
-										<div class="form-group d-flex" style="gap: 40px;">
+										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
 											
 											<div style="flex: 1;">
 												<label for="prod_brand" class="col-form-label-lg">제품브랜드</label>
@@ -144,7 +133,7 @@
 													id="prod_price" name="prod_price" placeholder="입고가" />
 											</div>
 										</div>
-										<div class="form-group d-flex" style="gap: 40px;">
+										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
 											
 											<div style="flex: 1;">
 												<label for="prod_qty" class="col-form-label-lg">제품수량</label>
@@ -157,15 +146,22 @@
 													id="company_code" name="company_code" placeholder="입고처" />
 											</div>
 										</div>
-										<div class="form-group d-flex" style="gap: 40px;">
-											<div>
-												<label for="prod_remarks" class="col-form-label-lg">비고</label>
-												<textarea id="prod_remarks" name="prod_remarks" rows="4" cols="30" class="form-control"></textarea>
+										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
+											<div style="flex: 1;">
+												<label for="wh_number" class="col-form-label-lg">창고</label>
+												<input type="number" class="form-control input-full"
+													id="wh_number" name="wh_number" placeholder="창고" />
 											</div>
 											<div style="flex: 1;">
 												<label for="uploadfile" class="col-form-label-lg">제품이미지</label>
 												<input type="file" class="form-control input-full"
 													id="uploadfile" name="uploadfile" accept=".jpeg, .jpg, .png, .gif" />
+											</div>
+										</div>
+										<div class="form-group d-flex" style="margin: 0 200px; gap: 310px;">
+											<div>
+												<label for="prod_remarks" class="col-form-label-lg">비고</label>
+												<textarea id="prod_remarks" name="prod_remarks" rows="4" cols="30" class="form-control"></textarea>
 											</div>
 											<div class="preview">
 												<img id="previewimg" alt="미리보기이미지" src="#"/>
@@ -307,6 +303,8 @@
 	                    $('#uploadfile').val('');
 	                    $('#prod_remarks').val('');
 	                    $('#previewimg').hide();
+	                    $('#prod_reguser').val("테스터1");
+	                	$('#prod_upduser').val("테스터1");
 	                },
 	                error: function (error) {
 	                    // 오류 시 SweetAlert 모달 표시
@@ -315,6 +313,8 @@
 	                    	text: "제품 등록에 실패했습니다.",
 	                    	icon: "error"
 	                    });
+	                	$('#prod_reguser').val(data.prod_reguser);
+	                	$('#prod_upduser').val(data.prod_upduser);
 	                }
 	            });
 	        });

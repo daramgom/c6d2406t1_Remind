@@ -71,7 +71,7 @@
 </head>
 <body>
 	<div class="wrapper">
-
+	
 		<!-- Header -->
 		<jsp:include page="${pageContext.request.contextPath}/resources/inc/header.jsp" />
 
@@ -177,7 +177,7 @@
                           <div class="modal-body">
                             <form>
                               <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>제품식별코드</label>
                                     <input
@@ -185,11 +185,11 @@
                                       type="text"
                                       class="form-control"
                                       placeholder="제품식별코드"
-                                      disabled
+                                      readonly="readonly"
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>제품이름</label>
                                     <input
@@ -197,23 +197,23 @@
                                       name="prod_name"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill position"
+                                      placeholder="제품이름"
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
-                                    <label>카테고리</label>
+                                    <label>제품카테고리</label>
                                     <input
                                       id="prod_category"
                                       name="prod_category"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill office"
+                                      placeholder="제품카테고리"
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>브랜드</label>
                                     <input
@@ -221,11 +221,11 @@
                                       name="prod_brand"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill office"
+                                      placeholder="브랜드"
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>수량</label>
                                     <input
@@ -233,35 +233,33 @@
                                       name="prod_qty"
                                       type="number"
                                       class="form-control"
-                                      placeholder="fill office"
+                                      placeholder="수량"
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>입고가</label>
                                     <input
                                       id="prod_price"
                                       type="number"
                                       class="form-control"
-                                      placeholder="fill office"
                                       disabled
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>거래처</label>
                                     <input
                                       id="company_code"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill office"
                                       disabled
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>제품위치</label>
                                     <input
@@ -269,60 +267,55 @@
                                       name="wh_number"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill office"
+                                      placeholder="제품위치"
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>등록일시</label>
                                     <input
                                       id="prod_regdate"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill office"
                                       disabled
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>등록자</label>
                                     <input
                                       id="prod_reguser"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill office"
                                       disabled
                                     />
                                   </div>
                               	</div>
-                               
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>수정일시</label>
                                     <input
                                       id="prod_upddate"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill office"
                                       disabled
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>수정자</label>
                                     <input
                                       id="prod_upduser"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill office"
                                       disabled
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>비고</label>
                                     <textarea 
@@ -332,7 +325,7 @@
                                     	class="form-control"></textarea>
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>이미지</label>
                                     <input type="file" 
@@ -512,6 +505,7 @@
                $("#prod_qty").val(data.prod_qty);
                $("#prod_price").val(data.prod_price);
                $("#company_code").val(data.company_code);
+               $("#wh_number").val(data.wh_number);
                $("#prod_regdate").val(data.formatted_regdate);
                $("#prod_reguser").val(data.prod_reguser);
                $("#prod_upddate").val(data.formatted_upddate);
@@ -520,6 +514,7 @@
 
                // 모달 열기
                $("#prodModal").modal('show');
+               console.log(data.current_qty);
            })
            .catch(error => {
                console.error('데이터를 가져오는 과정에서 문제가 발생했습니다', error);

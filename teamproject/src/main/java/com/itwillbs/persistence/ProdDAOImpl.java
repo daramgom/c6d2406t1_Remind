@@ -40,12 +40,13 @@ public class ProdDAOImpl implements ProdDAO {
 		// 3. SQL 구문(Mapper 생성) & pstmt 객체 (mybatis 관리)
 		// 4. SQL 실행
 		// [com.itwillbs.mapper.ProdMapper.insertProd]
+		logger.debug("( •̀ ω •́ )✧ DAO : insertProd(ProdVO vo) 실행");
 		int result = sqlSession.insert(NAMESPACE+".insertProd", vo);
 		logger.debug("( •̀ ω •́ )✧ DAO : result : "+result);
 		logger.debug("( •̀ ω •́ )✧ DAO : 제품등록 완료 ");
 	}
 	
-	
+
 	// 제품목록 메서드
 	@Override
 	public List<ProdVO> listProd() {
@@ -64,6 +65,15 @@ public class ProdDAOImpl implements ProdDAO {
 		return sqlSession.selectOne(NAMESPACE + ".findProd", vo);
 	}
 
+
+	// 제품수정 메서드
+	@Override
+	public void updateProd(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO: updateProd(ProdVO vo) 실행");
+		sqlSession.update(NAMESPACE + ".updateProd", vo);
+	}
+
+	
 	
 	
 	

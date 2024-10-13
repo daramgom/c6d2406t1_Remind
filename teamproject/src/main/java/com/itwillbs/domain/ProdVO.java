@@ -29,11 +29,14 @@ public class ProdVO {
 	private String prod_brand;
 	private int prod_price;
 	private int prod_qty;
+	private int current_qty;
 	private int prod_stock;
 	private String prod_image;
 	private MultipartFile uploadfile;
+	private String current_image;
 	private String company_code;
 	private int wh_number;
+	private int current_wh;
 	private String prod_remarks;
 	private String formatted_regdate;
 	private String formatted_upddate;

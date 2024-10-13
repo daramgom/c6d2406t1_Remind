@@ -17,4 +17,7 @@ public interface ProdService {
 	// 제품조회
 	public ProdVO findProd(ProdVO vo);
 	
+	// 제품수정
+	public void updateProd(ProdVO vo);
+	
 }

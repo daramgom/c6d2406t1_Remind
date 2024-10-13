@@ -92,7 +92,6 @@ public class ProdController {
 	
 	
 	// 제품 조회
-	// http://localhost:8088/prod/find
 	@PostMapping(value = "/find")
 	@ResponseBody
 	public ProdVO findProdPost(@RequestBody ProdVO vo) {
@@ -101,6 +100,12 @@ public class ProdController {
 	}
 	
 	
+	// 제품 수정
+	@PostMapping(value = "/update")
+	public void updateProdPost(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : updateProdPost(ProdVO vo) 실행 ");
+	}
+
 	
 	
 	

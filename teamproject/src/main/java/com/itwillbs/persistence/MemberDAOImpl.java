@@ -8,10 +8,12 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.web.SignupController;
 
 /**
  * 
@@ -32,43 +34,37 @@ public class MemberDAOImpl implements MemberDAO{
 	
 	@Inject
 	private SqlSession sqlSession; // 자동으로 연결, 자원해제,SQL실행, mybatis...
+
 	
 	// Mapper namespace 정보 저장
 	private static final String NAMESPACE = "com.itwillbs.mapper.MemberMapper";
-	
-	
-	@Override
-	public String getTime() {
-		System.out.println(" DAO : getTime() 실행! ");
-		// 1,2 디비 연결
-		// SqlSession sqlSession = sqlFactory.openSession(); -> 생략을 하는게 SqlSession이라는 객체를 주입받아서 생략함.
-		// 3 SQL 구문 & pstmt 객체
-		// 4 SQL 실행
-		//sqlFactory.selectOne(SQL구문);
-		//sqlFactory.selectOne(SQL구문,전달정보);
-		String result = sqlSession.selectOne("com.itwillbs.mapper.MemberMapper.getTime");
-		// => Mapper의 sql 구문 id를 호출
-		// = sqlSession.selectOne("select now()");
-		// => 직접적으로 SQL구문 호출 X
-		System.out.println("결과 : "+ result);
-		
-		
-		// 5. 데이터 처리
-		return result;
-	}
-	
+	private static final Logger logger = LoggerFactory.getLogger(MemberDAOImpl.class);
 	
 	@Override
-	public void insertMember(MemberVO vo) {
+	public String insertMember(MemberVO vo) {
 		System.out.println(" DAO : 회원가입 동작 실행! ");
-				
-		// 1.2 디비연결  => 생략 SqlSession객체 수행
-		// 3. SQL 구문(Mapper 생성) & pstmt 객체 (mybatis 관리)
-		// 4. SQL 실행
-		// [com.itwillbs.mapper.MemberMapper.insertMember]
-		int result = sqlSession.insert( NAMESPACE+".insertMember", vo);
-		System.out.println(" DAO : result : "+ result );
-		System.out.println(" DAO : 회원가입 완료! ");
+
+	    // ID 중복 체크
+	    if (getMember(vo.getMember_id()) != null) {
+	        return "아이디 중복";
+	    }
+
+	    // 이메일 중복 체크
+	    if (getMemberEmail(vo.getMember_email()) != null) {
+	        return "이메일 중복";
+	    }
+
+	    // 전화번호 중복 체크
+	    if (getMemberTel(vo.getMember_tel()) != null) {
+	        return "전화번호 중복";
+	    }
+
+	    // 회원가입 처리
+	    int result = sqlSession.insert(NAMESPACE + ".insertMember", vo);
+	    System.out.println(" DAO : result : " + result);
+	    System.out.println(" DAO : 회원가입 완료! ");
+
+	    return "회원가입 완료";
 	}
 	
 	@Override
@@ -112,17 +108,10 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
-//	public MemberVO getMember(MemberVO vo) {
 	public MemberVO getMember(String member_id) {
 		System.out.println(" DAO : getMember(String userid) ");
 		
-		// SQL 구문을 mapper에 생성
-		// System.out.println(" DAO : mapper SQL 생성완료. ");
-		// MemberVO resultVO = sqlSession.selectOne(NAMESPACE+".getMember", vo);
-		// System.out.println(" DAO : "+resultVO);
-		
-		// return resultVO;
-		return sqlSession.selectOne(NAMESPACE+".getMember", member_id);
+		return sqlSession.selectOne(NAMESPACE+".getMemberId", member_id);
 	}
 	
 	@Override
@@ -131,6 +120,12 @@ public class MemberDAOImpl implements MemberDAO{
 		
 		return sqlSession.selectOne(NAMESPACE+".getMemberEmail", email);
 
+	}
+	@Override
+	public MemberVO getMemberTel(String tel) {
+		// TODO Auto-generated method stub
+		System.out.println("tel : DAO "+ tel);
+		return sqlSession.selectOne(NAMESPACE+".getMemberTel", tel);
 	}
 	
 	@Override
@@ -158,10 +153,4 @@ public class MemberDAOImpl implements MemberDAO{
 		return sqlSession.selectList(NAMESPACE+".getMemberList");
 	}
 	
-	@Override
-	public MemberVO getMemberTel(String tel) {
-		// TODO Auto-generated method stub
-		System.out.println("tel : DAO "+ tel);
-		return sqlSession.selectOne(NAMESPACE+".getMemberTel", tel);
-	}
 }

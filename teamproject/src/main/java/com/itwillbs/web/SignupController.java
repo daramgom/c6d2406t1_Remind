@@ -56,38 +56,40 @@ public class SignupController {
 	}
 	
 	// http://localhost:8088/signup
-		@RequestMapping(value ="signup" , method=RequestMethod.POST)
-		public void signupPOST(UserVO vo, Model model) {
-			logger.debug("vo : " + vo);
-			model.addAttribute("member",vo );
-		}
+	@RequestMapping(value ="signup" , method=RequestMethod.POST)
+	public void signupPOST(UserVO vo, Model model) {
+		logger.debug("vo : " + vo);
+		model.addAttribute("member",vo );
+	}
 	
 	
 	// http://localhost:8088/membersignup
 	@RequestMapping(value ="membersignup" , method=RequestMethod.POST)
 	public ResponseEntity<Map<String, String>> memberSignUpPost(@RequestBody MemberVO vo) {
 		response.clear();
-		logger.info("memberSignUpPost POST 실행 " + vo.getMember_tel());
-		
-		MemberVO result = service.memberInfoTel(vo.getMember_tel());
-		logger.debug("result = :: "+ result);
-		
-		if(result != null) {
-			response.put("message", "이미 등록된 전화번호 입니다.");
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);// 400 BAD REQUEST 응답  
-		}
 		try {
-			String encryptedInput = EncryptionUtil.encrypt(vo.getMember_pw(), secretKey);
-			vo.setMember_pw(encryptedInput); // 암호화된 비밀번호를 설정	
+		    String encryptedInput = EncryptionUtil.encrypt(vo.getMember_pw(), secretKey);
+		    vo.setMember_pw(encryptedInput); // 암호화된 비밀번호를 설정    
 		} catch (Exception e) {
-			e.printStackTrace();
+		    e.printStackTrace();
 		}
-		
-		// 회원가입 실행.
-		service.memberJoin(vo);
-		
+
+		String result = service.memberJoin(vo);
+
+		// 중복 체크에 대한 메시지를 매핑
+		Map<String, String> messageMap = new HashMap<>();
+		messageMap.put("아이디 중복", "이미 등록된 아이디입니다.");
+		messageMap.put("이메일 중복", "이미 등록된 이메일입니다.");
+		messageMap.put("전화번호 중복", "이미 등록된 전화번호입니다.");
+
+		if (messageMap.containsKey(result)) {
+		    response.put("message", messageMap.get(result));
+		    return ResponseEntity.ok(response); // 200 OK 응답
+		}
+
+		// 회원가입 실행
 		response.put("message", "회원가입이 성공적으로 완료되었습니다!");
-		return ResponseEntity.ok(response); // 200 OK 응답  
+		return ResponseEntity.ok(response); // 200 OK 응답
 	}
 	
 	@RequestMapping(value ="/checkUserId" , method=RequestMethod.POST)

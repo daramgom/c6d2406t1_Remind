@@ -154,13 +154,6 @@
         });
         
         
-
-       
-        
-
-       
-        
-        
      	// 인증 코드 확인 함수
         $("#userIdBtn").click(function() {
             var member_id = $("#username").val().trim();
@@ -364,7 +357,7 @@
 	                contentType: 'application/json',
 	                data: JSON.stringify(signupData),
 	                 success: function(response) {
-	                    // 성공적인 응답 처리
+	                    // 성공적인 응답 처리          
 	                	if(response.message === "회원가입이 성공적으로 완료되었습니다!") {
 	                		showSuccessAlert("회원가입 성공!", response.message).then(() => {
 	                            window.location.href = '/login'; // 로그인 페이지로 이동

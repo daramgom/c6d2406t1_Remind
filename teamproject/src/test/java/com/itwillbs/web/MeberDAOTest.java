@@ -26,10 +26,6 @@ public class MeberDAOTest {
 		System.out.println("mdao : "+ mdao);
 	}	
 	
-	// @Test
-	public void getTime() {
-		mdao.getTime();
-	}
 	
 	// @Test
 	public void 회원가입테스트() {

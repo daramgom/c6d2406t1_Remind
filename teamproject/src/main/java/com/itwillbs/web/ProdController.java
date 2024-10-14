@@ -102,8 +102,10 @@ public class ProdController {
 	
 	// 제품 수정
 	@PostMapping(value = "/update")
-	public void updateProdPost(ProdVO vo) {
+	public String updateProdPost(ProdVO vo, HttpServletRequest req) {
 		logger.debug("( •̀ ω •́ )✧ ProdController : updateProdPost(ProdVO vo) 실행 ");
+		pService.updateProd(vo);
+		return "/prod/list";
 	}
 
 	

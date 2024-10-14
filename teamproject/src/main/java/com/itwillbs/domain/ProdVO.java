@@ -36,7 +36,6 @@ public class ProdVO {
 	private String current_image;
 	private String company_code;
 	private int wh_number;
-	private int current_wh;
 	private String prod_remarks;
 	private String formatted_regdate;
 	private String formatted_upddate;

@@ -43,8 +43,9 @@ public class ProdServiceImpl implements ProdService {
 	
 	// 제품등록
 	@Override
+	@Transactional
 	public void insertProd(ProdVO vo, HttpServletRequest req) {
-
+		
 		imageUpload(vo, req); // 이미지 업로드
 		genProdID(vo); // 제품식별코드 생성
 		
@@ -54,6 +55,10 @@ public class ProdServiceImpl implements ProdService {
 	}
 	
 	
+
+
+
+
 	// 제품목록
 	@Override
 	public List<ProdVO> listProd() {
@@ -72,8 +77,11 @@ public class ProdServiceImpl implements ProdService {
 	
 	// 제품수정
 	@Override
+	@Transactional
 	public void updateProd(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ Service : updateProd(ProdVO vo) 실행 ");
+		logger.debug("( •̀ ω •́ )✧ Service : vo : "+vo);
+		
 		
 	}
 	

@@ -14,6 +14,8 @@ public interface ProdDAO {
 	
 	// 제품등록
 	public void insertProd(ProdVO vo);
+	public void insertProdPWQ(ProdVO vo);
+	
 	
 	// 제품목록
 	public List<ProdVO> listProd();
@@ -24,5 +26,8 @@ public interface ProdDAO {
 	// 제품수정
 	public void updateProd(ProdVO vo);
 
+	
+	// 제품수정(창고!=,수량!=)
+	public void insertUpdateProd(ProdVO vo);
 	
 }

@@ -12,8 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.ProdVO;
 import com.itwillbs.persistence.ProdDAO;
@@ -88,6 +91,21 @@ public class ProdController {
 	}
 	
 	
+	// 제품 조회
+	@PostMapping(value = "/find")
+	@ResponseBody
+	public ProdVO findProdPost(@RequestBody ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : findProdPost(@RequestBody ProdVO vo) 실행 ");
+		return pService.findProd(vo);
+	}
+	
+	
+	// 제품 수정
+	@PostMapping(value = "/update")
+	public void updateProdPost(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : updateProdPost(ProdVO vo) 실행 ");
+	}
+
 	
 	
 	

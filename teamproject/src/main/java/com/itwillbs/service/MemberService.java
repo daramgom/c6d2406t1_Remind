@@ -10,13 +10,13 @@ public interface MemberService {
 	// 사용자의 처리 로직을 구현
 	
 	// 회원가입 동작
-	public void memberJoin(MemberVO vo);
+	public String memberJoin(MemberVO vo);
 	
 	// 회원로그인 체크 동작
 	public MemberVO memberLoginCheck(MemberVO vo);
 	
-	// 회원정보 조회
-	public MemberVO memberInfo(String member_id);
+	// 회원가입 id 중복 체크
+	public MemberVO memberIdCheck(String member_id);
 	
 	// 회원정보 조회 
 	public MemberVO memberEmailSearch(String email);

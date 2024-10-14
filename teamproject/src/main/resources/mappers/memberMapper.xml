@@ -13,8 +13,8 @@
  	<!-- 회원가입 -->
  	<!-- userid 컬럼명. -->
  	<insert id="insertMember" >
- 		insert into member (member_id,member_pw,member_name,member_email,member_tel, member_birth,department_id,employee_rank,create_date,update_date, permission_id, member_state,is_company,approval_status )
- 		values(#{member_id},#{member_pw},#{member_name},#{member_email},#{member_tel},null, null,'01', now(),now(),'01','01','01','01');
+ 		insert into member (member_id,member_pw,member_name,member_email,member_tel, member_birth,department_id,employee_rank,create_date,update_date, permission_id, member_state,approval_status )
+ 		values(#{member_id},#{member_pw},#{member_name},#{member_email},#{member_tel},null, null,'01', now(),now(),'01','01','01');
  	</insert>
  	
  	<!-- 로그인 체크 -->
@@ -23,8 +23,14 @@
  		where userid=#{userid} and userpw=#{userpw}
  	</select> -->
  	
+ 	<!-- 로그인 체크 -->
+ 	 <select id="loginMember" resultType="MemberVO">
+ 		select * from member
+ 		where member_id=#{member_id} and member_pw=#{member_pw}
+ 	</select>
+ 	
  	<!-- 회원정보 조회 -->
- 	<select id="getMember" resultType="MemberVO">
+ 	<select id="getMemberId" resultType="MemberVO">
  		select * from member
  		where member_id=#{member_id}
  	</select>

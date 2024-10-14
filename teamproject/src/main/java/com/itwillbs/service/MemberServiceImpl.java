@@ -31,16 +31,17 @@ public class MemberServiceImpl implements MemberService{
 	
 	
 	@Override
-	public void memberJoin(MemberVO vo) {
+	public String memberJoin(MemberVO vo) {
 		logger.debug("(●'◡'●) 컨트롤러 -> 서비스 ");
 		logger.debug("(●'◡'●) 회원가입 메서드 memberJoin(MemberVO vo) 실행 ");
 		
 		
 		logger.debug("(●'◡'●) 서비스 -> DAO ");
-		mdao.insertMember(vo);
+		
 		logger.debug("(●'◡'●) DAO -> 서비스 ");
 		
 		logger.debug("(●'◡'●)  서비스 -> 컨트롤러 ");
+		return mdao.insertMember(vo);
 		
 	}
 	
@@ -56,10 +57,12 @@ public class MemberServiceImpl implements MemberService{
 	
 	
 	@Override
-	public MemberVO memberInfo(String member_id) {
+	public MemberVO memberIdCheck(String member_id) {
 		logger.debug("(●'◡'●) memberInfo(String member_id) 실행 " + member_id);
 		return mdao.getMember(member_id);
 	}
+	
+	
 	
 	@Override
 	public MemberVO memberEmailSearch(String email) {

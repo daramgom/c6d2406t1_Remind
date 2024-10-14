@@ -3,6 +3,7 @@ package com.itwillbs.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.domain.ProdVO;
@@ -42,11 +44,71 @@ public class ProdServiceImpl implements ProdService {
 	// 제품등록
 	@Override
 	public void insertProd(ProdVO vo, HttpServletRequest req) {
+
+		imageUpload(vo, req); // 이미지 업로드
+		genProdID(vo); // 제품식별코드 생성
 		
+		logger.debug("( •̀ ω •́ )✧ 컨트롤러 - 서비스 - DAO");
+		pdao.insertProd(vo);
+		logger.debug("( •̀ ω •́ )✧ DAO - 서비스 - 컨트롤러");
+	}
+	
+	
+	// 제품목록
+	@Override
+	public List<ProdVO> listProd() {
+		logger.debug(" ( •̀ ω •́ )✧ Service : listProd() 실행 ");
+		return pdao.listProd();
+	}
+
+
+	// 제품조회
+	@Override
+	public ProdVO findProd(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ Service : findProd(ProdVO vo) 실행 ");
+		return pdao.findProd(vo);
+	}
+	
+	
+	// 제품수정
+	@Override
+	public void updateProd(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ Service : updateProd(ProdVO vo) 실행 ");
+		
+	}
+	
+	
+	
+	// ***** 메서드 목록 *****
+	
+
+	// 제품식별코드 생성
+	public void genProdID(ProdVO vo) {
+	    String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	    StringBuilder codeSb = new StringBuilder();
+	    Random random = new Random();
+	    codeSb.append("P").append("-");
+	    
+	    for (int i = 0; i < 6; i++) {
+	        int index = random.nextInt(characters.length());
+	        codeSb.append(characters.charAt(index));
+	    }
+		
+		codeSb.append("-").append(vo.getCompany_code());
+        vo.setProd_id(codeSb.toString());
+		codeSb.setLength(0);
+	    
+	 }
+	// 제품식별코드 생성
+	
+	
+	// 이미지 업로드
+	// 이미지 업로드 처리후 파일 경로를 prod_image에 전달하려고 함
+	public void imageUpload(ProdVO vo, HttpServletRequest req) {
+	
 		String uploadDir = req.getRealPath("/uploads");
 		logger.debug("( •̀ ω •́ )✧ uploadDir : "+uploadDir);
 		StringBuilder prodSb = new StringBuilder(); // 연결연산자 대신 문자열 연결하기 위해서 사용
-		/* 이미지 업로드 처리후 파일 경로를 prod_image에 전달하려고 함 */
 		
 		File dir = new File(uploadDir); // 업로드 디렉토리 객체 생성
 		if(!dir.exists()) { // 디렉토리가 존재하지 않으면 생성하는 조건문
@@ -86,29 +148,17 @@ public class ProdServiceImpl implements ProdService {
 				}
 			}
 		}
-		
-		
-		/* 이미지 업로드 처리후 파일의 URL 경로를 prod_image에 전달하려고 함 */
-		
-		
-		/* 제품 식별 코드 생성 메서드 */
-        prodSb.append(vo.getProd_name()).append(vo.getProd_brand()).append(vo.getProd_category()).append(vo.getCompany_code());
-        vo.setProd_id(prodSb.toString());
-		prodSb.setLength(0); // 데이터 비우기 처리
-		/* 제품 식별 코드 생성 메서드 */
-		
-		logger.debug("( •̀ ω •́ )✧ 컨트롤러 - 서비스 - DAO");
-		pdao.insertProd(vo);
-		logger.debug("( •̀ ω •́ )✧ DAO - 서비스 - 컨트롤러");
 	}
+	// 이미지 업로드
 	
 	
-	// 제품목록
-	@Override
-	public List<ProdVO> listProd() {
-		logger.debug(" ( •̀ ω •́ )✧ Service : listProd() 실행 ");
-		return pdao.listProd();
-	}
+	
+	
+	
+	
+	
+	// ***** 메서드 목록 *****
+	
 	
 	
 

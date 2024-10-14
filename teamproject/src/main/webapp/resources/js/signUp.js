@@ -67,6 +67,10 @@
                 $("#requestCodeBtn").prop("disabled", true); // 이메일 형식이 올바르지 않으면 비활성화
                 $(this).css("border-color", "red"); // 유효하지 않은 경우 색상 변경
             }
+            
+            
+            
+            
 
             // 이메일이 비어있지 않은 경우 버튼 상태 업데이트
             $("#requestCodeBtn").text("인증 코드 발송"); // 버튼 텍스트 초기화
@@ -74,6 +78,15 @@
             clearInterval(timer); // 타이머 정리
             $("#code").val("").prop("disabled", true); // 인증 코드 입력 필드 비활성화
         });
+        
+     // 페이지 로드 시 이메일 입력 필드의 값이 있는지 확인하여 버튼 상태 업데이트
+        const initialEmail = $("#email").val().trim();
+        if (isValidEmail(initialEmail)) {
+            $("#requestCodeBtn").prop("disabled", false);
+        } else {
+            $("#requestCodeBtn").prop("disabled", true);
+        }
+
 
 
         // 인증 코드 요청 함수
@@ -87,7 +100,7 @@
                 url: '/sendVerificationCode',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(email),
+                data: JSON.stringify({ email: email }),
                 success: function(response) {
                     if (response.message === "인증 코드가 이메일로 전송되었습니다!") {
                         showSuccessAlert("요청성공!", "입력하신 이메일에 인증코드를 발송했습니다.");
@@ -139,13 +152,6 @@
                 }
             });
         });
-        
-        
-
-       
-        
-
-       
         
         
      	// 인증 코드 확인 함수
@@ -227,100 +233,100 @@
 							checkFormCompletion(); // 다른 필드와 함께 폼 체크
 						});
 
-						// 비밀번호 일치 여부 확인
-						$("#confirm-password").on("input", function() {
-							var password = $("#password").val();
-							var confirmPassword = $(this).val();
-							var message = $("#password-message"); // 메시지를 표시할 span 선택
+			// 비밀번호 일치 여부 확인
+			$("#confirm-password").on("input", function() {
+				var password = $("#password").val();
+				var confirmPassword = $(this).val();
+				var message = $("#password-message"); // 메시지를 표시할 span 선택
 
-							if (password !== confirmPassword) {
-								$(this).css("border-color", "red"); // 일치하지 않으면 빨간색 테두리
-								message.text("비밀번호가 일치하지 않습니다."); // 메시지 설정
-								message.css("color", "red"); // 메시지 색상 변경
-							} else {
-								$(this).css("border-color", "#bfb3f2"); // 일치하면 초록색 테두리
-								message.text("비밀번호가 일치합니다."); // 메시지 설정
-								message.css("color", "#bfb3f2"); // 메시지 색상 변경
-							}
-						});
-						 // 타이머 시작 함수
-					  function startTimer(duration) {
-					      let timerDuration = duration, minutes, seconds;
-					      $("#requestCodeBtn").prop("disabled", true).css("cursor", "default"); // 버튼 비활성화 및 커서 스타일 변경
-					
-					      timer = setInterval(function() {
-					          minutes = parseInt(timerDuration / 60, 10);
-					          seconds = parseInt(timerDuration % 60, 10);
-					          minutes = minutes < 10 ? "0" + minutes : minutes;
-					          seconds = seconds < 10 ? "0" + seconds : seconds;
-					
-					          $("#requestCodeBtn").text(minutes + ":" + seconds); // 버튼 텍스트 업데이트
-					
-					          if (--timerDuration < 0) {
-					              clearInterval(timer);
-					              $("#requestCodeBtn").prop("disabled", false).css("cursor", "pointer").text("인증 코드 발송"); // 버튼 활성화
-					          }
-					      }, 1000);
-					  }
+				if (password !== confirmPassword) {
+					$(this).css("border-color", "red"); // 일치하지 않으면 빨간색 테두리
+					message.text("비밀번호가 일치하지 않습니다."); // 메시지 설정
+					message.css("color", "red"); // 메시지 색상 변경
+				} else {
+					$(this).css("border-color", "#bfb3f2"); // 일치하면 초록색 테두리
+					message.text("비밀번호가 일치합니다."); // 메시지 설정
+					message.css("color", "#bfb3f2"); // 메시지 색상 변경
+				}
+			});
+	 	  // 타이머 시작 함수
+		    function startTimer(duration) {
+		        let timerDuration = duration, minutes, seconds;
+		        $("#requestCodeBtn").prop("disabled", true).css("cursor", "default"); // 버튼 비활성화 및 커서 스타일 변경
+		
+		        timer = setInterval(function() {
+		            minutes = parseInt(timerDuration / 60, 10);
+		            seconds = parseInt(timerDuration % 60, 10);
+		            minutes = minutes < 10 ? "0" + minutes : minutes;
+		            seconds = seconds < 10 ? "0" + seconds : seconds;
+		
+		            $("#requestCodeBtn").text(minutes + ":" + seconds); // 버튼 텍스트 업데이트
+		
+		            if (--timerDuration < 0) {
+		                clearInterval(timer);
+		                $("#requestCodeBtn").prop("disabled", false).css("cursor", "pointer").text("인증 코드 발송"); // 버튼 활성화
+		            }
+		        }, 1000);
+		    }
 					 
 					  
-					  function showSuccessAlert(message, detail) {
-						    return new Promise((resolve) => {
-						        swal(message, detail, {
-						            icon: "success",
-						            buttons: {
-						                confirm: {
-						                    className: "btn btn-success",
-						                },
-						            },
-						        }).then(() => {
-						            resolve(); // 알림창이 닫힐 때 resolve 호출
-						        });
-						    });
-						}
+			function showSuccessAlert(message, detail) {
+			    return new Promise((resolve) => {
+			        swal(message, detail, {
+			            icon: "success",
+			            buttons: {
+			                confirm: {
+			                    className: "btn btn-success",
+			                },
+			            },
+			        }).then(() => {
+			            resolve(); // 알림창이 닫힐 때 resolve 호출
+			        });
+			    });
+			}
 
 
-						function showErrorAlert(message) {
-						    swal("오류 발생!", message, {
-						        icon: "error",
-						        buttons: {
-						            confirm: {
-						                className: "btn btn-danger",
-						            },
-						        },
-						    });
-						};
-						
-						 $("#phone").on("input", function() {
-						        // 입력된 전화번호에서 숫자만 추출
-						        let phoneNumber = $(this).val().replace(/[^0-9]/g, '');
-
-						        // 하이픈 추가
-						        if (phoneNumber.length < 4) {
-						            $(this).val(phoneNumber);
-						        } else if (phoneNumber.length < 7) {
-						            $(this).val(phoneNumber.replace(/(\d{3})(\d+)/, '$1-$2'));
-						        } else {
-						            $(this).val(phoneNumber.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3'));
-						        }
-						    });
-						 // 모든 입력값이 채워졌는지 확인하는 함수
-					        function checkFormCompletion() {
-							    const username = $("#username").val().trim();
-							    const name = $("#name").val().trim();
-							    const password = $("#password").val().trim();
-							    const confirmPassword = $("#confirm-password").val().trim();
-							    const email = $("#email").val().trim();	
-							    const code = $("#code").val().trim();
-							    const phone = $("#phone").val().trim();
+			function showErrorAlert(message) {
+			    swal("오류 발생!", message, {
+			        icon: "error",
+			        buttons: {
+			            confirm: {
+			                className: "btn btn-danger",
+			            },
+			        },
+			    });
+			};
 							
-							    // 모든 입력값이 비어있지 않고, 아이디 중복 검사를 통과한 경우에만 회원가입 버튼 활성화
-							    if (isValidUsername(username) && isUsernameAvailable && name && password && confirmPassword && email && code && phone.length === 13 && password === confirmPassword) {
-							        $(".signup-button").prop("disabled", false); // 회원가입 버튼 활성화
-							    } else {
-							        $(".signup-button").prop("disabled", true); // 회원가입 버튼 비활성화
-							    }
-							}
+		 $("#phone").on("input", function() {
+		        // 입력된 전화번호에서 숫자만 추출
+		        let phoneNumber = $(this).val().replace(/[^0-9]/g, '');
+	
+		        // 하이픈 추가
+		        if (phoneNumber.length < 4) {
+		            $(this).val(phoneNumber);
+		        } else if (phoneNumber.length < 7) {
+		            $(this).val(phoneNumber.replace(/(\d{3})(\d+)/, '$1-$2'));
+		        } else {
+		            $(this).val(phoneNumber.replace(/(\d{3})(\d{4})(\d+)/, '$1-$2-$3'));
+		        }
+		    });
+		 // 모든 입력값이 채워졌는지 확인하는 함수
+	        function checkFormCompletion() {
+			    const username = $("#username").val().trim();
+			    const name = $("#name").val().trim();
+			    const password = $("#password").val().trim();
+			    const confirmPassword = $("#confirm-password").val().trim();
+			    const email = $("#email").val().trim();	
+			    const code = $("#code").val().trim();
+			    const phone = $("#phone").val().trim();
+			
+			    // 모든 입력값이 비어있지 않고, 아이디 중복 검사를 통과한 경우에만 회원가입 버튼 활성화
+			    if (isValidUsername(username) && isUsernameAvailable && name && password && confirmPassword && email && code && phone.length === 13 && password === confirmPassword) {
+			        $(".signup-button").prop("disabled", false); // 회원가입 버튼 활성화
+			    } else {
+			        $(".signup-button").prop("disabled", true); // 회원가입 버튼 비활성화
+			    }
+			}
 					        
 	        
 	     // 회원가입 버튼 클릭 이벤트 리스너
@@ -346,12 +352,12 @@
 
 	            // AJAX 요청으로 회원가입 처리
 	            $.ajax({
-	                url: '/signup', // 서버의 회원가입 처리 URL
+	                url: '/membersignup', // 서버의 회원가입 처리 URL
 	                type: 'POST',
 	                contentType: 'application/json',
 	                data: JSON.stringify(signupData),
 	                 success: function(response) {
-	                    // 성공적인 응답 처리
+	                    // 성공적인 응답 처리          
 	                	if(response.message === "회원가입이 성공적으로 완료되었습니다!") {
 	                		showSuccessAlert("회원가입 성공!", response.message).then(() => {
 	                            window.location.href = '/login'; // 로그인 페이지로 이동
@@ -359,9 +365,6 @@
 	                	} else {	                		
 	                		 showErrorAlert(response.message);                		
 	                	}
-	                	
-	                	 
-	                	
 	                },
 	                error: function(xhr, status, error) {
 	                		showErrorAlert(xhr.responseJSON.message || "회원가입 중 문제가 발생했습니다. 다시 시도해 주세요." );	                		

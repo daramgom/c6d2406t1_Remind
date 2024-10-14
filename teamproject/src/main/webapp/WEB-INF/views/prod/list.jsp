@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>제품목록</title>
 
 <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
 	name="viewport" />
@@ -18,6 +18,27 @@
         background-color: #0d6efd; /* 원하는 색상으로 변경 */
         color: white;
     }
+    
+    .table td {
+    	font-size: 1.15rem !important;
+    	text-align: center;
+    }
+    
+    .table th {
+    	font-size: 1.25rem !important;
+    	text-align: center;
+    }
+    
+    .modal-dialog {
+    	--bs-modal-width: 1200px;
+    }
+    
+    .modal-content {
+            height: 90vh; /* 최대 높이 설정 */
+            overflow-y: auto; /* 세로 스크롤 */
+            overflow-x: hidden; /* 가로 스크롤 숨김 */
+    }
+    
 </style>
 
 <!-- Fonts and icons -->
@@ -50,7 +71,7 @@
 </head>
 <body>
 	<div class="wrapper">
-
+	
 		<!-- Header -->
 		<jsp:include page="${pageContext.request.contextPath}/resources/inc/header.jsp" />
 
@@ -113,7 +134,6 @@
                             <th>수량</th>
                             <th>입고가</th>
                             <th>거래처</th>
-                            <!-- <th>제품이미지</th> -->
                           </tr>
                         </tfoot>
                         <tbody>
@@ -123,7 +143,7 @@
 					        <td>${p.prod_name}</td>
 					        <td>${p.prod_category}</td>
 					        <td>${p.prod_qty}</td>
-					        <td>${p.prod_price}</td>
+					        <td class="prodNumber">${p.prod_price}</td>
 					        <td>${p.company_code}</td>
 					        <td><img src="${p.prod_image}" alt="제품이미지" style="width:75px; height:75px; object-fit: contain;"></td>
                         </tr>
@@ -134,12 +154,12 @@
 					<!-- Modal -->
                     <div
                       class="modal fade"
-                      id="myModal"
+                      id="prodModal"
                       tabindex="-1"
                       role="dialog"
                       aria-hidden="true"
                     >
-                      <div class="modal-dialog" role="document">
+                      <div class="modal-dialog" role="document" style="width:1200px">
                         <div class="modal-content">
                           <div class="modal-header border-0">
                             <h5 class="modal-title">
@@ -155,42 +175,164 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                            <p class="small">
-                              제품의 상세정보가 표시됩니다.
-                            </p>
                             <form>
                               <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>제품식별코드</label>
                                     <input
                                       id="prod_id"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill name"
+                                      placeholder="제품식별코드"
+                                      readonly="readonly"
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6 pe-0">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
-                                    <label>Position</label>
+                                    <label>제품이름</label>
                                     <input
-                                      id="addPosition"
+                                      id="prod_name"
+                                      name="prod_name"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill position"
+                                      placeholder="제품이름"
                                     />
                                   </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                   <div class="form-group form-group-default">
-                                    <label>Office</label>
+                                    <label>제품카테고리</label>
                                     <input
-                                      id="addOffice"
+                                      id="prod_category"
+                                      name="prod_category"
                                       type="text"
                                       class="form-control"
-                                      placeholder="fill office"
+                                      placeholder="제품카테고리"
                                     />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>브랜드</label>
+                                    <input
+                                      id="prod_brand"
+                                      name="prod_brand"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="브랜드"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>수량</label>
+                                    <input
+                                      id="prod_qty"
+                                      name="prod_qty"
+                                      type="number"
+                                      class="form-control"
+                                      placeholder="수량"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>입고가</label>
+                                    <input
+                                      id="prod_price"
+                                      type="number"
+                                      class="form-control"
+                                      disabled
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>거래처</label>
+                                    <input
+                                      id="company_code"
+                                      type="text"
+                                      class="form-control"
+                                      disabled
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>제품위치</label>
+                                    <input
+                                      id="wh_number"
+                                      name="wh_number"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="제품위치"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>등록일시</label>
+                                    <input
+                                      id="prod_regdate"
+                                      type="text"
+                                      class="form-control"
+                                      disabled
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>등록자</label>
+                                    <input
+                                      id="prod_reguser"
+                                      type="text"
+                                      class="form-control"
+                                      disabled
+                                    />
+                                  </div>
+                              	</div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>수정일시</label>
+                                    <input
+                                      id="prod_upddate"
+                                      type="text"
+                                      class="form-control"
+                                      disabled
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>수정자</label>
+                                    <input
+                                      id="prod_upduser"
+                                      type="text"
+                                      class="form-control"
+                                      disabled
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>비고</label>
+                                    <textarea 
+                                    	id="prod_remarks" 
+                                    	name="prod_remarks" 
+                                    	rows="4" cols="30" 
+                                    	class="form-control"></textarea>
+                                  </div>
+                                </div>
+                                <div class="col-md-4">
+                                  <div class="form-group form-group-default">
+                                    <label>이미지</label>
+                                    <input type="file" 
+                                    	class="form-control input-full"
+										id="uploadfile" 
+										name="uploadfile" 
+										accept=".jpeg, .jpg, .png, .gif" />
                                   </div>
                                 </div>
                               </div>
@@ -301,26 +443,97 @@
                     		'<option value="' + d + '">' + d + "</option>"
                     	);
                 	});
-              	});
-          },
+                
+                	
+                if (index === 4) {
+                    // 해당 컬럼의 데이터를 수집하여 변환
+                    var transValues = [];
+                    column
+                        .data()
+                        .unique()
+                        .sort()
+                        .each(function (d) {
+                            const formatValue = Number(d).toLocaleString(); // 숫자 형식 적용
+                            transValues.push({ value: d, formatted: formatValue });
+                        });
+
+                    // 기존의 4번째 인덱스 컬럼의 옵션만 제거
+                    select.find('option').filter(function() {
+                        return $(this).val() !== "";
+                    }).remove();
+
+                    // 변환된 값으로 새로운 옵션 추가
+                    transValues.forEach(function (item) {
+                        select.append(
+                            '<option value="' + item.value + '">' + item.formatted + "</option>"
+                        );
+                    });
+                }
+                
+              });
+                
+        	}
+       
+       });//datatable
+        
+        
+    	// <tr> 클릭 시 모달 열기
+       $(".prod_detail").click(function() {
+           var row = $(this); // 클릭한 <tr>
+           var prod_id = row.find('td:eq(0)').text(); // 제품 식별 코드
+
+           // prod_id를 POST 방식으로 보내기
+           fetch('/prod/find', {
+               method: 'POST', // HTTP 메서드 설정
+               headers: {
+                   'Content-Type': 'application/json' // 요청 본문의 데이터 형식 설정
+               },
+               body: JSON.stringify({ prod_id: prod_id }) // JSON 형식으로 데이터 전송
+           })
+           .then(response => {
+               if (!response.ok) {
+                   throw new Error('네트워크 응답이 올바르지 않습니다');
+               }
+               return response.json(); // JSON으로 응답 파싱
+           })
+           .then(data => {
+               // 모달에 데이터 설정
+               $("#prod_id").val(prod_id);
+               $("#prod_name").val(data.prod_name);
+               $("#prod_category").val(data.prod_category);
+               $("#prod_brand").val(data.prod_brand);
+               $("#prod_qty").val(data.prod_qty);
+               $("#prod_price").val(data.prod_price);
+               $("#company_code").val(data.company_code);
+               $("#wh_number").val(data.wh_number);
+               $("#prod_regdate").val(data.formatted_regdate);
+               $("#prod_reguser").val(data.prod_reguser);
+               $("#prod_upddate").val(data.formatted_upddate);
+               $("#prod_upduser").val(data.prod_upduser);
+               $("#prod_remarks").val(data.prod_remarks);
+
+               // 모달 열기
+               $("#prodModal").modal('show');
+               console.log(data.current_qty);
+           })
+           .catch(error => {
+               console.error('데이터를 가져오는 과정에서 문제가 발생했습니다', error);
+           });
        });
-        
-        
-     	// <tr> 클릭 시 모달 열기
-        $(".prod_detail").click(function() {
-            var row = $(this); // 클릭한 <tr>
-            var prodId = row.find('td:eq(0)').text(); // 제품 식별 코드
+     	
+     	
+     	// 숫자 형식지정
+        // 문자열로 된 숫자를 가져오기
+        $(".prodNumber").each(function() {
+            // 현재 td의 텍스트를 가져오기
+            const prodNumber = $(this).text();
             
-
-            // 모달에 데이터 설정
-            $("#prod_id").val(prodId);
+            // 문자열을 숫자로 변환하고 천 단위 구분 기호 추가
+            const formatNumber = Number(prodNumber).toLocaleString();
             
-
-            // 모달 열기
-            $("#myModal").modal('show'); // Bootstrap 모달 열기
+            // 형식이 적용된 숫자를 다시 설정
+            $(this).text(formatNumber);
         });
-
-        
         
         
       });//jquery DOM 준비

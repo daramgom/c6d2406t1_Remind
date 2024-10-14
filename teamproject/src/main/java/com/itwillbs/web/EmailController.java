@@ -27,20 +27,26 @@ public class EmailController {
     private MemberService mService;
 
     @PostMapping("/sendVerificationCode")
-    public ResponseEntity<Map<String, String>> sendVerificationCode(@RequestBody String email) {
+    public ResponseEntity<Map<String, String>> sendVerificationCode(@RequestBody VerificationRequest request) {
     	response.clear(); // 메서드 시작 시 초기화
-    	MemberVO vo = mService.memberEmailSearch(email);
     	
-
-    	if(vo != null) {
+    	System.out.println("eamil : "+ request.getEmail() );
+    	
+    	
+    	MemberVO result = mService.memberEmailSearch(request.getEmail());
+    	
+    	
+    	System.out.println("result : "+ result );
+    	if(result != null) {
     		response.put("message", "이미 등록된 이메일 입니다! 다른 이메을을 입력해주세요.");
-    		ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response); // 400 BAD REQUEST 응답
+    		return	ResponseEntity.ok(response); // 200 응답
     	}
-    	emailService.sendVerificationCode(email); 
+    		
+		emailService.sendVerificationCode(request.getEmail()); 
+		
+		response.put("message", "인증 코드가 이메일로 전송되었습니다!");
+		return ResponseEntity.ok(response); // 200 OK 응답  		
     	
-        
-        response.put("message", "인증 코드가 이메일로 전송되었습니다!");
-        return ResponseEntity.ok(response); // 200 OK 응답  		
     }
 
     @PostMapping("/verifyCode")

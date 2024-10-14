@@ -23,5 +23,6 @@ public interface ProdDAO {
 	
 	// 제품수정
 	public void updateProd(ProdVO vo);
+
 	
 }

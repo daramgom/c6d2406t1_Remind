@@ -850,10 +850,7 @@ pageEncoding="UTF-8"%>
 
 <main>
  <h2>발주 요청</h2>
-<form action="/web/order-insert" method="post">
-
-
-
+<form action="/order-insert" method="post">
 
 
 <div class="form-group">

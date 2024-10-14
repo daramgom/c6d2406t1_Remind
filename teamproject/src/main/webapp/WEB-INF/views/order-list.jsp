@@ -2,6 +2,7 @@
 pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
 <!DOCTYPE html>
 <html lang="kr">
   <head>
@@ -16,9 +17,18 @@ pageEncoding="UTF-8"%>
       href="./resources/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
-
+	
+		<!--   Core JS Files   -->
+	<script src="./resources/js/core/jquery-3.7.1.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
     <!-- Fonts and icons -->
     <script src="./resources/js/plugin/webfont/webfont.min.js"></script>
+    <!-- jQuery Sparkline -->
+	<script
+		src="./resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -36,25 +46,7 @@ pageEncoding="UTF-8"%>
         },
       });
       
-      
-      
-      
-      
-      $(document).ready(function(){
-    	  $(".nav-item>p").click(function(){
-    		 var submenu = $(this).next("ul");
-    		 
-    		 if(submenu.is(":visible")){
-    			 submenu.slideUp();
-    		 }else{
-    			 submenu.slideDown();
-    		 }
-    	  });
-    	  
-      });
-      
-      
-      
+    
       
       
       
@@ -959,36 +951,37 @@ pageEncoding="UTF-8"%>
     <div id="orderModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            
 	            <h2>발주 상세 정보</h2>
-	            <label>순번:</label>
-	            <input type="text" id="modalOrdCount" readonly="readonly" /><br>
-	            <label>발주 관리 번호:</label>
-	            <input type="text" id="modalOrdNumber" readonly="readonly" /><br>
-	            <label>발주 상태:</label>
-	            <input type="text" id="modalOrdStatus" readonly="readonly" /><br>
-	            <label>발주 담당자:</label>
-	            <input type="text" id="modalOrdManagerId" readonly="readonly" /><br>
-	            <label>발주 승인 담당자:</label>
-	            <input type="text" id="modalOrdSupervisorId" readonly="readonly" /><br>
-	            <label>제품식별코드:</label>
-	            <input type="text" id="modalProdId" /><br>
-	            <label>발주 금액:</label>
-	            <input type="text" id="modalOrdPrice" /><br>
-	            <label>발주 수량:</label>
-	            <input type="text" id="modalOrdQuantity" /><br>
-	            <label>발주 일자:</label>
-	            <input type="text" id="modalOrdDate" /><br>
-	            <label>발주 수정 일자:</label>
-	            <input type="text" id="modalOrdDateChange" /><br>
-	            <label>거래처 코드:</label>
-	            <input type="text" id="modalCompanyCode" /><br>
-	            <label>비고:</label>
-	            <input type="text" id="modalOrdText" /><br>
-	            <label>입고 예정 창고:</label>
-	            <input type="text" id="modalWhNumber" /><br>
-	            <button onclick="saveOrder()">수정</button>
-	            <button onclick="deleteOrder()">삭제</button>
+	            <form action="" id="orderForm" method="post" name="orderForm">
+		            <label>순번:</label>
+		            <input type="text" id="modalOrdCount" name="ord_count" readonly="readonly" /><br>
+		            <label>발주 관리 번호:</label>
+		            <input type="text" id="modalOrdNumber" name="ord_number" readonly="readonly" /><br>
+		            <label>발주 상태:</label>
+		            <input type="text" id="modalOrdStatus" name="ord_status" readonly="readonly" /><br>
+		            <label>발주 담당자:</label>
+		            <input type="text" id="modalOrdManagerId" name="ord_manager_id" readonly="readonly" /><br>
+		            <label>발주 승인 담당자:</label>
+		            <input type="text" id="modalOrdSupervisorId" name="ord_supervisor_id" readonly="readonly" /><br>
+		            <label>제품식별코드:</label>
+		            <input type="text" id="modalProdId" name="prod_id" /><br>
+		            <label>발주 금액:</label>
+		            <input type="text" id="modalOrdPrice" name="ord_price" /><br>
+		            <label>발주 수량:</label>
+		            <input type="text" id="modalOrdQuantity" name="ord_quantity" /><br>
+		            <label>발주 일자:</label>
+		            <input type="text" id="modalOrdDate" name="ord_date" /><br>
+		            <label>발주 수정 일자:</label>
+		            <input type="text" id="modalOrdDateChange" name="ord_date_change" /><br>
+		            <label>거래처 코드:</label>
+		            <input type="text" id="modalCompanyCode" name="company_code" /><br>
+		            <label>비고:</label>
+		            <input type="text" id="modalOrdText" name="ord_text" /><br>
+		            <label>입고 예정 창고:</label>
+		            <input type="text" id="modalWhNumber" name="wh_number" /><br>
+	            </form>
+	            <button id="updateBtn">수정</button>
+	            <button id="deleteBtn">삭제</button>
             
         </div>
     </div>
@@ -996,6 +989,67 @@ pageEncoding="UTF-8"%>
     
 
 <script>
+		$(document).ready(function() {
+		    $('#updateBtn').click(function(event) {
+		        event.preventDefault(); // 기본 폼 제출 방지
+		        
+		        // AJAX 요청을 통해 수정
+		        var formData = new FormData($('#orderForm')[0]); // FormData 객체 생성
+		        
+		        $.ajax({
+		            url: "/updateOrder", // 서버에서 데이터를 업데이트할 URL
+		            type: "POST",
+		            data: formData,
+		            processData: false, // jQuery가 데이터를 처리하지 않도록 설정
+		            contentType: false, // jQuery가 Content-Type을 설정하지 않도록 설정
+		            success: function(response) {
+		                alert("발주 정보가 수정되었습니다.");
+		                location.reload(); // 페이지 새로 고침으로 변경된 데이터 반영
+		            },
+		            error: function(error) {
+		                console.log(error);
+		                alert("수정 중 오류가 발생했습니다.");
+		            }
+		        }); // $.ajax
+		    }); // #updateBtn 클릭
+		
+		    $('#deleteBtn').click(function(event) {
+		        event.preventDefault(); // 기본 폼 제출 방지
+		        
+		        // AJAX 요청을 통해 삭제
+		        var formData = new FormData($('#orderForm')[0]); // FormData 객체 생성
+		        
+		        $.ajax({
+		            url: "/deleteOrder", // 서버에서 데이터를 삭제할 URL
+		            type: "POST",
+		            data: formData,
+		            processData: false, // jQuery가 데이터를 처리하지 않도록 설정
+		            contentType: false, // jQuery가 Content-Type을 설정하지 않도록 설정
+		            success: function(response) {
+		                alert("발주 정보가 삭제되었습니다.");
+		                location.reload(); // 페이지 새로 고침으로 변경된 데이터 반영
+		            },
+		            error: function(error) {
+		                console.log(error);
+		                alert("삭제 중 오류가 발생했습니다.");
+		            }
+		        }); // $.ajax
+		    }); // #deleteBtn 클릭
+			
+			
+			// 모달 외부 클릭 시 닫기
+ 			$(window).on('click', function(event) {
+ 			    if ($(event.target).is($('#orderModal')[0])) {
+ 			        closeModal();
+ 			    }
+ 			});
+ 			function closeModal() {
+ 			    $('#orderModal').hide();
+ 			}
+ 			
+			
+		});  // 돔레디
+		
         function openModal(ord_count, ord_number, ord_status, ord_manager_id, ord_supervisor_id, prod_id, ord_price, ord_quantity, ord_date, ord_date_change, company_code, ord_text, wh_number) {
             document.getElementById('modalOrdCount').value = ord_count;
             document.getElementById('modalOrdNumber').value = ord_number;
@@ -1013,52 +1067,69 @@ pageEncoding="UTF-8"%>
             document.getElementById('orderModal').style.display = 'block';
         }
 
-        function closeModal() {
-            document.getElementById('orderModal').style.display = 'none';
-        }
+//         function closeModal() {
+//             document.getElementById('orderModal').style.display = 'none';
+//         }
 
-        function saveOrder() {
-            const updateOrder = {
-            		ord_count: document.getElementById('modalOrdCount').value,
-                    ord_number: document.getElementById('modalOrdNumber').value,
-                    ord_status: document.getElementById('modalOrdStatus').value,
-                    ord_manager_id: document.getElementById('modalOrdManagerId').value,
-                    ord_supervisor_id: document.getElementById('modalOrdSupervisorId').value,
-                    prod_id: document.getElementById('modalProdId').value,
-                    ord_price: document.getElementById('modalOrdPrice').value,
-                    ord_quantity: document.getElementById('modalOrdQuantity').value,
-                    ord_date: document.getElementById('modalOrdDate').value,
-                    ord_date_change: document.getElementById('modalOrdDateChange').value,
-                    company_code: document.getElementById('modalCompanyCode').value,
-                    ord_text: document.getElementById('modalOrdText').value,
-                    wh_number: document.getElementById('modalWhNumber').value
-            };
+//         function saveOrder() {
+//             var updateOrder = {
+//             		ord_count: document.getElementById('modalOrdCount').value,
+//                     ord_number: document.getElementById('modalOrdNumber').value,
+//                     ord_status: document.getElementById('modalOrdStatus').value,
+//                     ord_manager_id: document.getElementById('modalOrdManagerId').value,
+//                     ord_supervisor_id: document.getElementById('modalOrdSupervisorId').value,
+//                     prod_id: document.getElementById('modalProdId').value,
+//                     ord_price: document.getElementById('modalOrdPrice').value,
+//                     ord_quantity: document.getElementById('modalOrdQuantity').value,
+//                     ord_date: document.getElementById('modalOrdDate').value,
+//                     ord_date_change: document.getElementById('modalOrdDateChange').value,
+//                     company_code: document.getElementById('modalCompanyCode').value,
+//                     ord_text: document.getElementById('modalOrdText').value,
+//                     wh_number: document.getElementById('modalWhNumber').value
+//             };
 
-            $.ajax({
-                type: "POST",
-                url: "/api/orders/updateOrder", // 서버에서 데이터를 업데이트할 URL
-                contentType: "application/json",
-                data: JSON.stringify(updateOrder),
-                success: function(response) {
-                    alert("발주 정보가 수정되었습니다.");
-                    location.reload(); // 페이지 새로 고침으로 변경된 데이터 반영
-                },
-                error: function(error) {
-                    alert("수정 중 오류가 발생했습니다.");
-                }
-            });
-        }
+//             $.ajax({
+//                 type: "POST",
+//                 url: "/updateOrder", // 서버에서 데이터를 업데이트할 URL
+//                 contentType: "application/json",
+//                 data: JSON.stringify(updateOrder),
+//                 success: function(response) {
+//                     alert("발주 정보가 수정되었습니다." + response);
+//                     //location.reload(); // 페이지 새로 고침으로 변경된 데이터 반영
+//                 },
+//                 error: function(error) {
+//                 	console.log(error);
+//                     alert("수정 중 오류가 발생했습니다.");
+//                 }
+//             });
+//         }
 
-         function deleteOrder() {
-             alert("삭제 기능을 구현하세요.");
-         }
 
-        // 모달 외부 클릭 시 닫기
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('orderModal')) {
-                closeModal();
-            }
-        }
+
+
+
+
+
+
+		// 자바스크립트 버전
+//          function deleteOrder() {
+//              alert("삭제 기능을 구현하세요.");
+//          }
+
+         
+        // 모달 외부 클릭 시 닫기 (자바스크립트 버전)
+//         window.onclick = function(event) {
+//             if (event.target == document.getElementById('orderModal')) {
+//                 closeModal();
+//             }
+//         }
+        
+	
+        
+        
+        
+        
+	
 </script>
 
 

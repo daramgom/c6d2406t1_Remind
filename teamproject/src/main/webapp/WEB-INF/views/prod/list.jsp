@@ -121,8 +121,8 @@
                             <th>제품명</th>
                             <th>카테고리</th>
                             <th>수량</th>
-                            <th>입고가</th>
-                            <th>거래처</th>
+                            <th>입고처</th>
+                            <th>등록일시</th>
                             <th>제품이미지</th>
                           </tr>
                         </thead>
@@ -132,8 +132,8 @@
                             <th>제품명</th>
                             <th>카테고리</th>
                             <th>수량</th>
-                            <th>입고가</th>
-                            <th>거래처</th>
+                            <th>입고처</th>
+                            <th>등록일시</th>
                           </tr>
                         </tfoot>
                         <tbody>
@@ -143,8 +143,8 @@
 					        <td>${p.prod_name}</td>
 					        <td>${p.prod_category}</td>
 					        <td>${p.prod_qty}</td>
-					        <td class="prodNumber">${p.prod_price}</td>
 					        <td>${p.company_code}</td>
+					        <td>${p.formatted_upddate}</td>
 					        <td><img src="${p.prod_image}" alt="제품이미지" style="width:75px; height:75px; object-fit: contain;"></td>
                         </tr>
                       </c:forEach>
@@ -175,13 +175,14 @@
                             </button>
                           </div>
                           <div class="modal-body">
-                            <form>
+                            <form action="/prod/update" id="prodUpdateForm" method="post" enctype="multipart/form-data">
                               <div class="row">
                                 <div class="col-md-4">
                                   <div class="form-group form-group-default">
                                     <label>제품식별코드</label>
                                     <input
                                       id="prod_id"
+                                      name="prod_id"
                                       type="text"
                                       class="form-control"
                                       placeholder="제품식별코드"
@@ -198,6 +199,7 @@
                                       type="text"
                                       class="form-control"
                                       placeholder="제품이름"
+                                      required="required"
                                     />
                                   </div>
                                 </div>
@@ -210,6 +212,7 @@
                                       type="text"
                                       class="form-control"
                                       placeholder="제품카테고리"
+                                      required="required"
                                     />
                                   </div>
                                 </div>
@@ -222,6 +225,7 @@
                                       type="text"
                                       class="form-control"
                                       placeholder="브랜드"
+                                      required="required"
                                     />
                                   </div>
                                 </div>
@@ -234,6 +238,7 @@
                                       type="number"
                                       class="form-control"
                                       placeholder="수량"
+                                      min="0"
                                     />
                                   </div>
                                 </div>
@@ -253,9 +258,10 @@
                                     <label>거래처</label>
                                     <input
                                       id="company_code"
+                                      name="company_code"
                                       type="text"
                                       class="form-control"
-                                      disabled
+                                      readonly="readonly"
                                     />
                                   </div>
                                 </div>
@@ -268,6 +274,7 @@
                                       type="text"
                                       class="form-control"
                                       placeholder="제품위치"
+                                      required="required"
                                     />
                                   </div>
                                 </div>
@@ -335,13 +342,16 @@
 										accept=".jpeg, .jpg, .png, .gif" />
                                   </div>
                                 </div>
+                                <input type="hidden" id="current_image" name="current_image"/>
+                                <input type="hidden" id="current_wh" name="current_wh"/>
+                                <input type="hidden" id="current_qty" name="current_qty"/>
                               </div>
-                            </form>
+                         	</form>
                           </div>
-                          <div class="modal-footer border-0">
+                          <div class="modal-footer border-0" style="justify-content : center;">
                             <button
                               type="button"
-                              id="addRowButton"
+                              id="prodUpdate"
                               class="btn btn-primary"
                             >
                               수정하기
@@ -443,40 +453,11 @@
                     		'<option value="' + d + '">' + d + "</option>"
                     	);
                 	});
-                
-                	
-                if (index === 4) {
-                    // 해당 컬럼의 데이터를 수집하여 변환
-                    var transValues = [];
-                    column
-                        .data()
-                        .unique()
-                        .sort()
-                        .each(function (d) {
-                            const formatValue = Number(d).toLocaleString(); // 숫자 형식 적용
-                            transValues.push({ value: d, formatted: formatValue });
-                        });
-
-                    // 기존의 4번째 인덱스 컬럼의 옵션만 제거
-                    select.find('option').filter(function() {
-                        return $(this).val() !== "";
-                    }).remove();
-
-                    // 변환된 값으로 새로운 옵션 추가
-                    transValues.forEach(function (item) {
-                        select.append(
-                            '<option value="' + item.value + '">' + item.formatted + "</option>"
-                        );
-                    });
+                  });
                 }
-                
-              });
-                
-        	}
+            });
+        
        
-       });//datatable
-        
-        
     	// <tr> 클릭 시 모달 열기
        $(".prod_detail").click(function() {
            var row = $(this); // 클릭한 <tr>
@@ -511,6 +492,10 @@
                $("#prod_upddate").val(data.formatted_upddate);
                $("#prod_upduser").val(data.prod_upduser);
                $("#prod_remarks").val(data.prod_remarks);
+               $("#current_image").val(data.current_image);
+               $("#current_wh").val(data.current_wh);
+               $("#current_qty").val(data.current_qty);
+               
 
                // 모달 열기
                $("#prodModal").modal('show');
@@ -533,6 +518,53 @@
             
             // 형식이 적용된 숫자를 다시 설정
             $(this).text(formatNumber);
+        });
+     	
+     	
+        $("#prodUpdate").click(function() {
+            $("#prodUpdateForm").submit(); // 폼 제출
+        });
+        
+        
+        $('#prodUpdateForm').on('submit', function (e) {
+            e.preventDefault(); // 기본 제출 이벤트 방지
+            
+            $("#prodUpdate").prop('disabled', true);
+            
+            var formData = new FormData(this); // FormData 객체 생성
+
+            $.ajax({
+                url: '/prod/update', // 서버의 처리 URL
+                type: 'POST',
+                data: formData,
+                processData: false, // jQuery가 데이터를 처리하지 않도록 설정
+                contentType: false, // jQuery가 Content-Type을 설정하지 않도록 설정
+                success: function (response) {
+                    // 성공 시 SweetAlert 모달 표시
+                    swal({
+                    	title: "성공!",
+                    	text: "제품이 수정되었습니다!",
+                    	icon: "success",
+                    	buttons: {
+                    		text: "확인",
+                    	}
+                    }).then(() => {
+                        location.href = "/prod/list";
+                    });
+                },
+                error: function (error) {
+                    // 오류 시 SweetAlert 모달 표시
+                    swal({
+                    	title: "오류!",
+                    	text: "제품 수정에 실패했습니다.",
+                    	icon: "error"
+                    });
+                },
+                complete: function() {
+                    // 요청이 완료되면 버튼 활성화
+                    $('#prodUpdate').prop('disabled', false);
+                }
+            });
         });
         
         

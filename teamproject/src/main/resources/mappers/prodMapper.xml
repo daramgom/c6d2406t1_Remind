@@ -8,16 +8,27 @@
 <!-- 제품등록 -->
 <insert id="insertProd">
 	insert into prod (prod_id, prod_name, prod_reguser, prod_upduser, prod_category, 
-	 prod_brand, prod_price, prod_qty, prod_image, company_code, wh_number, prod_remarks) 
+	 prod_brand, prod_image, company_code, prod_remarks) 
 	  values (#{prod_id}, #{prod_name}, #{prod_reguser}, #{prod_upduser}, #{prod_category}, 
-	    #{prod_brand}, #{prod_price}, #{prod_qty}, #{prod_image}, #{company_code}, #{wh_number}, #{prod_remarks})
+	    #{prod_brand}, #{prod_image}, #{company_code}, #{prod_remarks})
 </insert>
+
+<insert id="insertProdPWQ">
+	insert into stock (prod_id, wh_number, prod_qty) 
+	 values (#{prod_id},#{wh_number},#{prod_qty})
+	  on duplicate key update prod_qty = prod_qty + #{prod_qty}
+</insert>
+
+
 
 <!-- 제품 목록(List) -->
 <select id="listProd" resultType="ProdVO">
-	select *
-	 from prod 
-	  where prod_status != '02';
+	select prod.prod_id, coalesce(sum(stock.prod_qty), 0) as prod_qty, prod_name, prod_category, 
+	 date_format(prod_upddate, '%Y-%m-%d (%a) %H:%i') as formatted_upddate, prod_brand, prod_image, company_code 
+	  from prod 
+	   left join stock on prod.prod_id = stock.prod_id 
+	    where prod.prod_status != '02' 
+	     group by prod.prod_id;
 </select>
 
 <!-- 제품 조회 -->
@@ -32,10 +43,22 @@
 <!-- 제품 수정 -->
 <update id="updateProd">
 	update prod  
-	 set prod_name = #{prod_name}, prod_category = #{prod_category}, prod_brand = #{prod_brand}, 
-	  prod_qty = #{prod_qty}, prod_remarks = #{prod_remarks}, prod_image = #{prod_image}
+	 set prod_name = #{prod_name}, prod_category = #{prod_category}, prod_brand = #{prod_brand}, wh_number = #{wh_number}, 
+	  prod_qty = #{prod_qty}, prod_remarks = #{prod_remarks}, prod_image = #{prod_image}, prod_upduser = #{prod_upduser} 
 	  	where prod_id = #{prod_id}
 </update>
+
+
+<!-- 제품수정(창고!=,수량!=) -->
+<insert id="insertUpdateProd">
+	insert into prod (prod_id, prod_name, prod_brand, company_code, wh_number, prod_category, prod_price, prod_qty) 
+	 values (#{prod_id}, #{prod_name}, #{prod_brand}, #{company_code}, #{current_wh}, #{prod_category}, #{prod_price}, #{current_qty}) 
+	  on duplicate key update prod_qty = #{current_qty} 
+</insert>
+<!-- 제품수정(창고!=,수량!=) -->
+
+
+
 
 
 </mapper>

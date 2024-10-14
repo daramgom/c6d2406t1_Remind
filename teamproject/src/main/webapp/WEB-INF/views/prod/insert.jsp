@@ -102,18 +102,18 @@
 
 							<div class="card-body d-flex flex-column">
 								<div class="row">
-									<div class="col-md-12"">
+									<div class="col-md-12">
 									<form id="prodForm" action="" method="post" enctype="multipart/form-data">
 										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
 											<div style="flex: 1;">
 												<label for="prod_name" class="col-form-label-lg">제품명</label>
 												<input type="text" class="form-control input-full"
-													id="prod_name" name="prod_name" placeholder="제품명" />
+													id="prod_name" name="prod_name" placeholder="제품명" required="required"/>
 											</div>
 											<div style="flex: 1;">
 												<label for="prod_category" class="col-form-label-lg">제품카테고리</label>
 												<input type="text" class="form-control input-full"
-													id="prod_category" name="prod_category" placeholder="제품카테고리" />
+													id="prod_category" name="prod_category" placeholder="제품카테고리" required="required"/>
 											</div>
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
 													value="테스터1" placeholder="등록작업자" />
@@ -121,47 +121,26 @@
 													value="테스터1" placeholder="수정작업자" />
 										</div>
 										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
-											
 											<div style="flex: 1;">
 												<label for="prod_brand" class="col-form-label-lg">제품브랜드</label>
 												<input type="text" class="form-control input-full"
-													id="prod_brand" name="prod_brand" placeholder="제품브랜드" />
-											</div>
-											<div style="flex: 1;">
-												<label for="prod_price" class="col-form-label-lg">입고가</label>
-												<input type="number" class="form-control input-full"
-													id="prod_price" name="prod_price" placeholder="입고가" />
-											</div>
-										</div>
-										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
-											
-											<div style="flex: 1;">
-												<label for="prod_qty" class="col-form-label-lg">제품수량</label>
-												<input type="number" class="form-control input-full"
-													id="prod_qty" name="prod_qty" placeholder="제품수량" />
+													id="prod_brand" name="prod_brand" placeholder="제품브랜드" required="required"/>
 											</div>
 											<div style="flex: 1;">
 												<label for="company_code" class="col-form-label-lg">입고처</label>
 												<input type="text" class="form-control input-full"
-													id="company_code" name="company_code" placeholder="입고처" />
+													id="company_code" name="company_code" placeholder="입고처" required="required" />
 											</div>
 										</div>
 										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
 											<div style="flex: 1;">
-												<label for="wh_number" class="col-form-label-lg">창고</label>
-												<input type="number" class="form-control input-full"
-													id="wh_number" name="wh_number" placeholder="창고" />
+												<label for="prod_remarks" class="col-form-label-lg">비고</label>
+												<textarea id="prod_remarks" name="prod_remarks" rows="4" cols="30" class="form-control"></textarea>
 											</div>
 											<div style="flex: 1;">
 												<label for="uploadfile" class="col-form-label-lg">제품이미지</label>
 												<input type="file" class="form-control input-full"
 													id="uploadfile" name="uploadfile" accept=".jpeg, .jpg, .png, .gif" />
-											</div>
-										</div>
-										<div class="form-group d-flex" style="margin: 0 200px; gap: 310px;">
-											<div>
-												<label for="prod_remarks" class="col-form-label-lg">비고</label>
-												<textarea id="prod_remarks" name="prod_remarks" rows="4" cols="30" class="form-control"></textarea>
 											</div>
 											<div class="preview">
 												<img id="previewimg" alt="미리보기이미지" src="#"/>
@@ -280,7 +259,10 @@
 	    	
 	        $('#prodForm').on('submit', function (e) {
 	            e.preventDefault(); // 기본 제출 이벤트 방지
-	
+	            
+	         	// 버튼 비활성화
+	            $('button[type="submit"]').prop('disabled', true);
+	            
 	            var formData = new FormData(this); // FormData 객체 생성
 	
 	            $.ajax({
@@ -315,6 +297,10 @@
 	                    });
 	                	$('#prod_reguser').val(data.prod_reguser);
 	                	$('#prod_upduser').val(data.prod_upduser);
+	                },
+	                complete: function() {
+	                    // 요청이 완료되면 버튼 활성화
+	                    $('button[type="submit"]').prop('disabled', false);
 	                }
 	            });
 	        });

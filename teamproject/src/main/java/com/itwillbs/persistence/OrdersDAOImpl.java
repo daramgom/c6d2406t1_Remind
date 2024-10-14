@@ -1,0 +1,46 @@
+package com.itwillbs.persistence;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.stereotype.Repository;
+
+import com.itwillbs.domain.OrdersVO;
+
+@Repository
+public class OrdersDAOImpl implements OrdersDAO{
+	
+	@Inject
+	private SqlSession sqlSession;
+	
+	private static final String NAMESPACE = "com.itwillbs.mapper.OrderMapper";
+	
+	/*
+	 * @Override public void insertOrders(OrdersVO vo) { int result =
+	 * sqlSession.insert(NAMESPACE + ".insertOrder", vo); }
+	 */
+	
+	@Override
+	public int insert(OrdersVO ordersVO) {
+		int result = sqlSession.insert(NAMESPACE+".insert", ordersVO);
+		
+		System.out.println("result = "+result);
+		
+		return result;
+	}
+	
+	@Override
+	public List<OrdersVO> listOrder() {
+		
+		return sqlSession.selectList(NAMESPACE+".listOrder");
+	}
+	
+	@Override
+	public void updateOrder(OrdersVO ordersVO) {
+		sqlSession.update(NAMESPACE+".updateOrder", ordersVO);
+		
+	}
+	
+}

@@ -1,6 +1,10 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.OrdersVO;
 
@@ -12,5 +16,7 @@ public interface OrdersService {
 	
 	public List<OrdersVO> listOrder();
 	
-	public void updateOrder(OrdersVO ordersVO);
+	public void updateOrder(/* Map<String, Object> data, */ OrdersVO ordersVO);
+	
+	public Integer deleteOrder(OrdersVO ordersVO);
 }

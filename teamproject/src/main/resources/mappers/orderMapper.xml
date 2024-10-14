@@ -11,43 +11,43 @@
     	values ('01',#{ord_manager_id},#{ord_supervisor_id},#{prod_id},#{ord_price},#{ord_quantity},now(),now(),#{company_code},#{ord_text},#{wh_number})
     </insert>
     
-    <!-- 발주 요청 시 정보 입력 직후 관리번호 생성 -->
+    <!-- 발주 요청 시 정보 입력 직후 관리번호 생성 -->  <!-- 미구현 -->
 	    <update id="insertUpdateOrder">
 	    	update orders 
 	    	set ord_number = concat('ord-', year(#{ord_date}), '-', lpad(#{ord_count}, 4, '0')) 
 	    	where ord_count = #{ord_count}
 	    </update>
     
- <!-- 발주 전체 목록 조회 -->
+ <!-- 발주 전체 목록 조회 -->  <!-- 미구현 -->
  	<select id="listOrder" resultType="OrdersVO">
  		select * from orders
  	</select>
  	
- <!-- 발주 기안 목록 조회 -->
+ <!-- 발주 기안 목록 조회 -->	<!-- 미구현 -->
  	<select id="getOrderList01">
  		select * from orders 
  		where ord_status = '01'
  	</select>
  	
- <!-- 발주 반려 목록 조회 -->
+ <!-- 발주 반려 목록 조회 -->	<!-- 미구현 -->
  	<select id="getOrderList02">
  		select * from orders 
  		where ord_status = '02'
  	</select>
  	
- <!-- 발주 결재 목록 조회 -->
+ <!-- 발주 결재 목록 조회 -->	<!-- 미구현 -->
  	<select id="getOrderList03">
  		select * from orders 
  		where ord_status = '03'
  	</select>
  
- <!-- 거래처 반려 목록 조회 -->
+ <!-- 거래처 반려 목록 조회 -->	<!-- 미구현 -->
  	<select id="getOrderList04">
  		select * from orders 
  		where ord_status = '04'
  	</select>
  
- <!-- 발주 완료 목록 조회 -->
+ <!-- 발주 완료 목록 조회 -->	<!-- 미구현 -->
  	<select id="getOrderList05">
  		select * from orders 
  		where ord_status = '05'

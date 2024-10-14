@@ -2,6 +2,7 @@ package com.itwillbs.web;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.OrdersVO;
 import com.itwillbs.domain.ReceivingVO;
@@ -36,7 +38,7 @@ public class OrderController {
 
 
    
-    // http://localhost:9161/web/order-insert
+    // http://localhost:8088/order-insert
     @RequestMapping(value = "/order-insert", method = RequestMethod.GET)
     public String insertOrderForm() {
         
@@ -64,12 +66,20 @@ public class OrderController {
     
     
     @PostMapping(value = "/updateOrder")
-    public ResponseEntity<String> updateOrder(@RequestBody OrdersVO ordersVO){
-    	orderService.updateOrder(ordersVO);
+	public String updateOrder(OrdersVO ordersVO){
+		orderService.updateOrder(ordersVO);
     	
-    	return ResponseEntity.ok("발주정보가 수정되었습니다.");
+    	logger.debug("@@@@@@@@@@@@@@@@@@@@원래는 data였음ordersVO : "+ordersVO);
+    	
+    	return "/order-list";
     }
     
+    @PostMapping(value = "/deleteOrder")
+    public String deleteOrder(OrdersVO ordersVO) {
+    	orderService.deleteOrder(ordersVO);
+    	
+    	return "/order-list";
+    }
     
     
 }

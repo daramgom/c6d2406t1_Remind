@@ -1,11 +1,14 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.OrdersVO;
 
@@ -38,9 +41,14 @@ public class OrdersDAOImpl implements OrdersDAO{
 	}
 	
 	@Override
-	public void updateOrder(OrdersVO ordersVO) {
-		sqlSession.update(NAMESPACE+".updateOrder", ordersVO);
+	public void updateOrder(/* Map<String, Object> data, */ OrdersVO ordersVO) {
+		sqlSession.update(NAMESPACE+".updateOrder", ordersVO/*data*/);
+	}
+	
+	@Override
+	public Integer deleteOrder(OrdersVO ordersVO) {
 		
+		return sqlSession.delete(NAMESPACE+".deleteOrder", ordersVO);
 	}
 	
 }

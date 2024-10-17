@@ -32,10 +32,18 @@ public interface MemberService {
 	public MemberVO memberInfoTel(String tel);
 	
 	// admin 회원정보 목록 d
-	public List<MemberVO> memberList(String action);
+	public List<MemberVO> memberList();
+	
+	// admin 회원정보 목록 d
+	public List<MemberVO> signupRequestList();
 
 	// admin 특정 회원 조회. d
 	public Map<String, Object> memberInfo(String Member_id);
 	
+	// admin 회원가입 신청 목록 승인
+	public int membersUpdate(List<MemberVO> memberList);
+	
+	// admin 회원가입 신청 목록 삭제
+	public Integer membersDelete(List<MemberVO> vo);
 	
 }

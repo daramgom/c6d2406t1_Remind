@@ -59,7 +59,7 @@
 		where member_id = #{member_id}
 	</update>
 
-	<!-- 회원정보 삭제 -->
+	<!-- 퇴사처리 회원정보 삭제 -->
 	<update id="deleteMember">update member set member_state = #{member_state}
 		where member_id=#{member_id} </update>
 
@@ -135,6 +135,16 @@
 		common_value ASC;
 	</select>
 
+
+	<!-- admin 회원가입 신청 승인  -->
+	<update id="UpdateMembers">
+		update member set department_id = #{department_id} , employee_rank = #{employee_rank} , approval_status = "02"
+		where member_id=#{member_id}
+	</update>
+	
+	<delete id="deleteMembers">
+		delete from member where member_id = #{member_id};
+	</delete>
 
 
 

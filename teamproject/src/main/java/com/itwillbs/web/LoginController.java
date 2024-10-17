@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.UserVO;
@@ -96,7 +97,7 @@ public class LoginController {
 	
 	// SNS 로그인
 	@RequestMapping(value = "/auth/naver/callback", method = {RequestMethod.GET, RequestMethod.POST})
-	public String loginCallback(@RequestParam String code, HttpSession session) throws Exception {
+	public String loginCallback(@RequestParam String code, HttpSession session, RedirectAttributes rttr) throws Exception {
 	    SNSLogin snsLogin = new SNSLogin(naverSns);
 	    UserVO snsUser = snsLogin.getUserProfile(code);
 	    
@@ -108,8 +109,8 @@ public class LoginController {
 	    
 	    // 비교해서 member 없으면 -> 회원가입 페이지
 	    if (result == null) {
-	    	session.setAttribute("isFirstVisit", true);
-	    	session.setAttribute("userInfo", snsUser); // 세션에 UserVO 객체 저장
+	    	rttr.addFlashAttribute("isFirstVisit", "SNS"); // => 이걸 1회성인 model 객체임. 
+	    	session.setAttribute("userInfo", snsUser); // 세션에 UserVO 객체 저장 
 	        return "redirect:/notify"; // notify 페이지로 리다이렉트
 	    } 
 	    

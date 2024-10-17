@@ -31,10 +31,6 @@ public class MemberServiceImpl implements MemberService{
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
 
-	
-
-	
-	
 	@Override
 	public String memberJoin(MemberVO vo) {
 		logger.debug("(●'◡'●) 컨트롤러 -> 서비스 ");
@@ -104,10 +100,30 @@ public class MemberServiceImpl implements MemberService{
 	}
 	// admin 전용 특정 사용자 조회
 	@Override
-	public List<MemberVO> memberList(String action) {
+	public List<MemberVO> memberList() {
 		logger.debug("memberList() 실행 ");	
 		
-		return mdao.getMemberList(action);
+		return mdao.getMemberList();
+	}
+	
+	// admin 전용 회원가입 신청 멤버 목록
+	@Override
+	public List<MemberVO> signupRequestList() {
+	
+		return  mdao.getSignupRequestList();
+	}
+	
+	// admin 전용 회원가입 신청 멤버 승인.
+	@Override
+	public int membersUpdate(List<MemberVO> memberList) {
+		
+		return mdao.updateMembers(memberList); 
+	}
+	
+	// admin 전용 회원가입 신청 멤버 삭제.
+	@Override
+	public Integer membersDelete(List<MemberVO> vo) {
+		return mdao.deleteMembers(vo);
 	}
 	
 	

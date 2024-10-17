@@ -30,7 +30,7 @@ public interface ProdService {
 	
 	
 	// 재고이동
-	public void transferProd(ProdVO vo, HttpServletRequest req);
+	public int transferProd(ProdVO vo, HttpServletRequest req);
 	public List<ProdVO> transferSelect();
 	public List<ProdVO> transferSelect2(ProdVO vo);
 	

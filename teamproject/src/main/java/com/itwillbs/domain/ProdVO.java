@@ -39,6 +39,7 @@ public class ProdVO {
 	private String wh_location;
 	private int prod_qty;
 	private int stock_qty;
+	private int current_qty;
 	private String prod_remarks;
 	private String formatted_regdate;
 	private String formatted_upddate;

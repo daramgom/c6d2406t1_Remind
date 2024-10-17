@@ -101,9 +101,14 @@ public class ProdServiceImpl implements ProdService {
 	
 	
 	@Override
-	public void transferProd(ProdVO vo, HttpServletRequest req) {
+	public int transferProd(ProdVO vo, HttpServletRequest req) {
 		logger.debug("( •̀ ω •́ )✧ Service : transferProd(ProdVO vo, HttpServletRequest req) 실행 ");
-		
+		if(vo.getProd_qty() == vo.getCurrent_qty() && vo.getCurrent_qty() >= vo.getStock_qty()) {
+				if(vo.getStock_qty() >= 0) {
+					logger.debug("( •̀ ω •́ )✧ Service : 수량 == 현재수량 && 수량 >= && 이동수량 >= 0");
+					return pdao.transferProd(vo);
+				} return 0;
+		} return 0;
 	}
 
 

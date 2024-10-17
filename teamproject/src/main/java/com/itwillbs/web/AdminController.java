@@ -67,6 +67,7 @@ public class AdminController {
 		response.put("message", "수정");
 		return ResponseEntity.ok(response); 
 	}
+	
 	@RequestMapping(value = "/deleteMember" , method =RequestMethod.POST )
 	public ResponseEntity<Map<String, String>> deleteMember(@RequestBody MemberVO vo) {
 		response.clear();
@@ -142,6 +143,8 @@ public class AdminController {
 		logger.debug("companySignUpGET");
 		
 		List<CompanyVO> result = cService.getCompanyList();
+		
+		
 		
 	}
 	

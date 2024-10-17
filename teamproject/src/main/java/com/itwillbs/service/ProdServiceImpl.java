@@ -100,6 +100,13 @@ public class ProdServiceImpl implements ProdService {
 	}
 	
 	
+	@Override
+	public void transferProd(ProdVO vo, HttpServletRequest req) {
+		logger.debug("( •̀ ω •́ )✧ Service : transferProd(ProdVO vo, HttpServletRequest req) 실행 ");
+		
+	}
+
+
 	// 재고이동
 	@Override
 	public List<ProdVO> transferSelect() {

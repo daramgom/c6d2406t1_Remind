@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.mapper.NoticeMapper">
+
+    <insert id="addNotice" parameterType="com.itwillbs.domain.NoticeVO">
+    INSERT INTO notice (title, content, notice_status, writer) 
+    VALUES (#{title}, #{content}, #{notice_status}, #{writer})
+	</insert>
+
+
+    <select id="getNotices" resultType="com.itwillbs.domain.NoticeVO">
+        SELECT * FROM notice
+    </select>
+
+    <select id="getNotice" parameterType="int" resultType="com.itwillbs.domain.NoticeVO">
+        SELECT * FROM notice WHERE no = #{noticeNo}
+    </select>
+
+    <update id="updateNotice" parameterType="com.itwillbs.domain.NoticeVO">
+        UPDATE notice 
+        SET title = #{title}, 
+            content = #{content}, 
+            notice_status = #{notice_status}, 
+            fixdate = CURRENT_TIMESTAMP 
+        WHERE no = #{no}
+    </update>
+
+    <delete id="deleteNotice" parameterType="int">
+        DELETE FROM notice WHERE no = #{noticeNo}
+    </delete>
+
+    <update id="incrementViewCount" parameterType="int">
+        UPDATE notice SET viewcnt = viewcnt + 1 WHERE no = #{noticeNo}
+    </update>
+
+</mapper>

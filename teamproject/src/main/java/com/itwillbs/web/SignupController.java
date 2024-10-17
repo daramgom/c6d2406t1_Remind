@@ -38,7 +38,6 @@ public class SignupController {
 		logger.info("uvo  : " + uvo);
 		
 		model.addAttribute("member" , uvo);
-		session.setAttribute("isFirstVisit", false );
 	}
 	
 	// http://localhost:8088/signup

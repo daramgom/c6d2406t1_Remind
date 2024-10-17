@@ -14,7 +14,7 @@
 
 <style>
 .btn-confirm {
-	padding: 0.65rem 1.4rem;	
+	padding: 0.65rem 1.4rem;
 	font-size: 1rem;
 	font-weight: 500;
 	opacity: 1;
@@ -44,7 +44,16 @@ tr {
 	text-align: center;
 }
 
+@import
+	url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css')
+	;
 
+* {
+	font-family: 'NanumSquare', sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
 </style>
 
 <!-- Fonts and icons -->
@@ -76,6 +85,12 @@ tr {
 <link rel="stylesheet" href="/resources/css/adminMemberList.css" />
 </head>
 <body>
+
+	<c:if
+		test="${sessionScope.id == null || sessionScope.permission_id != '03'}">
+		<c:redirect url="/index" />
+	</c:if>
+	
 	<div class="wrapper">
 		<!-- Header -->
 		<jsp:include page="/resources/inc/header.jsp" />
@@ -96,14 +111,16 @@ tr {
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card w-100">
-							<div class="card-header" style="display: flex; justify-content: space-between;">
-								<div class="card-title"
-									>목록</div>
-								<c:if test="${ WaitingList != ''}">
-									<div style="margin-right : 3rem;">
-										<button style="margin-right: 1rem; padding: 0.7rem 2rem;  background: #5f41e4 ! IMPORTANT; border: none; "
-											class="btn btn-success hover-btn" >승인</button>
-										<button style="padding: 0.7rem 2rem;" class="btn btn-danger">삭제</button>
+							<div class="card-header"
+								style="display: flex; justify-content: space-between;">
+								<div class="card-title">목록</div>
+								<c:if test="${ WaitingList != null}">
+									<div style="margin-right: 3rem;">
+										<button id="approveBtn"
+											style="margin-right: 1rem; padding: 0.7rem 2rem; background: #5f41e4 ! IMPORTANT; border: none;"
+											class="btn btn-success hover-btn">승인</button>
+										<button style="padding: 0.7rem 2rem;" id="deleteBtn"
+											class="btn btn-danger">삭제</button>
 									</div>
 								</c:if>
 							</div>
@@ -111,52 +128,52 @@ tr {
 							<div class="card-body d-flex flex-column">
 								<div class="row">
 									<div class="col-md-12">
-										<table class="col-md-12 table">
-											<tr>
-												<th style="width: 1%"><input type="checkbox"
-													class="form-check-input"></th>
-												<th class="col-md-1">이름</th>
-												<th class="col-md-1">직급</th>
-												<th class="col-md-2">부서</th>
-												<th class="col-md-2">이메일</th>
-												<th class="col-md-2">전화번호</th>
-												<th class="col-md-2">가입일자</th>
-											</tr>
+										<form action="">
+											<table class="col-md-12 table">
+												<tr>
+													<th style="width: 1%"><input type="checkbox"
+														id="selectAll" class="form-check-input"></th>
+													<th class="col-md-1">이름</th>
+													<th class="col-md-1">직급</th>
+													<th class="col-md-2">부서</th>
+													<th class="col-md-2">이메일</th>
+													<th class="col-md-2">전화번호</th>
+													<th class="col-md-2">가입일자</th>
+												</tr>
 
-											<c:if test="${ WaitingList != ''}">
-												<c:forEach items="${WaitingList}" var="member">
-													<tr>
-														<td><input class="form-check-input"
-															name="${member.member_id}" id="selectUser"
-															type="checkbox"></td>
-														<td>${member.member_name}</td>
-														<td><select name="" class="EmpRank">
-																<!-- 어드민 리스트에서 했던 작업 그대로 쓰면 될듯. -->
-																<c:forEach items="${EmpList}" var="emp">
-																	<option value="${emp.common_value}"
-																		<c:if test="${member.employee_rank == emp.common_value}">selected</c:if>>${emp.common_status}</option>
-																</c:forEach>
+												<c:if test="${ WaitingList != null}">
+													<c:forEach items="${WaitingList}" var="member">
+														<tr>
+															<td><input class="form-check-input"
+																name="${member.member_id}" type="checkbox"></td>
+															<td>${member.member_name}</td>
+															<td><select name="" class="EmpRank">
+																	<!-- 어드민 리스트에서 했던 작업 그대로 쓰면 될듯. -->
+																	<c:forEach items="${EmpList}" var="emp">
+																		<option value="${emp.common_value}"
+																			<c:if test="${member.employee_rank == emp.common_value}">selected</c:if>>${emp.common_status}</option>
+																	</c:forEach>
 
-														</select></td>
-														<td><select name="" class="Department">
-																<!-- 어드민 리스트에서 했던 작업 그대로 쓰면 될듯. -->
-																<c:forEach items="${DeptList}" var="dept">
-																	<option value="${dept.department_id}"
-																		<c:if test="${member.department_id == dept.department_id}">selected</c:if>>${dept.department_name}</option>
-																</c:forEach>
-														</select></td>
-														<td>${member.member_email}</td>
-														<td>${member.member_tel}</td>
-														<td>${member.create_date}</td>
+															</select></td>
+															<td><select name="" class="Department">
+																	<!-- 어드민 리스트에서 했던 작업 그대로 쓰면 될듯. -->
+																	<c:forEach items="${DeptList}" var="dept">
+																		<option value="${dept.department_id}"
+																			<c:if test="${member.department_id == dept.department_id}">selected</c:if>>${dept.department_name}</option>
+																	</c:forEach>
+															</select></td>
+															<td>${member.member_email}</td>
+															<td>${member.member_tel}</td>
+															<td>${member.create_date}</td>
+														</tr>
+													</c:forEach>
+												</c:if>
 
-													</tr>
-												</c:forEach>
-											</c:if>
-
-										</table>
+											</table>
+										</form>
 									</div>
 								</div>
-								<c:if test="${WaitingList == ''}">
+								<c:if test="${WaitingList == null}">
 									<div style="margin: 20px auto;">
 										<h3>현재 승인 대기 중인 회원가입 요청이 없습니다.</h3>
 									</div>
@@ -209,73 +226,8 @@ tr {
 	<!-- Kaiadmin JS -->
 	<script src="/resources/js/kaiadmin.min.js"></script>
 	<script>
-      function memberInfo() {
-        event.preventDefault();
-        $.ajax({
-          url: "/admin/getMemberInfo",
-          type: "POST",
-          data: JSON.stringify({ }),
-          contentType: "application/json",
-          dataType: "json",
-          success: function (response) {
-            console.log(response);
-            $("#EmpRank").empty();
-            $("#Department").empty();
-            
-            $("#memberName").text(response.member.member_name);
-            $("#memberTel").text(response.member.member_tel);
-            $("#memberEmail").text(response.member.member_email);
-            // 기존 내용 삭제
-            $.each(response.empRank, function (key, value) {
-              var selected =
-                response.member.employee_rank == value.common_value
-                  ? "selected"
-                  : ""; // 조건에 따라 selected 설정
-              $("#memberRank").append(
-                '<option value="' +value.common_value +'" ' +selected +">" +value.common_status +"</option>"  );});
-          
-            $("#memberDepartment").empty();
-            $.each(response.department, function (key, value) {
-              const selected =
-                response.member.department_id == value.department_id
-                  ? "selected"
-                  : ""; // 조건에 따라 selected 설정
-              $("#memberDepartment").append(
-                '<option value="' +
-                  value.department_id +
-                  '" ' +
-                  selected +
-                  ">" +
-                  value.department_name +
-                  "</option>"
-              );
-            });
-
-            $("#memberStatus").empty();
-            $.each(response.memberState, function (key, value) {
-              if (value.common_status == "퇴사") {
-                DeleteCode = value.common_value;
-                return;
-              }
-              const selected =
-                response.member.member_state == value.common_value
-                  ? "selected"
-                  : ""; // 조건에 따라 selected 설정
-              $("#memberStatus").append(
-                '<option value="' +
-                  value.common_value +
-                  '" ' +
-                  selected +
-                  ">" +
-                  value.common_status +
-                  "</option>"
-              );
-            });
-
-            $("#detailsModal").css("display", "block").hide().fadeIn(200);
-          },
-        });
-      }
+	
+      
 
       function showConfirmationAlert(message) {
         return new Promise((resolve, reject) => {
@@ -309,21 +261,153 @@ tr {
         });
       }
     </script>
-
 	<script>
-      $(document).ready(function () {
-        
+	 $(document).ready(function () {
+         // 전체 선택 체크박스 클릭 이벤트
+         $("#selectAll").click(function () {
+             var isChecked = $(this).is(":checked");
+             $(".form-check-input").prop("checked", isChecked);
+         });
 
+         // 각 행의 체크박스 클릭 이벤트
+         $(".form-check-input").click(function () {
+             var allChecked = $(".form-check-input:checked").length === $(".form-check-input").length;
+             $("#selectAll").prop("checked", allChecked);
+         });
 
+         $("#deleteBtn").click(function () {
+             var deleteData = [];
+             $('.form-check-input:checked').each(function () {
+                 var row = $(this).closest('tr'); // 체크박스가 포함된 행 선택
+                 var memberId = $(this).attr('name');
 
-        $(document).click(function () {
-          $(".btn-group").fadeOut(200);
-        });
+                 deleteData.push({
+                     member_id: memberId
+                 });
+             });
+             if (deleteData.length > 0) {
+                 $.ajax({
+                     url: "/admin/signReqDelete",
+                     type: "POST",
+                     data: JSON.stringify(deleteData), // 선택된 데이터 배열을 JSON 문자열로 변환
+                     contentType: "application/json",
+                     dataType: "json",
+                     success: function (response) {
+                         if (response.result) {
+                             swal("회원 정보가 삭제되었습니다.", {
+                                 icon: "success",
+                             }).then(() => {
+                                 location.reload(); // 페이지 새로 고침
+                             });
+                         } else {
+                             swal("삭제 중 오류가 발생했습니다.", {
+                                 icon: "error"
+                             });
+                         }
+                     },
+                     error: function (jqXHR, textStatus, errorThrown) {
+                         console.error("AJAX 요청 실패:", textStatus, errorThrown);
+                         swal("서버와의 연결에 실패했습니다.", {
+                             icon: "error"
+                         });
+                     }
+                 });
+             } else {
+                 swal("오류", "선택된 항목이 없습니다.", {
+                     icon: "error",
+                 });
+             }
+         });
 
-        $(".closeBtn, .close").on("click", function () {
-          $("#detailsModal").css("display", "none");
-        });
-      });
-    </script>
+         $("#approveBtn").click(function () {
+             var selectedData = []; // 선택된 데이터 배열
+             const DefaultDept = 0; // 기본 부서 값
+             const DefaultEmp = '00'; // 기본 직급 값
+             let isValid = true; // 유효성 검사 변수 초기화
+
+             // 체크된 모든 체크박스에 대해 반복
+             $('.form-check-input:checked').each(function () {
+                 var row = $(this).closest('tr'); // 체크박스가 포함된 행 선택
+                 var memberId = $(this).attr('name'); // 체크박스의 name 속성 값
+                 var rank = row.find('td:eq(2) select').val(); // 직급
+                 var department = row.find('td:eq(3) select').val(); // 부서
+
+                 // 기본값과 비교하여 유효성 검사
+                 if (department == DefaultDept || rank == DefaultEmp) {
+                     isValid = false; // 기본값과 일치하면 유효성 검사 실패
+                     return false; // 반복문 종료
+                 }
+
+                 // 선택된 데이터 배열에 추가
+                 selectedData.push({
+                     department_id: department,
+                     employee_rank: rank,
+                     member_id: memberId
+                 });
+             });
+
+             // 유효성 검사 통과 시 AJAX 요청
+             if (isValid) {
+                 if (selectedData.length > 0) {
+                     $.ajax({
+                         url: "/admin/signReq",
+                         type: "POST",
+                         data: JSON.stringify(selectedData), // 선택된 데이터 배열을 JSON 문자열로 변환
+                         contentType: "application/json",
+                         dataType: "json",
+                         success: function (response) {
+                             if (response.result) {
+                                 swal("회원 정보가 수정되었습니다.", {
+                                     icon: "success",
+                                 }).then(() => {
+                                     location.reload(); // 페이지 새로 고침
+                                 });
+                             } else {
+                                 swal("수정 중 오류가 발생했습니다.", {
+                                     icon: "error"
+                                 });
+                             }
+                         },
+                         error: function (jqXHR, textStatus, errorThrown) {
+                             console.error("AJAX 요청 실패:", textStatus, errorThrown);
+                             swal("서버와의 연결에 실패했습니다.", {
+                                 icon: "error"
+                             });
+                         }
+                     });
+                 } else {
+                     swal("오류", "선택된 항목이 없습니다.", {
+                         icon: "error",
+                     });
+                 }
+             } else {
+                 swal("경고", "변경하지 않은 값이 있습니다.", {
+                     icon: "warning",
+                 });
+             }
+         });
+
+         // 직급 또는 부서 선택 변경 시 유효성 검사 업데이트
+         $('select').change(function () {
+             var row = $(this).closest('tr'); // 변경된 셀의 행 선택
+             var rank = row.find('td:eq(2) select').val(); // 직급
+             var department = row.find('td:eq(3) select').val(); // 부서
+             
+             // 기본값과 비교하여 유효성 검사 업데이트
+             if (department != DefaultDept && rank != DefaultEmp) {
+                 isValid = true; // 값이 기본값이 아니면 isValid를 true로 설정
+             }
+         });
+
+         $(document).click(function () {
+             $(".btn-group").fadeOut(200);
+         });
+
+         $(".closeBtn, .close").on("click", function () {
+             $("#detailsModal").css("display", "none");
+         });
+     });
+</script>
+
 </body>
 </html>

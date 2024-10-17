@@ -8,9 +8,11 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +35,7 @@ public class AdminController {
 	public void adminMemberListGET(Model model) {
 		logger.debug("adminMemberListGET");
 		
-		List<MemberVO> memberList = mService.memberList("AllList");
+		List<MemberVO> memberList = mService.memberList();
 
 		model.addAttribute("memberList", memberList);
 	}
@@ -80,17 +82,53 @@ public class AdminController {
 	public void memberRequest(Model model) {
 		logger.debug("signReq");
 		
-		List result = mService.memberList("WaitingList");
-		logger.debug("result controller : "+ result.get(0));
-		logger.debug("result controller : "+ result.get(1));
-		logger.debug("result controller : "+ result.get(2));
+		List result = mService.signupRequestList();
+		logger.debug("result +: "+ result.isEmpty());
+		
+	
+		if(!result.isEmpty()) {
+			model.addAttribute("WaitingList", result.get(0));
+			model.addAttribute("EmpList", result.get(1));
+			model.addAttribute("DeptList", result.get(2));
+		}
+		
 
 		
-		model.addAttribute("WaitingList", result.get(0));
-		model.addAttribute("EmpList", result.get(1));
-		model.addAttribute("DeptList", result.get(2));
 		
-		
-		
+	}
+	@PostMapping("/signReq")
+	public ResponseEntity<String> SignRequestUpdate(@RequestBody List<MemberVO> selectedMembers) {
+	    logger.debug("selectMembers: " + selectedMembers);
+
+	    try {
+	        // 처리 로직 추가 (예: DB에 저장, 승인 처리 등)
+	        mService.membersUpdate(selectedMembers);
+	        
+	        // 성공 응답 반환
+	        return ResponseEntity.ok("{\"result\": true}");
+	    } catch (Exception e) {
+	        // 예외 처리
+	        logger.error("Error updating members", e);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                             .body("{\"result\": false, \"message\": \"업데이트 중 오류가 발생했습니다.\"}");
+	    }
+	}
+	
+	@PostMapping("/signReqDelete")
+	public ResponseEntity<String> SignRequestDelete(@RequestBody List<MemberVO> selectedMembers) {
+	    logger.debug("selectMembers: " + selectedMembers);
+
+	    try {
+	        // 처리 로직 추가 (예: DB에 저장, 승인 처리 등)
+	        mService.membersDelete(selectedMembers);
+	        
+	        // 성공 응답 반환
+	        return ResponseEntity.ok("{\"result\": true}");
+	    } catch (Exception e) {
+	        // 예외 처리
+	        logger.error("Error updating members", e);
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                             .body("{\"result\": false, \"message\": \"업데이트 중 오류가 발생했습니다.\"}");
+	    }
 	}
 }

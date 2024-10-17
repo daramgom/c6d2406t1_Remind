@@ -51,8 +51,15 @@ public interface MemberDAO {
 	public Map<String, Object> getMemberDetails(String member_id);
 	
 	// admin(전용) 사용자 정보 목록 조회
-	public List<MemberVO> getMemberList(String action);
+	public List<MemberVO> getMemberList();
 	
-
+	// admin(전용) 회원가입 신청 정보 목록 조회
+	public List<MemberVO> getSignupRequestList();
+	
+	// admin(전용) 회원가입 신청 승인
+	public int updateMembers(List<MemberVO> memberList);
+	
+	// admin(전용) 회원가입 신청 목록 삭제
+	public Integer deleteMembers(List<MemberVO> memberList);
 	
 }

@@ -44,13 +44,21 @@ public class MemberServiceImpl implements MemberService{
 	
 	@Override
 	public MemberVO memberLoginCheck(MemberVO vo) {
-		logger.debug("(●'◡'●) 컨트롤러가 호출 -> DAO 호출");
-		MemberVO storedMember = mdao.loginMember(vo);
-	        
-        if (storedMember != null && BCrypt.checkpw(vo.getMember_pw(), storedMember.getMember_pw())) {
-            return storedMember; // 비밀번호 일치
-        }
-        return null; // 로그인 실패
+	   logger.debug("(●'◡'●) 컨트롤러가 호출 -> DAO 호출");
+	    MemberVO storedMember = mdao.loginMember(vo);
+
+	    // 아이디가 존재하지 않는 경우
+	    if (storedMember == null) {
+	        return null; // 아이디가 없음
+	    }
+
+	    // 비밀번호 확인
+	    if (!BCrypt.checkpw(vo.getMember_pw(), storedMember.getMember_pw())) {
+	        return new MemberVO(); // 빈 MemberVO 객체 반환 (비밀번호 틀림)
+	    }
+
+	    // 로그인 성공
+	    return storedMember; // 비밀번호 일치
 	}
 	
 	

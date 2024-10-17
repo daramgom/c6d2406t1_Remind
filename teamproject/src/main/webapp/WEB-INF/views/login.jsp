@@ -53,6 +53,9 @@ pageEncoding="UTF-8"%>
                 case "NOT_REGISTERED":
                   showErrorAlert(response.message);
                   break;
+                case "INVALID_PASSWORD":
+                  showWarningAlert(response.message);
+                  break;
                 case "PENDING_APPROVAL":
                   showWarningAlert(response.message);
                   break;

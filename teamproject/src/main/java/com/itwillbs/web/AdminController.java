@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.itwillbs.domain.CompanyVO;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.service.CompanyService;
 import com.itwillbs.service.MemberService;
 
 @Controller
@@ -28,6 +30,9 @@ public class AdminController {
 
 	@Inject
 	private MemberService mService;
+	
+	@Inject
+	private CompanyService cService;
 	
 	Map<String, String> response = new HashMap<>();;
 
@@ -62,6 +67,7 @@ public class AdminController {
 		response.put("message", "수정");
 		return ResponseEntity.ok(response); 
 	}
+	
 	@RequestMapping(value = "/deleteMember" , method =RequestMethod.POST )
 	public ResponseEntity<Map<String, String>> deleteMember(@RequestBody MemberVO vo) {
 		response.clear();
@@ -131,4 +137,15 @@ public class AdminController {
 	                             .body("{\"result\": false, \"message\": \"업데이트 중 오류가 발생했습니다.\"}");
 	    }
 	}
+	
+	@RequestMapping(value ="companySignUp" , method = RequestMethod.GET )
+	public void companySignUpGET(Model model) {
+		logger.debug("companySignUpGET");
+		
+		List<CompanyVO> result = cService.getCompanyList();
+		
+		
+		
+	}
+	
 }

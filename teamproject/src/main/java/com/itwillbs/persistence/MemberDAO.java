@@ -22,7 +22,7 @@ public interface MemberDAO {
 	// 회원가입
 	public String insertMember(MemberVO vo);
 	
-	// 로그인
+	// 로그인 
 	public MemberVO loginMember(MemberVO vo);
 	
 	// 로그인

@@ -72,6 +72,9 @@ public class MemberDAOImpl implements MemberDAO {
 		System.out.println(" DAO : mapper SQL 생성완료. ");
 		// SQL 구문 실행.
 		MemberVO resultVO = sqlSession.selectOne(NAMESPACE + ".loginMember", vo);
+		if(resultVO == null ) {
+			return null;
+		}
 
 		System.out.println(" DAO : " + resultVO);
 

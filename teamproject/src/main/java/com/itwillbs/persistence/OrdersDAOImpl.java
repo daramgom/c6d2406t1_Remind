@@ -46,9 +46,21 @@ public class OrdersDAOImpl implements OrdersDAO{
 	}
 	
 	@Override
-	public Integer deleteOrder(OrdersVO ordersVO) {
+	public void deleteOrder(OrdersVO ordersVO) {
 		
-		return sqlSession.delete(NAMESPACE+".deleteOrder", ordersVO);
+		sqlSession.update(NAMESPACE+".deleteOrder", ordersVO);
 	}
+	
+	@Override
+	public void updateOrder03(OrdersVO ordersVO) {
+		sqlSession.update(NAMESPACE+".updateOrder03", ordersVO);
+	}
+	
+	@Override
+	public void updateOrder02(OrdersVO ordersVO) {
+		sqlSession.update(NAMESPACE+".updateOrder02", ordersVO);
+	}
+	
+	
 	
 }

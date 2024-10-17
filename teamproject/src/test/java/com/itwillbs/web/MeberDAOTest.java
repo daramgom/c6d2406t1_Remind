@@ -132,11 +132,11 @@ public class MeberDAOTest {
 	public void 회원목록_리스트() {
 		System.out.println(" TEST : 회원목록 조회 시작 ");
 		
-		List<MemberVO> memberList = mdao.getMemberList();
+		//List<MemberVO> memberList = mdao.getMemberList();
 		
-		for (MemberVO memberVO : memberList) {
-			System.out.println("memberVO : "+ memberVO);
-		}
+		//for (MemberVO memberVO : memberList) {
+		//	System.out.println("memberVO : "+ memberVO);
+		//}
 		
 		System.out.println(" TEST : 회원목록 조회 시작 ");
 	}

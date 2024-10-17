@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.OrdersVO;
@@ -77,6 +78,20 @@ public class OrderController {
     @PostMapping(value = "/deleteOrder")
     public String deleteOrder(OrdersVO ordersVO) {
     	orderService.deleteOrder(ordersVO);
+    	
+    	return "/order-list";
+    }
+    
+    @PostMapping(value = "/updateOrder03")
+    public String updateOrder03(OrdersVO ordersVO) {
+    	orderService.updateOrder03(ordersVO);
+    	
+    	return "/order-list";
+    }
+    
+    @PostMapping(value = "/updateOrder02")
+    public String updateOrder02(OrdersVO ordersVO) {
+    	orderService.updateOrder02(ordersVO);
     	
     	return "/order-list";
     }

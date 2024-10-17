@@ -18,5 +18,11 @@ public interface OrdersService {
 	
 	public void updateOrder(/* Map<String, Object> data, */ OrdersVO ordersVO);
 	
-	public Integer deleteOrder(OrdersVO ordersVO);
+	public void deleteOrder(OrdersVO ordersVO);
+	
+	public void updateOrder03(OrdersVO ordersVO);
+	
+	public void updateOrder02(OrdersVO ordersVO);
+	
+	
 }

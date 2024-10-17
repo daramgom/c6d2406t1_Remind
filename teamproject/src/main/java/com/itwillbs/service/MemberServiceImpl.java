@@ -1,14 +1,16 @@
 package com.itwillbs.service;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.persistence.MemberDAO;
+import org.springframework.stereotype.Service;
 
 // @Service : 서비스 영역(비지니스 로직 영역) 에서의 동작을 구현하도록 설정
 //            root-context.xml에 빈(MemberService)으로 등록 사용.
@@ -28,19 +30,18 @@ public class MemberServiceImpl implements MemberService{
 
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
+
+	
+
 	
 	
 	@Override
 	public String memberJoin(MemberVO vo) {
 		logger.debug("(●'◡'●) 컨트롤러 -> 서비스 ");
 		logger.debug("(●'◡'●) 회원가입 메서드 memberJoin(MemberVO vo) 실행 ");
+		String hashedPassword = BCrypt.hashpw(vo.getMember_pw(), BCrypt.gensalt());
+        vo.setMember_pw(hashedPassword);
 		
-		
-		logger.debug("(●'◡'●) 서비스 -> DAO ");
-		
-		logger.debug("(●'◡'●) DAO -> 서비스 ");
-		
-		logger.debug("(●'◡'●)  서비스 -> 컨트롤러 ");
 		return mdao.insertMember(vo);
 		
 	}
@@ -48,11 +49,12 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public MemberVO memberLoginCheck(MemberVO vo) {
 		logger.debug("(●'◡'●) 컨트롤러가 호출 -> DAO 호출");
-		// DAO 객체를 사용해서 로그인 여부를 체크하는 메서드를 호출
-//		MemberVO resultVO = mdao.loginMember(vo);
-//		return resultVO;
-		
-		 return mdao.loginMember(vo);
+		MemberVO storedMember = mdao.loginMember(vo);
+	        
+        if (storedMember != null && BCrypt.checkpw(vo.getMember_pw(), storedMember.getMember_pw())) {
+            return storedMember; // 비밀번호 일치
+        }
+        return null; // 로그인 실패
 	}
 	
 	
@@ -88,17 +90,25 @@ public class MemberServiceImpl implements MemberService{
 		
 	}
 	
-	@Override
-	public List<MemberVO> memberList() {
-		logger.debug("memberList() 실행 ");
-		
-		return mdao.getMemberList();
-	}
 	
 	@Override
 	public MemberVO memberInfoTel(String tel) {
 		logger.debug("(●'◡'●) memberInfoTel(String Tel) 실행 " + tel);
 		return mdao.getMemberTel(tel);
 	}
+	
+	@Override
+	public Map<String,Object> memberInfo(String member_id) {
+		logger.debug("(●'◡'●) memberInfoTel(String member_id) 실행 " + member_id);
+		return mdao.getMemberDetails(member_id);
+	}
+	// admin 전용 특정 사용자 조회
+	@Override
+	public List<MemberVO> memberList(String action) {
+		logger.debug("memberList() 실행 ");	
+		
+		return mdao.getMemberList(action);
+	}
+	
 	
 }

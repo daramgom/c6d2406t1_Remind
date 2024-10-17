@@ -13,7 +13,7 @@
 	type="image/x-icon" />
 	
 <style>
-    /* 테이블 헤더 배경색 */
+
     #multi-filter-select thead th {
         background-color: #0d6efd; /* 원하는 색상으로 변경 */
         color: white;
@@ -38,6 +38,44 @@
             overflow-y: auto; /* 세로 스크롤 */
             overflow-x: hidden; /* 가로 스크롤 숨김 */
     }
+    
+    #previewimg { /* 미리보기 img 태그 id */
+		width: 95%; /* 최대 너비 설정 */
+		height: 95%;
+		margin: 10px; /* 여백 설정 */
+		object-fit: contain;
+	}
+
+	.preview {
+		width: 200px; /* 최대 너비 설정 */
+		height: 150px;
+		margin: 10px; /* 여백 설정 */
+		border: 2px dashed #ccc; /* 대시 테두리 */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #f9f9f9; /* 배경색 */
+	}
+	
+	#prodUpdateForm label {
+	 	font-size: 18px !important;
+	}
+	
+	#prodUpdateForm input {
+    	font-size: 18px !important;
+	}
+	
+	.modal-footer i {
+		font-size: 18px;
+		line-height: 2;
+	}
+	
+	.modal-footer button {
+		font-size: 18px;
+		line-height: 2;
+		margin-bottom: 10px;
+		font-weight: bold;
+	}
     
 </style>
 
@@ -137,17 +175,17 @@
                           </tr>
                         </tfoot>
                         <tbody>
-                      <c:forEach var="p" items="${plistVO}">
-                        <tr class="prod_detail">
-					        <td>${p.prod_id}</td>
-					        <td>${p.prod_name}</td>
-					        <td>${p.prod_category}</td>
-					        <td>${p.prod_qty}</td>
-					        <td>${p.company_code}</td>
-					        <td>${p.formatted_upddate}</td>
-					        <td><img src="${p.prod_image}" alt="제품이미지" style="width:75px; height:75px; object-fit: contain;"></td>
-                        </tr>
-                      </c:forEach>
+						<c:forEach var="p" items="${plistVO}">
+							<tr class="prod_detail">
+								<td>${p.prod_id}</td>
+								<td>${p.prod_name}</td>
+								<td>${p.prod_category}</td>
+								<td>${p.prod_qty}</td>
+								<td>${p.company_code}</td>
+								<td>${p.formatted_regdate}</td>
+								<td><img src="${p.prod_image}" alt="제품이미지" style="width:75px; height:75px; object-fit: contain;"></td>
+							</tr>
+						</c:forEach>
                         </tbody>
                       </table>
                       
@@ -231,30 +269,6 @@
                                 </div>
                                 <div class="col-md-4">
                                   <div class="form-group form-group-default">
-                                    <label>수량</label>
-                                    <input
-                                      id="prod_qty"
-                                      name="prod_qty"
-                                      type="number"
-                                      class="form-control"
-                                      placeholder="수량"
-                                      min="0"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>입고가</label>
-                                    <input
-                                      id="prod_price"
-                                      type="number"
-                                      class="form-control"
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
                                     <label>거래처</label>
                                     <input
                                       id="company_code"
@@ -262,19 +276,6 @@
                                       type="text"
                                       class="form-control"
                                       readonly="readonly"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>제품위치</label>
-                                    <input
-                                      id="wh_number"
-                                      name="wh_number"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="제품위치"
-                                      required="required"
                                     />
                                   </div>
                                 </div>
@@ -342,11 +343,30 @@
 										accept=".jpeg, .jpg, .png, .gif" />
                                   </div>
                                 </div>
-                                <input type="hidden" id="current_image" name="current_image"/>
-                                <input type="hidden" id="current_wh" name="current_wh"/>
-                                <input type="hidden" id="current_qty" name="current_qty"/>
+								<div class="col-md-4" style="display: flex; align-items: center;">
+									<div class="preview">
+										<img id="previewimg" alt="미리보기이미지" src="#"/>
+									</div>
+										<button class="btn btn-black btn-border btn-sm" id="image_delete">이미지제거</button>
+								</div>
+								<input type="hidden" id="prod_image" name="prod_image">
+								<input type="hidden" id="temp_image" name="temp_image">
                               </div>
                          	</form>
+                         	<div class="card-body">
+                         	 <table class="table table-hover" id="stockList">
+						        <thead>
+						            <tr>
+						                <th>제품식별코드</th>
+						                <th>창고</th>
+						                <th>수량</th>
+						            </tr>
+						        </thead>
+						        <tbody id="stockListBody">
+						            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
+						        </tbody>
+						    </table>
+						   </div>
                           </div>
                           <div class="modal-footer border-0" style="justify-content : center;">
                             <button
@@ -354,11 +374,18 @@
                               id="prodUpdate"
                               class="btn btn-primary"
                             >
-                              수정하기
+                              <i class="fa fa-pen"> 제품 수정</i>
                             </button>
                             <button
                               type="button"
+                              id="prodDelete"
                               class="btn btn-danger"
+                            >
+                             <i class="fa fa-trash"> 제품 삭제</i>
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-black"
                               data-bs-dismiss="modal"
                             >
                               닫기
@@ -420,6 +447,9 @@
 	
 	<script type="text/javascript">
 	$(document).ready(function () {
+		let prodImage;
+		
+		// 데이터테이블
         $("#multi-filter-select").DataTable({
         	pageLength: 10, // 기본 페이지 길이
         	lengthMenu: [10, 20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
@@ -456,7 +486,8 @@
                   });
                 }
             });
-        
+     	// 데이터테이블
+     	
        
     	// <tr> 클릭 시 모달 열기
        $(".prod_detail").click(function() {
@@ -480,49 +511,94 @@
            .then(data => {
                // 모달에 데이터 설정
                $("#prod_id").val(prod_id);
-               $("#prod_name").val(data.prod_name);
-               $("#prod_category").val(data.prod_category);
-               $("#prod_brand").val(data.prod_brand);
-               $("#prod_qty").val(data.prod_qty);
-               $("#prod_price").val(data.prod_price);
-               $("#company_code").val(data.company_code);
-               $("#wh_number").val(data.wh_number);
-               $("#prod_regdate").val(data.formatted_regdate);
-               $("#prod_reguser").val(data.prod_reguser);
-               $("#prod_upddate").val(data.formatted_upddate);
-               $("#prod_upduser").val(data.prod_upduser);
-               $("#prod_remarks").val(data.prod_remarks);
-               $("#current_image").val(data.current_image);
-               $("#current_wh").val(data.current_wh);
-               $("#current_qty").val(data.current_qty);
-               
+               $("#prod_name").val(data.prodVO.prod_name);
+               $("#prod_category").val(data.prodVO.prod_category);
+               $("#prod_brand").val(data.prodVO.prod_brand);
+               $("#company_code").val(data.prodVO.company_code);
+               $("#prod_regdate").val(data.prodVO.formatted_regdate);
+               $("#prod_reguser").val(data.prodVO.prod_reguser);
+               $("#prod_upddate").val(data.prodVO.formatted_upddate);
+               $("#prod_upduser").val(data.prodVO.prod_upduser);
+               $("#prod_remarks").val(data.prodVO.prod_remarks);
+               prodImage = data.prodVO.prod_image;
+			   $("#previewimg").attr("src", prodImage);
+			   $("#previewimg").show();
+			   $("#prod_image").val(prodImage);
+			   $("#temp_image").val(prodImage);
+			   
+               // 재고 리스트 표시
+               const stockListBody = $("#stockListBody");
+               stockListBody.empty(); // 기존 재고 리스트 초기화
 
+               data.stockListVO.forEach(stock => {
+                   const stockRow = $('<tr></tr>');
+                   stockRow.append('<td>' + stock.prod_id + '</td>');
+                   stockRow.append('<td>' + stock.wh_number + '</td>');
+                   stockRow.append('<td>' + stock.prod_qty + '</td>');
+                   stockListBody.append(stockRow);
+               });
+               
                // 모달 열기
                $("#prodModal").modal('show');
-               console.log(data.current_qty);
            })
            .catch(error => {
                console.error('데이터를 가져오는 과정에서 문제가 발생했습니다', error);
            });
        });
+    	// <tr> 클릭 시 모달 열기
      	
-     	
-     	// 숫자 형식지정
-        // 문자열로 된 숫자를 가져오기
-        $(".prodNumber").each(function() {
-            // 현재 td의 텍스트를 가져오기
-            const prodNumber = $(this).text();
-            
-            // 문자열을 숫자로 변환하고 천 단위 구분 기호 추가
-            const formatNumber = Number(prodNumber).toLocaleString();
-            
-            // 형식이 적용된 숫자를 다시 설정
-            $(this).text(formatNumber);
-        });
-     	
-     	
+    	
+		// 이미지 업로드 미리보기
+     	$('#uploadfile').on('change', function(event) {
+	            const file = event.target.files[0]; // 선택된 파일
+	            if (file) {
+	                // MIME 타입 확인
+	                const ImageTypes = [
+	                    'image/jpeg',  // JPEG
+	                    'image/png',   // PNG
+	                    'image/gif',   // GIF
+	                    //'image/bmp',   // BMP
+	                    //'image/tiff',  // TIFF
+	                    //'image/webp',  // WEBP
+	                    //'image/svg+xml', // SVG
+	                    //'image/heif',  // HEIF
+	                    //'image/heic'   // HEIC
+	                ]; // 허용하는 이미지 타입
+
+	                if (!ImageTypes.includes(file.type)) {
+	                    swal("오류!", "이미지 파일만 업로드 가능합니다.", "error");
+	                    $('#uploadfile').val(''); // 입력값 초기화 (업로드 자체를 막음)
+	                    $('#previewimg').hide(); // 미리보기 숨김
+	                    return; // 함수 종료
+	                }
+
+	                const reader = new FileReader(); // FileReader 객체 생성
+
+	                // 파일이 로드되면 미리보기 이미지 src를 설정
+	                reader.onload = function(e) {
+	                	$('#previewimg').attr('src', e.target.result); // jQuery로 src 설정
+	                };
+
+	                reader.readAsDataURL(file); // 파일을 Data URL로 읽기
+	                
+	            } else {
+	                // 파일 선택이 취소된 경우
+	                $('#uploadfile').val(''); // 입력값 초기화
+	                $("#previewimg").attr("src", prodImage);
+	            }
+	        });
+     	// 이미지 업로드 미리보기
+    	
+     	$("#image_delete").click(function(e) {
+     		e.preventDefault();
+     		$("#prod_image").val('');
+     		$("#previewimg").hide();
+     	});
+    	
+    	
+    	// 제품정보 수정사항 제출
         $("#prodUpdate").click(function() {
-            $("#prodUpdateForm").submit(); // 폼 제출
+            $("#prodUpdateForm").submit();
         });
         
         
@@ -540,7 +616,6 @@
                 processData: false, // jQuery가 데이터를 처리하지 않도록 설정
                 contentType: false, // jQuery가 Content-Type을 설정하지 않도록 설정
                 success: function (response) {
-                    // 성공 시 SweetAlert 모달 표시
                     swal({
                     	title: "성공!",
                     	text: "제품이 수정되었습니다!",
@@ -549,16 +624,17 @@
                     		text: "확인",
                     	}
                     }).then(() => {
-                        location.href = "/prod/list";
+                    	location.reload();
                     });
                 },
                 error: function (error) {
-                    // 오류 시 SweetAlert 모달 표시
                     swal({
                     	title: "오류!",
                     	text: "제품 수정에 실패했습니다.",
                     	icon: "error"
                     });
+                    var currentImage = $('#prod_image').val(); // 히든 필드에서 값 가져오기
+                    $('#prod_image').val(currentImage);
                 },
                 complete: function() {
                     // 요청이 완료되면 버튼 활성화
@@ -566,8 +642,74 @@
                 }
             });
         });
+     	// 제품정보 수정사항 제출
         
-        
+     	
+     	// 제품정보 삭제
+		$("#prodDelete").click(function() {
+			var prod_id = $("#prod_id").val();
+			
+		swal({
+			title: "제품을 삭제하시겠습니까?",
+			text: "등록된 제품이 삭제됩니다!",
+			icon: "warning",
+			buttons: {
+				confirm: {
+					text: "네, 삭제하겠습니다.",
+					className: "btn btn-danger",
+				},
+				cancel: {
+					visible: true,
+					text: "취소",
+					className: "btn btn-black",
+				},
+			},
+		}).then(function(confirm) {
+			if (confirm) {
+				$.ajax({
+					url: "/prod/delete",
+					type: "POST",
+					data: {
+						prod_id: prod_id
+					},
+					success: function(response) {
+						swal({
+							title: "삭제되었습니다.",
+							text: "등록된 제품이 삭제되었습니다.",
+							buttons: {
+								confirm: {
+									className: "btn btn-primary",
+								}
+							}
+						}).then(function(){
+							location.reload();
+						});
+					},
+					error: function(xhr, status, error) {
+						swal({
+							title: "오류 발생",
+							text: "제품 삭제에 실패했습니다.",
+							icon: "error",
+							buttons: {
+								confirm: {
+									className: "btn btn-black",
+								}
+							}
+						}).then(function(){
+							location.reload();
+						});
+					}
+				});
+			} else {
+				swal.close();
+			}
+		});
+	});
+    // 제품정보 삭제
+     
+    
+    
+    
       });//jquery DOM 준비
     </script>
   

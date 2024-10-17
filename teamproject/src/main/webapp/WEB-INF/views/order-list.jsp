@@ -886,12 +886,14 @@ pageEncoding="UTF-8"%>
           <div class="page-inner">
 
 <main>
- <h2>요청 받기 성공!</h2>
- 
  <div class="container">
  	<div class="table-responsive">
         <h1>발주 목록</h1>
-        <table class="table">
+        <div id="multi-filter-select_filter" class="dataTables_filter">
+        
+        	
+        </div>
+        <table class="display table table-striped table-hover dataTable">
             <thead>
                 <tr>
                     <th>순번</th>
@@ -905,8 +907,9 @@ pageEncoding="UTF-8"%>
                     <th>발주 일자</th>
                     <th>발주 수정 일자</th>
                     <th>거래처 코드</th>
-                    <th>비고</th>
+                    <!-- <th>비고</th> -->
                     <th>입고 예정 창고</th>
+                    <!-- <th>삭제 상태</th> -->
                 </tr>
              </thead>
              <tbody>
@@ -926,8 +929,9 @@ pageEncoding="UTF-8"%>
                         <td>${o.ord_date}</td>
                         <td>${o.ord_date_change}</td>
                         <td>${o.company_code}</td>
-                        <td>${o.ord_text}</td>
+                        <%-- <td>${o.ord_text}</td> --%>
                         <td>${o.wh_number}</td>
+                        <%-- <td>${o.ord_delete_status }</td> --%>
                         
                     </tr>
 				  
@@ -957,8 +961,8 @@ pageEncoding="UTF-8"%>
 		            <input type="text" id="modalOrdCount" name="ord_count" readonly="readonly" /><br>
 		            <label>발주 관리 번호:</label>
 		            <input type="text" id="modalOrdNumber" name="ord_number" readonly="readonly" /><br>
-		            <label>발주 상태:</label>
-		            <input type="text" id="modalOrdStatus" name="ord_status" readonly="readonly" /><br>
+ 		            <label>발주 상태:</label>
+ 		            <input type="text" id="modalOrdStatus" name="ord_status" readonly="readonly" /><br>
 		            <label>발주 담당자:</label>
 		            <input type="text" id="modalOrdManagerId" name="ord_manager_id" readonly="readonly" /><br>
 		            <label>발주 승인 담당자:</label>
@@ -976,166 +980,215 @@ pageEncoding="UTF-8"%>
 		            <label>거래처 코드:</label>
 		            <input type="text" id="modalCompanyCode" name="company_code" /><br>
 		            <label>비고:</label>
-		            <input type="text" id="modalOrdText" name="ord_text" /><br>
+		            <textarea class="form-control" id="modalOrdText" name="ord_text"></textarea><br>
 		            <label>입고 예정 창고:</label>
 		            <input type="text" id="modalWhNumber" name="wh_number" /><br>
+		            <!-- <label>삭제 상태:</label> -->
+		            <input type="hidden" id="modalOrdDeleteStatus" name="ord_delete_status" /><br>
 	            </form>
-	            <button id="updateBtn">수정</button>
-	            <button id="deleteBtn">삭제</button>
-            
+	            
+	            <div id="buttonContainer"></div>
+	            
         </div>
     </div>
     
     
 
 <script>
-		$(document).ready(function() {
-		    $('#updateBtn').click(function(event) {
-		        event.preventDefault(); // 기본 폼 제출 방지
-		        
-		        // AJAX 요청을 통해 수정
-		        var formData = new FormData($('#orderForm')[0]); // FormData 객체 생성
-		        
-		        $.ajax({
-		            url: "/updateOrder", // 서버에서 데이터를 업데이트할 URL
-		            type: "POST",
-		            data: formData,
-		            processData: false, // jQuery가 데이터를 처리하지 않도록 설정
-		            contentType: false, // jQuery가 Content-Type을 설정하지 않도록 설정
-		            success: function(response) {
-		                alert("발주 정보가 수정되었습니다.");
-		                location.reload(); // 페이지 새로 고침으로 변경된 데이터 반영
-		            },
-		            error: function(error) {
-		                console.log(error);
-		                alert("수정 중 오류가 발생했습니다.");
-		            }
-		        }); // $.ajax
-		    }); // #updateBtn 클릭
-		
-		    $('#deleteBtn').click(function(event) {
-		        event.preventDefault(); // 기본 폼 제출 방지
-		        
-		        // AJAX 요청을 통해 삭제
-		        var formData = new FormData($('#orderForm')[0]); // FormData 객체 생성
-		        
-		        $.ajax({
-		            url: "/deleteOrder", // 서버에서 데이터를 삭제할 URL
-		            type: "POST",
-		            data: formData,
-		            processData: false, // jQuery가 데이터를 처리하지 않도록 설정
-		            contentType: false, // jQuery가 Content-Type을 설정하지 않도록 설정
-		            success: function(response) {
-		                alert("발주 정보가 삭제되었습니다.");
-		                location.reload(); // 페이지 새로 고침으로 변경된 데이터 반영
-		            },
-		            error: function(error) {
-		                console.log(error);
-		                alert("삭제 중 오류가 발생했습니다.");
-		            }
-		        }); // $.ajax
-		    }); // #deleteBtn 클릭
-			
-			
-			// 모달 외부 클릭 시 닫기
- 			$(window).on('click', function(event) {
- 			    if ($(event.target).is($('#orderModal')[0])) {
- 			        closeModal();
- 			    }
- 			});
- 			function closeModal() {
- 			    $('#orderModal').hide();
- 			}
- 			
-			
-		});  // 돔레디
-		
-        function openModal(ord_count, ord_number, ord_status, ord_manager_id, ord_supervisor_id, prod_id, ord_price, ord_quantity, ord_date, ord_date_change, company_code, ord_text, wh_number) {
-            document.getElementById('modalOrdCount').value = ord_count;
-            document.getElementById('modalOrdNumber').value = ord_number;
-            document.getElementById('modalOrdStatus').value = ord_status;
-            document.getElementById('modalOrdManagerId').value = ord_manager_id;
-            document.getElementById('modalOrdSupervisorId').value = ord_supervisor_id;
-            document.getElementById('modalProdId').value = prod_id;
-            document.getElementById('modalOrdPrice').value = ord_price;
-            document.getElementById('modalOrdQuantity').value = ord_quantity;
-            document.getElementById('modalOrdDate').value = ord_date;
-            document.getElementById('modalOrdDateChange').value = ord_date_change;
-            document.getElementById('modalCompanyCode').value = company_code;
-            document.getElementById('modalOrdText').value = ord_text;
-            document.getElementById('modalWhNumber').value = wh_number;
-            document.getElementById('orderModal').style.display = 'block';
+	
+	
+    function openModal(ord_count, ord_number, ord_status, ord_manager_id, ord_supervisor_id, prod_id, ord_price, ord_quantity, ord_date, ord_date_change, company_code, ord_text, wh_number, ord_delete_status) {
+        document.getElementById('modalOrdCount').value = ord_count;
+        document.getElementById('modalOrdNumber').value = ord_number;
+        document.getElementById('modalOrdStatus').value = ord_status;
+        document.getElementById('modalOrdManagerId').value = ord_manager_id;
+        document.getElementById('modalOrdSupervisorId').value = ord_supervisor_id;
+        document.getElementById('modalProdId').value = prod_id;
+        document.getElementById('modalOrdPrice').value = ord_price;
+        document.getElementById('modalOrdQuantity').value = ord_quantity;
+        document.getElementById('modalOrdDate').value = ord_date;
+        document.getElementById('modalOrdDateChange').value = ord_date_change;
+        document.getElementById('modalCompanyCode').value = company_code;
+        document.getElementById('modalOrdText').value = ord_text;
+        document.getElementById('modalWhNumber').value = wh_number;
+        document.getElementById('modalOrdDeleteStatus').value = ord_delete_status;
+
+        // 여기서 ord_status 값을 기반으로 버튼을 렌더링
+        renderButtons(ord_status);
+
+        // 모달 표시
+        document.getElementById('orderModal').style.display = 'block';
+    }
+
+    function renderButtons(ord_status) {
+        var buttonContainer = document.getElementById('buttonContainer');
+        buttonContainer.innerHTML = ''; // 기존 버튼 초기화
+
+        if (ord_status === '01') {
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">요청</button>';
+            buttonContainer.innerHTML += '<button id="updateBtn" class="btn btn-success">수정</button>';
+            buttonContainer.innerHTML += '<button id="deleteBtn" class="btn btn-danger">삭제</button>';
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">요청(관리자)</button>';
+            buttonContainer.innerHTML += '<button id="updateBtn03" class="btn btn-success">발주 처리</button>';
+            buttonContainer.innerHTML += '<button id="updateBtn02" class="btn btn-danger">발주 반려</button>';
+        } else if (ord_status === '02') {
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">반려</button>';
+            buttonContainer.innerHTML += '<button id="updateBtn01" class="btn btn-success">재요청</button>';
+            buttonContainer.innerHTML += '<button id="deleteBtn01" class="btn btn-danger">삭제</button>';
+        } else if (ord_status === '03') {
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">결재</button>';
+        } else if (ord_status === '04') {
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">거래처 반려</button>';
+        } else if (ord_status === '05') {
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">완료</button>';
         }
 
-//         function closeModal() {
-//             document.getElementById('orderModal').style.display = 'none';
-//         }
+        // 버튼에 이벤트 리스너 추가
+        addButtonEventListeners();
+    }
 
-//         function saveOrder() {
-//             var updateOrder = {
-//             		ord_count: document.getElementById('modalOrdCount').value,
-//                     ord_number: document.getElementById('modalOrdNumber').value,
-//                     ord_status: document.getElementById('modalOrdStatus').value,
-//                     ord_manager_id: document.getElementById('modalOrdManagerId').value,
-//                     ord_supervisor_id: document.getElementById('modalOrdSupervisorId').value,
-//                     prod_id: document.getElementById('modalProdId').value,
-//                     ord_price: document.getElementById('modalOrdPrice').value,
-//                     ord_quantity: document.getElementById('modalOrdQuantity').value,
-//                     ord_date: document.getElementById('modalOrdDate').value,
-//                     ord_date_change: document.getElementById('modalOrdDateChange').value,
-//                     company_code: document.getElementById('modalCompanyCode').value,
-//                     ord_text: document.getElementById('modalOrdText').value,
-//                     wh_number: document.getElementById('modalWhNumber').value
-//             };
+    function addButtonEventListeners() {
+    	
+        document.getElementById('updateBtn')?.addEventListener('click', function(event) {
+            event.preventDefault(); // 기본 폼 제출 방지
+            var formData = new FormData(document.getElementById('orderForm'));
+            fetch("/updateOrder", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok " + response.statusText);
+                return response.text();
+            })
+            .then(data => {
+                alert("발주 정보가 수정 되었습니다.");
+                location.reload();
+            })
+            .catch(error => {
+                console.error(error);
+                alert("수정 중 오류가 발생했습니다.");
+            });
+        });
 
-//             $.ajax({
-//                 type: "POST",
-//                 url: "/updateOrder", // 서버에서 데이터를 업데이트할 URL
-//                 contentType: "application/json",
-//                 data: JSON.stringify(updateOrder),
-//                 success: function(response) {
-//                     alert("발주 정보가 수정되었습니다." + response);
-//                     //location.reload(); // 페이지 새로 고침으로 변경된 데이터 반영
-//                 },
-//                 error: function(error) {
-//                 	console.log(error);
-//                     alert("수정 중 오류가 발생했습니다.");
-//                 }
-//             });
-//         }
+        document.getElementById('deleteBtn')?.addEventListener('click', function(event) {
+            event.preventDefault();
+            var formData = new FormData(document.getElementById('orderForm'));
+            fetch("/deleteOrder", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok " + response.statusText);
+                return response.text();
+            })
+            .then(data => {
+                alert("발주 정보가 삭제되었습니다.");
+                location.reload();
+            })
+            .catch(error => {
+                console.error(error);
+                alert("삭제 중 오류가 발생했습니다.");
+            });
+        });
 
-
-
-
-
-
-
-
-		// 자바스크립트 버전
-//          function deleteOrder() {
-//              alert("삭제 기능을 구현하세요.");
-//          }
-
-         
-        // 모달 외부 클릭 시 닫기 (자바스크립트 버전)
-//         window.onclick = function(event) {
-//             if (event.target == document.getElementById('orderModal')) {
-//                 closeModal();
-//             }
-//         }
+        document.getElementById('updateBtn03')?.addEventListener('click', function(event) {
+            event.preventDefault(); // 기본 폼 제출 방지
+            var formData = new FormData(document.getElementById('orderForm'));
+            fetch("/updateOrder03", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok " + response.statusText);
+                return response.text();
+            })
+            .then(data => {
+                alert("발주 처리 되었습니다.");
+                location.reload();
+            })
+            .catch(error => {
+                console.error(error);
+                alert("수정 중 오류가 발생했습니다.");
+            });
+        });
         
-	
+        document.getElementById('updateBtn02')?.addEventListener('click', function(event) {
+            event.preventDefault(); // 기본 폼 제출 방지
+            var formData = new FormData(document.getElementById('orderForm'));
+            fetch("/updateOrder02", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok " + response.statusText);
+                return response.text();
+            })
+            .then(data => {
+                alert("발주 반려 되었습니다.");
+                location.reload();
+            })
+            .catch(error => {
+                console.error(error);
+                alert("수정 중 오류가 발생했습니다.");
+            });
+        });
         
+        document.getElementById('updateBtn01')?.addEventListener('click', function(event) {
+            event.preventDefault(); // 기본 폼 제출 방지
+            var formData = new FormData(document.getElementById('orderForm'));
+            fetch("/updateOrder", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok " + response.statusText);
+                return response.text();
+            })
+            .then(data => {
+                alert("발주 정보가 재요청 되었습니다.");
+                location.reload();
+            })
+            .catch(error => {
+                console.error(error);
+                alert("수정 중 오류가 발생했습니다.");
+            });
+        });
         
+        document.getElementById('deleteBtn01')?.addEventListener('click', function(event) {
+            event.preventDefault();
+            var formData = new FormData(document.getElementById('orderForm'));
+            fetch("/deleteOrder", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Network response was not ok " + response.statusText);
+                return response.text();
+            })
+            .then(data => {
+                alert("발주 정보가 삭제되었습니다.");
+                location.reload();
+            })
+            .catch(error => {
+                console.error(error);
+                alert("삭제 중 오류가 발생했습니다.");
+            });
+        });
         
-        
-	
+    }
+
+    // 모달 외부 클릭 시 닫기
+    window.addEventListener('click', function(event) {
+        var modal = document.getElementById('orderModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    function closeModal() {
+        document.getElementById('orderModal').style.display = 'none'; // 모달 숨기기
+    }
 </script>
-
-
-
-
-
 
   </body>
 </html>

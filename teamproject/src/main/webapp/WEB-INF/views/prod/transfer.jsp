@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>제품등록</title>
+<title>재고이동</title>
 
 <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
 	name="viewport" />
@@ -30,39 +30,21 @@
 </script>
 
 <style>
-        #previewimg { /* 미리보기 img 태그 id */
-            display: none; /* 초기에는 숨김 */
-            width: 95%; /* 최대 너비 설정 */
-            height: 95%;
-            margin: 10px; /* 여백 설정 */
-            object-fit: contain;
-        }
+	.btn-warning {
+		color: #fff !important;
+	} 
+	
+	#transferForm i {
+		font-size: 18px;
+		line-height: 2;
+	}
+	
+	#prod_image {
+		width: 300px; height: 200px;
+		border: dashed 3px #ccc;
+		visibility: hidden;
+	}
 
-        .preview {
-            width: 200px; /* 최대 너비 설정 */
-            height: 150px;
-            margin: 10px; /* 여백 설정 */
-            border: 2px dashed #ccc; /* 대시 테두리 */
-    		display: flex;
-    		justify-content: center;
-    		align-items: center;
-    		background-color: #f9f9f9; /* 배경색 */
-        }
-        
-        #prodForm label {
-        	font-size: 18px !important;
-        }
-        
-        #prodForm i {
-        	font-size: 18px;
-        	line-height: 2;
-        }
-        
-        .btn-warning {
-        	color: #fff !important;
-        }
-        
-        
 </style>
 
 <!-- CSS Files -->
@@ -91,61 +73,60 @@
 						<li class="separator"><i class="icon-arrow-right"></i></li>
 						<li class="nav-item"><a href="#">제품관리</a></li>
 						<li class="separator"><i class="icon-arrow-right"></i></li>
-						<li class="nav-item"><a href="#">제품등록</a></li>
+						<li class="nav-item"><a href="#">재고이동</a></li>
 					</ul>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card w-100">
 							<div class="card-header">
-								<div class="card-title">제품등록</div>
+								<div class="card-title">재고이동</div>
 							</div>
 
 							<div class="card-body d-flex flex-column">
 								<div class="row">
 									<div class="col-md-12">
-									<form id="prodForm" action="" method="post" enctype="multipart/form-data">
+									<form id="transferForm" action="" method="post">
+									
 										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
-											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
-												<input type="text" class="form-control"
-													id="prod_name" name="prod_name" placeholder="제품명" required="required"/>
-												<label for="prod_name" class="col-form-label-lg">제품명</label>
-											</div>
-											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
-												<input type="text" class="form-control input-full"
-													id="prod_category" name="prod_category" placeholder="제품카테고리" required="required"/>
-												<label for="prod_category" class="col-form-label-lg"> 제품카테고리</label>
-											</div>
+											<div class="form-floating form-floating-custom mb-3" style="flex: 1;">
+												<select class="form-select" id="prod_id" name="prod_id">
+													<option>제품식별코드</option>
+												</select>
+												<label for="prod_id" class="selectFloatingLabel">제품식별코드</label>
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
 													value="테스터1" placeholder="등록작업자" />
 												<input type="hidden" id="prod_upduser" name="prod_upduser" 
 													value="테스터1" placeholder="수정작업자" />
+											</div>
+											<div class="form-floating form-floating-custom mb-3" style="flex: 1;">
+												<select class="form-select" id="wh_number" name="wh_number">
+													<option>창고</option>
+												</select>
+												<label for="wh_number" class="selectFloatingLabel">창고</label>
+											</div>
+											<div class="form-floating form-floating-custom mb-3" style="flex: 1;">
+												<select class="form-select" id="prod_qty" name="prod_qty" disabled>
+													<option>수량</option>
+												</select>
+												<label for="prod_qty" class="selectFloatingLabel">수량</label>
+											</div>
 										</div>
+										
 										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
-											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
-												<input type="text" class="form-control input-full"
-													id="prod_brand" name="prod_brand" placeholder="제품브랜드" required="required"/>
-												<label for="prod_brand" class="col-form-label-lg"> 제품브랜드</label>
+											 <div style="flex: 1;">
+											 	<img id="prod_image" src="#">
+											 </div>
+											 <div class="form-floating form-floating-custom mb-3" style="flex: 1;">
+												<select class="form-select" id="wh_number2" name="wh_number2">
+													<option>창고</option>
+												</select>
+												<label for="wh_number2" class="selectFloatingLabel">창고</label>
 											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
-												<input type="text" class="form-control input-full"
-													id="company_code" name="company_code" placeholder="입고처" required="required" />
-												<label for="company_code" class="col-form-label-lg"> 입고처</label>
-											</div>
-										</div>
-										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
-											<div class="input-group" style="flex: 1;">
-											<span class="input-group-text" style="font-size: 18px;">비고</span>
-												<textarea id="prod_remarks" name="prod_remarks" 
-												rows="4" cols="30" class="form-control"></textarea>
-											</div>
-											<div style="flex: 1;">
-												<label for="uploadfile" class="col-form-label-lg">제품이미지</label>
-												<input type="file" class="form-control input-full"
-													id="uploadfile" name="uploadfile" accept=".jpeg, .jpg, .png, .gif" />
-											</div>
-											<div class="preview">
-												<img id="previewimg" alt="미리보기이미지" src="#"/>
+												<input type="number" class="form-control" 
+													id="prod_qty2" name="prod_qty2" placeholder="수량"/>
+												<label for="prod_qty2" class="col-form-label-lg">이동 수량</label>
 											</div>
 										</div>
 										<div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
@@ -216,48 +197,82 @@
 	
 	<script type="text/javascript">
     
-	    $(document).ready(function () {
+	$(document).ready(function () {
 	    	
+	// select 요소 클릭 시 데이터 가져오기
+	$('#prod_id').on('click', function() {
+		if ($(this).find('option').length > 1) {
+			return; // 첫 번째 옵션만 있을 때만 요청
+		}
+		$.ajax({
+			url: '/prod/transferSelect', // 서버의 URL (데이터를 가져오는 엔드포인트)
+			type: 'POST', // POST 방식으로 요청
+			contentType: 'application/json', // JSON 형식으로 전송
+			data: JSON.stringify({}), // 빈 객체를 JSON 문자열로 전송
+			dataType: 'json',
+			success: function(data) {
+				var select = $('#prod_id');
+				select.empty();
+				select.append('<option value="">제품식별코드 선택</option>');
+				$.each(data, function(index, p) {
+					select.append('<option value="' + p.prod_id + '">' + p.prod_id + ' - ' + p.prod_name + '</option>');
+				});
+			},
+			error: function(xhr, status, error) {
+				console.error("데이터를 가져오는 데 오류가 발생했습니다:", error);
+			}
+		});
+	});
+	
+	$('#wh_number').on('click', function() {
+		if ($(this).find('option').length > 1) {
+			return; // 첫 번째 옵션만 있을 때만 요청
+		}
+	
+		const selectedProdId = $("#prod_id").val();
+		$.ajax({
+			url: '/prod/transferSelect2',
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({ prod_id: selectedProdId }),
+			dataType: 'json',
+			success: function(data) {
+				var select = $('#wh_number');
+				select.empty();
+				select.append('<option>창고 선택</option>');
+				
+				$.each(data, function(index, s) {
+    				select.append('<option value="' + s.wh_number + '">' + s.wh_code + ' - ' + s.wh_name + ' - ' + s.wh_location + '</option>');
+				});
 
-	        $('#uploadfile').on('change', function(event) {
-	            const file = event.target.files[0]; // 선택된 파일
-	            if (file) {
-	                // MIME 타입 확인
-	                const ImageTypes = [
-	                    'image/jpeg',  // JPEG
-	                    'image/png',   // PNG
-	                    'image/gif',   // GIF
-	                    //'image/bmp',   // BMP
-	                    //'image/tiff',  // TIFF
-	                    //'image/webp',  // WEBP
-	                    //'image/svg+xml', // SVG
-	                    //'image/heif',  // HEIF
-	                    //'image/heic'   // HEIC
-	                ]; // 허용하는 이미지 타입
+				select.change(function() {
+					var selectedWh = $(this).val(); // 선택된 창고
 
-	                if (!ImageTypes.includes(file.type)) {
-	                    swal("오류!", "이미지 파일만 업로드 가능합니다.", "error");
-	                    $('#uploadfile').val(''); // 입력값 초기화 (업로드 자체를 막음)
-	                    $('#previewimg').hide(); // 미리보기 숨김
-	                    return; // 함수 종료
-	                }
+					$('#prod_qty').empty();
+					$('#prod_qty').append('<option>수량 선택</option>');
 
-	                const reader = new FileReader(); // FileReader 객체 생성
-
-	                // 파일이 로드되면 미리보기 이미지 src를 설정
-	                reader.onload = function(e) {
-	                	$('#previewimg').attr('src', e.target.result); // jQuery로 src 설정
-	                    $('#previewimg').css('display', 'inline-block'); // 미리보기 보여줌
-	                };
-
-	                reader.readAsDataURL(file); // 파일을 Data URL로 읽기
-	                
-	            } else {
-	                // 파일 선택이 취소된 경우
-	                $('#uploadfile').val(''); // 입력값 초기화
-	                $('#previewimg').hide(); // 미리보기 숨김
-	            }
-	        });
+					$.each(data, function(index, item) {
+						if (item.wh_number == selectedWh) {
+							var selectedQty = item.prod_qty;
+							$('#prod_qty').append('<option value="' + selectedQty + '">' + selectedQty + '</option>');
+							$('#prod_qty').val(selectedQty);
+							
+							
+						}
+					});
+				});
+			},
+			error: function(xhr, status, error) {
+				console.error("데이터를 가져오는 데 오류가 발생했습니다:", error);
+			}
+		});
+	});
+	
+	// select 요소 클릭 시 데이터 가져오기
+	    	
+	    	
+	    	
+	    	
 	    	
 	    	
 	        $('#prodForm').on('submit', function (e) {
@@ -284,12 +299,6 @@
 	                    		text: "확인",
 	                    	}
 	                    });
-	                    $('input').val('');
-	                    $('#uploadfile').val('');
-	                    $('#prod_remarks').val('');
-	                    $('#previewimg').hide();
-	                    $('#prod_reguser').val("테스터1");
-	                	$('#prod_upduser').val("테스터1");
 	                },
 	                error: function (error) {
 	                    // 오류 시 SweetAlert 모달 표시
@@ -313,7 +322,7 @@
 	            swal({
 	                title: "입력값을 초기화하시겠습니까?",
 	                text: "입력값이 모두 지워집니다!",
-	                icon: "warning",
+	                type: "warning",
 	                buttons: {
 	                    confirm: {
 	                        text: "네, 지우겠습니다.",
@@ -328,15 +337,11 @@
 	            }).then(function(clear) { // [confirm --> true / cancel --> false] - clear 값으로 전달
 	                if (clear) {
 	                    // 입력 필드 비우기 로직
-	                    $('input').val('');
-	                    $('#uploadfile').val('');
-	                    $('#prod_remarks').val('');
-	                    $('#previewimg').hide();
 
 	                    swal({
 	                        title: "초기화되었습니다.",
 	                        text: "모든 입력값이 초기화되었습니다.",
-	                        icon: "success",
+	                        type: "success",
 	                        buttons: {
 	                            confirm: {
 	                                className: "btn btn-primary",

@@ -12,11 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.UserVO;
@@ -32,6 +31,8 @@ import com.itwillbs.service.UserService;
 public class LoginController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	
+	
 	
 	Map<String, String> response = new HashMap<>();
 	
@@ -50,7 +51,7 @@ public class LoginController {
 	    session.setAttribute("isFirstVisit", false);
 	    session.setAttribute("id", result.getMember_id());
 		session.setAttribute("name", result.getMember_name());
-		session.setAttribute("member_Status", result.getMember_state());
+		session.setAttribute("permission_id", result.getPermission_id());
 	}
 	
 	
@@ -67,7 +68,7 @@ public class LoginController {
 	
 	// 로그인 
 	@RequestMapping( value = "login" , method= RequestMethod.POST )
-	public ResponseEntity<Map<String, String>> login(MemberVO vo, HttpSession session) {
+	public ResponseEntity<Map<String, String>> login(@RequestBody MemberVO vo, HttpSession session) {
 		response.clear(); // 메서드 시작 시 초기화
 		logger.info("로그인  VO :  " + vo );
 		
@@ -75,21 +76,21 @@ public class LoginController {
 		logger.info("result :  " + result );
 		
 		
-		if(result == null) {
-			// DB 테이블에 등록된 회원이 아님.
+	
+
+		if (result == null) {
+			response.put("code", "NOT_REGISTERED");
 			response.put("message", "등록된 회원이 아닙니다!");
-			return ResponseEntity.ok(response); // 200 OK 응답  
-		}
-		if(result.getApproval_status().equals("1")) {
-			// 승인되지 않은 회원
+		} else if ("01".equals(result.getApproval_status())) {
+			response.put("code", "PENDING_APPROVAL");
 			response.put("message", "회원가입 승인 검토중 입니다.");
-			return ResponseEntity.ok(response); // 200 OK 응답
+		} else {
+			response.put("code", "SUCCESS");
+			response.put("message", "로그인 성공");
+			// 세션 설정 등 추가 로직
+			sessionAdd(session, result);
 		}
-		
-		// 회원 정상적인 로그인
-		sessionAdd(session, result);
-		response.put("message", "반갑습니다.");
-		return ResponseEntity.ok(response); // 200 OK 응답
+		return ResponseEntity.ok(response);
 	}
 	
 	

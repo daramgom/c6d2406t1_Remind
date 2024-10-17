@@ -19,4 +19,5 @@ public class OrdersVO {
 	private String company_code;
 	private String ord_text;
 	private int wh_number;
+	private String ord_delete_status;
 }

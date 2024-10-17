@@ -73,8 +73,20 @@ public class OrdersServiceImpl implements OrdersService{
 	}
 	
 	@Override
-	public Integer deleteOrder(OrdersVO ordersVO) {
-		return odao.deleteOrder(ordersVO);
+	public void deleteOrder(OrdersVO ordersVO) {
+		odao.deleteOrder(ordersVO);
 	}
+	
+	@Override
+	public void updateOrder03(OrdersVO ordersVO) {
+		odao.updateOrder03(ordersVO);
+	}
+	
+	@Override
+	public void updateOrder02(OrdersVO ordersVO) {
+		odao.updateOrder02(ordersVO);
+	}
+	
+	
 	
 }

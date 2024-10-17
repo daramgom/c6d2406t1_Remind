@@ -33,7 +33,7 @@ public class ProdDAOImpl implements ProdDAO {
 	private static final Logger logger = LoggerFactory.getLogger(ProdDAOImpl.class);
 	
 	
-	// 제품등록 메서드
+	// 제품등록
 	@Override
 	public void insertProd(ProdVO vo) {
 		// 1.2 디비연결  => 생략 SqlSession 객체 주입
@@ -55,9 +55,7 @@ public class ProdDAOImpl implements ProdDAO {
 	}
 
 
-
-
-	// 제품목록 메서드
+	// 제품목록
 	@Override
 	public List<ProdVO> listProd() {
 		// 1.2 디비연결  => 생략 SqlSession 객체 주입
@@ -68,30 +66,51 @@ public class ProdDAOImpl implements ProdDAO {
 	}
 
 
-	// 제품조회 메서드
+	// 제품조회
 	@Override
 	public ProdVO findProd(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ DAO : findProd(ProdVO vo) 실행");
 		return sqlSession.selectOne(NAMESPACE + ".findProd", vo);
 	}
 
+	@Override
+	public List<ProdVO> findProdList(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO : findProdList(ProdVO vo) 실행");
+		return sqlSession.selectList(NAMESPACE + ".findProdList", vo);
+	}
 
-	// 제품수정 메서드
+
+	// 제품수정
 	@Override
 	public void updateProd(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ DAO : updateProd(ProdVO vo) 실행");
 		sqlSession.update(NAMESPACE + ".updateProd", vo);
 	}
 
-	
-	// 제품수정 (창고!=,수량!=)
+
+	// 제품삭제
 	@Override
-	public void insertUpdateProd(ProdVO vo) {
-		logger.debug("( •̀ ω •́ )✧ DAO : insertUpdateProd(ProdVO vo) 실행");
-		sqlSession.insert(NAMESPACE + ".insertUpdateProd", vo);
+	public void deleteProd(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO : deleteProd(ProdVO vo) 실행");
+		sqlSession.update(NAMESPACE + ".deleteProd", vo);
 	}
 
-	
+
+	// 재고이동
+	@Override
+	public List<ProdVO> transferSelect() {
+		logger.debug("( •̀ ω •́ )✧ DAO : transferSelect(ProdVO vo) 실행");
+		return sqlSession.selectList(NAMESPACE + ".transferSelect");
+	}
+
+	// 재고이동
+	@Override
+	public List<ProdVO> transferSelect2(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO : transferSelect2(ProdVO vo) 실행");
+		return sqlSession.selectList(NAMESPACE + ".transferSelect2", vo);
+	}
+
+
 	
 	
 	

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -132,6 +133,12 @@ pageEncoding="UTF-8"%>
     }
     button:hover {
         background: #001a33; /* 남색의 어두운 색 */
+    }
+    form{
+    	width: 20% !important;
+    }
+    textarea{
+    	width: 400% !important;
     }
 </style>
 
@@ -855,62 +862,66 @@ pageEncoding="UTF-8"%>
 
 <div class="form-group">
 	<div>
-		<label for="ord_supervisor_id">발주 담당자</label>
-		<input type="text" name="ord_manager_id" required="required" >
+		<label for="ord_manager_id" class="col-md-3 col-form-label">발주 담당자</label>
+		<input class="form-control input-full" type="text" name="ord_manager_id" required="required" >
+		<%-- <select id="ord_manager_id" name="ord_manager_id">
+			<c:forEach var="member" items="${member }">
+				<option value="${member.member_id }">${member.member_id }</option>
+			</c:forEach>
+		</select> --%>
 	</div>
 </div>
 
 <div class="form-group">
 	<div>
-		<label for="ord_supervisor_id">발주 승인 담당자</label>
-		<input type="text" name="ord_supervisor_id" required="required">
+		<label for="ord_supervisor_id" class="col-md-3 col-form-label">발주 승인 담당자</label>
+		<input class="form-control input-full" type="text" name="ord_supervisor_id" required="required">
 	</div>
 </div>
 
 <div class="form-group">
 	<div>
-		<label for="ord_supervisor_id">제품 식별 코드</label>
-		<input type="text" name="prod_id" required="required">
+		<label for="prod_id" class="col-md-3 col-form-label">제품 식별 코드</label>
+		<input class="form-control input-full" type="text" name="prod_id" required="required">
 	</div>
 </div>
 
 <div class="form-group">
 	<div>
-		<label for="ord_supervisor_id">발주 금액</label>
-		<input type="text" name="ord_price" required="required">
+		<label for="ord_price" class="col-md-3 col-form-label">발주 금액</label>
+		<input class="form-control input-full" type="text" name="ord_price" required="required">
 	</div>
 </div>
 
 <div class="form-group">
 	<div>
-		<label for="ord_supervisor_id">발주 수량</label>
-		<input type="text" name="ord_quantity" required="required">
+		<label for="ord_quantity" class="col-md-3 col-form-label">발주 수량</label>
+		<input class="form-control input-full" type="text" name="ord_quantity" required="required">
 	</div>
 </div>
 
 <div class="form-group">
 	<div>
-		<label for="ord_supervisor_id">거래처 코드</label>
-		<input type="text" name="company_code" required="required">
+		<label for="company_code" class="col-md-3 col-form-label">거래처 코드</label>
+		<input class="form-control input-full" type="text" name="company_code" required="required">
 	</div>
 </div>
 
 <div class="form-group">
 	<div>
-		<label for="ord_text">비고</label>
-		<input type="text" name="ord_text">
+		<label for="wh_number" class="col-md-3 col-form-label">입고 예정 창고</label>
+		<input class="form-control input-full" type="text" name="wh_number" required="required">
 	</div>
 </div>
 
 <div class="form-group">
 	<div>
-		<label for="ord_supervisor_id">입고 예정 창고</label>
-		<input type="text" name="wh_number" required="required">
+		<label for="ord_text" class="col-md-3 col-form-label">비고</label>
+		<textarea class="form-control" id="ord_text" name="ord_text"></textarea>
 	</div>
 </div>
-        <button type="button" disabled="disabled" class="container-disable">이거 목록 상세정보에 넣은 다음에 지울거임</button>
-        <button type="submit" onclick="">발주 요청</button>
-        <button type="reset">리셋</button>
+        <button type="submit" onclick="" class="btn btn-success">발주 요청</button>
+        <button type="reset" class="btn btn-danger">리셋</button>
         </form>
 </main>
     </div>

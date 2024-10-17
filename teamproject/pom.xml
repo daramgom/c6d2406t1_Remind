@@ -246,6 +246,14 @@
 		    <version>3.4.1</version>
 		</dependency>
 		<!-- zxing 바코드 라이브러리 -->
+		
+		<!-- 비밀번호 암호화 라이브러리 -->
+		<dependency>
+		    <groupId>org.mindrot</groupId>
+		    <artifactId>jbcrypt</artifactId>
+		    <version>0.4</version>
+		</dependency>
+		<!-- 비밀번호 암호화 라이브러리 -->
 				
 				
 		

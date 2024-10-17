@@ -2,6 +2,10 @@ package com.itwillbs.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -54,10 +58,6 @@ public class ProdServiceImpl implements ProdService {
 		logger.debug("( •̀ ω •́ )✧ DAO - 서비스 - 컨트롤러");
 	}
 	
-	
-
-
-
 
 	// 제품목록
 	@Override
@@ -74,21 +74,55 @@ public class ProdServiceImpl implements ProdService {
 		return pdao.findProd(vo);
 	}
 	
-	
+	@Override
+	public List<ProdVO> findProdList(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ Service : findProdList(ProdVO vo) 실행 ");
+		return pdao.findProdList(vo);
+	}
+
+
 	// 제품수정
 	@Override
 	@Transactional
-	public void updateProd(ProdVO vo) {
+	public void updateProd(ProdVO vo, HttpServletRequest req) {
 		logger.debug("( •̀ ω •́ )✧ Service : updateProd(ProdVO vo) 실행 ");
+		imageUpload(vo, req);
+		pdao.updateProd(vo);
 		logger.debug("( •̀ ω •́ )✧ Service : vo : "+vo);
-		
-		
 	}
+	
+	
+	// 제품삭제
+	@Override
+	public void deleteProd(ProdVO vo, HttpServletRequest req) {
+		logger.debug("( •̀ ω •́ )✧ Service : deleteProd(ProdVO vo, HttpServletRequest req) 실행 ");
+		pdao.deleteProd(vo);
+	}
+	
+	
+	// 재고이동
+	@Override
+	public List<ProdVO> transferSelect() {
+		logger.debug("( •̀ ω •́ )✧ Service : transferSelect() 실행 ");
+		return pdao.transferSelect();
+	}
+
+	// 재고이동
+	@Override
+	public List<ProdVO> transferSelect2(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ Service : transferSelect2() 실행 ");
+		return pdao.transferSelect2(vo);
+	}
+	
+	
+	
+	
 	
 	
 	
 	// ***** 메서드 목록 *****
 	
+
 
 	// 제품식별코드 생성
 	public void genProdID(ProdVO vo) {
@@ -127,6 +161,27 @@ public class ProdServiceImpl implements ProdService {
 		
 		MultipartFile file = vo.getUploadfile(); // VO객체로 전달받은 MultipartFile 변수 전달
 		if(!file.isEmpty()) {
+			logger.debug("( •̀ ω •́ )✧ imageUpload(ProdVO vo, HttpServletRequest req) 실행 : 이미지가 변경됨 ");
+			
+			if(!vo.getProd_image().isEmpty()) {
+				try { // 이미지 수정시 파일삭제
+		            // VO에서 파일 경로 가져오기
+		            String curFilePath = vo.getProd_image().replaceFirst("/uploads", "");
+		            
+		            // 상대 경로와 현재 작업 디렉토리를 결합하여 절대 경로 생성
+		            Path path = Paths.get(uploadDir, curFilePath);
+		            logger.debug("( •̀ ω •́ )✧ 절대경로 생성 path : "+path);
+		            
+		            // 파일 삭제
+		            Files.delete(path);
+		            logger.debug("( •̀ ω •́ )✧ 파일 삭제 성공");
+		        } catch (NoSuchFileException e) {
+		        	logger.debug("( •̀ ω •́ )✧ 파일이 없습니다");
+		        } catch (IOException e) {
+		        	logger.debug("( •̀ ω •́ )✧ 파일 삭제중 오류발생");
+		        }
+			}
+			
 			String orgFileName = file.getOriginalFilename();
 			if(orgFileName.contains(".")) {
 				// String fileExt = orgFileName.substring(orgFileName.lastIndexOf(".") + 1);
@@ -154,6 +209,26 @@ public class ProdServiceImpl implements ProdService {
 					e.printStackTrace();
 					logger.debug("파일 저장 실패2");
 				}
+			}
+		} else {
+			logger.debug("( •̀ ω •́ )✧ imageUpload(ProdVO vo, HttpServletRequest req) 실행 : 이미지가 변경되지 않음 ");
+			if(vo.getProd_image().isEmpty()) {
+				try { // 이미지 수정시 파일삭제
+		            // VO에서 파일 경로 가져오기
+		            String curFilePath = vo.getTemp_image().replaceFirst("/uploads", "");
+		            logger.debug("( •̀ ω •́ )✧ 절대경로 생성 curFilePath : "+curFilePath);
+		            // 상대 경로와 현재 작업 디렉토리를 결합하여 절대 경로 생성
+		            Path path = Paths.get(uploadDir, curFilePath);
+		            logger.debug("( •̀ ω •́ )✧ 절대경로 생성 path : "+path);
+		            
+		            // 파일 삭제
+		            Files.delete(path);
+		            logger.debug("( •̀ ω •́ )✧ 파일 삭제 성공");
+		        } catch (NoSuchFileException e) {
+		        	logger.debug("( •̀ ω •́ )✧ 파일이 없습니다");
+		        } catch (IOException e) {
+		        	logger.debug("( •̀ ω •́ )✧ 파일 삭제중 오류발생");
+		        }
 			}
 		}
 	}

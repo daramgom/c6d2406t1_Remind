@@ -7,8 +7,11 @@
  	 	
  <!-- 발주 요청 정보 입력 -->
     <insert id="insert">
-    	insert into orders(ord_status, ord_manager_id, ord_supervisor_id, prod_id, ord_price, ord_quantity, ord_date, ord_date_change, company_code, ord_text, wh_number) 
-    	values ('01',#{ord_manager_id},#{ord_supervisor_id},#{prod_id},#{ord_price},#{ord_quantity},now(),now(),#{company_code},#{ord_text},#{wh_number})
+    	insert into orders(ord_delete_status,ord_status, ord_manager_id, ord_supervisor_id, prod_id, ord_price, ord_quantity, ord_date, ord_date_change, company_code, ord_text, wh_number,ord_number,ord_count) 
+    	values ('01','01',#{ord_manager_id},#{ord_supervisor_id},#{prod_id},#{ord_price},#{ord_quantity},now(),now(),#{company_code},#{ord_text},#{wh_number},
+    	(SELECT CONCAT('ORD-', YEAR(CURRENT_DATE), '-', LPAD(IFNULL(MAX(SUBSTRING(ord_number, -4)), 0) + 1, 4, '0')) 
+         FROM (SELECT ord_number FROM orders WHERE ord_number LIKE CONCAT('ORD-', YEAR(CURRENT_DATE), '%')) AS temp), 
+         (SELECT COALESCE(MAX(ord_count), 0) + 1 FROM (SELECT ord_count FROM orders) AS temp2))
     </insert>
     
     <!-- 발주 요청 시 정보 입력 직후 관리번호 생성 -->  <!-- 미구현 -->
@@ -18,9 +21,10 @@
 	    	where ord_count = #{ord_count}
 	    </update>
     
- <!-- 발주 전체 목록 조회 -->  <!-- 미구현 -->
+ <!-- 발주 전체 목록 조회 -->
  	<select id="listOrder" resultType="OrdersVO">
- 		select * from orders
+ 		select * from orders 
+ 		where ord_delete_status = '01'
  	</select>
  	
  <!-- 발주 기안 목록 조회 -->	<!-- 미구현 -->
@@ -54,19 +58,20 @@
  	</select>
  
  <!-- 발주 기안 목록, 발주 반려 목록 삭제 -->
- 	<delete id="deleteOrder">
- 		delete from orders 
+ 	<update id="deleteOrder">
+ 		update orders 
+ 		set ord_delete_status = '02' 
  		where ord_count = #{ord_count}
- 	</delete>
+ 	</update>
  
  <!-- 발주 기안 목록 수정, 발주 반려 목록 재요청 -->
  
- <!-- 발주 기안 목록 수정 -->
+ <!-- 발주 기안 목록 수정(01(재요청)도 포함) -->
  <update id="updateOrder">
  	update orders 
         SET ord_count = #{ord_count}, 
         	ord_number = #{ord_number}, 
-            ord_status = #{ord_status}, 
+            ord_status = '01', 
             ord_manager_id = #{ord_manager_id}, 
             ord_supervisor_id = #{ord_supervisor_id}, 
             prod_id = #{prod_id}, 
@@ -79,6 +84,47 @@
             wh_number = #{wh_number} 
         WHERE ord_count = #{ord_count}
  </update>
+ 
+ <!-- 발주 기안 목록 03 수정(발주 처리) -->
+ <update id="updateOrder03">
+ 	update orders 
+        SET ord_count = #{ord_count}, 
+        	ord_number = #{ord_number}, 
+            ord_status = '03', 
+            ord_manager_id = #{ord_manager_id}, 
+            ord_supervisor_id = #{ord_supervisor_id}, 
+            prod_id = #{prod_id}, 
+            ord_price = #{ord_price}, 
+            ord_quantity = #{ord_quantity}, 
+            ord_date = #{ord_date}, 
+            ord_date_change = #{ord_date_change}, 
+            company_code = #{company_code}, 
+            ord_text = #{ord_text}, 
+            wh_number = #{wh_number} 
+        WHERE ord_count = #{ord_count}
+ </update>
+ 
+ <!-- 발주 기안 목록 02 수정(발주 반려) -->
+ <update id="updateOrder02">
+ 	update orders 
+        SET ord_count = #{ord_count}, 
+        	ord_number = #{ord_number}, 
+            ord_status = '02', 
+            ord_manager_id = #{ord_manager_id}, 
+            ord_supervisor_id = #{ord_supervisor_id}, 
+            prod_id = #{prod_id}, 
+            ord_price = #{ord_price}, 
+            ord_quantity = #{ord_quantity}, 
+            ord_date = #{ord_date}, 
+            ord_date_change = #{ord_date_change}, 
+            company_code = #{company_code}, 
+            ord_text = #{ord_text}, 
+            wh_number = #{wh_number} 
+        WHERE ord_count = #{ord_count}
+ </update>
+ 
+ 
+ <!-- 발주 목록에서검색 기능 -->  <!-- 구현중 -->
  
  
  

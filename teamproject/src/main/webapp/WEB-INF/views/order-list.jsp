@@ -24,6 +24,9 @@ pageEncoding="UTF-8"%>
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 		crossorigin="anonymous"></script>
+    
+    
+    
     <!-- Fonts and icons -->
     <script src="./resources/js/plugin/webfont/webfont.min.js"></script>
     <!-- jQuery Sparkline -->
@@ -45,9 +48,6 @@ pageEncoding="UTF-8"%>
           sessionStorage.fonts = true;
         },
       });
-      
-    
-      
       
       
     </script>
@@ -76,6 +76,9 @@ pageEncoding="UTF-8"%>
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         margin-top: 20px;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
     }
     h2 {
         border-bottom: 2px solid #001f3f; /* 남색 */
@@ -885,14 +888,14 @@ pageEncoding="UTF-8"%>
         <div class="container">
           <div class="page-inner">
 
+
+
+
 <main>
  <div class="container">
  	<div class="table-responsive">
         <h1>발주 목록</h1>
-        <div id="multi-filter-select_filter" class="dataTables_filter">
-        
-        	
-        </div>
+        <hr>
         <table class="display table table-striped table-hover dataTable">
             <thead>
                 <tr>
@@ -1025,22 +1028,22 @@ pageEncoding="UTF-8"%>
         buttonContainer.innerHTML = ''; // 기존 버튼 초기화
 
         if (ord_status === '01') {
-            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">요청</button>';
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">요청</button>';
             buttonContainer.innerHTML += '<button id="updateBtn" class="btn btn-success">수정</button>';
             buttonContainer.innerHTML += '<button id="deleteBtn" class="btn btn-danger">삭제</button>';
-            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">요청(관리자)</button>';
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">요청(관리자)</button>';
             buttonContainer.innerHTML += '<button id="updateBtn03" class="btn btn-success">발주 처리</button>';
             buttonContainer.innerHTML += '<button id="updateBtn02" class="btn btn-danger">발주 반려</button>';
         } else if (ord_status === '02') {
-            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">반려</button>';
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">반려</button>';
             buttonContainer.innerHTML += '<button id="updateBtn01" class="btn btn-success">재요청</button>';
             buttonContainer.innerHTML += '<button id="deleteBtn01" class="btn btn-danger">삭제</button>';
         } else if (ord_status === '03') {
-            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">결재</button>';
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">결재</button>';
         } else if (ord_status === '04') {
-            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">거래처 반려</button>';
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">거래처 반려</button>';
         } else if (ord_status === '05') {
-            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="container-disable">완료</button>';
+            buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">완료</button>';
         }
 
         // 버튼에 이벤트 리스너 추가

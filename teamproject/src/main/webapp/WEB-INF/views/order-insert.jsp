@@ -16,9 +16,21 @@ pageEncoding="UTF-8"%>
       href="./resources/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
-
+	
+		<!--   Core JS Files   -->
+	<script src="./resources/js/core/jquery-3.7.1.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
+    
+    
+    
     <!-- Fonts and icons -->
     <script src="./resources/js/plugin/webfont/webfont.min.js"></script>
+    <!-- jQuery Sparkline -->
+	<script
+		src="./resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -35,27 +47,6 @@ pageEncoding="UTF-8"%>
           sessionStorage.fonts = true;
         },
       });
-      
-      
-      
-      
-      
-      $(document).ready(function(){
-    	  $(".nav-item>p").click(function(){
-    		 var submenu = $(this).next("ul");
-    		 
-    		 if(submenu.is(":visible")){
-    			 submenu.slideUp();
-    		 }else{
-    			 submenu.slideDown();
-    		 }
-    	  });
-    	  
-      });
-      
-      
-      
-      
       
       
     </script>
@@ -84,6 +75,9 @@ pageEncoding="UTF-8"%>
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         margin-top: 20px;
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
     }
     h2 {
         border-bottom: 2px solid #001f3f; /* 남색 */
@@ -108,12 +102,21 @@ pageEncoding="UTF-8"%>
         font-weight: bold;
         color: #333;
     }
-    input, textarea {
+    input {
         padding: 10px;
         margin-top: 5px;
         border: 1px solid #ccc;
         border-radius: 4px;
         transition: border-color 0.3s;
+        width: 20% !important;
+    }
+    textarea {
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        transition: border-color 0.3s;
+        width: 400% !important;
     }
     input:focus, textarea:focus {
         border-color: #001f3f; /* 남색 */
@@ -135,10 +138,7 @@ pageEncoding="UTF-8"%>
         background: #001a33; /* 남색의 어두운 색 */
     }
     form{
-    	width: 20% !important;
-    }
-    textarea{
-    	width: 400% !important;
+    	width: 25% !important;
     }
 </style>
 

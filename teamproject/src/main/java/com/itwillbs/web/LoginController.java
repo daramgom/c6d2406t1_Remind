@@ -49,7 +49,6 @@ public class LoginController {
 	// session 중복 코드
 	private void sessionAdd (HttpSession session, MemberVO result) {
 		// 비교해서 member 있으면 -> 해당하는 member 정보로 로그인 -> 메인 페이지
-	    session.setAttribute("isFirstVisit", false);
 	    session.setAttribute("id", result.getMember_id());
 		session.setAttribute("name", result.getMember_name());
 		session.setAttribute("permission_id", result.getPermission_id());
@@ -78,19 +77,22 @@ public class LoginController {
 		
 		
 	
-
 		if (result == null) {
-			response.put("code", "NOT_REGISTERED");
-			response.put("message", "등록된 회원이 아닙니다!");
-		} else if ("01".equals(result.getApproval_status())) {
-			response.put("code", "PENDING_APPROVAL");
-			response.put("message", "회원가입 승인 검토중 입니다.");
+		    // 아이디가 존재하지 않음
+		    response.put("code", "NOT_REGISTERED");
+		    response.put("message", "등록된 회원이 아닙니다!");
+		} else if (result.getMember_pw() == null) {
+		    // 비밀번호 틀림
+		    response.put("code", "INVALID_PASSWORD");
+		    response.put("message", "비밀번호가 일치하지 않습니다.");
 		} else {
-			response.put("code", "SUCCESS");
-			response.put("message", "로그인 성공");
-			// 세션 설정 등 추가 로직
-			sessionAdd(session, result);
+		    // 로그인 성공
+		    response.put("code", "SUCCESS");
+		    response.put("message", "로그인 성공");
+		    // 세션 설정 등 추가 로직
+		    sessionAdd(session, result);
 		}
+
 		return ResponseEntity.ok(response);
 	}
 	

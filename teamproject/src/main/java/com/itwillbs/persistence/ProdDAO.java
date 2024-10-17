@@ -14,7 +14,6 @@ public interface ProdDAO {
 	
 	// 제품등록
 	public void insertProd(ProdVO vo);
-	public void insertProdPWQ(ProdVO vo);
 	
 	
 	// 제품목록
@@ -35,6 +34,7 @@ public interface ProdDAO {
 	
 	
 	// 재고이동
+	public int transferProd(ProdVO vo);
 	public List<ProdVO> transferSelect();
 	public List<ProdVO> transferSelect2(ProdVO vo);
 	

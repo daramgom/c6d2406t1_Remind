@@ -13,12 +13,8 @@
 	  values (#{prod_id}, #{prod_name}, #{prod_reguser}, #{prod_upduser}, #{prod_category}, 
 	    #{prod_brand}, #{prod_image}, #{company_code}, #{prod_remarks})
 </insert>
+<!-- 제품등록 -->
 
-<insert id="insertProdPWQ">
-	insert into stock (prod_id, wh_number, prod_qty) 
-	 values (#{prod_id},#{wh_number},#{prod_qty})
-	  on duplicate key update prod_qty = prod_qty + #{prod_qty}
-</insert>
 
 
 <!-- 제품 목록(List) -->
@@ -30,6 +26,8 @@
 	    where prod.prod_status != '02' 
 	     group by prod.prod_id;
 </select>
+<!-- 제품 목록(List) -->
+
 
 
 <!-- 제품 조회 -->
@@ -44,6 +42,8 @@
 	select p.prod_id, s.wh_number, s.prod_qty 
 	 from prod p left join stock s on p.prod_id = s.prod_id where p.prod_id = #{prod_id};
 </select>
+<!-- 제품 조회 -->
+
 
 
 <!-- 제품 수정 -->
@@ -53,6 +53,8 @@
 	  prod_remarks = #{prod_remarks}, prod_image = #{prod_image}, prod_upduser = #{prod_upduser} 
 	  	where prod_id = #{prod_id}
 </update>
+<!-- 제품 수정 -->
+
 
 
 <!-- 제품 삭제 -->
@@ -61,21 +63,33 @@
 	 set prod_status = '02' 
 	  where prod_id = #{prod_id}
 </update>
+<!-- 제품 삭제 -->
+
 
 
 <!-- 재고 이동 -->
+<update id="transferProd">
+	update stock set prod_qty = prod_qty - #{stock_qty} where prod_id = #{prod_id} and wh_number = #{wh_number}
+</update>
+
+<update id="transferProd2">
+	update stock set prod_qty = prod_qty + #{stock_qty} where prod_id = #{prod_id} and wh_number = #{stock_wh}
+</update>
+
 <select id="transferSelect" resultType="ProdVO">
 	select distinct p.prod_id, p.prod_name, p.prod_image
 	 from prod p
 	  join stock s on p.prod_id = s.prod_id 
 	   where p.prod_status != '02'
 </select>
+
 <select id="transferSelect2" resultType="ProdVO">
 	select s.wh_number, w.wh_code, w.wh_name, w.wh_location, s.prod_qty 
 	 from stock s 
 	  left join warehouse w on s.wh_number = w.wh_number 
 	   where s.prod_id = #{prod_id}
 </select>
+<!-- 재고 이동 -->
 
 
 

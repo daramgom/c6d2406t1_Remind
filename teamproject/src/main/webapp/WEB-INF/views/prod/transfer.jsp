@@ -40,7 +40,7 @@
 	}
 	
 	#prod_image {
-		width: 300px; height: 200px;
+		width: 200px; height: 100px;
 		border: dashed 3px #ccc;
 		visibility: hidden;
 	}
@@ -109,6 +109,7 @@
 												<input type="number" class="form-control" 
 													id="prod_qty" name="prod_qty" min="0" max="#" readonly required/>
 												<label for="prod_qty" class="col-form-label-lg">수량</label>
+												<input type="hidden" id="current_qty" name="current_qty" value="#">
 											</div>
 										</div>
 										
@@ -220,6 +221,7 @@
 					$('#wh_number').empty();
 					$('#wh_number').append('<option value="">창고 선택</option>');
 					$('#prod_qty').val('');
+					$('#stock_qty').val('');
 					$('#stock_wh').empty();
 					$('#stock_wh').append('<option value="">창고 선택</option>');
 		        	if ($(this).val() === "") {
@@ -265,6 +267,7 @@
 					$('#stock_wh').empty();
 					$('#stock_wh').append('<option value="">창고 선택</option>');
 					$('#stock_wh').prop('disabled', false);
+					$('#stock_qty').val('');
 					
 					$.each(data, function(index, s) {
 						// console.log(s.wh_number); 숫자로 반환
@@ -273,19 +276,22 @@
 						}
 					});
 					
-					$('#prod_qty').empty();
+					
 					
 					if (selectedWh === '') {
 						$('#stock_wh').empty();
 						$('#stock_wh').append('<option value="">창고 선택</option>');
 						$('#stock_qty').prop('max','');
+						$('#stock_qty').val('');
 						$('#prod_qty').val('');
+						
 					} else {
 						$.each(data, function(index, item) {
 							if (item.wh_number == selectedWh) {
 								var selectedQty = item.prod_qty;
 								$('#prod_qty').val(selectedQty);
 								$('#stock_qty').prop('max',selectedQty);
+								$('#current_qty').val(selectedQty);
 							}
 						});
 					}
@@ -300,51 +306,36 @@
 	// select 요소 클릭 시 데이터 가져오기
 	    	
 	    	
-	    	
-	    	
-	    	
-	    	
-	        $('#prodForm').on('submit', function (e) {
-	            e.preventDefault(); // 기본 제출 이벤트 방지
-	            
-	         	// 버튼 비활성화
-	            $('button[type="submit"]').prop('disabled', true);
-	            
-	            var formData = new FormData(this); // FormData 객체 생성
+	// swal 처리
+		if ("${trans_message}" != "") {
+			swal({
+				title: "성공!",
+				text: "${trans_message}",
+				icon: "success",
+				buttons: {
+					confirm: {
+						text: "확인",
+					}
+				}
+			});
+		} else if ("${trans_error}" != "") {
+			swal({
+				title: "오류!",
+				text: "${trans_error}",
+				icon: "error",
+				buttons: {
+					confirm: {
+						text: "확인",
+					}
+				}
+			});
+		}
+	// swal 처리
 	
-	            $.ajax({
-	                url: '/prod/insert', // 서버의 처리 URL
-	                type: 'POST',
-	                data: formData,
-	                processData: false, // jQuery가 데이터를 처리하지 않도록 설정
-	                contentType: false, // jQuery가 Content-Type을 설정하지 않도록 설정
-	                success: function (response) {
-	                    // 성공 시 SweetAlert 모달 표시
-	                    swal({
-	                    	title: "성공!",
-	                    	text: "제품이 등록되었습니다!",
-	                    	icon: "success",
-	                    	buttons: {
-	                    		text: "확인",
-	                    	}
-	                    });
-	                },
-	                error: function (error) {
-	                    // 오류 시 SweetAlert 모달 표시
-	                    swal({
-	                    	title: "오류!",
-	                    	text: "제품 등록에 실패했습니다.",
-	                    	icon: "error"
-	                    });
-	                	$('#prod_reguser').val("테스터1");
-	                	$('#prod_upduser').val("테스터1");
-	                },
-	                complete: function() {
-	                    // 요청이 완료되면 버튼 활성화
-	                    $('button[type="submit"]').prop('disabled', false);
-	                }
-	            });
-	        });
+	    	
+	    	
+	    	
+	       
 	        
 	        
 	        $("#inputReset").click(function (e) {

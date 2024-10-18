@@ -8,7 +8,7 @@
  <!-- 발주 요청 정보 입력 -->
     <insert id="insert">
     	insert into orders(ord_delete_status,ord_status, ord_manager_id, ord_supervisor_id, prod_id, ord_price, ord_quantity, ord_date, ord_date_change, company_code, ord_text, wh_number,ord_number,ord_count) 
-    	values ('01','01',#{ord_manager_id},#{ord_supervisor_id},#{prod_id},#{ord_price},#{ord_quantity},now(),now(),#{company_code},#{ord_text},#{wh_number},
+    	values ('01','01',#{ord_manager_id},#{ord_supervisor_id},#{prod_id},#{ord_price},#{ord_quantity},now(),now(),#{company_code},#{ord_text},#{wh_number}, 
     	(SELECT CONCAT('ORD-', YEAR(CURRENT_DATE), '-', LPAD(IFNULL(MAX(SUBSTRING(ord_number, -4)), 0) + 1, 4, '0')) 
          FROM (SELECT ord_number FROM orders WHERE ord_number LIKE CONCAT('ORD-', YEAR(CURRENT_DATE), '%')) AS temp), 
          (SELECT COALESCE(MAX(ord_count), 0) + 1 FROM (SELECT ord_count FROM orders) AS temp2))
@@ -122,6 +122,34 @@
             wh_number = #{wh_number} 
         WHERE ord_count = #{ord_count}
  </update>
+ 
+ 
+ <!-- 발주 승인자 목록 조회 -->
+ <select id="listSupervisor" resultType="OrdersVO">
+ 	select m.member_id, m.member_name, c.common_status, d.department_name, m.member_state, m.member_tel 
+	from departments d join member m join common c 
+	on (d.department_id = m.department_id and m.employee_rank = c.common_value) 
+	where m.department_id = 2 
+	and m.permission_id = '02' 
+	and m.member_state = '01' 
+	and m.approval_status = '02'
+ </select>
+ <!-- 발주 제품 목록 조회 -->
+ <select id="listProd" resultType="OrdersVO">
+ 	select p.prod_id, p.prod_name, p.prod_category, p.prod_brand, c.company_code, c.company_name, c.company_manager, c.company_tel, c.company_email, c.company_address 
+	from prod p join company c 
+	on (p.company_code = c.company_code) 
+	where prod_status = '01'
+ </select>
+ <!-- 발주 창고 목록 조회 -->
+ <select id="listWarehouse" resultType="OrdersVO">
+	 select w.wh_number, w.wh_name, w.wh_location, w.wh_admin, m.member_name, m.member_tel 
+	 from warehouse w join member m 
+	 on (w.wh_admin = m.member_id)
+ </select>
+ 
+ 
+ 
  
  
  <!-- 발주 목록에서검색 기능 -->  <!-- 구현중 -->

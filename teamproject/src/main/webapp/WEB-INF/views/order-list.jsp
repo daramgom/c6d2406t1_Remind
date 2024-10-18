@@ -919,7 +919,7 @@ pageEncoding="UTF-8"%>
  
  
 				 <c:forEach var="o" items="${oListVO }">
-				 	<tr onclick="openModal('${o.ord_count}', '${o.ord_number}', '${o.ord_status}', '${o.ord_manager_id}', '${o.ord_supervisor_id}', '${o.prod_id}', '${o.ord_price}', '${o.ord_quantity}', '${o.ord_date}', '${o.ord_date_change}', '${o.company_code}', '${o.ord_text}', '${o.wh_number}')">
+				 	<tr onclick="openModal('${o.ord_count}', '${o.ord_number}', '${o.ord_status}', '${o.ord_manager_id}', '${o.ord_supervisor_id}', '${o.prod_id}', '${o.ord_price}', '${o.ord_quantity}', '${o.ord_date}', '${o.ord_date_change}', '${o.company_code }', '${o.ord_text}', '${o.wh_number}')">
 				 
 						<td>${o.ord_count}</td>
                         <td>${o.ord_number}</td>
@@ -961,31 +961,31 @@ pageEncoding="UTF-8"%>
 	            <h2>발주 상세 정보</h2>
 	            <form action="" id="orderForm" method="post" name="orderForm">
 		            <label>순번:</label>
-		            <input type="text" id="modalOrdCount" name="ord_count" readonly="readonly" /><br>
+		            <input type="text" id="modalOrdCount" name="ord_count" readonly="readonly" class="form-control" style="width:200px;" /><br>
 		            <label>발주 관리 번호:</label>
-		            <input type="text" id="modalOrdNumber" name="ord_number" readonly="readonly" /><br>
+		            <input type="text" id="modalOrdNumber" name="ord_number" readonly="readonly" class="form-control" style="width:200px;" /><br>
  		            <label>발주 상태:</label>
- 		            <input type="text" id="modalOrdStatus" name="ord_status" readonly="readonly" /><br>
+ 		            <input type="text" id="modalOrdStatus" name="ord_status" readonly="readonly" class="form-control" style="width:200px;" /><br>
 		            <label>발주 담당자:</label>
-		            <input type="text" id="modalOrdManagerId" name="ord_manager_id" readonly="readonly" /><br>
+		            <input type="text" id="modalOrdManagerId" name="ord_manager_id" readonly="readonly" class="form-control" style="width:200px;" /><br>
 		            <label>발주 승인 담당자:</label>
-		            <input type="text" id="modalOrdSupervisorId" name="ord_supervisor_id" readonly="readonly" /><br>
+		            <input type="text" id="modalOrdSupervisorId" name="ord_supervisor_id" readonly="readonly" class="form-control" style="width:200px;" /><br>
 		            <label>제품식별코드:</label>
-		            <input type="text" id="modalProdId" name="prod_id" /><br>
+		            <input type="text" id="modalProdId" name="prod_id" class="form-control" style="width:200px;" /><br>
 		            <label>발주 금액:</label>
-		            <input type="text" id="modalOrdPrice" name="ord_price" /><br>
+		            <input type="text" id="modalOrdPrice" name="ord_price" class="form-control" style="width:200px;" /><br>
 		            <label>발주 수량:</label>
-		            <input type="text" id="modalOrdQuantity" name="ord_quantity" /><br>
+		            <input type="text" id="modalOrdQuantity" name="ord_quantity" class="form-control" style="width:200px;" /><br>
 		            <label>발주 일자:</label>
-		            <input type="text" id="modalOrdDate" name="ord_date" /><br>
+		            <input type="text" id="modalOrdDate" name="ord_date" class="form-control" style="width:200px;" /><br>
 		            <label>발주 수정 일자:</label>
-		            <input type="text" id="modalOrdDateChange" name="ord_date_change" /><br>
+		            <input type="text" id="modalOrdDateChange" name="ord_date_change" class="form-control" style="width:200px;" /><br>
 		            <label>거래처 코드:</label>
-		            <input type="text" id="modalCompanyCode" name="company_code" /><br>
-		            <label>비고:</label>
-		            <textarea class="form-control" id="modalOrdText" name="ord_text"></textarea><br>
+		            <input type="text" id="modalCompanyCode" name="company_code" class="form-control" style="width:200px;" /><br>
 		            <label>입고 예정 창고:</label>
-		            <input type="text" id="modalWhNumber" name="wh_number" /><br>
+		            <input type="text" id="modalWhNumber" name="wh_number" class="form-control" style="width:200px;" /><br>
+		            <label>비고:</label>
+		            <textarea class="form-control" id="modalOrdText" name="ord_text" class="form-control" ></textarea><br>
 		            <!-- <label>삭제 상태:</label> -->
 		            <input type="hidden" id="modalOrdDeleteStatus" name="ord_delete_status" /><br>
 	            </form>

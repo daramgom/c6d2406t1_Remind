@@ -21,12 +21,36 @@ public class OrdersVO {
 	private int wh_number;
 	private String ord_delete_status;
 	
+	private int department_id;
 	
+	private String member_id;
+	private String member_name;
+	private String member_tel;
+	private String member_email;
+	private String department_name;
+	private String employee_rank;
+	private String member_state;
+	private String approval_status;
 	
+	private String prod_status;
+	private String prod_category;
+	private String prod_name;
+	private String prod_brand;
 	
+	private String company_name;
+	private String company_manager;
+	private String company_tel;
+	private String company_email;
+	private String company_address;
 	
+	private String wh_code;
+	private String wh_name;
+	private String wh_location;
+	private String wh_admin;
 	
+	private String common_status;
+	private String common_value;
 	
-	
+	private String permission_id;
 	
 }

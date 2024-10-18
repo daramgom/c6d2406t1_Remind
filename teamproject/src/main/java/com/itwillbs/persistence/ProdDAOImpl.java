@@ -47,6 +47,13 @@ public class ProdDAOImpl implements ProdDAO {
 		logger.debug("( •̀ ω •́ )✧ DAO : 제품등록 완료 ");
 	}
 	
+	// 제품 등록 입고처
+	@Override
+	public List<ProdVO> insertList() {
+		logger.debug("( •̀ ω •́ )✧ DAO : insertList(); 실행");
+		return sqlSession.selectList(NAMESPACE+".insertList");
+	}
+
 
 	// 제품목록
 	@Override
@@ -55,6 +62,7 @@ public class ProdDAOImpl implements ProdDAO {
 		// 3. SQL 구문(Mapper 생성) & pstmt 객체 (mybatis 관리)
 		// 4. SQL 실행
 		// [com.itwillbs.mapper.ProdMapper.listProd]
+		logger.debug("( •̀ ω •́ )✧ DAO : listProd(); 실행");
 		return sqlSession.selectList(NAMESPACE + ".listProd");
 	}
 
@@ -94,7 +102,7 @@ public class ProdDAOImpl implements ProdDAO {
 	public int transferProd(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ DAO : transferProd(ProdVO vo) 실행");
 		int result = sqlSession.update(NAMESPACE+ ".transferProd", vo);
-		result += sqlSession.update(NAMESPACE+ ".transferProd2", vo);
+		result += sqlSession.insert(NAMESPACE+ ".transferProd2", vo);
 		return result;
 	}
 
@@ -112,6 +120,15 @@ public class ProdDAOImpl implements ProdDAO {
 		logger.debug("( •̀ ω •́ )✧ DAO : transferSelect2(ProdVO vo) 실행");
 		return sqlSession.selectList(NAMESPACE + ".transferSelect2", vo);
 	}
+	
+	// 재고이동선택3
+	@Override
+	public List<ProdVO> transferSelect3() {
+		logger.debug("( •̀ ω •́ )✧ DAO : transferSelect3() 실행");
+		return sqlSession.selectList(NAMESPACE + ".transferSelect3");
+	}
+	
+	
 
 
 	

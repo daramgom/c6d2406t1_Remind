@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,6 +51,14 @@
         }
         
         #prodForm label {
+        	font-size: 18px !important;
+        }
+        
+        #prodForm option {
+        	font-size: 18px !important;
+        }
+        
+        #prodForm select {
         	font-size: 18px !important;
         }
         
@@ -128,9 +137,14 @@
 												<label for="prod_brand" class="col-form-label-lg"> 제품브랜드</label>
 											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
-												<input type="text" class="form-control input-full"
-													id="company_code" name="company_code" placeholder="입고처" required="required" />
-												<label for="company_code" class="col-form-label-lg"> 입고처</label>
+												<select class="form-select"
+													id="company_code" name="company_code" required="required" >
+													<option value="">입고처</option>
+													<c:forEach var="c" items="${companyList}">
+														<option value="${c.company_code}"> ${c.company_code} - ${c.company_name} </option>
+													</c:forEach>
+												</select>
+												<label id="company_label" for="company_code" class="col-form-label-lg"> 입고처</label>
 											</div>
 										</div>
 										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
@@ -217,7 +231,6 @@
 	<script type="text/javascript">
     
 	    $(document).ready(function () {
-	    	
 
 	        $('#uploadfile').on('change', function(event) {
 	            const file = event.target.files[0]; // 선택된 파일
@@ -286,6 +299,7 @@
 	                    });
 	                    $('input').val('');
 	                    $('#uploadfile').val('');
+	                    $('#company_code').val('');
 	                    $('#prod_remarks').val('');
 	                    $('#previewimg').hide();
 	                    $('#prod_reguser').val("테스터1");
@@ -331,6 +345,7 @@
 	                    $('input').val('');
 	                    $('#uploadfile').val('');
 	                    $('#prod_remarks').val('');
+	                    $('#company_code').val('');
 	                    $('#previewimg').hide();
 
 	                    swal({
@@ -349,6 +364,14 @@
 	            });
 	        });
 	        
+	        $('#company_label').hide();
+	        $('#company_code').change(function(){
+	        	if($('#company_code').val() == "") {
+	        		$('#company_label').hide();
+	        	} else {
+		        	$('#company_label').show();
+	        	}
+	        });
 	        
 	        
 	    });//DOM 준비 이벤트

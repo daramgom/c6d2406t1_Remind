@@ -32,11 +32,12 @@ public class ProdVO {
 	private String temp_image;
 	private MultipartFile uploadfile;
 	private String company_code;
+	private String company_name;
 	private int wh_number;
 	private int stock_wh;
-	private String wh_code;
 	private String wh_name;
 	private String wh_location;
+	private String wh_dt_location;
 	private int prod_qty;
 	private int stock_qty;
 	private int current_qty;

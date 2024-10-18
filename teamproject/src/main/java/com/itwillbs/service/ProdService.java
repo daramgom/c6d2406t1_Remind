@@ -10,6 +10,7 @@ public interface ProdService {
 	
 	// 제품등록
 	public void insertProd(ProdVO vo, HttpServletRequest req);
+	public List<ProdVO> insertList();
 	
 	
 	// 제품목록
@@ -33,6 +34,7 @@ public interface ProdService {
 	public int transferProd(ProdVO vo, HttpServletRequest req);
 	public List<ProdVO> transferSelect();
 	public List<ProdVO> transferSelect2(ProdVO vo);
+	public List<ProdVO> transferSelect3();
 	
 	
 	

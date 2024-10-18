@@ -181,7 +181,7 @@
 								<td>${p.prod_name}</td>
 								<td>${p.prod_category}</td>
 								<td>${p.prod_qty}</td>
-								<td>${p.company_code}</td>
+								<td>${p.company_name}</td>
 								<td>${p.formatted_regdate}</td>
 								<td><img src="${p.prod_image}" alt="제품이미지" style="width:75px; height:75px; object-fit: contain;"></td>
 							</tr>
@@ -269,13 +269,13 @@
                                 </div>
                                 <div class="col-md-4">
                                   <div class="form-group form-group-default">
-                                    <label>거래처</label>
+                                    <label>입고처</label>
                                     <input
                                       id="company_code"
                                       name="company_code"
                                       type="text"
                                       class="form-control"
-                                      readonly="readonly"
+                                      disabled
                                     />
                                   </div>
                                 </div>
@@ -353,21 +353,22 @@
 								<input type="hidden" id="temp_image" name="temp_image">
                               </div>
                          	</form>
-                         	<div class="card-body">
-                         	 <table class="table table-hover" id="stockList">
-						        <thead>
-						            <tr>
-						                <th>제품식별코드</th>
-						                <th>창고</th>
-						                <th>수량</th>
-						            </tr>
-						        </thead>
-						        <tbody id="stockListBody">
-						            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
-						        </tbody>
-						    </table>
-						   </div>
-                          </div>
+							<div class="card-body">
+	                         	 <table class="table table-hover" id="stockList">
+							        <thead>
+							            <tr>
+							                <th>제품식별코드</th>
+							                <th>창고</th>
+							                <th>수량</th>
+							            </tr>
+							        </thead>
+							        <tbody id="stockListBody">
+							            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
+							        </tbody>
+							    </table>
+							</div>
+						</div>
+						
                           <div class="modal-footer border-0" style="justify-content : center;">
                             <button
                               type="button"
@@ -514,7 +515,7 @@
                $("#prod_name").val(data.prodVO.prod_name);
                $("#prod_category").val(data.prodVO.prod_category);
                $("#prod_brand").val(data.prodVO.prod_brand);
-               $("#company_code").val(data.prodVO.company_code);
+               $("#company_code").val(data.prodVO.company_name);
                $("#prod_regdate").val(data.prodVO.formatted_regdate);
                $("#prod_reguser").val(data.prodVO.prod_reguser);
                $("#prod_upddate").val(data.prodVO.formatted_upddate);
@@ -533,7 +534,7 @@
                data.stockListVO.forEach(stock => {
                    const stockRow = $('<tr></tr>');
                    stockRow.append('<td>' + stock.prod_id + '</td>');
-                   stockRow.append('<td>' + stock.wh_number + '</td>');
+                   stockRow.append('<td>' + stock.wh_name + ' - ' + stock.wh_location + ' - ' + stock.wh_dt_location + '</td>');
                    stockRow.append('<td>' + stock.prod_qty + '</td>');
                    stockListBody.append(stockRow);
                });
@@ -576,6 +577,7 @@
 
 	                // 파일이 로드되면 미리보기 이미지 src를 설정
 	                reader.onload = function(e) {
+	                	$('#previewimg').show();
 	                	$('#previewimg').attr('src', e.target.result); // jQuery로 src 설정
 	                };
 
@@ -592,6 +594,7 @@
      	$("#image_delete").click(function(e) {
      		e.preventDefault();
      		$("#prod_image").val('');
+     		$('#uploadfile').val('');
      		$("#previewimg").hide();
      	});
     	

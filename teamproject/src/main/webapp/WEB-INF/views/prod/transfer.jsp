@@ -10,6 +10,7 @@
 	name="viewport" />
 <link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
 	type="image/x-icon" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <!-- Fonts and icons -->
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
@@ -40,11 +41,12 @@
 	}
 	
 	#prod_image {
-		width: 200px; height: 100px;
+		width: 200px; height: 200px;
 		border: dashed 3px #ccc;
 		visibility: hidden;
+		object-fit: contain;
 	}
-
+	
 </style>
 
 <!-- CSS Files -->
@@ -84,8 +86,24 @@
 							</div>
 
 							<div class="card-body d-flex flex-column">
-								<div class="row">
-									<div class="col-md-12">
+								<div class="row d-flex justify-content-center">
+									<div class="col-md-8">
+										<div class="card-body">
+				                         	 <table class="table table-hover" id="stockList" style="display: none;">
+										        <thead>
+										            <tr>
+										                <th>제품식별코드</th>
+										                <th>창고</th>
+										                <th>수량</th>
+										            </tr>
+										        </thead>
+										        <tbody id="stockListBody">
+										            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
+										        </tbody>
+										    </table>
+										</div>
+									</div>
+								<div class="col-md-12">
 									<form id="transferForm" action="" method="post">
 									
 										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
@@ -132,7 +150,7 @@
 										<div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
 											<button type="submit" class="btn btn-primary">
 												<span class="btn-label">
-													<i class="fa fa-plus"> 제품 등록</i>
+													<i class="fa fa-cart-shopping"> 재고 이동</i>
 												</span>
 											</button>
 											<!-- 리셋버튼추가 -->
@@ -195,20 +213,20 @@
 	<script src="/resources/js/kaiadmin.min.js"></script>
 	
 	
-	<script type="text/javascript">
+<script type="text/javascript">
     
-	$(document).ready(function () {
+$(document).ready(function () {
 	    	
 	// select 요소 클릭 시 데이터 가져오기
 	$('#prod_id').on('click', function() {
 		if ($(this).find('option').length > 1) {
-			return; // 첫 번째 옵션만 있을 때만 요청
+			return;
 		}
 		$.ajax({
-			url: '/prod/transferSelect', // 서버의 URL (데이터를 가져오는 엔드포인트)
-			type: 'POST', // POST 방식으로 요청
-			contentType: 'application/json', // JSON 형식으로 전송
-			data: JSON.stringify({}), // 빈 객체를 JSON 문자열로 전송
+			url: '/prod/transferSelect',
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({}),
 			dataType: 'json',
 			success: function(data) {
 				$('#prod_id').empty();
@@ -217,16 +235,57 @@
 					$('#prod_id').append('<option value="' + p.prod_id + '">' + p.prod_id + ' - ' + p.prod_name + '</option>');
 				});
 				
-				$('#prod_id').change(function(){
+				$('#prod_id').off('change').on('change',function() {
 					$('#wh_number').empty();
 					$('#wh_number').append('<option value="">창고 선택</option>');
 					$('#prod_qty').val('');
 					$('#stock_qty').val('');
 					$('#stock_wh').empty();
 					$('#stock_wh').append('<option value="">창고 선택</option>');
+					$('#stockList').hide();
+					
+					var selectedProductId = $(this).val();
+					var selectedProduct = data.find(p => p.prod_id == selectedProductId);
+					
+					if(selectedProductId != "") {
+						$.ajax({
+							url: '/prod/transferFind',
+							type: 'POST',
+							contentType: 'application/json',
+							data: JSON.stringify({ prod_id: selectedProductId }),
+							dataType: 'json',
+							success: function(data){
+								$('#stockList').show();
+								$('#stockListBody').empty();
+	
+								$.each(data, function(index, item) {
+									$('#stockListBody').append(
+										'<tr>' +
+											'<td>' + item.prod_id + '</td>' +
+											'<td>' + item.wh_number + '</td>' +
+											'<td>' + item.prod_qty + '</td>' +
+										'</tr>'
+									);
+								});
+							},
+							error: function(xhr, status, error) {
+								console.error("데이터를 가져오는 데 오류가 발생했습니다:", error);
+							}
+						});
+					}
+					
+					
+					if (selectedProduct) {
+						$('#prod_image').prop('src', selectedProduct.prod_image);
+						$('#prod_image').css('visibility', 'visible');
+					} else {
+						$('#prod_image').css('visibility', 'hidden');
+					}
+					
 		        	if ($(this).val() === "") {
 			            $('#wh_number').prop('disabled', true);
 			            $('#stock_wh').prop('disabled', true);
+			            $('#stockList').hide();
 			        } else {
 			            $('#wh_number').prop('disabled', false);
 			            $('#stock_wh').prop('disabled', false);
@@ -243,7 +302,7 @@
 	
 	$('#wh_number').on('click', function() {
 		if ($(this).find('option').length > 1) {
-			return; // 첫 번째 옵션만 있을 때만 요청
+			return;
 		}
 	
 		const selectedProdId = $("#prod_id").val();
@@ -258,10 +317,10 @@
 				$('#wh_number').append('<option value="">창고 선택</option>');
 				
 				$.each(data, function(index, s) {
-					$('#wh_number').append('<option value="' + s.wh_number + '">' + s.wh_number + '-' + s.wh_code + ' - ' + s.wh_name + ' - ' + s.wh_location + '</option>');
+					$('#wh_number').append('<option value="' + s.wh_number + '">' + s.wh_number + ' - ' + s.wh_name + ' - ' + s.wh_location + ' - ' + s.wh_dt_location + '</option>');
 				});
 
-				$('#wh_number').change(function() {
+				$('#wh_number').off('change').on('change', function() {
 					var selectedWh = $(this).val();
 					
 					$('#stock_wh').empty();
@@ -269,14 +328,26 @@
 					$('#stock_wh').prop('disabled', false);
 					$('#stock_qty').val('');
 					
-					$.each(data, function(index, s) {
-						// console.log(s.wh_number); 숫자로 반환
-						if (s.wh_number != selectedWh) {
-							$('#stock_wh').append('<option value="' + s.wh_number + '">' + s.wh_number + '-' + s.wh_code + ' - ' + s.wh_name + ' - ' + s.wh_location + '</option>');
+					$.ajax({
+						url: '/prod/transferSelect3',
+						type: 'POST',
+						data: JSON.stringify({}),
+						dataType: 'json',
+						success: function(response) {
+					        
+							$.each(response, function(index, s) {
+								if (s.wh_number != selectedWh) {
+									$('#stock_wh').append('<option value="' + s.wh_number + '">' + s.wh_number + ' - ' + s.wh_name + ' - ' + s.wh_location + '</option>');
+								}
+							});
+					
+						},
+							
+						error: function() {
+							alert('다른 데이터를 가져오는 데 실패했습니다.');
 						}
 					});
-					
-					
+
 					
 					if (selectedWh === '') {
 						$('#stock_wh').empty();
@@ -302,82 +373,83 @@
 			}
 		});
 	});
-	
 	// select 요소 클릭 시 데이터 가져오기
 	    	
 	    	
 	// swal 처리
-		if ("${trans_message}" != "") {
-			swal({
-				title: "성공!",
-				text: "${trans_message}",
-				icon: "success",
-				buttons: {
-					confirm: {
-						text: "확인",
-					}
+	if ("${trans_message}" != "") {
+		swal({
+			title: "성공!",
+			text: "${trans_message}",
+			icon: "success",
+			buttons: {
+				confirm: {
+					text: "확인",
 				}
-			});
-		} else if ("${trans_error}" != "") {
-			swal({
-				title: "오류!",
-				text: "${trans_error}",
-				icon: "error",
-				buttons: {
-					confirm: {
-						text: "확인",
-					}
+			}
+		});
+	} else if ("${trans_error}" != "") {
+		swal({
+			title: "오류!",
+			text: "${trans_error}",
+			icon: "error",
+			buttons: {
+				confirm: {
+					text: "확인",
 				}
-			});
-		}
+			}
+		});
+	}
 	// swal 처리
 	
-	    	
-	    	
-	    	
-	       
 	        
-	        
-	        $("#inputReset").click(function (e) {
+	$("#inputReset").click(function (e) {
+	    swal({
+	        title: "입력값을 초기화하시겠습니까?",
+	        text: "입력값이 모두 지워집니다!",
+	        type: "warning",
+	        buttons: {
+	            confirm: {
+	                text: "네, 지우겠습니다.",
+	                className: "btn btn-warning",
+	            },
+	            cancel: {
+	            	visible: true,
+	                text: "취소",
+	                className: "btn btn-danger",
+	            },
+	        },
+	    }).then(function(clear) { // [confirm --> true / cancel --> false] - clear 값으로 전달
+	        if (clear) {
+	        	$('select').val('');
+	        	$('select').empty();
+	        	$('input').val('');
+	        	$('#prod_id').append('<option value="">제품식별코드 선택</option>');
+	        	$('#wh_number').append('<option value="">창고 선택</option>');
+	        	$('#stock_wh').append('<option value="">창고 선택</option>');
+	        	$('#prod_image').prop('src', '');
+	        	$('#prod_image').css('visibility', 'hidden');
+	        	$('#stockListBody').empty();
+	        	
 	            swal({
-	                title: "입력값을 초기화하시겠습니까?",
-	                text: "입력값이 모두 지워집니다!",
-	                type: "warning",
+	                title: "초기화되었습니다.",
+	                text: "모든 입력값이 초기화되었습니다.",
+	                type: "success",
 	                buttons: {
 	                    confirm: {
-	                        text: "네, 지우겠습니다.",
-	                        className: "btn btn-warning",
-	                    },
-	                    cancel: {
-	                    	visible: true,
-	                        text: "취소",
-	                        className: "btn btn-danger",
+	                        className: "btn btn-primary",
 	                    },
 	                },
-	            }).then(function(clear) { // [confirm --> true / cancel --> false] - clear 값으로 전달
-	                if (clear) {
-	                    // 입력 필드 비우기 로직
-
-	                    swal({
-	                        title: "초기화되었습니다.",
-	                        text: "모든 입력값이 초기화되었습니다.",
-	                        type: "success",
-	                        buttons: {
-	                            confirm: {
-	                                className: "btn btn-primary",
-	                            },
-	                        },
-	                    });
-	                } else {
-	                    swal.close();
-	                }
 	            });
-	        });
+	        } else {
+	            swal.close();
+	        }
+	    });
+	});
 	        
 	        
-	        
-	    });//DOM 준비 이벤트
-	</script>
+});//DOM 준비
+</script>
    
 </body>
 </html>

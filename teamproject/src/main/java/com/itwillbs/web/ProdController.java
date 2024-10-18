@@ -49,10 +49,12 @@ public class ProdController {
 	// 제품등록 - 정보입력 페이지
 	// http://localhost:8088/prod/insert
 	@RequestMapping(value = "/insert",method = RequestMethod.GET)
-	public void insertProdGet() {
+	public void insertProdGet(Model model) {
 		logger.debug(" ( •̀ ω •́ )✧ /prod/insert -> insertProdGet() 실행 ");
 		logger.debug(" ( •̀ ω •́ )✧ 연결된 뷰(jsp)를 보여주기 ");
 		// 페이지 이동(X) --> 스프링이 자동으로 연결
+		List<ProdVO> companyList = pService.insertList();
+		model.addAttribute("companyList", companyList);
 		logger.debug(" ( •̀ ω •́ )✧ /views/prod/insert.jsp 뷰페이지 연결 ");
 	}
 	
@@ -159,6 +161,15 @@ public class ProdController {
 	    return ResponseEntity.ok(transferListVO);
 	}
 	
+	// 재고 이동 정보(post)
+	@PostMapping(value = "/transferFind")
+	@ResponseBody
+	public ResponseEntity<List<ProdVO>>transferFindPost(@RequestBody ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : transferListPost() 실행");
+		List<ProdVO> transferFindList = pService.findProdList(vo);
+		return ResponseEntity.ok(transferFindList);
+	}
+	
 	// 재고 이동 선택2(post)
 	@PostMapping(value = "/transferSelect2")
 	@ResponseBody
@@ -169,6 +180,18 @@ public class ProdController {
 		
 		return ResponseEntity.ok(transferList2VO);
 	}
+	
+	// 재고 이동 선택3(post)
+	@PostMapping(value = "/transferSelect3")
+	@ResponseBody
+	public ResponseEntity<List<ProdVO>> transferSelectPost3() {
+		logger.debug("( •̀ ω •́ )✧ ProdController : transferSelectPost3() 실행 ");
+	    List<ProdVO> transferList3VO = pService.transferSelect3();
+	    logger.debug("( •̀ ω •́ )✧ ProdController : transferList3VO : " + transferList3VO);
+
+	    return ResponseEntity.ok(transferList3VO);
+	}
+	
 	
 	
 	

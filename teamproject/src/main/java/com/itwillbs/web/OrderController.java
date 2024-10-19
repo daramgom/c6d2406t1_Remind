@@ -81,7 +81,7 @@ public class OrderController {
     	orderService.insert(ordersVO);
     	
     	
-    	return "/order-insert";
+    	return "redirect:/order-insert";
     }
     
     // 목록창 불러오기

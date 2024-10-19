@@ -300,6 +300,7 @@
 	                    $('input').val('');
 	                    $('#uploadfile').val('');
 	                    $('#company_code').val('');
+	                    $('#company_label').hide();
 	                    $('#prod_remarks').val('');
 	                    $('#previewimg').hide();
 	                    $('#prod_reguser').val("테스터1");
@@ -346,6 +347,7 @@
 	                    $('#uploadfile').val('');
 	                    $('#prod_remarks').val('');
 	                    $('#company_code').val('');
+	                    $('#company_label').hide();
 	                    $('#previewimg').hide();
 
 	                    swal({

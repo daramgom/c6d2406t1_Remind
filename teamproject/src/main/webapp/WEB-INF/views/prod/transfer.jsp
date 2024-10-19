@@ -86,23 +86,7 @@
 							</div>
 
 							<div class="card-body d-flex flex-column">
-								<div class="row d-flex justify-content-center">
-									<div class="col-md-8">
-										<div class="card-body">
-				                         	 <table class="table table-hover" id="stockList" style="display: none;">
-										        <thead>
-										            <tr>
-										                <th>제품식별코드</th>
-										                <th>창고</th>
-										                <th>수량</th>
-										            </tr>
-										        </thead>
-										        <tbody id="stockListBody">
-										            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
-										        </tbody>
-										    </table>
-										</div>
-									</div>
+								<div class="row">
 								<div class="col-md-12">
 									<form id="transferForm" action="" method="post">
 									
@@ -145,6 +129,24 @@
 												<input type="number" class="form-control" 
 													id="stock_qty" name="stock_qty" placeholder="수량" min="0" max="#" required/>
 												<label for="stock_qty" class="col-form-label-lg">이동 수량</label>
+											</div>
+										</div>
+										<div class="row d-flex justify-content-center">
+											<div class="col-md-8">
+												<div class="card-body">
+						                         	 <table class="table table-hover" id="stockList" style="display: none;">
+												        <thead>
+												            <tr>
+												                <th>제품식별코드</th>
+												                <th>창고</th>
+												                <th>수량</th>
+												            </tr>
+												        </thead>
+												        <tbody id="stockListBody">
+												            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
+												        </tbody>
+												    </table>
+												</div>
 											</div>
 										</div>
 										<div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
@@ -337,7 +339,7 @@ $(document).ready(function () {
 					        
 							$.each(response, function(index, s) {
 								if (s.wh_number != selectedWh) {
-									$('#stock_wh').append('<option value="' + s.wh_number + '">' + s.wh_number + ' - ' + s.wh_name + ' - ' + s.wh_location + '</option>');
+									$('#stock_wh').append('<option value="' + s.wh_number + '">' + s.wh_number + ' - ' + s.wh_name + ' - ' + s.wh_location + ' - ' + s.wh_dt_location + '</option>');
 								}
 							});
 					
@@ -429,6 +431,7 @@ $(document).ready(function () {
 	        	$('#stock_wh').append('<option value="">창고 선택</option>');
 	        	$('#prod_image').prop('src', '');
 	        	$('#prod_image').css('visibility', 'hidden');
+	        	$('#stockList').hide();
 	        	$('#stockListBody').empty();
 	        	
 	            swal({

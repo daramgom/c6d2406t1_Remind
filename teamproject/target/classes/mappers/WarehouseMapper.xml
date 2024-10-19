@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itwillbs.persistence.WarehouseDAO">
+
+    <!-- 모든 창고 조회 -->
+    <select id="getAllWarehouses" resultType="com.itwillbs.domain.WarehouseVO">
+        SELECT * FROM warehouse
+    </select>
+
+    <!-- ID로 창고 조회 -->
+    <select id="getWarehouseById" parameterType="int" resultType="com.itwillbs.domain.WarehouseVO">
+        SELECT * FROM warehouse WHERE wh_number = #{wh_number}
+    </select>
+
+    <!-- 창고 추가 -->
+    <insert id="addWarehouse" parameterType="com.itwillbs.domain.WarehouseVO">
+        INSERT INTO warehouse (wh_name, wh_location, wh_reguser, wh_admin) 
+        VALUES (#{wh_name}, #{wh_location}, #{wh_reguser}, #{wh_admin})
+    </insert>
+
+    <!-- 창고 수정 -->
+    <update id="updateWarehouse" parameterType="com.itwillbs.domain.WarehouseVO">
+        UPDATE warehouse
+        SET wh_name = #{wh_name},
+            wh_location = #{wh_location},
+            wh_reguser = #{wh_reguser},
+            wh_updateuser = #{wh_updateuser},
+            wh_admin = #{wh_admin}
+        WHERE wh_number = #{wh_number}
+    </update>
+
+    <!-- 창고 삭제 -->
+    <delete id="deleteWarehouse" parameterType="int">
+        DELETE FROM warehouse WHERE wh_number = #{wh_number}
+        
+    </delete>
+
+    <!-- 특정 창고에 속한 제품 목록 조회 -->
+    <select id="getProductsByWarehouseId" parameterType="int" resultType="com.itwillbs.domain.WarehouseVO">
+        SELECT p.prod_id, p.prod_name, s.prod_qty
+        FROM stock s
+        JOIN prod p ON s.prod_id = p.prod_id
+        WHERE s.wh_number = #{wh_number}
+    </select>
+
+</mapper>

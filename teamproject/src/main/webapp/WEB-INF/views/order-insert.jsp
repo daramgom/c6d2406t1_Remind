@@ -869,7 +869,7 @@ pageEncoding="UTF-8"%>
 
 <div class="form-group">
 	<div>
-		<label for="ord_supervisor_id" class="col-md-3 col-form-label">발주 승인 담당자</label>
+		<label for="ord_supervisor_id" class="col-md-3 col-form-label">발주 승인 담당자<br>아이디 / 이름 / 부서 이름 / 직급 / 전화번호</label>
 <!-- 		<input class="form-control input-full" type="text" name="ord_supervisor_id" required="required"> -->
 		
 		
@@ -905,14 +905,14 @@ pageEncoding="UTF-8"%>
 
 <div class="form-group">
 	<div>
-		<label for="prod_id" class="col-md-3 col-form-label">제품 식별 코드</label>
+		<label for="prod_id" class="col-md-3 col-form-label">제품<br>제품코드 / 제품 이름 / 카테고리 / 브랜드 / 거래처코드 / 거래처 이름 / 거래처 전화번호</label>
 <!-- 		<input class="form-control input-full" type="text" name="prod_id" required="required"> -->
 		
 		
 		<select id="prod_id" name="prod_id" class="form-select form-control" required="required" onchange="updateInput()">
 		    <option value="">선택하세요</option>
 		    <c:forEach var="p" items="${pListVO }">
-		    	<option value="${p.prod_id}" data-company-code="${p.company_code}">${p.prod_id} / ${p.prod_name} / ${p.prod_category} / ${p.company_code} / ${p.prod_brand} / ${p.company_tel}</option>
+		    	<option value="${p.prod_id}" data-company-code="${p.company_code}">${p.prod_id} / ${p.prod_name} / ${p.prod_category} / ${p.prod_brand} / ${p.company_code} / ${p.company_name} / ${p.company_tel}</option>
 		    </c:forEach>
 		</select>
 
@@ -942,12 +942,21 @@ pageEncoding="UTF-8"%>
 <!-- 	</div> -->
 <!-- </div> -->
 
+
 <div class="form-group">
 	<div>
-		<label for="wh_number" class="col-md-3 col-form-label">입고 예정 창고</label>
-		<input class="form-control input-full" type="text" name="wh_number" required="required" style="width: 40% !important">
+		<label for="wh_number" class="col-md-3 col-form-label">입고 예정 창고<br>창고 번호 / 창고 이름 / 창고 위치 / 창고 관리자 ID / 관리자 이름 / 관리자 전화번호</label>
+		
+		<select id="wh_number" name="wh_number" class="form-select form-control" required="required">
+			<option value="" >선택하세요</option>
+			<c:forEach var="w" items="${wListVO }">
+				<option value="${w.wh_number }">${w.wh_number } / ${w.wh_name } / ${w.wh_location } / ${w.wh_admin } / ${w.member_name } / ${w.member_tel }</option>
+			</c:forEach>
+		</select>
+		
 	</div>
 </div>
+
 
 <div class="form-group">
 	<div>

@@ -892,61 +892,165 @@ pageEncoding="UTF-8"%>
 
 
 <main>
- <div class="container">
+<div class="container">
  	<div class="table-responsive">
-        <h1>발주 목록</h1>
-        <hr>
-        <table class="display table table-striped table-hover dataTable">
-            <thead>
-                <tr>
-                    <th>순번</th>
-                    <th>발주관리번호</th>
-                    <th>발주상태</th>
-                    <th>발주 담당자</th>
-                    <th>발주 승인 담당자</th>
-                    <th>제품식별코드</th>
-                    <th>발주 금액</th>
-                    <th>발주 수량</th>
-                    <th>발주 일자</th>
-                    <th>발주 수정 일자</th>
-                    <th>거래처 코드</th>
-                    <!-- <th>비고</th> -->
-                    <th>입고 예정 창고</th>
-                    <!-- <th>삭제 상태</th> -->
-                </tr>
-             </thead>
-             <tbody>
- 
- 
-				 <c:forEach var="o" items="${oListVO }">
-				 	<tr onclick="openModal('${o.ord_count}', '${o.ord_number}', '${o.ord_status}', '${o.ord_manager_id}', '${o.ord_supervisor_id}', '${o.prod_id}', '${o.ord_price}', '${o.ord_quantity}', '${o.ord_date}', '${o.ord_date_change}', '${o.company_code }', '${o.ord_text}', '${o.wh_number}')">
-				 
-						<td>${o.ord_count}</td>
-                        <td>${o.ord_number}</td>
-                        <td>${o.ord_status}</td>
-                        <td>${o.ord_manager_id}</td>
-                        <td>${o.ord_supervisor_id}</td>
-                        <td>${o.prod_id}</td>
-                        <td>${o.ord_price}</td>
-                        <td>${o.ord_quantity}</td>
-                        <td>${o.ord_date}</td>
-                        <td>${o.ord_date_change}</td>
-                        <td>${o.company_code}</td>
-                        <%-- <td>${o.ord_text}</td> --%>
-                        <td>${o.wh_number}</td>
-                        <%-- <td>${o.ord_delete_status }</td> --%>
-                        
-                    </tr>
-				  
-				 </c:forEach>
- 
- 			</tbody>
- 			
-		</table>
+	 	<div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+	        <h1>발주 목록</h1>
+	        <hr>
+	        
+	        <div class="row">
+	        	<div class="col-sm-12 col-md-6">
+	        	</div>
+	        	
+	        	<div class="col-sm-12 col-md-6">
+	        		<div id="basic-datatables_filter" class="dataTables_filter">
+		        		<label>
+		        			Search:<input type="search" id="search-input" class="form-control form-control-sm" placeholder="" aria-controls="basic-datatables">
+		        		</label>
+	        		</div>
+	        	</div>
+	        </div>
+	        
+	        <div class="row">
+		        <table id="basic-datatables" class="display table table-striped table-hover dataTable" role="grid" aria-describedby="basic-datatables_info">
+		            <thead>
+		                <tr role="row">
+			                <!--     <th>순번</th> -->
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >순번</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주관리번호</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주상태</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 담당자</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 승인 담당자</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >제품식별코드</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 금액</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 수량</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 일자</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 수정 일자</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >거래처 코드</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >입고 예정 창고</th>
+		                    <!-- <th>비고</th> -->
+		                    <!-- <th>삭제 상태</th> -->
+		                </tr>
+		             </thead>
+		             <tbody>
+		 
+						 <c:forEach var="o" items="${oListVO }">
+						 	<tr role="row" class="odd" onclick="openModal('${o.ord_count}', '${o.ord_number}', '${o.ord_status}', '${o.ord_manager_id}', '${o.ord_supervisor_id}', '${o.prod_id}', '${o.ord_price}', '${o.ord_quantity}', '${o.ord_date}', '${o.ord_date_change}', '${o.company_code }', '${o.ord_text}', '${o.wh_number}')">
+						 
+								<td class="sorting_1">${o.ord_count}</td>
+		                        <td>${o.ord_number}</td>
+		                        <td>${o.ord_status}</td>
+		                        <td>${o.ord_manager_id}</td>
+		                        <td>${o.ord_supervisor_id}</td>
+		                        <td>${o.prod_id}</td>
+		                        <td>${o.ord_price}</td>
+		                        <td>${o.ord_quantity}</td>
+		                        <td>${o.ord_date}</td>
+		                        <td>${o.ord_date_change}</td>
+		                        <td>${o.company_code}</td>
+		                        <%-- <td>${o.ord_text}</td> --%>
+		                        <td>${o.wh_number}</td>
+		                        <%-- <td>${o.ord_delete_status }</td> --%>
+		                        
+		                    </tr>
+						  
+						 </c:forEach>
+						 
+		 			</tbody>
+		 			
+		 			
+				</table>
+				
+				<div class="row">
+					<div class="col-sm-12 col-md-5">
+					</div>
+					
+					<div class="col-sm-12 col-md-7">
+						<div class="dataTables_paginate paging_simple_numbers" id="basic-datatables_paginate">
+						<ul class="pagination">
+							
+						</ul>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
 	</div>
 </div>
 
 
+<script>
+
+	$(document).ready(function() {
+	    var rows = $('#basic-datatables tbody tr');
+	    var rowsPerPage = 5;
+	    var currentPage = 1;
+	
+	    function updateTable() {
+	        // 검색어 가져오기
+	        var searchValue = $('#search-input').val().toLowerCase();
+	
+	        // 필터링된 행 찾기
+	        var filteredRows = rows.filter(function() {
+	            return $(this).text().toLowerCase().indexOf(searchValue) > -1;
+	        });
+	
+	        // 총 필터링된 행 수와 페이지 수 계산
+	        var totalRows = filteredRows.length;
+	        var totalPages = Math.ceil(totalRows / rowsPerPage);
+	
+	        // 모든 행 숨기기
+	        rows.hide();
+	
+	        // 현재 페이지에 맞는 행만 보여주기
+	        filteredRows.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).show();
+	
+	        // 페이지네이션 버튼 업데이트
+	        $('#basic-datatables_paginate .pagination').empty();
+	        $('#basic-datatables_paginate .pagination').append('<li class="paginate_button page-item previous"><a href="#" class="page-link">Previous</a></li>');
+	        for (var i = 1; i <= totalPages; i++) {
+	            $('#basic-datatables_paginate .pagination').append('<li class="paginate_button page-item"><a href="#" class="page-link">' + i + '</a></li>');
+	        }
+	        $('#basic-datatables_paginate .pagination').append('<li class="paginate_button page-item next"><a href="#" class="page-link">Next</a></li>');
+	
+	        // 페이지 버튼 활성화/비활성화 처리
+	        $('#basic-datatables_paginate .pagination .page-item').removeClass('active');
+	        $('#basic-datatables_paginate .pagination .page-item').eq(currentPage).addClass('active');
+	
+	        // 이전 및 다음 버튼 비활성화 처리
+	        $('.previous').toggleClass('disabled', currentPage === 1);
+	        $('.next').toggleClass('disabled', currentPage === totalPages);
+	    }
+	
+	    // 페이지네이션 클릭 이벤트
+	    $('#basic-datatables_paginate').on('click', '.page-link', function(e) {
+	        e.preventDefault();
+	
+	        if ($(this).parent().hasClass('previous')) {
+	            if (currentPage > 1) currentPage--;
+	        } else if ($(this).parent().hasClass('next')) {
+	            if (currentPage < Math.ceil(rows.length / rowsPerPage)) currentPage++;
+	        } else {
+	            currentPage = parseInt($(this).text());
+	        }
+	
+	        updateTable();
+	    });
+	
+	    // 검색 기능
+	    $('#search-input').on('keyup', function() {
+	        currentPage = 1; // 검색 시 첫 페이지로 리셋
+	        updateTable();
+	    });
+	
+	    // 초기 설정
+	    updateTable();
+	});
+	
+</script>
+
+    
 </main>
     </div>
     </div>

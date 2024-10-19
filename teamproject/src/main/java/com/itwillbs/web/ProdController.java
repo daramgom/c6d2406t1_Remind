@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.ProdVO;
 import com.itwillbs.persistence.ProdDAO;
@@ -48,10 +49,12 @@ public class ProdController {
 	// 제품등록 - 정보입력 페이지
 	// http://localhost:8088/prod/insert
 	@RequestMapping(value = "/insert",method = RequestMethod.GET)
-	public void insertProdGet() {
+	public void insertProdGet(Model model) {
 		logger.debug(" ( •̀ ω •́ )✧ /prod/insert -> insertProdGet() 실행 ");
 		logger.debug(" ( •̀ ω •́ )✧ 연결된 뷰(jsp)를 보여주기 ");
 		// 페이지 이동(X) --> 스프링이 자동으로 연결
+		List<ProdVO> companyList = pService.insertList();
+		model.addAttribute("companyList", companyList);
 		logger.debug(" ( •̀ ω •́ )✧ /views/prod/insert.jsp 뷰페이지 연결 ");
 	}
 	
@@ -83,7 +86,7 @@ public class ProdController {
 		logger.debug(" ( •̀ ω •́ )✧ /prod/list -> listProdGet(Model model) 실행 ");
 		// 서비스 -> DAO : 제품목록조회
 		List<ProdVO> plistVO = pService.listProd();
-		logger.debug(" ( •̀ ω •́ )✧ plistVO : "+plistVO);
+		logger.debug(" ( •̀ ω •́ )✧ plistVO : "+plistVO.size());
 		
 		model.addAttribute("plistVO",plistVO);
 		// 서비스에서 가져온 데이터를 연결된 뷰페이지에 전달해서 출력
@@ -135,11 +138,16 @@ public class ProdController {
 	
 	// 재고 이동(post)
 	@PostMapping(value = "/transfer")
-	public void transferProdPost(ProdVO vo, HttpServletRequest req) {
+	public String transferProdPost(ProdVO vo, HttpServletRequest req, RedirectAttributes rttr) {
 		logger.debug("( •̀ ω •́ )✧ ProdController : transferProdPost(ProdVO vo, HttpServletRequest req) 실행 ");
 		logger.debug("( •̀ ω •́ )✧ vo : "+vo);
-		// pService.transferProd(vo,req);
-		
+		int result = pService.transferProd(vo, req);
+		if(result > 0) {
+			rttr.addFlashAttribute("trans_message", "제품이 이동되었습니다.");
+		} else {
+			rttr.addFlashAttribute("trans_error", "제품 이동에 실패했습니다!");
+		}
+		return "redirect:/prod/transfer";
 	}
 	
 	// 재고 이동 선택(post)
@@ -148,9 +156,18 @@ public class ProdController {
 	public ResponseEntity<List<ProdVO>> transferSelectPost() {
 	    logger.debug("( •̀ ω •́ )✧ ProdController : transferSelectPost() 실행 ");
 	    List<ProdVO> transferListVO = pService.transferSelect();
-	    logger.debug("( •̀ ω •́ )✧ ProdController : transferListVO : " + transferListVO);
+	    logger.debug("( •̀ ω •́ )✧ ProdController : transferListVO : " + transferListVO.size());
 	    
 	    return ResponseEntity.ok(transferListVO);
+	}
+	
+	// 재고 이동 정보(post)
+	@PostMapping(value = "/transferFind")
+	@ResponseBody
+	public ResponseEntity<List<ProdVO>>transferFindPost(@RequestBody ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : transferListPost() 실행");
+		List<ProdVO> transferFindList = pService.findProdList(vo);
+		return ResponseEntity.ok(transferFindList);
 	}
 	
 	// 재고 이동 선택2(post)
@@ -159,10 +176,22 @@ public class ProdController {
 	public ResponseEntity<List<ProdVO>> transferSelectPost2(@RequestBody ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ ProdController : transferSelectPost2() 실행 ");
 		List<ProdVO> transferList2VO = pService.transferSelect2(vo);
-		logger.debug("( •̀ ω •́ )✧ ProdController : transferList2VO : " + transferList2VO);
+		logger.debug("( •̀ ω •́ )✧ ProdController : transferList2VO : " + transferList2VO.size());
 		
 		return ResponseEntity.ok(transferList2VO);
 	}
+	
+	// 재고 이동 선택3(post)
+	@PostMapping(value = "/transferSelect3")
+	@ResponseBody
+	public ResponseEntity<List<ProdVO>> transferSelectPost3() {
+		logger.debug("( •̀ ω •́ )✧ ProdController : transferSelectPost3() 실행 ");
+	    List<ProdVO> transferList3VO = pService.transferSelect3();
+	    logger.debug("( •̀ ω •́ )✧ ProdController : transferList3VO : " + transferList3VO);
+
+	    return ResponseEntity.ok(transferList3VO);
+	}
+	
 	
 	
 	

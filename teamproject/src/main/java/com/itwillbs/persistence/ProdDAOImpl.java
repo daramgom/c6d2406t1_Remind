@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.domain.ProdVO;
 
@@ -46,12 +47,11 @@ public class ProdDAOImpl implements ProdDAO {
 		logger.debug("( •̀ ω •́ )✧ DAO : 제품등록 완료 ");
 	}
 	
-
+	// 제품 등록 입고처
 	@Override
-	public void insertProdPWQ(ProdVO vo) {
-		logger.debug("( •̀ ω •́ )✧ DAO : insertProdPWQ(ProdVO vo) 실행");
-		int result = sqlSession.insert(NAMESPACE + ".insertProdPWQ", vo);
-		logger.debug("( •̀ ω •́ )✧ DAO : result : "+result);
+	public List<ProdVO> insertList() {
+		logger.debug("( •̀ ω •́ )✧ DAO : insertList(); 실행");
+		return sqlSession.selectList(NAMESPACE+".insertList");
 	}
 
 
@@ -62,6 +62,7 @@ public class ProdDAOImpl implements ProdDAO {
 		// 3. SQL 구문(Mapper 생성) & pstmt 객체 (mybatis 관리)
 		// 4. SQL 실행
 		// [com.itwillbs.mapper.ProdMapper.listProd]
+		logger.debug("( •̀ ω •́ )✧ DAO : listProd(); 실행");
 		return sqlSession.selectList(NAMESPACE + ".listProd");
 	}
 
@@ -95,20 +96,39 @@ public class ProdDAOImpl implements ProdDAO {
 		sqlSession.update(NAMESPACE + ".deleteProd", vo);
 	}
 
-
 	// 재고이동
+	@Override
+	@Transactional
+	public int transferProd(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO : transferProd(ProdVO vo) 실행");
+		int result = sqlSession.update(NAMESPACE+ ".transferProd", vo);
+		result += sqlSession.insert(NAMESPACE+ ".transferProd2", vo);
+		return result;
+	}
+
+
+	// 재고이동선택1
 	@Override
 	public List<ProdVO> transferSelect() {
 		logger.debug("( •̀ ω •́ )✧ DAO : transferSelect(ProdVO vo) 실행");
 		return sqlSession.selectList(NAMESPACE + ".transferSelect");
 	}
 
-	// 재고이동
+	// 재고이동선택2
 	@Override
 	public List<ProdVO> transferSelect2(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ DAO : transferSelect2(ProdVO vo) 실행");
 		return sqlSession.selectList(NAMESPACE + ".transferSelect2", vo);
 	}
+	
+	// 재고이동선택3
+	@Override
+	public List<ProdVO> transferSelect3() {
+		logger.debug("( •̀ ω •́ )✧ DAO : transferSelect3() 실행");
+		return sqlSession.selectList(NAMESPACE + ".transferSelect3");
+	}
+	
+	
 
 
 	

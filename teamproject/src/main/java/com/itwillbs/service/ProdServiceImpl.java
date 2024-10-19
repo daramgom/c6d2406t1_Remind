@@ -49,7 +49,7 @@ public class ProdServiceImpl implements ProdService {
 	@Override
 	@Transactional
 	public void insertProd(ProdVO vo, HttpServletRequest req) {
-		
+		logger.debug(" ( •̀ ω •́ )✧ Service : insertProd() 실행 ");
 		imageUpload(vo, req); // 이미지 업로드
 		genProdID(vo); // 제품식별코드 생성
 		
@@ -58,6 +58,13 @@ public class ProdServiceImpl implements ProdService {
 		logger.debug("( •̀ ω •́ )✧ DAO - 서비스 - 컨트롤러");
 	}
 	
+	// 제품등록 입고처
+	@Override
+	public List<ProdVO> insertList() {
+		logger.debug(" ( •̀ ω •́ )✧ Service : insertList() 실행 ");
+		return pdao.insertList();
+	}
+
 
 	// 제품목록
 	@Override
@@ -101,35 +108,39 @@ public class ProdServiceImpl implements ProdService {
 	
 	
 	@Override
-	public void transferProd(ProdVO vo, HttpServletRequest req) {
+	public int transferProd(ProdVO vo, HttpServletRequest req) {
 		logger.debug("( •̀ ω •́ )✧ Service : transferProd(ProdVO vo, HttpServletRequest req) 실행 ");
-		
+		if(vo.getProd_qty() == vo.getCurrent_qty() && vo.getCurrent_qty() >= vo.getStock_qty()) {
+				if(vo.getStock_qty() >= 0) {
+					logger.debug("( •̀ ω •́ )✧ Service : 수량 == 현재수량 && 수량 >= && 이동수량 >= 0");
+					return pdao.transferProd(vo);
+				} return 0;
+		} return 0;
 	}
 
 
-	// 재고이동
+	// 재고이동선택
 	@Override
 	public List<ProdVO> transferSelect() {
 		logger.debug("( •̀ ω •́ )✧ Service : transferSelect() 실행 ");
 		return pdao.transferSelect();
 	}
 
-	// 재고이동
+	// 재고이동선택2
 	@Override
 	public List<ProdVO> transferSelect2(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ Service : transferSelect2() 실행 ");
 		return pdao.transferSelect2(vo);
 	}
 	
-	
-	
-	
-	
+	// 재고이동선택3
+	@Override
+	public List<ProdVO> transferSelect3() {
+		return pdao.transferSelect3();
+	}
 	
 	
 	// ***** 메서드 목록 *****
-	
-
 
 	// 제품식별코드 생성
 	public void genProdID(ProdVO vo) {
@@ -170,7 +181,7 @@ public class ProdServiceImpl implements ProdService {
 		if(!file.isEmpty()) {
 			logger.debug("( •̀ ω •́ )✧ imageUpload(ProdVO vo, HttpServletRequest req) 실행 : 이미지가 변경됨 ");
 			
-			if(!vo.getProd_image().isEmpty()) {
+			if(vo.getProd_image() != null && !vo.getProd_image().isEmpty()) {
 				try { // 이미지 수정시 파일삭제
 		            // VO에서 파일 경로 가져오기
 		            String curFilePath = vo.getProd_image().replaceFirst("/uploads", "");

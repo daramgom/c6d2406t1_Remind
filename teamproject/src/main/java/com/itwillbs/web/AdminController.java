@@ -138,11 +138,11 @@ public class AdminController {
 	    }
 	}
 	
-	@RequestMapping(value ="companySignUp" , method = RequestMethod.GET )
+	@RequestMapping(value ="companySignUpModal" , method = RequestMethod.GET )
 	public void companySignUpGET(Model model) {
 		logger.debug("companySignUpGET");
 		
-		List<CompanyVO> result = cService.getCompanyList();
+		// List<CompanyVO> result = cService.getCompanyList();
 		
 		
 		

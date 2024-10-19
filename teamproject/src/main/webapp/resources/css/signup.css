@@ -114,6 +114,9 @@ body {
 .input-wrapper #username::placeholder {
 	font-size: 0.72rem; /* 폰트 크기 조정 */
 }
+.input-wrapper .pass::placeholder {
+	font-size: 0.93rem; /* 폰트 크기 조정 */
+}
 
 .signup-form .input-wrapper i {
 	color: #a395e0;

@@ -61,6 +61,22 @@ public class OrdersDAOImpl implements OrdersDAO{
 		sqlSession.update(NAMESPACE+".updateOrder02", ordersVO);
 	}
 	
+	@Override
+	public List<OrdersVO> listSupervisor() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".listSupervisor");
+	}
 	
+	@Override
+	public List<OrdersVO> listProd() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".listProd");
+	}
+	
+	@Override
+	public List<OrdersVO> listWarehouse() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".listWarehouse");
+	}
 	
 }

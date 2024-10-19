@@ -24,5 +24,10 @@ public interface OrdersService {
 	
 	public void updateOrder02(OrdersVO ordersVO);
 	
+	public List<OrdersVO> listSupervisor();
+	
+	public List<OrdersVO> listProd();
+	
+	public List<OrdersVO> listWarehouse();
 	
 }

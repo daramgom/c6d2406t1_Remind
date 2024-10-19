@@ -25,7 +25,6 @@ public class NoticeServiceImpl implements NoticeService {
         logger.debug("내용: {}", notice.getContent());
         logger.debug("작성자: {}", notice.getWriter());
        
-
         noticeDAO.addNotice(notice);
     }
 
@@ -39,6 +38,13 @@ public class NoticeServiceImpl implements NoticeService {
     public NoticeVO getNotice(int noticeNo) {
         logger.debug("특정 공지사항 조회 메서드 호출: getNotice(int noticeNo) - 번호: " + noticeNo);
         return noticeDAO.getNotice(noticeNo);
+    }
+
+    // 새로운 메서드 추가
+    @Override
+    public NoticeVO getNoticeById(int noticeNo) {
+        logger.debug("ID로 공지사항 조회 메서드 호출: getNoticeById(int noticeNo) - 번호: " + noticeNo);
+        return noticeDAO.getNotice(noticeNo); // DAO에서 동일한 메서드 사용
     }
 
     @Override

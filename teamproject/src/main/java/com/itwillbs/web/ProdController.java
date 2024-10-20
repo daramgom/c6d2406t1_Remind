@@ -195,7 +195,7 @@ public class ProdController {
 	    return ResponseEntity.ok(transferListVO);
 	}
 	
-	// 재고 이동 정보(post)
+	// 재고 이동 제품 창고 정보(post)
 	@PostMapping(value = "/transferFind")
 	@ResponseBody
 	public ResponseEntity<List<ProdVO>>transferFindPost(@RequestBody ProdVO vo) {
@@ -225,6 +225,43 @@ public class ProdController {
 
 	    return ResponseEntity.ok(transferList3VO);
 	}
+	
+	
+	// 재고 알람 설정(GET)
+	// http://localhost:8088/prod/stockalert
+	@GetMapping(value = "/stockalert")
+	public void stockalertGet(Model model) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : stockalertGet() 실행 ");
+		List<ProdVO> stockList = pService.setStockList();
+		logger.debug(" ( •̀ ω •́ )✧ stockList : "+stockList.size());
+		model.addAttribute("stockList",stockList);
+	}
+
+	// 재고 알람 리스트(POST)
+	@PostMapping(value = "/stockalertdata")
+	@ResponseBody
+	public ResponseEntity<List<ProdVO>> stockalertGet() {
+		logger.debug("( •̀ ω •́ )✧ ProdController : stockalertGet() 실행 ");
+		List<ProdVO> stockList = pService.setStockList();
+		logger.debug(" ( •̀ ω •́ )✧ stockList : "+stockList.size());
+		return ResponseEntity.ok(stockList);
+	}
+
+	// 재고 알람 설정(POST)
+	@PostMapping(value = "/stockalert")
+	public String stockalertPost(ProdVO vo, RedirectAttributes rttr) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : stockalertPost() 실행 ");
+		
+		int result = pService.setStock(vo);
+		if(result > 0) {
+			rttr.addFlashAttribute("trans_message", "적정재고수량 알람이 설정되었습니다");
+		} else {
+			rttr.addFlashAttribute("trans_error", "적정재고수량 알람 설정에 실패했습니다");
+		}
+		return "redirect:/prod/stockalert";
+	}
+	
+	
 	
 	
 	

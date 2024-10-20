@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,6 +32,22 @@
 </script>
 
 <style>
+
+    #multi-filter-select thead th {
+        background-color: #0d6efd;
+        color: white;
+    }
+    
+    .table td {
+    	font-size: 1.15rem !important;
+    	text-align: center;
+    }
+    
+    .table th {
+    	font-size: 1.25rem !important;
+    	text-align: center;
+    }
+    
 	.btn-warning {
 		color: #fff !important;
 	} 
@@ -45,6 +62,14 @@
 		border: dashed 3px #ccc;
 		visibility: hidden;
 		object-fit: contain;
+	}
+	
+	.highlight {
+		background-color: rgba(255, 0, 0, 0.1);
+	}
+	
+	.custom-table {
+	--bs-table-bg: transparent !important;
 	}
 	
 </style>
@@ -75,14 +100,14 @@
 						<li class="separator"><i class="icon-arrow-right"></i></li>
 						<li class="nav-item"><a href="#">제품관리</a></li>
 						<li class="separator"><i class="icon-arrow-right"></i></li>
-						<li class="nav-item"><a href="#">재고이동</a></li>
+						<li class="nav-item"><a href="#">재고알림</a></li>
 					</ul>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card w-100">
 							<div class="card-header">
-								<div class="card-title">재고이동</div>
+								<div class="card-title">재고알림</div>
 							</div>
 
 							<div class="card-body d-flex flex-column">
@@ -101,58 +126,55 @@
 												<input type="hidden" id="prod_upduser" name="prod_upduser" 
 													value="테스터1" placeholder="수정작업자" />
 											</div>
-											<div class="form-floating form-floating-custom mb-3" style="flex: 1;">
-												<select class="form-select" id="wh_number" name="wh_number" required disabled>
-													<option value="">창고</option>
-												</select>
-												<label for="wh_number" class="selectFloatingLabel">창고</label>
-											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="number" class="form-control" 
-													id="prod_qty" name="prod_qty" min="0" max="#" readonly required/>
-												<label for="prod_qty" class="col-form-label-lg">수량</label>
-												<input type="hidden" id="current_qty" name="current_qty" value="#">
+													id="prod_stock" name="prod_stock" placeholder="적정재고수량" min="0" max="#" required/>
+												<label for="prod_stock" class="col-form-label-lg">적정재고수량</label>
 											</div>
 										</div>
 										
-										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px; align-items: center;">
-											 <div style="flex: 1;">
-											 	<img id="prod_image" src="#">
-											 </div>
-											 <div class="form-floating form-floating-custom mb-3" style="flex: 1;">
-												<select class="form-select" id="stock_wh" name="stock_wh" required disabled>
-													<option value="">창고</option>
-												</select>
-												<label for="stock_wh" class="selectFloatingLabel">창고</label>
-											</div>
-											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
-												<input type="number" class="form-control" 
-													id="stock_qty" name="stock_qty" placeholder="수량" min="0" max="#" required/>
-												<label for="stock_qty" class="col-form-label-lg">이동 수량</label>
-											</div>
-										</div>
 										<div class="row d-flex justify-content-center">
-											<div class="col-md-8">
+											<div class="col-md-10">
 												<div class="card-body">
-						                         	 <table class="table table-hover" id="stockList" style="display: none;">
-												        <thead>
-												            <tr>
-												                <th>제품식별코드</th>
-												                <th>창고</th>
-												                <th>수량</th>
-												            </tr>
-												        </thead>
-												        <tbody id="stockListBody">
-												            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
-												        </tbody>
-												    </table>
+													<div class="table-responsive">
+														<table
+														id="multi-filter-select"
+														class="display table table-hover custom-table">
+															<thead>
+															<tr>
+															<th>제품식별코드</th>
+															<th>제품명</th>
+															<th>브랜드</th>
+															<th>제품이미지</th>
+															<th>수량</th>
+															<th>적정재고수량</th>
+															<th>부족수량</th>
+															</tr>
+															</thead>
+															<tbody>
+															<c:forEach var="s" items="${stockList}">
+																<tr class="prod_detail ${s.prod_qty < s.prod_stock ? 'highlight' : ''}">
+																	<td>${s.prod_id}</td>
+																	<td>${s.prod_name}</td>
+																	<td>${s.prod_brand}</td>
+																	<td><img src="${s.prod_image}" alt="제품이미지" style="width:75px; height:75px; object-fit: contain;"></td>
+																	<td>${s.prod_qty}</td>
+																	<td>${s.prod_stock}</td>
+																	<c:if test="${s.prod_qty < s.prod_stock}">
+																	<td class="text-danger fw-bold">${s.prod_stock - s.prod_qty}</td>
+																	</c:if>
+																</tr>
+															</c:forEach>
+															</tbody>
+														</table>
+													</div>
 												</div>
 											</div>
 										</div>
 										<div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
 											<button type="submit" class="btn btn-primary">
 												<span class="btn-label">
-													<i class="fa fa-cart-shopping"> 재고 이동</i>
+													<i class="fas fa-bell"> 적정재고수량 설정</i>
 												</span>
 											</button>
 											<!-- 리셋버튼추가 -->
@@ -184,15 +206,13 @@
 		crossorigin="anonymous"></script>
 
 	<!-- jQuery Scrollbar -->
-	<script
-		src="/resources/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+	<script src="/resources/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
 	<!-- Chart JS -->
 	<script src="/resources/js/plugin/chart.js/chart.min.js"></script>
 
 	<!-- jQuery Sparkline -->
-	<script
-		src="/resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+	<script src="/resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
 
 	<!-- Chart Circle -->
 	<script src="/resources/js/plugin/chart-circle/circles.min.js"></script>
@@ -201,8 +221,7 @@
 	<script src="/resources/js/plugin/datatables/datatables.min.js"></script>
 
 	<!-- Bootstrap Notify -->
-	<script
-		src="/resources/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+	<script src="/resources/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
 	<!-- jQuery Vector Maps -->
 	<script src="/resources/js/plugin/jsvectormap/jsvectormap.min.js"></script>
@@ -218,7 +237,67 @@
 <script type="text/javascript">
     
 $(document).ready(function () {
-	    	
+
+	// 알림 테스트
+	function checkStock() {
+		$.ajax({
+			url: '/prod/stockalertdata',
+			method: 'POST',
+			dataType: 'json',
+			success: function(data) {
+				let lowStockProd = [];
+
+				data.forEach(function(item) {
+					const prod_qty = item.prod_qty;
+					const prod_stock = item.prod_stock;
+
+					if (prod_qty < prod_stock) {
+						lowStockProd.push(item.prod_id +' - '+ item.prod_name +' - '+ item.prod_brand);
+					}
+				});
+
+				// 부족한 재고가 있는 경우에만 알림 띄우기
+				if (lowStockProd.length > 0) {
+					// 보여줄 제품의 개수
+					const displayCount = 2; // 원하는 개수로 설정
+					let message;
+
+					if (lowStockProd.length > displayCount) {
+						// 일부만 보여주고 생략 표시
+						message = '<b class="text-warning">'+lowStockProd.slice(0, displayCount).join(', ') +'</b>' + ' 등 <b class="text-warning"> ' + (lowStockProd.length) + '개</b> 제품의 재고수량이 부족합니다.';
+					} else {
+						// 모든 제품을 보여줌
+						message = '<b class="text-warning">'+lowStockProd.join('/ ')+ '</b>' + '의 재고수량이 부족합니다!';
+					}
+
+					$.notify({}, {
+						type: "warning",
+						delay: 5000,
+						placement: {
+							from: "bottom",
+							align: "right"
+						},
+						template: '<div data-notify="container" class="alert alert-warning" role="alert">' +
+							'<span data-notify="icon" class="icon-bell"></span>' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+							'<span data-notify="title" style="font-size: 20px;"><strong>적정재고수량 경고</strong></span> ' +
+							'<span data-notify="message" style="font-size: 16px;">' + 
+							message + '</span>' +
+							'</div>'
+					});
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('데이터 불러오기 실패:', error);
+			}
+		});
+	}
+
+	checkStock();
+	setInterval(checkStock, 300000);
+	// 알림 테스트
+
+	
 	// select 요소 클릭 시 데이터 가져오기
 	$('#prod_id').on('click', function() {
 		if ($(this).find('option').length > 1) {
@@ -235,139 +314,6 @@ $(document).ready(function () {
 				$('#prod_id').append('<option value="">제품식별코드 선택</option>');
 				$.each(data, function(index, p) {
 					$('#prod_id').append('<option value="' + p.prod_id + '">' + p.prod_id + ' - ' + p.prod_name + ' - ' + p.prod_brand + '</option>');
-				});
-				
-				$('#prod_id').off('change').on('change',function() {
-					$('#wh_number').empty();
-					$('#wh_number').append('<option value="">창고 선택</option>');
-					$('#prod_qty').val('');
-					$('#stock_qty').val('');
-					$('#stock_wh').empty();
-					$('#stock_wh').append('<option value="">창고 선택</option>');
-					$('#stockList').hide();
-					
-					var selectedProductId = $(this).val();
-					var selectedProduct = data.find(p => p.prod_id == selectedProductId);
-					
-					if(selectedProductId != "") {
-						$.ajax({
-							url: '/prod/transferFind',
-							type: 'POST',
-							contentType: 'application/json',
-							data: JSON.stringify({ prod_id: selectedProductId }),
-							dataType: 'json',
-							success: function(data){
-								$('#stockList').show();
-								$('#stockListBody').empty();
-	
-								$.each(data, function(index, item) {
-									$('#stockListBody').append(
-										'<tr>' +
-											'<td>' + item.prod_id +' - '+ item.prod_name +' - '+ item.prod_brand + '</td>' +
-											'<td>' + item.wh_number + '</td>' +
-											'<td>' + item.prod_qty + '</td>' +
-										'</tr>'
-									);
-								});
-							},
-							error: function(xhr, status, error) {
-								console.error("데이터를 가져오는 데 오류가 발생했습니다:", error);
-							}
-						});
-					}
-					
-					
-					if (selectedProduct) {
-						$('#prod_image').prop('src', selectedProduct.prod_image);
-						$('#prod_image').css('visibility', 'visible');
-					} else {
-						$('#prod_image').css('visibility', 'hidden');
-					}
-					
-		        	if ($(this).val() === "") {
-			            $('#wh_number').prop('disabled', true);
-			            $('#stock_wh').prop('disabled', true);
-			            $('#stockList').hide();
-			        } else {
-			            $('#wh_number').prop('disabled', false);
-			            $('#stock_wh').prop('disabled', false);
-			        }
-				});
-				
-				
-			},
-			error: function(xhr, status, error) {
-				console.error("데이터를 가져오는 데 오류가 발생했습니다:", error);
-			}
-		});
-	});
-	
-	$('#wh_number').on('click', function() {
-		if ($(this).find('option').length > 1) {
-			return;
-		}
-	
-		const selectedProdId = $("#prod_id").val();
-		$.ajax({
-			url: '/prod/transferSelect2',
-			type: 'POST',
-			contentType: 'application/json',
-			data: JSON.stringify({ prod_id: selectedProdId }),
-			dataType: 'json',
-			success: function(data) {
-				$('#wh_number').empty();
-				$('#wh_number').append('<option value="">창고 선택</option>');
-				
-				$.each(data, function(index, s) {
-					$('#wh_number').append('<option value="' + s.wh_number + '">' + s.wh_number + ' - ' + s.wh_name + ' - ' + s.wh_location + ' - ' + s.wh_dt_location + '</option>');
-				});
-
-				$('#wh_number').off('change').on('change', function() {
-					var selectedWh = $(this).val();
-					
-					$('#stock_wh').empty();
-					$('#stock_wh').append('<option value="">창고 선택</option>');
-					$('#stock_wh').prop('disabled', false);
-					$('#stock_qty').val('');
-					
-					$.ajax({
-						url: '/prod/transferSelect3',
-						type: 'POST',
-						data: JSON.stringify({}),
-						dataType: 'json',
-						success: function(response) {
-					        
-							$.each(response, function(index, s) {
-								if (s.wh_number != selectedWh) {
-									$('#stock_wh').append('<option value="' + s.wh_number + '">' + s.wh_number + ' - ' + s.wh_name + ' - ' + s.wh_location + ' - ' + s.wh_dt_location + '</option>');
-								}
-							});
-					
-						},
-							
-						error: function() {
-							alert('다른 데이터를 가져오는 데 실패했습니다.');
-						}
-					});
-
-					
-					if (selectedWh === '') {
-						$('#stock_wh').empty();
-						$('#stock_wh').append('<option value="">창고 선택</option>');
-						$('#stock_qty').prop('max','');
-						$('#stock_qty').val('');
-						$('#prod_qty').val('');
-						
-					} else {
-						$.each(data, function(index, item) {
-							if (item.wh_number == selectedWh) {
-								var selectedQty = item.prod_qty;
-								$('#prod_qty').val(selectedQty);
-								$('#stock_qty').prop('max',selectedQty);
-								$('#current_qty').val(selectedQty);
-							}
-						});
-					}
 				});
 			},
 			error: function(xhr, status, error) {
@@ -427,12 +373,6 @@ $(document).ready(function () {
 	        	$('select').empty();
 	        	$('input').val('');
 	        	$('#prod_id').append('<option value="">제품식별코드 선택</option>');
-	        	$('#wh_number').append('<option value="">창고 선택</option>');
-	        	$('#stock_wh').append('<option value="">창고 선택</option>');
-	        	$('#prod_image').prop('src', '');
-	        	$('#prod_image').css('visibility', 'hidden');
-	        	$('#stockList').hide();
-	        	$('#stockListBody').empty();
 	        	
 	            swal({
 	                title: "초기화되었습니다.",

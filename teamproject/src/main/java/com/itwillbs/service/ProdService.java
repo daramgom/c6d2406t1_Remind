@@ -36,6 +36,8 @@ public interface ProdService {
 	public List<ProdVO> transferSelect2(ProdVO vo);
 	public List<ProdVO> transferSelect3();
 	
-	
+	// 재고 알람 설정
+	public int setStock(ProdVO vo);
+	public List<ProdVO> setStockList();
 	
 }

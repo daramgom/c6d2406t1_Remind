@@ -27,7 +27,6 @@ public class ProdVO {
 	private String prod_upduser;
 	private String prod_category;
 	private String prod_brand;
-	private int prod_stock;
 	private String prod_image;
 	private String temp_image;
 	private MultipartFile uploadfile;
@@ -38,6 +37,7 @@ public class ProdVO {
 	private String wh_name;
 	private String wh_location;
 	private String wh_dt_location;
+	private int prod_stock;
 	private int prod_qty;
 	private int stock_qty;
 	private int current_qty;

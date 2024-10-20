@@ -116,7 +116,7 @@ pageEncoding="UTF-8"%>
         border: 1px solid #ccc;
         border-radius: 4px;
         transition: border-color 0.3s;
-        width: 400% !important;
+        width: 160% !important;
     }
     input:focus, textarea:focus {
         border-color: #001f3f; /* 남색 */
@@ -138,7 +138,7 @@ pageEncoding="UTF-8"%>
         background: #001a33; /* 남색의 어두운 색 */
     }
     form{
-    	width: 25% !important;
+    	width: 60% !important;
     }
 </style>
 
@@ -863,56 +863,100 @@ pageEncoding="UTF-8"%>
 <div class="form-group">
 	<div>
 		<label for="ord_manager_id" class="col-md-3 col-form-label">발주 담당자</label>
-		<input class="form-control input-full" type="text" name="ord_manager_id" required="required" >
-		<%-- <select id="ord_manager_id" name="ord_manager_id">
-			<c:forEach var="member" items="${member }">
-				<option value="${member.member_id }">${member.member_id }</option>
+		<input class="form-control input-full" type="text" name="ord_manager_id" required="required" style="width:40% !important">
+	</div>
+</div>
+
+<div class="form-group">
+	<div>
+		<label for="ord_supervisor_id" class="col-md-3 col-form-label">발주 승인 담당자<br>아이디 / 이름 / 부서 이름 / 직급 / 전화번호</label>
+<!-- 		<input class="form-control input-full" type="text" name="ord_supervisor_id" required="required"> -->
+		
+		
+		
+		<select id="ord_supervisor_id" name="ord_supervisor_id" class="form-select form-control" required="required">
+			<option value="" >선택하세요</option>
+			<c:forEach var="s" items="${sListVO }">
+				<option value="${s.member_id}<%-- ,${s.member_name},${s.department_name},${s.common_status},${s.member_tel} --%>">${s.member_id} / ${s.member_name} / ${s.department_name} / ${s.common_status} / ${s.member_tel }</option>
 			</c:forEach>
-		</select> --%>
+		</select>
+		
+		
+		
 	</div>
 </div>
 
-<div class="form-group">
-	<div>
-		<label for="ord_supervisor_id" class="col-md-3 col-form-label">발주 승인 담당자</label>
-		<input class="form-control input-full" type="text" name="ord_supervisor_id" required="required">
-	</div>
-</div>
+
+
+<script>
+	function updateInput() {
+	    const select = document.getElementById("prod_id");
+	    const selectedOption = select.options[select.selectedIndex];
+		
+	    // data-company-code 속성을 사용하여 company_code를 가져옵니다.
+	    const companyCode = selectedOption.getAttribute("data-company-code");
+		
+	    // 입력 필드에 company_code를 설정합니다.
+	    document.getElementById("company_code").value = companyCode || "";
+	}
+</script>
+
+
 
 <div class="form-group">
 	<div>
-		<label for="prod_id" class="col-md-3 col-form-label">제품 식별 코드</label>
-		<input class="form-control input-full" type="text" name="prod_id" required="required">
+		<label for="prod_id" class="col-md-3 col-form-label">제품<br>제품코드 / 제품 이름 / 카테고리 / 브랜드 / 거래처코드 / 거래처 이름 / 거래처 전화번호</label>
+<!-- 		<input class="form-control input-full" type="text" name="prod_id" required="required"> -->
+		
+		
+		<select id="prod_id" name="prod_id" class="form-select form-control" required="required" onchange="updateInput()">
+		    <option value="">선택하세요</option>
+		    <c:forEach var="p" items="${pListVO }">
+		    	<option value="${p.prod_id}" data-company-code="${p.company_code}">${p.prod_id} / ${p.prod_name} / ${p.prod_category} / ${p.prod_brand} / ${p.company_code} / ${p.company_name} / ${p.company_tel}</option>
+		    </c:forEach>
+		</select>
+
+<input type="hidden" id="company_code" name="company_code" readonly>
+		
 	</div>
 </div>
 
 <div class="form-group">
 	<div>
 		<label for="ord_price" class="col-md-3 col-form-label">발주 금액</label>
-		<input class="form-control input-full" type="text" name="ord_price" required="required">
+		<input class="form-control input-full" type="text" name="ord_price" required="required" style="width: 40% !important">
 	</div>
 </div>
 
 <div class="form-group">
 	<div>
 		<label for="ord_quantity" class="col-md-3 col-form-label">발주 수량</label>
-		<input class="form-control input-full" type="text" name="ord_quantity" required="required">
+		<input class="form-control input-full" type="number" name="ord_quantity" required="required" style="width: 40% !important">
 	</div>
 </div>
 
-<div class="form-group">
-	<div>
-		<label for="company_code" class="col-md-3 col-form-label">거래처 코드</label>
-		<input class="form-control input-full" type="text" name="company_code" required="required">
-	</div>
-</div>
+<!-- <div class="form-group"> -->
+<!-- 	<div> -->
+<!-- 		<label for="company_code" class="col-md-3 col-form-label">거래처 코드</label> -->
+<!-- 		<input class="form-control input-full" type="text" name="company_code" required="required"> -->
+<!-- 	</div> -->
+<!-- </div> -->
+
 
 <div class="form-group">
 	<div>
-		<label for="wh_number" class="col-md-3 col-form-label">입고 예정 창고</label>
-		<input class="form-control input-full" type="text" name="wh_number" required="required">
+		<label for="wh_number" class="col-md-3 col-form-label">입고 예정 창고<br>창고 번호 / 창고 이름 / 창고 위치 / 창고 관리자 ID / 관리자 이름 / 관리자 전화번호</label>
+		
+		<select id="wh_number" name="wh_number" class="form-select form-control" required="required">
+			<option value="" >선택하세요</option>
+			<c:forEach var="w" items="${wListVO }">
+				<option value="${w.wh_number }">${w.wh_number } / ${w.wh_name } / ${w.wh_location } / ${w.wh_admin } / ${w.member_name } / ${w.member_tel }</option>
+			</c:forEach>
+		</select>
+		
 	</div>
 </div>
+
 
 <div class="form-group">
 	<div>

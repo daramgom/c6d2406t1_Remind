@@ -147,11 +147,10 @@
 												<label id="company_label" for="company_code" class="col-form-label-lg"> 입고처</label>
 											</div>
 										</div>
-										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
+										<div class="form-group d-flex" style="margin: 20px 200px; gap: 50px;">
 											<div class="input-group" style="flex: 1;">
 											<span class="input-group-text" style="font-size: 18px;">비고</span>
-												<textarea id="prod_remarks" name="prod_remarks" 
-												rows="4" cols="30" class="form-control"></textarea>
+												<textarea id="prod_remarks" name="prod_remarks" class="form-control"></textarea>
 											</div>
 											<div style="flex: 1;">
 												<label for="uploadfile" class="col-form-label-lg">제품이미지</label>
@@ -300,6 +299,7 @@
 	                    $('input').val('');
 	                    $('#uploadfile').val('');
 	                    $('#company_code').val('');
+	                    $('#company_label').hide();
 	                    $('#prod_remarks').val('');
 	                    $('#previewimg').hide();
 	                    $('#prod_reguser').val("테스터1");
@@ -346,6 +346,7 @@
 	                    $('#uploadfile').val('');
 	                    $('#prod_remarks').val('');
 	                    $('#company_code').val('');
+	                    $('#company_label').hide();
 	                    $('#previewimg').hide();
 
 	                    swal({

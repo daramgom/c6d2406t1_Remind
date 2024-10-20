@@ -47,6 +47,24 @@
 		object-fit: contain;
 	}
 	
+	.form-select {
+		font-size: 1.3rem !important;
+	}
+	
+	.form-control {
+		font-size: 1.3rem !important;
+	}
+	
+	.table td {
+		font-size: 1.3rem !important;
+		text-align: center;
+	}
+
+	.table th {
+		font-size: 1.35rem !important;
+		text-align: center;
+	}
+	
 </style>
 
 <!-- CSS Files -->
@@ -86,23 +104,7 @@
 							</div>
 
 							<div class="card-body d-flex flex-column">
-								<div class="row d-flex justify-content-center">
-									<div class="col-md-8">
-										<div class="card-body">
-				                         	 <table class="table table-hover" id="stockList" style="display: none;">
-										        <thead>
-										            <tr>
-										                <th>제품식별코드</th>
-										                <th>창고</th>
-										                <th>수량</th>
-										            </tr>
-										        </thead>
-										        <tbody id="stockListBody">
-										            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
-										        </tbody>
-										    </table>
-										</div>
-									</div>
+								<div class="row">
 								<div class="col-md-12">
 									<form id="transferForm" action="" method="post">
 									
@@ -111,7 +113,7 @@
 												<select class="form-select" id="prod_id" name="prod_id" required>
 													<option value="">제품식별코드</option>
 												</select>
-												<label for="prod_id" class="selectFloatingLabel" >제품식별코드</label>
+												<label for="prod_id" class="selectFloatingLabel" style="font-size: 1.3rem !important;" >제품식별코드</label>
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
 													value="테스터1" placeholder="등록작업자" />
 												<input type="hidden" id="prod_upduser" name="prod_upduser" 
@@ -121,17 +123,17 @@
 												<select class="form-select" id="wh_number" name="wh_number" required disabled>
 													<option value="">창고</option>
 												</select>
-												<label for="wh_number" class="selectFloatingLabel">창고</label>
+												<label for="wh_number" class="selectFloatingLabel" style="font-size: 1.3rem !important;">창고</label>
 											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="number" class="form-control" 
 													id="prod_qty" name="prod_qty" min="0" max="#" readonly required/>
-												<label for="prod_qty" class="col-form-label-lg">수량</label>
+												<label for="prod_qty" class="col-form-label-lg" style="font-size: 1.3rem !important;">수량</label>
 												<input type="hidden" id="current_qty" name="current_qty" value="#">
 											</div>
 										</div>
 										
-										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
+										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px; align-items: center;">
 											 <div style="flex: 1;">
 											 	<img id="prod_image" src="#">
 											 </div>
@@ -139,12 +141,30 @@
 												<select class="form-select" id="stock_wh" name="stock_wh" required disabled>
 													<option value="">창고</option>
 												</select>
-												<label for="stock_wh" class="selectFloatingLabel">창고</label>
+												<label for="stock_wh" class="selectFloatingLabel" style="font-size: 1.3rem !important;">창고</label>
 											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="number" class="form-control" 
 													id="stock_qty" name="stock_qty" placeholder="수량" min="0" max="#" required/>
-												<label for="stock_qty" class="col-form-label-lg">이동 수량</label>
+												<label for="stock_qty" class="col-form-label-lg" style="font-size: 1.3rem !important;">이동 수량</label>
+											</div>
+										</div>
+										<div class="row d-flex justify-content-center">
+											<div class="col-md-8">
+												<div class="card-body">
+						                         	 <table class="table table-hover" id="stockList" style="display: none;">
+												        <thead>
+												            <tr>
+												                <th>제품식별코드</th>
+												                <th>창고</th>
+												                <th>수량</th>
+												            </tr>
+												        </thead>
+												        <tbody id="stockListBody">
+												            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
+												        </tbody>
+												    </table>
+												</div>
 											</div>
 										</div>
 										<div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
@@ -232,7 +252,7 @@ $(document).ready(function () {
 				$('#prod_id').empty();
 				$('#prod_id').append('<option value="">제품식별코드 선택</option>');
 				$.each(data, function(index, p) {
-					$('#prod_id').append('<option value="' + p.prod_id + '">' + p.prod_id + ' - ' + p.prod_name + '</option>');
+					$('#prod_id').append('<option value="' + p.prod_id + '">' + p.prod_id + ' - ' + p.prod_name + ' - ' + p.prod_brand + '</option>');
 				});
 				
 				$('#prod_id').off('change').on('change',function() {
@@ -261,7 +281,7 @@ $(document).ready(function () {
 								$.each(data, function(index, item) {
 									$('#stockListBody').append(
 										'<tr>' +
-											'<td>' + item.prod_id + '</td>' +
+											'<td>' + item.prod_id +' - '+ item.prod_name +' - '+ item.prod_brand + '</td>' +
 											'<td>' + item.wh_number + '</td>' +
 											'<td>' + item.prod_qty + '</td>' +
 										'</tr>'
@@ -337,7 +357,7 @@ $(document).ready(function () {
 					        
 							$.each(response, function(index, s) {
 								if (s.wh_number != selectedWh) {
-									$('#stock_wh').append('<option value="' + s.wh_number + '">' + s.wh_number + ' - ' + s.wh_name + ' - ' + s.wh_location + '</option>');
+									$('#stock_wh').append('<option value="' + s.wh_number + '">' + s.wh_number + ' - ' + s.wh_name + ' - ' + s.wh_location + ' - ' + s.wh_dt_location + '</option>');
 								}
 							});
 					
@@ -429,6 +449,7 @@ $(document).ready(function () {
 	        	$('#stock_wh').append('<option value="">창고 선택</option>');
 	        	$('#prod_image').prop('src', '');
 	        	$('#prod_image').css('visibility', 'hidden');
+	        	$('#stockList').hide();
 	        	$('#stockListBody').empty();
 	        	
 	            swal({

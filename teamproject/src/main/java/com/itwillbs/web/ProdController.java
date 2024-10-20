@@ -2,12 +2,16 @@ package com.itwillbs.web;
 //@RequestMapping(value = "/member/*")
 //	--> 특정 동작의 형태를 구분 (*.me, *.bo, *.do)
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +23,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.oned.Code128Writer;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.itwillbs.domain.ProdVO;
 import com.itwillbs.persistence.ProdDAO;
 import com.itwillbs.service.ProdService;
@@ -108,6 +119,29 @@ public class ProdController {
 	    return ResponseEntity.ok(response);
 	}
 	
+	// 제품 바코드
+    @PostMapping("/genCode")
+    public void generateCode(@RequestParam String prod_id, @RequestParam String option,
+    		HttpServletResponse res) throws IOException, WriterException {
+        
+    	BufferedImage image = null;
+
+        if ("barcode".equals(option)) {
+            Code128Writer barcodeWriter = new Code128Writer();
+            BitMatrix bitMatrix = barcodeWriter.encode(prod_id, BarcodeFormat.CODE_128, 300, 100);
+            image = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        } else if ("qrcode".equals(option)) {
+            QRCodeWriter qrCodeWriter = new QRCodeWriter();
+            BitMatrix bitMatrix = qrCodeWriter.encode(prod_id, BarcodeFormat.QR_CODE, 300, 300);
+            image = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        }
+
+        res.setContentType("image/png");
+        ImageIO.write(image, "PNG", res.getOutputStream());
+    }
+
+	
+	
 	
 	// 제품 수정
 	@PostMapping(value = "/update")
@@ -161,7 +195,7 @@ public class ProdController {
 	    return ResponseEntity.ok(transferListVO);
 	}
 	
-	// 재고 이동 정보(post)
+	// 재고 이동 제품 창고 정보(post)
 	@PostMapping(value = "/transferFind")
 	@ResponseBody
 	public ResponseEntity<List<ProdVO>>transferFindPost(@RequestBody ProdVO vo) {
@@ -191,6 +225,43 @@ public class ProdController {
 
 	    return ResponseEntity.ok(transferList3VO);
 	}
+	
+	
+	// 재고 알람 설정(GET)
+	// http://localhost:8088/prod/stockalert
+	@GetMapping(value = "/stockalert")
+	public void stockalertGet(Model model) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : stockalertGet() 실행 ");
+		List<ProdVO> stockList = pService.setStockList();
+		logger.debug(" ( •̀ ω •́ )✧ stockList : "+stockList.size());
+		model.addAttribute("stockList",stockList);
+	}
+
+	// 재고 알람 리스트(POST)
+	@PostMapping(value = "/stockalertdata")
+	@ResponseBody
+	public ResponseEntity<List<ProdVO>> stockalertGet() {
+		logger.debug("( •̀ ω •́ )✧ ProdController : stockalertGet() 실행 ");
+		List<ProdVO> stockList = pService.setStockList();
+		logger.debug(" ( •̀ ω •́ )✧ stockList : "+stockList.size());
+		return ResponseEntity.ok(stockList);
+	}
+
+	// 재고 알람 설정(POST)
+	@PostMapping(value = "/stockalert")
+	public String stockalertPost(ProdVO vo, RedirectAttributes rttr) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : stockalertPost() 실행 ");
+		
+		int result = pService.setStock(vo);
+		if(result > 0) {
+			rttr.addFlashAttribute("trans_message", "적정재고수량 알람이 설정되었습니다");
+		} else {
+			rttr.addFlashAttribute("trans_error", "적정재고수량 알람 설정에 실패했습니다");
+		}
+		return "redirect:/prod/stockalert";
+	}
+	
+	
 	
 	
 	

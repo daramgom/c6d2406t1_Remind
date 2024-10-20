@@ -59,9 +59,11 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String snsLogin(Model model) {
 		logger.info(" Login page ");
-		SNSLogin snsLogin = new SNSLogin(naverSns);
-		
-		model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
+		/*
+		 * SNSLogin snsLogin = new SNSLogin(naverSns);
+		 * 
+		 * model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
+		 */
 		
 		return "login";
 	}

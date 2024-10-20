@@ -8,7 +8,7 @@
  <!-- 발주 요청 정보 입력 -->
     <insert id="insert">
     	insert into orders(ord_delete_status,ord_status, ord_manager_id, ord_supervisor_id, prod_id, ord_price, ord_quantity, ord_date, ord_date_change, company_code, ord_text, wh_number,ord_number,ord_count) 
-    	values ('01','01',#{ord_manager_id},#{ord_supervisor_id},#{prod_id},#{ord_price},#{ord_quantity},now(),now(),#{company_code},#{ord_text},#{wh_number},
+    	values ('01','01',#{ord_manager_id},#{ord_supervisor_id},#{prod_id},#{ord_price},#{ord_quantity},now(),now(),#{company_code},#{ord_text},#{wh_number}, 
     	(SELECT CONCAT('ORD-', YEAR(CURRENT_DATE), '-', LPAD(IFNULL(MAX(SUBSTRING(ord_number, -4)), 0) + 1, 4, '0')) 
          FROM (SELECT ord_number FROM orders WHERE ord_number LIKE CONCAT('ORD-', YEAR(CURRENT_DATE), '%')) AS temp), 
          (SELECT COALESCE(MAX(ord_count), 0) + 1 FROM (SELECT ord_count FROM orders) AS temp2))
@@ -22,9 +22,23 @@
 	    </update>
     
  <!-- 발주 전체 목록 조회 -->
- 	<select id="listOrder" resultType="OrdersVO">
+ 	<!-- <select id="listOrder" resultType="OrdersVO">
  		select * from orders 
  		where ord_delete_status = '01'
+ 	</select> -->
+ 	
+ 	<select id="listOrder" resultType="OrdersVO">
+ 		select * 
+		from orders o, member m, prod p, company cp, departments d, warehouse w, common cm 
+		where o.ord_manager_id = m.member_id 
+		and o.prod_id = p.prod_id 
+		and o.company_code = cp.company_code 
+		and m.department_id = d.department_id 
+		and o.wh_number = w.wh_number 
+		and o.ord_status = cm.common_value 
+		and cm.common_work = 'ord_status' 
+		and ord_delete_status = '01' 
+		order by ord_count
  	</select>
  	
  <!-- 발주 기안 목록 조회 -->	<!-- 미구현 -->
@@ -122,6 +136,35 @@
             wh_number = #{wh_number} 
         WHERE ord_count = #{ord_count}
  </update>
+ 
+ 
+ <!-- 발주 승인자 목록 조회 -->
+ <select id="listSupervisor" resultType="OrdersVO">
+ 	select m.member_id, m.member_name, d.department_name, c.common_status, m.member_tel 
+	from departments d, member m, common c 
+	where d.department_id = m.department_id 
+	and m.employee_rank = c.common_value 
+	and common_work = 'emp_rank' 
+	and m.permission_id = '02' 
+	and m.member_state = '01' 
+	and m.approval_status = '02'
+ </select>
+ <!-- 발주 제품 목록 조회 -->
+ <select id="listProd" resultType="OrdersVO">
+ 	select p.prod_id, p.prod_name, p.prod_category, p.prod_brand, c.company_code, c.company_name, c.company_tel 
+	from prod p, company c 
+	where p.company_code = c.company_code 
+	and prod_status = '01'
+ </select>
+ <!-- 발주 창고 목록 조회 -->
+ <select id="listWarehouse" resultType="OrdersVO">
+	 select w.wh_number, w.wh_name, w.wh_location, w.wh_admin, m.member_name, m.member_tel 
+	 from warehouse w, member m 
+	 where w.wh_admin = m.member_id
+ </select>
+ 
+ 
+ 
  
  
  <!-- 발주 목록에서검색 기능 -->  <!-- 구현중 -->

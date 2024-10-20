@@ -5,14 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항 수정</title>
-
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/resources/css/plugins.min.css" />
-    <link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
 </head>
 <body>
     <div class="wrapper">
@@ -39,21 +38,21 @@
                                 <form id="noticeEditForm" action="${pageContext.request.contextPath}/notice/edit" method="post">
                                     <div class="form-group">
                                         <label for="no" class="col-form-label">공지사항 ID</label>
-                                        <input type="text" class="form-control" id="no" name="no" required />
+                                        <input type="text" class="form-control" id="no" name="no" value="${notice.no}" readonly required />
                                     </div>
                                     <div class="form-group">
                                         <label for="title" class="col-form-label">제목</label>
-                                        <input type="text" class="form-control" id="title" name="title" required />
+                                        <input type="text" class="form-control" id="title" name="title" value="${notice.title}" required />
                                     </div>
                                     <div class="form-group">
                                         <label for="content" class="col-form-label">내용</label>
-                                        <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+                                        <textarea class="form-control" id="content" name="content" rows="5" required>${notice.content}</textarea>
                                     </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-success">공지사항 수정</button>
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <button type="submit" class="btn btn-success me-2">공지사항 수정</button>
                                         <form action="${pageContext.request.contextPath}/notice/delete" method="post" style="display:inline;">
-                                            <input type="hidden" name="no" id="deleteNo" value="${notice.no}" />
-                                            <button type="submit" class="btn btn-danger">삭제</button>
+                                            <input type="hidden" name="no" value="${notice.no}" />
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
                                         </form>
                                         <a href="${pageContext.request.contextPath}/notice/list" class="btn btn-secondary">목록으로</a>
                                     </div>
@@ -70,7 +69,7 @@
     </div>
 
     <!-- Core JS Files -->
-    <script src="/resources/js/core/jquery-3.7.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/core/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

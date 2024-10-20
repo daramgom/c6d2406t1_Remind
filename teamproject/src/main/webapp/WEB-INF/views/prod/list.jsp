@@ -15,17 +15,17 @@
 <style>
 
     #multi-filter-select thead th {
-        background-color: #0d6efd; /* 원하는 색상으로 변경 */
+        background-color: #0d6efd;
         color: white;
     }
     
     .table td {
-    	font-size: 1.15rem !important;
+    	font-size: 1.3rem !important;
     	text-align: center;
     }
     
     .table th {
-    	font-size: 1.25rem !important;
+    	font-size: 1.35rem !important;
     	text-align: center;
     }
     
@@ -58,7 +58,7 @@
 	}
 	
 	#prodUpdateForm label {
-	 	font-size: 18px !important;
+	 	font-size: 16px !important;
 	}
 	
 	#prodUpdateForm input {
@@ -342,12 +342,34 @@
 										name="uploadfile" 
 										accept=".jpeg, .jpg, .png, .gif" />
                                   </div>
-                                </div>
-								<div class="col-md-4" style="display: flex; align-items: center;">
+									<div class="form-group-default"> 
+										<div class="d-flex justify-content-center">
+											<div class="form-check d-flex align-items-center">
+												<input class="form-check-input" type="radio" name="prod_option" id="prod_barcode" value="barcode">
+												<label class="form-check-label" for="prod_barcode">바코드</label>
+											</div>
+											<div style="flex:1">
+											</div>
+											<div class="form-check d-flex align-items-center">
+												<input class="form-check-input" type="radio" name="prod_option" id="prod_qrcode" value="qrcode">
+												<label class="form-check-label" for="prod_qrcode">QR코드</label>
+											</div>
+											<div style="flex:1">
+											</div>
+										</div>
+										<div class="d-flex align-items-center justify-content-center">
+											<img id="codeImage" alt="#" src="#" 
+											style="width: #; height: #; margin-bottom: 10px; display: none; object-fit: contain;">
+										</div>
+									</div>
+                               </div>
+								<div class="col-md-4" style="display: flex;">
 									<div class="preview">
 										<img id="previewimg" alt="미리보기이미지" src="#"/>
 									</div>
+									<div style="margin-top:10px;">
 										<button class="btn btn-black btn-border btn-sm" id="image_delete">이미지제거</button>
+									</div>
 								</div>
 								<input type="hidden" id="prod_image" name="prod_image">
 								<input type="hidden" id="temp_image" name="temp_image">
@@ -479,7 +501,7 @@
 	                .data()
 	                .unique()
 	                .sort()
-	                .each(function (d, j) {
+	                .each(function (d, j){
                 		select.append(
                     		'<option value="' + d + '">' + d + "</option>"
                     	);
@@ -606,7 +628,7 @@
         
         
         $('#prodUpdateForm').on('submit', function (e) {
-            e.preventDefault(); // 기본 제출 이벤트 방지
+			e.preventDefault(); // 기본 제출 이벤트 방지
             
             $("#prodUpdate").prop('disabled', true);
             
@@ -709,12 +731,48 @@
 		});
 	});
     // 제품정보 삭제
-     
+    
+    
+    // 바코드, QR코드 생성
+	$('input[name="prod_option"]').on('change', function() {
+		var selectedOption = $(this).val();
+		var prod_id = $("#prod_id").val();
+		
+		$.ajax({
+			url: '/prod/genCode', // 컨트롤러의 URL로 변경
+			type: 'POST',
+			data: { option: selectedOption,
+					prod_id: prod_id
+			},
+			xhrFields: {
+				responseType: 'blob'
+			},
+			success: function(response) {
+				var url = URL.createObjectURL(response);
+				if(selectedOption == 'barcode'){
+					$('#codeImage').attr('src', url).attr('style', 'width: 300px; height: 100px; margin: 10px;').show();
+				} else if (selectedOption == 'qrcode') {
+					$('#codeImage').attr('src', url).attr('style', 'width: 200px; height: 200px;').show();
+				}
+			},
+			error: function(error) {
+				console.error('Error:', error);
+			}
+		});
+	});
+    // 바코드, QR코드 생성
+    
+    // 모달 닫힐때 바코드 초기화
+	$("#prodModal").on('hidden.bs.modal', function() {
+		$("#codeImage").attr('src',"").hide();
+		$("input[name='prod_option']").prop('checked', false);
+	});
+    // 모달 닫힐때 바코드 초기화
     
     
     
-      });//jquery DOM 준비
-    </script>
+});//jquery DOM 준비
+</script>
   
 	
 	

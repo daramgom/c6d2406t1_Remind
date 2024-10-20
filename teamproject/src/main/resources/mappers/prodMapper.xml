@@ -45,7 +45,7 @@
 </select>
 
 <select id="findProdList" resultType="ProdVO">
-	select p.prod_id, s.wh_number, s.prod_qty, w.wh_name, w.wh_location, w.wh_dt_location
+	select p.prod_id, p.prod_name, p.prod_brand, s.wh_number, s.prod_qty, w.wh_name, w.wh_location, w.wh_dt_location
 	 from prod p join stock s on p.prod_id = s.prod_id join warehouse w on s.wh_number = w.wh_number
       where p.prod_id = #{prod_id} and p.prod_status != '02'
 </select>
@@ -93,8 +93,8 @@
 </insert>
 
 <select id="transferSelect" resultType="ProdVO">
-	select distinct p.prod_id, p.prod_name, p.prod_image
-	 from prod p
+	select distinct p.prod_id, p.prod_name, p.prod_image, p.prod_brand 
+	 from prod p 
 	  join stock s on p.prod_id = s.prod_id 
 	   where p.prod_status != '02'
 </select>
@@ -113,7 +113,22 @@
 <!-- 재고 이동 -->
 
 
+<!-- 재고 알람 설정 -->
+<update id="setStock">
+	update prod  
+	 set prod_stock = #{prod_stock} 
+	  where prod_id = #{prod_id}
+</update>
 
+<select id="setStockList" resultType="ProdVO">
+	select p.prod_id, p.prod_name, 
+	 p.prod_brand, p.prod_image, coalesce(sum(s.prod_qty), 0) as prod_qty, p.prod_stock
+	   from prod p 
+		join stock s on p.prod_id = s.prod_id
+	     where p.prod_status != '02' 
+	      group by p.prod_id;
+</select>
+<!-- 재고 알람 설정 -->
 
 
 

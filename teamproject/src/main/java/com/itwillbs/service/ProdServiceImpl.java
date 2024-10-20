@@ -136,8 +136,25 @@ public class ProdServiceImpl implements ProdService {
 	// 재고이동선택3
 	@Override
 	public List<ProdVO> transferSelect3() {
+		logger.debug("( •̀ ω •́ )✧ Service : transferSelect3() 실행 ");
 		return pdao.transferSelect3();
 	}
+	
+	
+	// 재고알람설정
+	@Override
+	public int setStock(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ Service : setStock(ProdVO vo) 실행 ");
+		return pdao.setStock(vo);
+	}
+	
+	// 재고알람목록
+	@Override
+	public List<ProdVO> setStockList() {
+		logger.debug("( •̀ ω •́ )✧ Service : setStockList() 실행 ");
+		return pdao.setStockList();
+	}
+	
 	
 	
 	// ***** 메서드 목록 *****
@@ -161,9 +178,7 @@ public class ProdServiceImpl implements ProdService {
 	 }
 	// 제품식별코드 생성
 	
-	
 	// 이미지 업로드
-	// 이미지 업로드 처리후 파일 경로를 prod_image에 전달하려고 함
 	public void imageUpload(ProdVO vo, HttpServletRequest req) {
 	
 		String uploadDir = req.getRealPath("/uploads");
@@ -230,7 +245,7 @@ public class ProdServiceImpl implements ProdService {
 			}
 		} else {
 			logger.debug("( •̀ ω •́ )✧ imageUpload(ProdVO vo, HttpServletRequest req) 실행 : 이미지가 변경되지 않음 ");
-			if(vo.getProd_image().isEmpty()) {
+			if(vo.getProd_image() != null && vo.getProd_image().isEmpty()) { // uploadfile이 없고 prod_image가 비어있는 상태 --> 이미지 제거
 				try { // 이미지 수정시 파일삭제
 		            // VO에서 파일 경로 가져오기
 		            String curFilePath = vo.getTemp_image().replaceFirst("/uploads", "");
@@ -247,18 +262,15 @@ public class ProdServiceImpl implements ProdService {
 		        } catch (IOException e) {
 		        	logger.debug("( •̀ ω •́ )✧ 파일 삭제중 오류발생");
 		        }
+			} else if(vo.getProd_image() == null) {
+				logger.debug("( •̀ ω •́ )✧ prod_image = null");
 			}
 		}
 	}
 	// 이미지 업로드
-	
-	
-	
-	
-	
-	
-	
 	// ***** 메서드 목록 *****
+
+
 	
 	
 	

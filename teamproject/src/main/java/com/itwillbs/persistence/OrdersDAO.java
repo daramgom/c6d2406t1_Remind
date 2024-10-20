@@ -22,5 +22,11 @@ public interface OrdersDAO {
 	
 	void updateOrder02(OrdersVO ordersVO);
 	
+	public List<OrdersVO> listManager();
 	
+	public List<OrdersVO> listSupervisor();
+	
+	public List<OrdersVO> listProd();
+	
+	public List<OrdersVO> listWarehouse();
 }

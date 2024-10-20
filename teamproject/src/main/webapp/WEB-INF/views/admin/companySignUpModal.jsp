@@ -446,21 +446,21 @@
      });
      
      $("#userEmailBtn").click(function () {
-         var member_id = $("#username").val().trim();
+         var member_email = $("#useremail").val().trim();
 
          $.ajax({
              url: "admin/checkUserEamil",
              type: "POST",
              contentType: "application/json",
              data: JSON.stringify({
-                 member_id: member_id,
+            	 member_email:  member_email,
              }),
              success: function (response) {
-                 if ("사용가능한 아이디 입니다!" === response.message) {
+                 if ("사용 가능한 이메일입니다." === response.message) {
                      showSuccessAlert("요청성공!", response.message); // 사용가능한 아이디 입니다.
                      isUsernameAvailable = true; // 상태 업데이트
-                     $("#userIdBtn").prop("disabled", true);
-                     $("#username").prop("readonly", true);
+                     $("#userEmailBtn").prop("disabled", true);
+                     $("#useremail").prop("readonly", true);
                  } else {
                      showErrorAlert(response.message); // 중복된 아이디 입니다.
                      isUsernameAvailable = false; // 상태 업데이트

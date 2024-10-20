@@ -158,8 +158,11 @@ pageEncoding="UTF-8"%>
             display: none;
             position: fixed;
             z-index: 1000;
-            left: 0;
             top: 0;
+		    bottom: 0;
+		    left: 0;
+		    right: 0;
+		    margin: auto;
             width: 100%;
             height: 100%;
             overflow: auto;
@@ -923,8 +926,8 @@ pageEncoding="UTF-8"%>
 			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >제품식별코드</th>
 			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 금액</th>
 			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 수량</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 일자</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 수정 일자</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 최초 기안 시간</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 상태별 시간</th>
 			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >거래처 코드</th>
 			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >입고 예정 창고</th>
 		                    <!-- <th>비고</th> -->
@@ -932,27 +935,95 @@ pageEncoding="UTF-8"%>
 		                </tr>
 		             </thead>
 		             <tbody>
+						 	<c:forEach var="o" items="${oListVO }">
 		 
-						 <c:forEach var="o" items="${oListVO }">
-						 	<tr role="row" class="odd" onclick="openModal('${o.ord_count}', '${o.ord_number}', '${o.ord_status}', '${o.ord_manager_id}', '${o.ord_supervisor_id}', '${o.prod_id}', '${o.ord_price}', '${o.ord_quantity}', '${o.ord_date}', '${o.ord_date_change}', '${o.company_code }', '${o.ord_text}', '${o.wh_number}')">
+							<c:forEach var="m" items="${mListVO }">
+								<c:if test="${m.member_id == o.ord_manager_id}">
+									<c:set var="manager_member_name" value="${m.member_name }" />
+									<c:set var="manager_department_name" value="${m.department_name }" />
+									<c:set var="manager_common_status" value="${m.common_status }" />
+									<c:set var="manager_member_tel" value="${m.member_tel }" />
+								</c:if>
+							</c:forEach>
+							
+							<c:forEach var="s" items="${sListVO }">
+								<c:if test="${s.member_id == o.ord_supervisor_id}">
+									<c:set var="supervisor_member_name" value="${s.member_name }" />
+									<c:set var="supervisor_department_name" value="${s.department_name }" />
+									<c:set var="supervisor_common_status" value="${s.common_status }" />
+									<c:set var="supervisor_member_tel" value="${s.member_tel }" />
+								</c:if>
+							</c:forEach>
+							
+							<c:forEach var="p" items="${pListVO }">
+							   <c:if test="${p.prod_id == o.prod_id}">
+						           <c:set var="prod_name" value="${p.prod_name}" />
+						           <c:set var="prod_category" value="${p.prod_category}" />
+						           <c:set var="prod_brand" value="${p.prod_brand}" />
+						           <c:set var="company_name" value="${p.company_name}" />
+						           <c:set var="company_tel" value="${p.company_tel}" />
+						       </c:if>
+							</c:forEach>
+							
+							<c:forEach var="w" items="${wListVO }">
+							   <c:if test="${w.wh_number == o.wh_number}">
+						           <c:set var="wh_name" value="${w.wh_name}" />
+						           <c:set var="wh_location" value="${w.wh_location}" />
+						           <c:set var="wh_admin" value="${w.wh_admin}" />
+						           <c:set var="wh_member_name" value="${w.member_name}" />
+						           <c:set var="wh_member_tel" value="${w.member_tel}" />
+						       </c:if>
+							</c:forEach>
+							
+						 	<tr role="row" class="odd" 
+						 	onclick="openModal(
+						 	'${o.ord_count}', '${o.ord_number}', '${o.common_status }', '${o.ord_status}', 
+						 	'${o.ord_manager_id}', '${manager_member_name}', '${manager_department_name}', '${manager_common_status}', '${manager_member_tel}',
+						 	'${o.ord_supervisor_id}', '${supervisor_member_name}', '${supervisor_department_name}', '${supervisor_common_status}', '${supervisor_member_tel}',
+						 	'${o.prod_id}', '${prod_name }', '${prod_category }', '${prod_brand }', 
+						 	'${o.ord_price}', '${o.ord_quantity}', 
+						 	'${o.formattedOrdDate}', '${o.formattedOrdDateChange}', 
+						 	'${o.company_code }', '${company_name }', '${company_tel }', 
+						 	'${o.ord_text}', 
+						 	'${o.wh_number}', '${wh_name }', '${wh_location}', '${wh_admin}', '${wh_member_name}', '${wh_member_tel}')">
 						 
 								<td class="sorting_1">${o.ord_count}</td>
 		                        <td>${o.ord_number}</td>
-		                        <td>${o.ord_status}</td>
+		                        <td>${o.common_status }</td>
+		                        <td style="display: none;">${o.ord_status}</td>
 		                        <td>${o.ord_manager_id}</td>
+		                        <td style="display: none;">${manager_member_name}</td>
+		                        <td style="display: none;">${manager_department_name}</td>
+		                        <td style="display: none;">${manager_common_status}</td>
+		                        <td style="display: none;">${manager_member_tel}</td>
 		                        <td>${o.ord_supervisor_id}</td>
+		                        <td style="display: none;">${supervisor_member_name}</td>
+		                        <td style="display: none;">${supervisor_department_name}</td>
+		                        <td style="display: none;">${supervisor_common_status}</td>
+		                        <td style="display: none;">${supervisor_member_tel}</td>
 		                        <td>${o.prod_id}</td>
+		                        <td style="display: none;">${prod_name}</td>
+		                        <td style="display: none;">${prod_category}</td>
+		                        <td style="display: none;">${prod_brand}</td>
 		                        <td>${o.ord_price}</td>
 		                        <td>${o.ord_quantity}</td>
-		                        <td>${o.ord_date}</td>
-		                        <td>${o.ord_date_change}</td>
+		                        <td>${o.formattedOrdDate}</td>
+		                        <td>${o.formattedOrdDateChange}</td>
 		                        <td>${o.company_code}</td>
+		                        <td style="display: none;">${company_name}</td>
+		                        <td style="display: none;">${company_tel}</td>
 		                        <%-- <td>${o.ord_text}</td> --%>
 		                        <td>${o.wh_number}</td>
+		                        <td style="display: none;">${wh_name}</td>
+		                        <td style="display: none;">${wh_location}</td>
+		                        <td style="display: none;">${wh_admin}</td>
+		                        <td style="display: none;">${wh_member_name}</td>
+		                        <td style="display: none;">${wh_member_tel}</td>
+		                        
 		                        <%-- <td>${o.ord_delete_status }</td> --%>
 		                        
 		                    </tr>
-						  
+		                    
 						 </c:forEach>
 						 
 		 			</tbody>
@@ -1058,37 +1129,92 @@ pageEncoding="UTF-8"%>
 
 
 <!-- 모달 -->
-    <div id="orderModal" class="modal">
+    <div id="orderModal" class="modal" style="width:1200px;" >
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
 	            <h2>발주 상세 정보</h2>
 	            <form action="" id="orderForm" method="post" name="orderForm">
-		            <label>순번:</label>
-		            <input type="text" id="modalOrdCount" name="ord_count" readonly="readonly" class="form-control" style="width:200px;" /><br>
-		            <label>발주 관리 번호:</label>
-		            <input type="text" id="modalOrdNumber" name="ord_number" readonly="readonly" class="form-control" style="width:200px;" /><br>
- 		            <label>발주 상태:</label>
- 		            <input type="text" id="modalOrdStatus" name="ord_status" readonly="readonly" class="form-control" style="width:200px;" /><br>
-		            <label>발주 담당자:</label>
-		            <input type="text" id="modalOrdManagerId" name="ord_manager_id" readonly="readonly" class="form-control" style="width:200px;" /><br>
-		            <label>발주 승인 담당자:</label>
-		            <input type="text" id="modalOrdSupervisorId" name="ord_supervisor_id" readonly="readonly" class="form-control" style="width:200px;" /><br>
-		            <label>제품식별코드:</label>
-		            <input type="text" id="modalProdId" name="prod_id" class="form-control" style="width:200px;" /><br>
-		            <label>발주 금액:</label>
-		            <input type="text" id="modalOrdPrice" name="ord_price" class="form-control" style="width:200px;" /><br>
-		            <label>발주 수량:</label>
-		            <input type="text" id="modalOrdQuantity" name="ord_quantity" class="form-control" style="width:200px;" /><br>
-		            <label>발주 일자:</label>
-		            <input type="text" id="modalOrdDate" name="ord_date" class="form-control" style="width:200px;" /><br>
-		            <label>발주 수정 일자:</label>
-		            <input type="text" id="modalOrdDateChange" name="ord_date_change" class="form-control" style="width:200px;" /><br>
-		            <label>거래처 코드:</label>
-		            <input type="text" id="modalCompanyCode" name="company_code" class="form-control" style="width:200px;" /><br>
-		            <label>입고 예정 창고:</label>
-		            <input type="text" id="modalWhNumber" name="wh_number" class="form-control" style="width:200px;" /><br>
+	            	<div style="display: flex; gap: 10px;">
+	            		<label>순번 : </label>
+			            <input type="text" id="modalOrdCount" name="ord_count" readonly="readonly" class="form-control" style="width:200px;" />
+			            <label>발주 관리 번호 : </label>
+			            <input type="text" id="modalOrdNumber" name="ord_number" readonly="readonly" class="form-control" style="width:200px;" />
+			            <label>발주 상태 : </label>
+	 		            <input type="text" id="modalCommonStatus" name="common_status" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" /><br>
+	 		            <input type="hidden" id="modalOrdStatus" name="ord_status" readonly="readonly" class="form-control" style="width:200px;" /><br>
+ 		            </div>
+ 		            
+ 		            <div style="display: flex; gap: 10px;">
+		            	<label>발주 담당자:</label>
+		            </div>
+		            <div style="display: flex; gap: 10px;">
+		            	<input type="text" id="modalOrdManagerId" name="ord_manager_id" readonly="readonly" class="form-control" style="width:200px;" /><br>
+		            	<input type="text" id="modalManagerMemberName" name="manager_member_name" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
+		            	<input type="text" id="modalManagerDepartmentName" name="manager_department_name" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
+		            	<input type="text" id="modalManagerCommonStatus" name="manager_common_status" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
+		            	<input type="text" id="modalManagerMemberTel" name="manager_member_tel" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
+		            </div>
+		            
+		            <div style="display: flex; gap: 10px;">
+		            	<label>발주 승인 담당자:</label>
+		            </div>
+		            <div style="display: flex; gap: 10px;">
+		            	<input type="text" id="modalOrdSupervisorId" name="ord_supervisor_id" readonly="readonly" class="form-control" style="width:200px;" /><br>
+		            	<input type="text" id="modalSupervisorMemberName" name="supervisor_member_name" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
+		            	<input type="text" id="modalSupervisorDepartmentName" name="supervisor_department_name" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
+		            	<input type="text" id="modalSupervisorCommonStatus" name="supervisor_common_status" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
+		            	<input type="text" id="modalSupervisorMemberTel" name="supervisor_member_tel" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
+		            </div>
+		            
+		            <div style="display: flex; gap: 10px;">
+			            <label>제품식별코드 / 제품 이름 / 제품 카테고리 / 제품 브랜드 / 거래처코드 / 거래처 이름 / 거래처 전화번호</label>
+		            </div>
+		            <div style="display: flex; gap: 10px;">
+			            <!-- <input type="text" id="modalProdId" name="prod_id" class="form-control" style="width:200px;" /><br>
+			            <input type="text" id="modalCompanyCode" name="company_code" class="form-control" style="width:200px;" /><br> -->
+			            <select id="prod_id" name="prod_id" class="form-select form-control" required="required" style="width:600px;">
+							<option value="" >목록에서 값을 확인 후 선택하세요</option>
+							<c:forEach var="p" items="${pListVO }">
+								<option id="modalProdId" value="${p.prod_id }">${p.prod_id} / ${p.prod_name } / ${p.prod_category } / ${p.prod_brand } / ${p.company_code } / ${p.company_name } / ${p.company_tel }</option>
+							</c:forEach>
+						</select>
+		            </div>
+		            
+		            <div style="display: flex; gap: 10px;">
+		            	<label>발주 금액 : </label>
+			            <input type="text" id="modalOrdPrice" name="ord_price" class="form-control" style="width:200px;" />
+			            <label>발주 수량 : </label>
+			            <input type="text" id="modalOrdQuantity" name="ord_quantity" class="form-control" style="width:200px;" />
+		            </div>
+		            
+		            <div style="display: flex; gap: 10px;">
+		            	<label>발주 최초 기안 시간 : </label>
+			            <input type="text" id="modalOrdDate" readonly="readonly" name="ord_date" class="form-control" style="width:200px;" />
+			            <label>발주 상태별 시간 : </label>
+			            <input type="text" id="modalOrdDateChange" readonly="readonly" name="ord_date_change" class="form-control" style="width:200px;" />
+		            </div>
+		            
+		            <div style="display: flex; gap: 10px;">
+		            	<label>입고 예정 창고 번호 / 이름 / 위치 / 관리자ID / 관리자 이름 / 관리자 전화번호</label>
+		            </div>
+		            <div style="display: flex; gap: 10px;">
+			            <!-- <input type="text" id="modalWhNumber" name="wh_number" class="form-control" style="width:200px;" />
+			            <input type="text" id="modalWhName" name="wh_name" readonly="readonly" class="form-control" style="width:200px;" />
+			            <input type="text" id="modalWhLocation" name="wh_location" readonly="readonly" class="form-control" style="width:200px;" />
+			            <input type="text" id="modalWhAdmin" name="wh_admin" readonly="readonly" class="form-control" style="width:200px;" />
+			            <input type="text" id="modalWhMemberName" name="wh_member_name" readonly="readonly" class="form-control" style="width:200px;" />
+			            <input type="text" id="modalWhMemberTel" name="wh_member_tel" readonly="readonly" class="form-control" style="width:200px;" /><br> -->
+			            
+			            <select id="wh_number" name="wh_number" class="form-select form-control" required="required" style="width:500px;">
+							<option value="" >목록에서 값을 확인 후 선택하세요</option>
+							<c:forEach var="w" items="${wListVO }">
+								<option id="modalWhNumber" value="${w.wh_number }">${w.wh_number } / ${w.wh_name } / ${w.wh_location } / ${w.wh_admin } / ${w.member_name } / ${w.member_tel }</option>
+							</c:forEach>
+						</select>
+			        </div>    
+			            
 		            <label>비고:</label>
-		            <textarea class="form-control" id="modalOrdText" name="ord_text" class="form-control" ></textarea><br>
+		            <textarea class="form-control" id="modalOrdText" name="ord_text" class="form-control" style="width:750px;" ></textarea><br>
 		            <!-- <label>삭제 상태:</label> -->
 		            <input type="hidden" id="modalOrdDeleteStatus" name="ord_delete_status" /><br>
 	            </form>
@@ -1103,21 +1229,46 @@ pageEncoding="UTF-8"%>
 <script>
 	
 	
-    function openModal(ord_count, ord_number, ord_status, ord_manager_id, ord_supervisor_id, prod_id, ord_price, ord_quantity, ord_date, ord_date_change, company_code, ord_text, wh_number, ord_delete_status) {
+    function openModal(ord_count, ord_number, common_status, ord_status, 
+    		ord_manager_id, manager_member_name, manager_department_name, manager_common_status, manager_member_tel, 
+    		ord_supervisor_id, supervisor_member_name, supervisor_department_name, supervisor_common_status, supervisor_member_tel, 
+    		prod_id, prod_name, prod_category, prod_brand, 
+    		ord_price, ord_quantity, ord_date, ord_date_change, 
+    		company_code, company_name, company_tel, 
+    		ord_text, 
+    		wh_number, wh_name, wh_location, wh_admin, wh_member_name, wh_member_tel) {
         document.getElementById('modalOrdCount').value = ord_count;
         document.getElementById('modalOrdNumber').value = ord_number;
+        document.getElementById('modalCommonStatus').value = common_status;
         document.getElementById('modalOrdStatus').value = ord_status;
+        
         document.getElementById('modalOrdManagerId').value = ord_manager_id;
+        document.getElementById('modalManagerMemberName').value = manager_member_name;
+        document.getElementById('modalManagerDepartmentName').value = manager_department_name;
+        document.getElementById('modalManagerCommonStatus').value = manager_common_status;
+        document.getElementById('modalManagerMemberTel').value = manager_member_tel;
+        
         document.getElementById('modalOrdSupervisorId').value = ord_supervisor_id;
+        document.getElementById('modalSupervisorMemberName').value = supervisor_member_name;
+        document.getElementById('modalSupervisorDepartmentName').value = supervisor_department_name;
+        document.getElementById('modalSupervisorCommonStatus').value = supervisor_common_status;
+        document.getElementById('modalSupervisorMemberTel').value = supervisor_member_tel;
+        
         document.getElementById('modalProdId').value = prod_id;
+        
         document.getElementById('modalOrdPrice').value = ord_price;
         document.getElementById('modalOrdQuantity').value = ord_quantity;
         document.getElementById('modalOrdDate').value = ord_date;
         document.getElementById('modalOrdDateChange').value = ord_date_change;
-        document.getElementById('modalCompanyCode').value = company_code;
+        /* document.getElementById('modalCompanyCode').value = company_code; */
         document.getElementById('modalOrdText').value = ord_text;
         document.getElementById('modalWhNumber').value = wh_number;
-        document.getElementById('modalOrdDeleteStatus').value = ord_delete_status;
+//         document.getElementById('modalWhName').value = wh_name;
+//         document.getElementById('modalWhLocation').value = wh_location;
+//         document.getElementById('modalWhAdmin').value = wh_admin;
+//         document.getElementById('modalWhMemberName').value = wh_member_name;
+//         document.getElementById('modalWhMemberTel').value = wh_member_tel;
+//         document.getElementById('modalOrdDeleteStatus').value = ord_delete_status;
 
         // 여기서 ord_status 값을 기반으로 버튼을 렌더링
         renderButtons(ord_status);

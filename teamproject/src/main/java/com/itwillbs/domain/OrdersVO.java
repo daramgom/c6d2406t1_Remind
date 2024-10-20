@@ -1,6 +1,7 @@
 package com.itwillbs.domain;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import lombok.Data;
 
@@ -14,8 +15,10 @@ public class OrdersVO {
 	private String prod_id;
 	private int ord_price;
 	private int ord_quantity;
+	
 	private Timestamp ord_date;
 	private Timestamp ord_date_change;
+	
 	private String company_code;
 	private String ord_text;
 	private int wh_number;
@@ -52,5 +55,21 @@ public class OrdersVO {
 	private String common_value;
 	
 	private String permission_id;
+	
+	
+	private String formatTimestamp(Timestamp timestamp) {
+        if (timestamp == null) return "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(timestamp);
+    }
+	
+	// 포맷팅된 날짜를 반환하는 메서드
+    public String getFormattedOrdDate() {
+        return formatTimestamp(ord_date);
+    }
+    
+    public String getFormattedOrdDateChange() {
+        return formatTimestamp(ord_date_change);
+    }
 	
 }

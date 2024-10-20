@@ -89,14 +89,17 @@ public class OrderController {
     public void listOrderGet(Model model) {
     	
     	List<OrdersVO> oListVO = orderService.listOrder();
+    	List<OrdersVO> mListVO = orderService.listManager();
     	List<OrdersVO> sListVO = orderService.listSupervisor();
     	List<OrdersVO> pListVO = orderService.listProd();
     	List<OrdersVO> wListVO = orderService.listWarehouse();
     	
     	model.addAttribute("oListVO", oListVO);
+    	model.addAttribute("mListVO", mListVO);
     	model.addAttribute("sListVO", sListVO);
     	model.addAttribute("pListVO", pListVO);
     	model.addAttribute("wListVO", wListVO);
+    	
     }
     
     // 수정하기

@@ -38,16 +38,23 @@
         color: white;
     }
     
-    .table td {
-    	font-size: 1.15rem !important;
-    	text-align: center;
-    }
-    
-    .table th {
-    	font-size: 1.25rem !important;
-    	text-align: center;
-    }
-    
+	.table td {
+		font-size: 1.3rem !important;
+		text-align: center;
+	}
+
+	.table th {
+		font-size: 1.35rem !important;
+		text-align: center;
+	}
+    .form-select {
+		font-size: 1.3rem !important;
+	}
+	
+	.form-control {
+		font-size: 1.3rem !important;
+	}
+	
 	.btn-warning {
 		color: #fff !important;
 	} 
@@ -120,7 +127,7 @@
 												<select class="form-select" id="prod_id" name="prod_id" required>
 													<option value="">제품식별코드</option>
 												</select>
-												<label for="prod_id" class="selectFloatingLabel" >제품식별코드</label>
+												<label for="prod_id" class="selectFloatingLabel" style="font-size: 1.3rem !important;">제품식별코드</label>
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
 													value="테스터1" placeholder="등록작업자" />
 												<input type="hidden" id="prod_upduser" name="prod_upduser" 
@@ -129,7 +136,7 @@
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="number" class="form-control" 
 													id="prod_stock" name="prod_stock" placeholder="적정재고수량" min="0" max="#" required/>
-												<label for="prod_stock" class="col-form-label-lg">적정재고수량</label>
+												<label for="prod_stock" class="col-form-label-lg" style="font-size: 1.3rem !important;">적정재고수량</label>
 											</div>
 										</div>
 										

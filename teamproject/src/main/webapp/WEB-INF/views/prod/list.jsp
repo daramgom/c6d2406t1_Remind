@@ -20,12 +20,12 @@
     }
     
     .table td {
-    	font-size: 1.15rem !important;
+    	font-size: 1.3rem !important;
     	text-align: center;
     }
     
     .table th {
-    	font-size: 1.25rem !important;
+    	font-size: 1.35rem !important;
     	text-align: center;
     }
     

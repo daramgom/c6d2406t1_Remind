@@ -47,6 +47,24 @@
 		object-fit: contain;
 	}
 	
+	.form-select {
+		font-size: 1.3rem !important;
+	}
+	
+	.form-control {
+		font-size: 1.3rem !important;
+	}
+	
+	.table td {
+		font-size: 1.3rem !important;
+		text-align: center;
+	}
+
+	.table th {
+		font-size: 1.35rem !important;
+		text-align: center;
+	}
+	
 </style>
 
 <!-- CSS Files -->
@@ -95,7 +113,7 @@
 												<select class="form-select" id="prod_id" name="prod_id" required>
 													<option value="">제품식별코드</option>
 												</select>
-												<label for="prod_id" class="selectFloatingLabel" >제품식별코드</label>
+												<label for="prod_id" class="selectFloatingLabel" style="font-size: 1.3rem !important;" >제품식별코드</label>
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
 													value="테스터1" placeholder="등록작업자" />
 												<input type="hidden" id="prod_upduser" name="prod_upduser" 
@@ -105,12 +123,12 @@
 												<select class="form-select" id="wh_number" name="wh_number" required disabled>
 													<option value="">창고</option>
 												</select>
-												<label for="wh_number" class="selectFloatingLabel">창고</label>
+												<label for="wh_number" class="selectFloatingLabel" style="font-size: 1.3rem !important;">창고</label>
 											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="number" class="form-control" 
 													id="prod_qty" name="prod_qty" min="0" max="#" readonly required/>
-												<label for="prod_qty" class="col-form-label-lg">수량</label>
+												<label for="prod_qty" class="col-form-label-lg" style="font-size: 1.3rem !important;">수량</label>
 												<input type="hidden" id="current_qty" name="current_qty" value="#">
 											</div>
 										</div>
@@ -123,12 +141,12 @@
 												<select class="form-select" id="stock_wh" name="stock_wh" required disabled>
 													<option value="">창고</option>
 												</select>
-												<label for="stock_wh" class="selectFloatingLabel">창고</label>
+												<label for="stock_wh" class="selectFloatingLabel" style="font-size: 1.3rem !important;">창고</label>
 											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="number" class="form-control" 
 													id="stock_qty" name="stock_qty" placeholder="수량" min="0" max="#" required/>
-												<label for="stock_qty" class="col-form-label-lg">이동 수량</label>
+												<label for="stock_qty" class="col-form-label-lg" style="font-size: 1.3rem !important;">이동 수량</label>
 											</div>
 										</div>
 										<div class="row d-flex justify-content-center">

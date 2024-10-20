@@ -91,9 +91,9 @@
             prod_id = #{prod_id}, 
             ord_price = #{ord_price}, 
             ord_quantity = #{ord_quantity}, 
-            ord_date = #{ord_date}, 
-            ord_date_change = #{ord_date_change}, 
-            company_code = #{company_code}, 
+            <!-- ord_date = #{ord_date},  -->
+            ord_date_change = now(), 
+            <!-- company_code = #{company_code},  -->
             ord_text = #{ord_text}, 
             wh_number = #{wh_number} 
         WHERE ord_count = #{ord_count}
@@ -110,9 +110,9 @@
             prod_id = #{prod_id}, 
             ord_price = #{ord_price}, 
             ord_quantity = #{ord_quantity}, 
-            ord_date = #{ord_date}, 
-            ord_date_change = #{ord_date_change}, 
-            company_code = #{company_code}, 
+            <!-- ord_date = #{ord_date},  -->
+            ord_date_change = now(), 
+            <!-- company_code = #{company_code},  -->
             ord_text = #{ord_text}, 
             wh_number = #{wh_number} 
         WHERE ord_count = #{ord_count}
@@ -129,14 +129,26 @@
             prod_id = #{prod_id}, 
             ord_price = #{ord_price}, 
             ord_quantity = #{ord_quantity}, 
-            ord_date = #{ord_date}, 
-            ord_date_change = #{ord_date_change}, 
-            company_code = #{company_code}, 
+            <!-- ord_date = #{ord_date},  -->
+            ord_date_change = now(), 
+            <!-- company_code = #{company_code},  -->
             ord_text = #{ord_text}, 
             wh_number = #{wh_number} 
         WHERE ord_count = #{ord_count}
  </update>
  
+ 
+ <!-- 발주 담당자 목록 조회 -->
+ <select id="listManager" resultType="OrdersVO">
+ 	select m.member_id, m.member_name, d.department_name, c.common_status, m.member_tel 
+	from departments d, member m, common c 
+	where d.department_id = m.department_id 
+	and m.employee_rank = c.common_value 
+	and common_work = 'emp_rank' 
+	and m.permission_id = '01' 
+	and m.member_state = '01' 
+	and m.approval_status = '02'
+ </select>
  
  <!-- 발주 승인자 목록 조회 -->
  <select id="listSupervisor" resultType="OrdersVO">

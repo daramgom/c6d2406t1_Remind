@@ -88,6 +88,12 @@ public class OrdersServiceImpl implements OrdersService{
 	}
 	
 	@Override
+	public List<OrdersVO> listManager() {
+		// TODO Auto-generated method stub
+		return odao.listManager();
+	}
+	
+	@Override
 	public List<OrdersVO> listSupervisor() {
 		// TODO Auto-generated method stub
 		return odao.listSupervisor();

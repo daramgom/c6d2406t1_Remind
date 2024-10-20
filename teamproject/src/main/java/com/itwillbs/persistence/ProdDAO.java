@@ -40,6 +40,8 @@ public interface ProdDAO {
 	public List<ProdVO> transferSelect2(ProdVO vo);
 	public List<ProdVO> transferSelect3();
 	
-
+	// 재고알람설정
+	public int setStock(ProdVO vo);
+	public List<ProdVO> setStockList();
 	
 }

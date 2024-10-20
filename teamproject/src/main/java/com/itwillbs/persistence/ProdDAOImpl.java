@@ -129,10 +129,19 @@ public class ProdDAOImpl implements ProdDAO {
 	}
 	
 	
-
-
+	// 재고알람설정
+	@Override
+	public int setStock(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO : setStock(ProdVO vo) 실행");
+		return sqlSession.update(NAMESPACE + ".setStock", vo);
+	}
 	
-	
+	// 재고알람목록
+	@Override
+	public List<ProdVO> setStockList() {
+		logger.debug("( •̀ ω •́ )✧ DAO : setStockList() 실행");
+		return sqlSession.selectList(NAMESPACE + ".setStockList");
+	}
 	
 	
 }//class

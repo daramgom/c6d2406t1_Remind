@@ -15,7 +15,7 @@
 <style>
 
     #multi-filter-select thead th {
-        background-color: #0d6efd; /* 원하는 색상으로 변경 */
+        background-color: #0d6efd;
         color: white;
     }
     
@@ -761,6 +761,13 @@
 		});
 	});
     // 바코드, QR코드 생성
+    
+    // 모달 닫힐때 바코드 초기화
+	$("#prodModal").on('hidden.bs.modal', function() {
+		$("#codeImage").attr('src',"").hide();
+		$("input[name='prod_option']").prop('checked', false);
+	});
+    // 모달 닫힐때 바코드 초기화
     
     
     

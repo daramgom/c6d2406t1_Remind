@@ -120,9 +120,7 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public MemberVO getMemberEmail(String email) {
 		System.out.println(" DAO : getMemberEmail(String email) ");
-
 		return sqlSession.selectOne(NAMESPACE + ".getMemberEmail", email);
-
 	}
 
 	@Override

@@ -134,7 +134,7 @@
 	background: #d3d3d3;
 }
 
-.send-userId-button {
+.send-user-button {
 	position: absolute;
 	top: 2.4rem;
 	right: 0.4rem;
@@ -149,7 +149,7 @@
 	line-height: 16px;
 }
 
-.send-userId-button:disabled {
+.send-user-button:disabled {
 	cursor: not-allowed;
 	background: #d3d3d3;
 }
@@ -182,13 +182,13 @@
 					type="text" id="username"
 					placeholder="영문자와 숫자를 포함하여 5자 이상 10자 이하로 입력해주세요."
 					class="input-field" required name="member_id" maxlength="10" />
-				<button type="button" id="userIdBtn" class="send-userId-button"
+				<button type="button" id="userIdBtn" class="send-user-button"
 					disabled>중복 조회</button>
 			</div>
 
 			<div class="input-wrapper">
 				<label for="password" class="input-label">비밀번호</label> <input
-					type="password" id="password2" placeholder="Password"
+					type="password" id="password" placeholder="Password"
 					class="input-field" required name="member_pw" />
 			</div>
 
@@ -203,6 +203,8 @@
 					type="email" id="email" placeholder="itwill@itwillbs.com"
 					class="input-field" name="member_email" required
 					value="${member.email}" />
+					<button type="button" id="userEmailBtn" class="send-user-button"
+					disabled>중복 조회</button>
 			</div>
 			<div class="input-wrapper">
 				<label for="phone" class="input-label">전화번호</label> <input
@@ -321,6 +323,13 @@
         const passwordPattern = /^(?=.*[A-Z])(?=.*[0-9]).{5,10}$/; // 최소 5자, 최대 10자, 대문자, 숫자 포함
         return passwordPattern.test(password);
       }
+      
+   // 이메일 형식 정규 표현식
+      function isValidEmail(email) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+      }
+      
 
       // 모든 입력값이 채워졌는지 확인하는 함수
       /* function checkFormCompletion() {
@@ -380,13 +389,18 @@
  <script >
  $(document).ready(function () {
      // 비밀번호 입력 시 비밀번호 확인 필드 활성화
-     $("#password2").on("input", function () {
-         console.log("tlqkf");
+     $("#password").on("input", function () {
+         const userpw = $(this).val.trim();
+         if(isValidPassword(userpw)) {
+        	$(this).css("border-color","#bfb3f2");
+         }
+         else {
+            $(this).css("border-color", "red"); // 유효하지 않은 경우 색상 변경
+         }
      });
      
      $("#SignShowModal").click(function () {
          $("#company-modal").css("display", "block");
-         console.log("실행되라");
      });
      
      // 아이디 길이에 따른 버튼 활성화
@@ -430,6 +444,58 @@
              },
          });
      });
+     
+     $("#userEmailBtn").click(function () {
+         var member_email = $("#useremail").val().trim();
+
+         $.ajax({
+             url: "admin/checkUserEamil",
+             type: "POST",
+             contentType: "application/json",
+             data: JSON.stringify({
+            	 member_email:  member_email,
+             }),
+             success: function (response) {
+                 if ("사용 가능한 이메일입니다." === response.message) {
+                     showSuccessAlert("요청성공!", response.message); // 사용가능한 아이디 입니다.
+                     isUsernameAvailable = true; // 상태 업데이트
+                     $("#userEmailBtn").prop("disabled", true);
+                     $("#useremail").prop("readonly", true);
+                 } else {
+                     showErrorAlert(response.message); // 중복된 아이디 입니다.
+                     isUsernameAvailable = false; // 상태 업데이트
+                 }
+                 checkFormCompletion(); // 중복 검사 후 폼 체크
+             },
+             error: function (xhr, status, error) {
+                 // 오류 메시지 표시
+                 showErrorAlert(xhr.responseJSON.message);
+             },
+         });
+     });
+     
+     
+     
+     
+     $("#phone").on("input", function () {
+    	    // 입력된 전화번호에서 숫자만 추출
+    	    let phoneNumber = $(this)
+    	      .val()
+    	      .replace(/[^0-9]/g, "");
+
+    	    // 하이픈 추가
+    	    if (phoneNumber.length < 4) {
+    	      $(this).val(phoneNumber);
+    	    } else if (phoneNumber.length < 7) {
+    	      $(this).val(phoneNumber.replace(/(\d{3})(\d+)/, "$1-$2"));
+    	    } else {
+    	      $(this).val(phoneNumber.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3"));
+    	    }
+    	  });
+     
+     
+     
+     
  });
 </script>
 

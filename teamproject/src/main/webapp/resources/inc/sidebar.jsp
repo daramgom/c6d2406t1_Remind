@@ -109,12 +109,12 @@
                 <div class="collapse" id="forms">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="forms/forms.html">
+                      <a href="/rcvRQ">
                         <span class="sub-item">입고 요청</span>
                       </a>
                     </li>
                     <li>
-                      <a href="forms/forms.html">
+                      <a href="/rcvList2">
                         <span class="sub-item">입고 목록</span>
                       </a>
                     </li>
@@ -130,12 +130,12 @@
                 <div class="collapse" id="tables">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="tables/tables.html">
+                      <a href="/shpRQ">
                         <span class="sub-item">출고 요청</span>
                       </a>
                     </li>
                     <li>
-                      <a href="tables/datatables.html">
+                      <a href="/shpList2">
                         <span class="sub-item">출고 목록</span>
                       </a>
                     </li>

@@ -65,7 +65,23 @@ uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
             class="input-field pass"
             required
             name="member_pw"
+            maxlength="10"  
           />
+          <div class="info-box" style="display: none;">
+        <p>
+            <input type="checkbox" id="length-check" disabled>
+            <label for="length-check">최소 5자, 최대 10자</label>
+        </p>
+        <p>
+            <input type="checkbox" id="uppercase-check" disabled>
+            <label for="uppercase-check">1개의 대문자 포함</label>
+        </p>
+        <p>
+            <input type="checkbox" id="number-check" disabled>
+            <label for="number-check">1개의 숫자 포함</label>
+        </p>
+        <p id="password-message" style="color: red;"></p>
+    </div>
         </div>
         <div class="input-wrapper">
           <label for="confirm-password" class="input-label"
@@ -80,6 +96,7 @@ uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
             disabled
           />
           <span id="password-message" class="password-message"></span>
+          
           <!-- 메시지를 표시할 span 추가 -->
         </div>
         <div class="input-wrapper">

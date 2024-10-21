@@ -37,22 +37,30 @@ $(document).ready(function () {
     }
   });
 
-  // 비밀번호 입력 시 비밀번호 확인 필드 활성화
+
   $("#password").on("input", function () {
-    var password = $(this).val().trim();
-    if (isValidPassword(password)) {
-      // 비밀번호 유효성 검사 추가
-      $("#confirm-password").prop("disabled", false); // 비밀번호 입력 시 활성화
-      $("#password-message").text(""); // 메시지 초기화
-      $(this).css("border-color", "#bfb3f2"); // 유효한 경우 색상 변경
-    } else {
-      $("#confirm-password").prop("disabled", true); // 비밀번호가 유효하지 않으면 비활성화
-      $("#confirm-password").val(""); // 비밀번호 확인 필드 초기화
-      $("#password-message").text(
-        "비밀번호는 최소 5자 최대 10자, 1개의 대문자 및 1개의 숫자를 포함해야 합니다."
-      ); // 메시지 설정
-      $(this).css("border-color", "red"); // 유효하지 않은 경우 색상 변경
-    }
+      var password = $(this).val().trim();
+      
+      // 비밀번호 유효성 검사
+      if (isValidPassword(password)) {
+    	  $("#confirm-password").prop("disabled", false); // 비밀번호 입력 시 활성화
+          $("#password-message").text(""); // 메시지 초기화
+          $(this).css("border-color", "#bfb3f2"); // 유효한 경우 색상 변경
+      } else {
+    	  $("#confirm-password").prop("disabled", true); // 비밀번호 입력 시 활성화
+          $("#password-message").text(
+              "비밀번호는 최소 5자 최대 10자, 1개의 대문자 및 1개의 숫자를 포함해야 합니다."
+          ); // 메시지 설정
+          $(this).css("border-color", "red"); // 유효하지 않은 경우 색상 변경
+      }
+
+      // 조건 체크
+      $("#length-check").prop("checked", password.length >= 5 && password.length <= 10);
+      $("#uppercase-check").prop("checked", /[A-Z]/.test(password));
+      $("#number-check").prop("checked", /\d/.test(password));
+
+      // 정보 박스 표시
+      $(".info-box").css("display", "block");
   });
 
   // 이메일 입력 필드의 input 이벤트 리스너
@@ -392,4 +400,5 @@ $(document).ready(function () {
       confirmButtonText: "확인",
     });
   }
+ 
 });

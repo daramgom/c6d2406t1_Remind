@@ -149,15 +149,26 @@
 														class="display table table-hover custom-table">
 															<thead>
 															<tr>
-															<th>제품식별코드</th>
-															<th>제품명</th>
-															<th>브랜드</th>
-															<th>제품이미지</th>
-															<th>수량</th>
-															<th>적정재고수량</th>
-															<th>부족수량</th>
+																<th>제품식별코드</th>
+																<th>제품명</th>
+																<th>브랜드</th>
+																<th>제품이미지</th>
+																<th>수량</th>
+																<th>적정재고수량</th>
+																<th>부족수량</th>
 															</tr>
 															</thead>
+															<tfoot>
+															<tr>
+																<th>제품식별코드</th>
+																<th>제품명</th>
+																<th>브랜드</th>
+																<th></th>
+																<th>수량</th>
+																<th>적정재고수량</th>
+																<th>부족수량</th>
+															</tr>
+															</tfoot>
 															<tbody>
 															<c:forEach var="s" items="${stockList}">
 																<tr class="prod_detail ${s.prod_qty < s.prod_stock ? 'highlight' : ''}">
@@ -167,9 +178,14 @@
 																	<td><img src="${s.prod_image}" alt="제품이미지" style="width:75px; height:75px; object-fit: contain;"></td>
 																	<td>${s.prod_qty}</td>
 																	<td>${s.prod_stock}</td>
-																	<c:if test="${s.prod_qty < s.prod_stock}">
-																	<td class="text-danger fw-bold">${s.prod_stock - s.prod_qty}</td>
-																	</c:if>
+																	<c:choose>
+																		<c:when test="${s.prod_qty < s.prod_stock}">
+																			<td class="text-danger fw-bold">${s.prod_stock - s.prod_qty}</td>
+																		</c:when>
+																		<c:otherwise>
+																			<td></td>
+																		</c:otherwise>
+																	</c:choose>
 																</tr>
 															</c:forEach>
 															</tbody>
@@ -244,9 +260,56 @@
 <script type="text/javascript">
     
 $(document).ready(function () {
+	
+	// 데이터테이블
+    $("#multi-filter-select").DataTable({
+    	pageLength: 10, // 기본 페이지 길이
+    	lengthMenu: [10, 20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
+    	initComplete: function () {
+    		var table = this.api();
+
+            // 필터를 적용할 열 인덱스 배열 (예: 두 번째 열과 세 번째 열)
+            var columnsToFilter = [0,1,2,4,5,6];
+
+            // 각 열에 대해 필터 추가
+            columnsToFilter.forEach(function (index) {
+                var column = table.column(index); // 특정 열 선택
+                var select = $(
+                  '<select class="form-select"><option value=""></option></select>'
+            	)
+            	.appendTo($(column.footer()).empty())
+            	.on("change", function () {
+                	var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                column
+                .search(val ? "^" + val + "$" : "", true, false)
+                .draw();
+            	});
+
+            	column
+                .data()
+                .unique()
+                .sort()
+                .each(function (d, j){
+            		select.append(
+                		'<option value="' + d + '">' + d + "</option>"
+                	);
+            	});
+              });
+            }
+        });
+ 	// 데이터테이블
+	
+	
 
 	// 알림 테스트
 	function checkStock() {
+		const alertShown = localStorage.getItem('alertShown');
+
+		if (alertShown) {
+			return;
+		}
+
 		$.ajax({
 			url: '/prod/stockalertdata',
 			method: 'POST',
@@ -259,22 +322,18 @@ $(document).ready(function () {
 					const prod_stock = item.prod_stock;
 
 					if (prod_qty < prod_stock) {
-						lowStockProd.push(item.prod_id +' - '+ item.prod_name +' - '+ item.prod_brand);
+						lowStockProd.push(item.prod_id + ' - ' + item.prod_name + ' - ' + item.prod_brand);
 					}
 				});
 
-				// 부족한 재고가 있는 경우에만 알림 띄우기
 				if (lowStockProd.length > 0) {
-					// 보여줄 제품의 개수
-					const displayCount = 2; // 원하는 개수로 설정
+					const displayCount = 2;
 					let message;
 
 					if (lowStockProd.length > displayCount) {
-						// 일부만 보여주고 생략 표시
-						message = '<b class="text-warning">'+lowStockProd.slice(0, displayCount).join(', ') +'</b>' + ' 등 <b class="text-warning"> ' + (lowStockProd.length) + '개</b> 제품의 재고수량이 부족합니다.';
+						message = '<b class="text-warning">' + lowStockProd.slice(0, displayCount).join(', ') + '</b>' + ' 등 <b class="text-warning"> ' + (lowStockProd.length) + '개</b> 제품의 재고수량이 부족합니다.';
 					} else {
-						// 모든 제품을 보여줌
-						message = '<b class="text-warning">'+lowStockProd.join('/ ')+ '</b>' + '의 재고수량이 부족합니다!';
+						message = '<b class="text-warning">' + lowStockProd.join('/ ') + '</b>' + '의 재고수량이 부족합니다!';
 					}
 
 					$.notify({}, {
@@ -288,10 +347,12 @@ $(document).ready(function () {
 							'<span data-notify="icon" class="icon-bell"></span>' +
 							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
 							'<span data-notify="title" style="font-size: 20px;"><strong>적정재고수량 경고</strong></span> ' +
-							'<span data-notify="message" style="font-size: 16px;">' + 
+							'<span data-notify="message" style="font-size: 16px;">' +
 							message + '</span>' +
 							'</div>'
 					});
+
+					localStorage.setItem('alertShown', 'true');
 				}
 			},
 			error: function(xhr, status, error) {
@@ -299,9 +360,10 @@ $(document).ready(function () {
 			}
 		});
 	}
-
-	checkStock();
-	setInterval(checkStock, 300000);
+	
+ 	
+		checkStock();
+ 	
 	// 알림 테스트
 
 	

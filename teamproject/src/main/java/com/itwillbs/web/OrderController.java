@@ -105,9 +105,15 @@ public class OrderController {
     // 수정하기
     @PostMapping(value = "/updateOrder")
 	public String updateOrder(OrdersVO ordersVO){
-		orderService.updateOrder(ordersVO);
+    	
+    	System.out.println("@@@@@@@@@@@"+ordersVO);
     	
     	logger.debug("@@@@@@@@@@@@@@@@@@@@원래는 data였음ordersVO : "+ordersVO);
+    	
+		orderService.updateOrder(ordersVO);
+    	
+    	
+    	logger.debug("");
     	
     	return "/order-list";
     }

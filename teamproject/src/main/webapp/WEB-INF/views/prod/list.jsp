@@ -513,7 +513,7 @@
      	
        
     	// <tr> 클릭 시 모달 열기
-       $(".prod_detail").click(function() {
+       $('#multi-filter-select tbody').on('click', '.prod_detail', function() {
            var row = $(this); // 클릭한 <tr>
            var prod_id = row.find('td:eq(0)').text(); // 제품 식별 코드
 

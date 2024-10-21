@@ -47,7 +47,7 @@ pageEncoding="UTF-8"%>
               switch (response.code) {
                 case "SUCCESS":
                   showSuccessAlert("로그인 성공", response.message).then(() => {
-                    location.href = "/admin"; // 관리자 페이지로 이동
+                    location.href = "/main"; // 관리자 페이지로 이동
                   });
                   break;
                 case "NOT_REGISTERED":

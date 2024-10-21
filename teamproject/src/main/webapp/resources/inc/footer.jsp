@@ -27,7 +27,6 @@
             </div>
           </div>
         </footer>
-      </div>
       
       	<!--   Core JS Files   -->
 	<script src="/resources/js/core/jquery-3.7.1.min.js"></script>
@@ -66,3 +65,25 @@
 
 	<!-- Kaiadmin JS -->
 	<script src="/resources/js/kaiadmin.min.js"></script>
+
+<script>
+$(document).ready(function(){
+	$('a[data-bs-toggle="collapse"]').on('click', function(e) {
+		var hrefValue = $(this).attr('href');
+		if(localStorage.getItem('colShow') == null) {
+			localStorage.setItem('colShow', hrefValue);
+		} else if(localStorage.getItem('colShow') == hrefValue) {
+			localStorage.removeItem('colShow');
+		} else if(localStorage.getItem('colShow') != hrefValue) {
+			$(localStorage.getItem('colShow')).removeClass('show');
+			localStorage.setItem('colShow', hrefValue);
+		}
+	});
+	const value = localStorage.getItem('colShow');
+	if(!value.isEmpty) {
+		$(value).addClass('show');
+	} else {
+		console.log(value);
+	}
+});
+</script>

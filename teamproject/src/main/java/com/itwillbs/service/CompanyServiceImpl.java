@@ -20,5 +20,11 @@ public class CompanyServiceImpl implements CompanyService{
 		
 		return Cdao.getCompanyList();
 	}
+	
+	@Override
+	public CompanyVO getCompany(String code) {
+		
+		return Cdao.getCompany(code);
+	}
 
 }

@@ -8,4 +8,6 @@ public interface CompanyDAO {
 	
 	public List<CompanyVO> getCompanyList();
 	
+	public CompanyVO getCompany(String code);
+	
 }

@@ -13,6 +13,9 @@ public interface MemberService {
 	// 회원가입 동작 d
 	public String memberJoin(MemberVO vo);
 	
+	// 회원가입 거래처
+	public String companyMemberJoin(MemberVO vo);
+	
 	// 회원로그인 체크 동작 d 
 	public MemberVO memberLoginCheck(MemberVO vo);
 	
@@ -45,5 +48,7 @@ public interface MemberService {
 	
 	// admin 회원가입 신청 목록 삭제
 	public Integer membersDelete(List<MemberVO> vo);
+	
+	
 	
 }

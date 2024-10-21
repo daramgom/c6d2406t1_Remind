@@ -11,6 +11,8 @@ pageEncoding="UTF-8"%>
 
     <script type="text/javascript">
       let result = "${isFirstVisit}";
+      
+      
 
       $(document).ready(function () {
         const showSweetAlert = (message, redirectUrl) => {

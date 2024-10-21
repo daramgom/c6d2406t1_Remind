@@ -22,6 +22,9 @@ public interface MemberDAO {
 	// 회원가입
 	public String insertMember(MemberVO vo);
 	
+	// 거래처 회원가입
+	public String insertCompanyMember(MemberVO vo);
+	
 	// 로그인 
 	public MemberVO loginMember(MemberVO vo);
 	

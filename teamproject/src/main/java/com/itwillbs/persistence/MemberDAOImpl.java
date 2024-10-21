@@ -63,6 +63,33 @@ public class MemberDAOImpl implements MemberDAO {
 
 		return "회원가입 완료";
 	}
+	
+	@Override
+	public String insertCompanyMember(MemberVO vo) {
+		System.out.println(" DAO : 회원가입 동작 실행! ");
+
+		// ID 중복 체크
+		if (getMember(vo.getMember_id()) != null) {
+			return "아이디 중복";
+		}
+
+		// 이메일 중복 체크
+		if (getMemberEmail(vo.getMember_email()) != null) {
+			return "이메일 중복";
+		}
+
+		// 전화번호 중복 체크
+		if (getMemberTel(vo.getMember_tel()) != null) {
+			return "전화번호 중복";
+		}
+
+		// 회원가입 처리
+		int result = sqlSession.insert(NAMESPACE + ".insertCompanyMember", vo);
+		System.out.println(" DAO : result : " + result);
+		System.out.println(" DAO : 회원가입 완료! ");
+
+		return "회원가입 완료";
+	}
 
 	@Override
 	public MemberVO loginMember(MemberVO vo) {

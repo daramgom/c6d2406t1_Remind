@@ -904,68 +904,45 @@ pageEncoding="UTF-8"%>
 
         <div class="container">
           <div class="page-inner">
+
 <main>
-    <h2>입고 요청</h2>
-    <form action="/rcvRQ" id="ReceivingForm" method="post" onsubmit="return confirmSubmission()">
+    <h2>출고 요청</h2>
+    <form action="/shpRQ" id="ShippingForm" method="post" onsubmit="return confirmSubmission()">
         <div class="form-container">
             <div class="form-group">
-                <label for="RCV_MANAGER_ID">
+                <label for="shp_manager_id">
                     <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
-                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고 요청자
+                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 요청자
                 </label>
                 <div class="underline-container">
-                    <input type="text" id="rcv_manager_id" class="underline-input" placeholder="홍길동" required name="rcv_manager_id">
+                    <input type="text" id="shp_manager_id" class="underline-input" placeholder="홍길동" required name="shp_manager_id">
                     <div class="custom-underline"></div>
                 </div>
             </div>
-            
-             <div class="form-group">
-                <label for="RCV_SUPERVISOR">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
-                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고 승인자
-                </label>
-                <div class="underline-container">
-                    <input type="text" id="rcv_supervisor" class="underline-input" placeholder="홍길동" required name="rcv_supervisor">
-                    <div class="custom-underline"></div>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="ORD_MANAGER_ID">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
-                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 요청자
-                </label>
-                <div class="underline-container">
-                    <input type="text" id="ord_manager_id" class="underline-input" placeholder="홍길동" required name="ord_manager_id">
-                    <div class="custom-underline"></div>
-                </div>
-            </div>
-            
-            
-           <div class="form-group">
-                <label for="ORD_SUPERVISOR_ID">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
-                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 승인자
-                </label>
-                <div class="underline-container">
-                    <input type="text" id="ord_supervisor_id" class="underline-input" placeholder="홍길동" required name="ord_supervisor_id">
-                    <div class="custom-underline"></div>
-                </div>
-            </div>
-           
-
-			<div class="form-group">
-			    <label for="ord_number">발주 관리번호</label>
-			    <div style="display: flex; align-items: center;">
-			        <input type="text" id="ord_number" placeholder="발주관리번호입력" required onfocus="showOrderList()" oninput="fetchOrderData()" name="ord_number">
-			        <button type="button" onclick="submitOrderNumber()">조회</button> <!-- 추가된 버튼 -->
-			    </div>
-			    <div class="dropdown" id="orderDropdown"></div>
-			</div>
 
             <div class="form-group">
-                <label for="PROD_ID">제품 식별코드</label>
-                <input type="text" id="prod_id" placeholder="제품식별코드를 입력" required name="prod_id">
+                <label for="shp_supervisor_id">
+                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 승인자
+                </label>
+                <div class="underline-container">
+                    <input type="text" id="shp_supervisor_id" class="underline-input" placeholder="홍길동" required name="shp_supervisor_id">
+                    <div class="custom-underline"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ord_number">발주 관리 번호</label>
+                <div style="display: flex; align-items: center;">
+                    <input type="text" id="ord_number" placeholder="발주 관리 번호 입력" required onfocus="showOrderList()" oninput="fetchOrderData()" name="ord_number">
+                    <button type="button" onclick="submitOrderNumber()">조회</button>
+                </div>
+                <div class="dropdown" id="orderDropdown"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="prod_id">제품 식별코드</label>
+                <input type="text" id="prod_id" placeholder="제품 식별 코드를 입력" required name="prod_id">
             </div>
 
             <div class="form-group">
@@ -979,49 +956,48 @@ pageEncoding="UTF-8"%>
             </div>
 
             <div class="form-group">
-                <label for="COMPANY_CODE">거래처</label>
+                <label for="company_code">거래처</label>
                 <input type="text" id="company_code" required name="company_code">
             </div>
 
             <div class="form-group">
-                <label for="RCV_QUANTITY">입고 수량</label>
-                <input type="number" id="rcv_quantity" required name="rcv_quantity">
-            </div>
-            
-            <div class="form-group">
-                <label for="WH_NUMBER">창고 번호</label>
-                <input type="number" id="wh_number" required name="wh_number">
+                <label for="shp_quantity">출고 수량</label>
+                <input type="number" id="shp_quantity" required name="shp_quantity">
             </div>
 
             <div class="form-group">
-                <label for="RCV_PRICE">가격(단가)</label>
-                <input type="text" id="rcv_price" required name="rcv_price">
+                <label for="shp_price">가격(단가)</label>
+                <input type="text" id="shp_price" required name="shp_price">
             </div>
 
             <div class="form-group">
-                <label for="ORD_DATE">발주 날짜</label>
-                <input type="date" id="ord_date" required name="ord_date">
-            </div> 
+                <label for="shp_date">출고 날짜</label>
+                <input type="date" id="shp_date" required name="shp_date">
+            </div>
 
+            <!-- 창고 번호 및 이름 입력 필드 -->
             <div class="form-group">
-                <label for="RCV_DATE">입고 날짜</label>
-                <input type="date" id="rcv_date" required name="rcv_date">
+                <label for="wh_number">창고 번호</label>
+                <input type="text" id="wh_number" placeholder="창고 번호 입력" required name="wh_number">
             </div>
 
             <div class="form-group">
-                <label for="RCV_REMARKS">비고</label>
-                <textarea id="rcv_remarks" placeholder="전달 할 '내용' ..." required name="rcv_remarks"></textarea>
+                <label for="wh_name">창고 이름</label>
+                <input type="text" id="wh_name" placeholder="창고 이름 입력" required name="wh_name">
             </div>
 
-            <button class="btn btn-primary" type="submit">입고 요청</button>
+            <!-- 비고 필드, 마지막으로 이동 -->
+            <div class="form-group">
+                <label for="shp_remarks">비고</label>
+                <textarea id="shp_remarks" placeholder="전달할 내용..." required name="shp_remarks"></textarea>
+            </div>
+
+            <button class="btn btn-primary" type="submit">출고 요청</button>
         </div>
     </form>
-    
-    
-    <!-- 발주관리번호 셀렉트박스,자동채우기 -->
-    
-     <script>
-        const orderNumbers = ['ORD-2024-0001','ORD-2024-0005', 'ORD-2024-0006', 'ORD004']; // 예시 발주 번호 목록
+
+    <script>
+        const orderNumbers = ['ORD-2024-0001', 'ORD-2024-0005', 'ORD-2024-0006', 'ORD004']; // 예시 발주 번호 목록
 
         function showOrderList() {
             const dropdown = document.getElementById('orderDropdown');
@@ -1043,29 +1019,25 @@ pageEncoding="UTF-8"%>
         }
 
         function fetchProductByOrderNumber(orderNumber) {
-            return fetch(`/getProductByOrderNumber?ord_number=` + orderNumber)
+            return fetch(`/getShippingProductByOrderNumber?ord_number=` + orderNumber)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('prod_id').value = data.prod_id; // 제품 식별 코드 자동 입력
-                    document.getElementById('prod_category').value = data.prod_category; // 제품 카테고리 자동입력
-                    document.getElementById('company_code').value = data.company_code; // 거래처 자동입력
-                    document.getElementById('prod_name').value = data.prod_name; // 품목명 자동입력
-                    document.getElementById('rcv_price').value = data.ord_price; // 가격(단가) 자동입력
+                    document.getElementById('prod_category').value = data.prod_category; // 제품 카테고리 자동 입력
+                    document.getElementById('company_code').value = data.company_code; // 거래처 자동 입력
+                    document.getElementById('prod_name').value = data.prod_name; // 품목명 자동 입력
+                    document.getElementById('shp_price').value = data.ord_price; // 가격(단가) 자동 입력
                     
-                    // 발주 승인자와 창고 번호 자동 입력
-                    document.getElementById('ord_supervisor_id').value = data.ord_supervisor_name; // 발주 승인자 이름 자동입력
-                    document.getElementById('wh_number').value = data.wh_number; // 창고 번호 자동입력
+                    // 발주 승인자 및 요청자 이름 자동 입력
+                    document.getElementById('shp_supervisor_id').value = data.ord_supervisor_name; // 발주 승인자 이름 자동 입력
+                    document.getElementById('shp_manager_id').value = data.ord_manager_name; // 발주 요청자 이름 자동 입력
                     
-                    // 날짜 형식 변환 및 입력
-                    const ordDate = new Date(data.ord_date);
-                    const formattedOrdDate = ordDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
-                    document.getElementById('ord_date').value = formattedOrdDate; // 발주 날짜 자동입력
-
+                    // 창고 번호 및 이름 자동 입력
+                    document.getElementById('wh_number').value = data.wh_number; // 창고 번호 자동 입력
+                    document.getElementById('wh_name').value = data.wh_name; // 창고 이름 자동 입력
+                    
                     // 오늘 날짜 자동 입력
-                    document.getElementById('rcv_date').value = new Date().toISOString().split('T')[0]; // 오늘 날짜 자동입력
-
-                    document.getElementById('ord_manager_id').value = data.ord_manager_name; // 발주 요청자 자동입력
-                    document.getElementById('ord_price').value = data.ord_price; // 가격 자동입력
+                    document.getElementById('shp_date').value = new Date().toISOString().split('T')[0]; // 오늘 날짜 자동입력
                 })
                 .catch(error => console.error('Error fetching product details:', error));
         }
@@ -1098,12 +1070,11 @@ pageEncoding="UTF-8"%>
         
         function submitOrderNumber() {
             const ord_number = document.getElementById('ord_number').value;
-            alert(ord_number);
             if (ord_number) {
                 fetchProductByOrderNumber(ord_number)
                     .then(() => {
                         // 제품 정보를 성공적으로 가져온 후 폼 제출
-                        document.getElementById('ReceivingForm').submit();
+                        document.getElementById('ShippingForm').submit();
                     });
             } else {
                 alert("발주 관리번호를 입력하세요.");
@@ -1111,18 +1082,13 @@ pageEncoding="UTF-8"%>
         }
     </script>
     
- <script type="text/javascript">
- function confirmSubmission() {
-	    const confirmation = confirm("확인을 누르면 입고 요청이 완료됩니다.");
-	    if (confirmation) {
-	        // 여기서 return false를 해서 폼 제출을 방지
-	        return false;
-	    }
-	    return true; // 사용자가 "취소" 클릭 시 폼 제출
-	}
-
-</script>
-
+    <script type="text/javascript">
+        function confirmSubmission() {
+            const confirmation = confirm("확인을 누르면 출고 요청이 완료됩니다.");
+            return confirmation; // 확인하면 true, 아니면 false
+        }
+    </script>
+</main>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>

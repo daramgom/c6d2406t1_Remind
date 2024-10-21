@@ -214,7 +214,7 @@ public class AdminController {
 	    }
 	}
 	
-	@RequestMapping(value ="membersignup" , method=RequestMethod.POST)
+	@RequestMapping(value ="companyMemberSignUp" , method=RequestMethod.POST)
 	public ResponseEntity<Map<String, String>> memberSignUpPost(@RequestBody MemberVO vo) {
 		response.clear();
 

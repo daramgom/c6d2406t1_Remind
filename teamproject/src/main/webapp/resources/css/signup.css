@@ -266,3 +266,15 @@ input:disabled {
 	cursor: not-allowed;
 	background: #d3d3d3;
 }
+
+.info-box {
+	display : none;
+width: 17rem;
+    background-color: #fff;
+    border: 1px solid #b3d7ff;
+    padding: 5px;
+    border-radius: 3px;
+    position: absolute;
+    top: 1.6rem;
+    right: -278px;
+}

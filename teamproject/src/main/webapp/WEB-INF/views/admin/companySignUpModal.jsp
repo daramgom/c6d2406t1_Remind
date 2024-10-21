@@ -199,7 +199,7 @@
 			<div class="input-wrapper">
 				<label for="name" class="input-label">이름</label> <input type="text"
 					id="name" placeholder="홍길동" class="input-field" required
-					name="member_name" />
+					name="member_name" readonly />
 			</div>
 
 			<div class="input-wrapper">
@@ -525,7 +525,10 @@
     	    } else {
     	        $(this).val(phoneNumber.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3"));
     	    }
+    	    checkFormCompletion()
     	});
+     
+     
      // 모든 입력값이 채워졌는지 확인하는 함수
      function checkFormCompletion() {
          const userid = $("#userid").val().trim();
@@ -587,7 +590,7 @@
 
        // AJAX 요청으로 회원가입 처리
        $.ajax({
-         url: "/membersignup", // 서버의 회원가입 처리 URL
+         url: "/admin/companyMemberSignUp", // 서버의 회원가입 처리 URL
          type: "POST",
          contentType: "application/json",
          data: JSON.stringify(signupData),

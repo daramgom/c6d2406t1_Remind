@@ -143,21 +143,63 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#maps">
+                <a data-bs-toggle="collapse" href="#ware">
                   <i class="fas fa-map-marker-alt"></i>
-                  <p>Maps</p>
+                  <p>창고 관리</p>
                   <span class="caret"></span>
                 </a>
-                <div class="collapse" id="maps">
+                <div class="collapse" id="ware">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="maps/googlemaps.html">
-                        <span class="sub-item">Google Maps</span>
+                      <a href="/wareHouseInsert">
+                        <span class="sub-item">창고 등록</span>
                       </a>
                     </li>
                     <li>
-                      <a href="maps/jsvectormap.html">
-                        <span class="sub-item">Jsvectormap</span>
+                      <a href="/wareHouseList">
+                        <span class="sub-item">창고 목록</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#cp">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <p>거래처 관리</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="cp">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="/companyInsert">
+                        <span class="sub-item">거래처 등록</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/companyList">
+                        <span class="sub-item">거래처 목록</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#noti">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <p>공지사항</p>
+                  <span class="caret"></span>
+                </a>
+                <div class="collapse" id="noti">
+                  <ul class="nav nav-collapse">
+                    <li>
+                      <a href="/noticeInsert">
+                        <span class="sub-item">공지사항 등록</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/noticeList">
+                        <span class="sub-item">공지사항 목록</span>
                       </a>
                     </li>
                   </ul>
@@ -166,84 +208,19 @@
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#charts">
                   <i class="far fa-chart-bar"></i>
-                  <p>Charts</p>
+                  <p>관리자 페이지</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="charts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="charts/charts.html">
-                        <span class="sub-item">Chart Js</span>
+                      <a href="/signReq">
+                        <span class="sub-item">회원 가입 신청 목록</span>
                       </a>
                     </li>
                     <li>
-                      <a href="charts/sparkline.html">
-                        <span class="sub-item">Sparkline</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              <li class="nav-item">
-                <a href="widgets.html">
-                  <i class="fas fa-desktop"></i>
-                  <p>Widgets</p>
-                  <span class="badge badge-success">4</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./documentation/index.html">
-                  <i class="fas fa-file"></i>
-                  <p>Documentation</p>
-                  <span class="badge badge-secondary">1</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#submenu">
-                  <i class="fas fa-bars"></i>
-                  <p>Menu Levels</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="submenu">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a data-bs-toggle="collapse" href="#subnav1">
-                        <span class="sub-item">Level 1</span>
-                        <span class="caret"></span>
-                      </a>
-                      <div class="collapse" id="subnav1">
-                        <ul class="nav nav-collapse subnav">
-                          <li>
-                            <a href="#">
-                              <span class="sub-item">Level 2</span>
-                            </a>
-                          </li>
-                          <li>
-                            <a href="#">
-                              <span class="sub-item">Level 2</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                    <li>
-                      <a data-bs-toggle="collapse" href="#subnav2">
-                        <span class="sub-item">Level 1</span>
-                        <span class="caret"></span>
-                      </a>
-                      <div class="collapse" id="subnav2">
-                        <ul class="nav nav-collapse subnav">
-                          <li>
-                            <a href="#">
-                              <span class="sub-item">Level 2</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <span class="sub-item">Level 1</span>
+                      <a href="/adminMemberList">
+                        <span class="sub-item">회원 목록</span>
                       </a>
                     </li>
                   </ul>

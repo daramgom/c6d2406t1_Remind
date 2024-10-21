@@ -25,7 +25,7 @@
 }
 
 #company-modal-overlay {
-	/* display: none; */
+	display: none; 
 	width: 100%;
 	background-color: rgba(1, 1, 1, 0.4); /* 검정색 배경에 50% 투명도 */
 	height: 101%;
@@ -86,8 +86,8 @@
 	color: #a386e0;
 }
 
-#username::placeholder {
-	font-size: 0.89rem; /* 폰트 크기 조정 */
+#userid::placeholder {
+	font-size: 0.88rem; /* 폰트 크기 조정 */
 }
 
 .input-wrapper i {
@@ -176,15 +176,19 @@
 		<div class="modal-container">
 			<div class="company-modal-title">
 				<header>거래처 회원가입</header>
+				<%-- ${companyList} --%>
 			</div>
 			<div class="input-wrapper">
 				<label for="username" class="input-label">아이디</label> <input
-					type="text" id="username"
+					type="text" id="userid"
 					placeholder="영문자와 숫자를 포함하여 5자 이상 10자 이하로 입력해주세요."
 					class="input-field" required name="member_id" maxlength="10" />
 				<button type="button" id="userIdBtn" class="send-user-button"
 					disabled>중복 조회</button>
 			</div>
+			
+			<input type="hidden" id="companyCode" >
+			
 
 			<div class="input-wrapper">
 				<label for="password" class="input-label">비밀번호</label> <input
@@ -195,14 +199,14 @@
 			<div class="input-wrapper">
 				<label for="name" class="input-label">이름</label> <input type="text"
 					id="name" placeholder="홍길동" class="input-field" required
-					name="member_name" value="${member.name}" />
+					name="member_name" />
 			</div>
 
 			<div class="input-wrapper">
 				<label for="email" class="input-label">이메일</label> <input
 					type="email" id="email" placeholder="itwill@itwillbs.com"
 					class="input-field" name="member_email" required
-					value="${member.email}" />
+					/>
 					<button type="button" id="userEmailBtn" class="send-user-button"
 					disabled>중복 조회</button>
 			</div>
@@ -210,11 +214,12 @@
 				<label for="phone" class="input-label">전화번호</label> <input
 					type="tel" id="phone" placeholder="010-1234-5678"
 					class="input-field" required name="member_tel"
-					value="${member.tel}" />
+					 />
 			</div>
 			<button class="signup-button" id="signUp-btn" disabled>회원가입</button>
 		</div>
 	</div>
+
 
 	<div class="wrapper">
 		<!-- Header -->
@@ -257,12 +262,35 @@
 													<th class="col-md-2">전화번호</th>
 													<th class="col-md-2">가입일자</th>
 												</tr>
-												<tr></tr>
+												<c:forEach var="List" items="${companyList}">
+												
+												<tr>
+												<td>
+													${List.company_name}
+												</td>
+												<td>
+													${List.company_manager}
+												</td>
+												<td>
+													${List.company_tel}
+												</td>
+												<td>
+													${List.company_email}
+												</td>
+												<td>
+													${List.company_address}
+												</td>
+												
+												<td>
+													<button class="SignShowModal"  data-code="${List.company_code}"
+													style="width: 40px; height: 40px">+</button>
+
+												</td>
+												</tr>
+												</c:forEach>
 											</table>
 										</form>
 
-										<button id="SignShowModal" style="width: 100px; height: 100px">
-											+</button>
 									</div>
 								</div>
 							</div>
@@ -315,9 +343,9 @@
 	<script>
     
  
-    function isValidUsername(username) {
-        const usernamePattern = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{5,10}$/; // 영문자와 숫자가 모두 포함된 5자 이상 10자 이하
-        return usernamePattern.test(username);
+    function isValidUserId(userid) {
+        const useridPattern = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{5,10}$/; // 영문자와 숫자가 모두 포함된 5자 이상 10자 이하
+        return useridPattern.test(userid);
       }
       function isValidPassword(password) {
         const passwordPattern = /^(?=.*[A-Z])(?=.*[0-9]).{5,10}$/; // 최소 5자, 최대 10자, 대문자, 숫자 포함
@@ -329,35 +357,16 @@
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailPattern.test(email);
       }
+   
+
+
       
 
-      // 모든 입력값이 채워졌는지 확인하는 함수
-      /* function checkFormCompletion() {
-        const username = $("#username").val().trim();
-        const name = $("#name").val().trim();
-        const password = $("#password").val().trim();
-        const confirmPassword = $("#confirm-password").val().trim();
-        const email = $("#email").val().trim();
-        const code = $("#code").val().trim();
-        const phone = $("#phone").val().trim();
-
-        // 모든 입력값이 비어있지 않고, 아이디 중복 검사를 통과한 경우에만 회원가입 버튼 활성화
-        if (
-          isValidUsername(username) &&
-          isUsernameAvailable &&
-          name &&
-          password &&
-          confirmPassword &&
-          email &&
-          code &&
-          phone.length === 13 &&
-          password === confirmPassword
-        ) {
-          $(".signup-button").prop("disabled", false); // 회원가입 버튼 활성화
-        } else {
-          $(".signup-button").prop("disabled", true); // 회원가입 버튼 비활성화
-        }
-      } */
+      /* // 입력 필드 변경 시 버튼 활성화 체크
+      $(".input-field").on("input", function() {
+          checkFormCompletion(); // 입력값이 변경될 때마다 체크
+      }); */
+  
       function showSuccessAlert(message, detail) {
         return new Promise((resolve) => {
           swal(message, detail, {
@@ -388,26 +397,55 @@
  
  <script >
  $(document).ready(function () {
+	    let isUseridAvailable = false; // 아이디 중복 체크 결과
+	    let isEmailAvailable = false; // 이메일 중복 체크 결과
+
      // 비밀번호 입력 시 비밀번호 확인 필드 활성화
      $("#password").on("input", function () {
-         const userpw = $(this).val.trim();
+         const userpw = $(this).val().trim();
          if(isValidPassword(userpw)) {
         	$(this).css("border-color","#bfb3f2");
          }
          else {
             $(this).css("border-color", "red"); // 유효하지 않은 경우 색상 변경
          }
+         checkFormCompletion();  // 중복 검사 후 폼 체크
      });
-     
-     $("#SignShowModal").click(function () {
-         $("#company-modal").css("display", "block");
+	    
+     $(".SignShowModal").click(function ( event) {
+    	 event.preventDefault();	
+         $("#company-modal-overlay").css("display", "block");
+         let company_code = $(this).data("code");
+         
+         $.ajax({
+        	 url: "companySignUpModal",
+             type: "POST",
+             contentType: "application/json",
+             data: JSON.stringify({
+                 company_code: company_code
+             }),
+             success: function (response) {
+                 $("#name").val(response.company_name); // 이름 필드에 회사 이름 설정
+                 $("#email").val(response.company_email); // 이메일 필드에 회사 이메일 설정
+                 $("#phone").val(response.company_tel); // 전화번호 필드에 회사 전화번호 설정 (ID 수정)
+                 $("#companyCode").val(response.company_code); // 전화번호 필드에 회사 전화번호 설정 (ID 수정)
+              // 이메일 필드가 비어있지 않으면 버튼 활성화
+                 if ($("#email").val().trim() !== "") {
+                     $("#userEmailBtn").prop("disabled", false); // 버튼 활성화
+                 }
+            	 
+             },
+             error : function(xhr , status, error) {
+            	 console.error("Error occurred : ",error);
+             }
+            
+         });
      });
      
      // 아이디 길이에 따른 버튼 활성화
-     $("#username").on("input", function () {
+     $("#userid").on("input", function () {
          const userid = $(this).val().trim();
-         console.log("");
-         if (isValidUsername(userid)) {
+         if (isValidUserId(userid)) {
              $("#userIdBtn").prop("disabled", false);
              $(this).css("border-color", "#bfb3f2"); // 유효한 경우 색상 변경
          } else {
@@ -417,26 +455,26 @@
      });
 
      $("#userIdBtn").click(function () {
-         var member_id = $("#username").val().trim();
+         var member_id = $("#userid").val();
 
          $.ajax({
-             url: "/checkUserId",
+             url: "checkUserId",
              type: "POST",
              contentType: "application/json",
              data: JSON.stringify({
                  member_id: member_id,
              }),
              success: function (response) {
-                 if ("사용가능한 아이디 입니다!" === response.message) {
+                 if ("사용가능한 아이디 입니다!" == response.message) {
                      showSuccessAlert("요청성공!", response.message); // 사용가능한 아이디 입니다.
-                     isUsernameAvailable = true; // 상태 업데이트
+                     isUseridAvailable = true; // 상태 업데이트
                      $("#userIdBtn").prop("disabled", true);
-                     $("#username").prop("readonly", true);
+                     $("#userid").prop("readonly", true);
                  } else {
                      showErrorAlert(response.message); // 중복된 아이디 입니다.
-                     isUsernameAvailable = false; // 상태 업데이트
+                     isUseridAvailable = false; // 상태 업데이트
                  }
-                 checkFormCompletion(); // 중복 검사 후 폼 체크
+                 checkFormCompletion();  // 중복 검사 후 폼 체크
              },
              error: function (xhr, status, error) {
                  // 오류 메시지 표시
@@ -446,61 +484,136 @@
      });
      
      $("#userEmailBtn").click(function () {
-         var member_email = $("#useremail").val().trim();
+         var member_email = $("#email").val().trim();
 
          $.ajax({
-             url: "admin/checkUserEamil",
+             url: "/admin/checkUserEamil",
              type: "POST",
              contentType: "application/json",
              data: JSON.stringify({
             	 member_email:  member_email,
              }),
              success: function (response) {
-                 if ("사용 가능한 이메일입니다." === response.message) {
-                     showSuccessAlert("요청성공!", response.message); // 사용가능한 아이디 입니다.
-                     isUsernameAvailable = true; // 상태 업데이트
-                     $("#userEmailBtn").prop("disabled", true);
-                     $("#useremail").prop("readonly", true);
-                 } else {
-                     showErrorAlert(response.message); // 중복된 아이디 입니다.
-                     isUsernameAvailable = false; // 상태 업데이트
-                 }
-                 checkFormCompletion(); // 중복 검사 후 폼 체크
-             },
-             error: function (xhr, status, error) {
-                 // 오류 메시지 표시
-                 showErrorAlert(xhr.responseJSON.message);
-             },
+            	    if (response.result) {
+            	        showSuccessAlert("요청성공!", response.message);
+            	        isEmailAvailable = true; 
+            	        $("#userEmailBtn").prop("disabled", true);
+            	        $("#email").prop("readonly", true);
+            	    } else {
+            	        showErrorAlert(response.message);
+            	        isEmailAvailable = false; 
+            	    }
+            	    checkFormCompletion(); 
+            	},
+            	error: function (xhr, status, error) {
+            	    const errorMessage = xhr.responseJSON ? xhr.responseJSON.message : "알 수 없는 오류가 발생했습니다.";
+            	    showErrorAlert(errorMessage);
+            	}
          });
      });
      
      
-     
-     
      $("#phone").on("input", function () {
     	    // 입력된 전화번호에서 숫자만 추출
-    	    let phoneNumber = $(this)
-    	      .val()
-    	      .replace(/[^0-9]/g, "");
+    	    let phoneNumber = $(this).val().replace(/[^0-9]/g, "");
 
     	    // 하이픈 추가
     	    if (phoneNumber.length < 4) {
-    	      $(this).val(phoneNumber);
+    	        $(this).val(phoneNumber);
     	    } else if (phoneNumber.length < 7) {
-    	      $(this).val(phoneNumber.replace(/(\d{3})(\d+)/, "$1-$2"));
+    	        $(this).val(phoneNumber.replace(/(\d{3})(\d+)/, "$1-$2"));
     	    } else {
-    	      $(this).val(phoneNumber.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3"));
+    	        $(this).val(phoneNumber.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3"));
     	    }
-    	  });
+    	});
+     // 모든 입력값이 채워졌는지 확인하는 함수
+     function checkFormCompletion() {
+         const userid = $("#userid").val().trim();
+         const name = $("#name").val().trim();
+         const password = $("#password").val().trim();
+         const email = $("#email").val().trim();
+         const phone = $("#phone").val().trim();
+         const code = $("#companyCode").val().trim();
+         
+         console.log("userid:", userid);
+         console.log("name:", name);
+         console.log("password:", password);
+         console.log("email:", email);
+         console.log("phone:", phone);
+         console.log("code:", code);
+         console.log("isUseridAvailable:", isUseridAvailable);
+         console.log("isUseridAvailable:", isUseridAvailable);
+
+
+         // 모든 입력값이 비어있지 않고, 아이디 및 이메일 중복 검사를 통과한 경우에만 회원가입 버튼 활성화
+         if (
+             isValidUserId(userid) &&
+             isUseridAvailable &&
+             name &&
+             password &&
+             email &&
+             code &&
+             isEmailAvailable &&
+             phone.replace(/-/g, "").length === 11 // 전화번호 길이 확인 (하이픈 제외)
+         ) {
+             $(".signup-button").prop("disabled", false); // 회원가입 버튼 활성화
+         } else {
+             $(".signup-button").prop("disabled", true); // 회원가입 버튼 비활성화
+         }
+     }
      
-     
-     
+  // 회원가입 버튼 클릭 이벤트 리스너
+     $("#signUp-btn").click(function () {
+       // 기본 form 제출 방지
+       event.preventDefault();
+
+       // 모든 입력값 가져오기
+         const userid = $("#userid").val().trim();
+         const name = $("#name").val().trim();
+         const password = $("#password").val().trim();
+         const email = $("#email").val().trim();
+         const phone = $("#phone").val().trim();
+         const code = $("#companyCode").val().trim();
+
+       // 회원가입 데이터 객체 생성
+       const signupData = {
+         member_id: userid,
+         member_name: name,
+         member_pw: password,
+         member_email: email,
+         member_tel: phone,
+         member_code : code,
+       };
+
+       // AJAX 요청으로 회원가입 처리
+       $.ajax({
+         url: "/membersignup", // 서버의 회원가입 처리 URL
+         type: "POST",
+         contentType: "application/json",
+         data: JSON.stringify(signupData),
+         success: function (response) {
+           // 성공적인 응답 처리
+           if (response.message === "회원가입이 성공적으로 완료되었습니다!") {
+             showSuccessAlert("회원가입 성공!", response.message).then(() => {
+               window.location.href = "/login"; // 로그인 페이지로 이동
+             });
+           } else {
+             showErrorAlert(response.message);
+           }
+         },
+         error: function (xhr, status, error) {
+           showErrorAlert(
+             xhr.responseJSON.message ||
+               "회원가입 중 문제가 발생했습니다. 다시 시도해 주세요."
+           );
+         },
+       });
+     });
      
  });
 </script>
 
  
- </script>
 
 	
 </body>

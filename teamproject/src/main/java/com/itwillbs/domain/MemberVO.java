@@ -50,5 +50,7 @@ public class MemberVO {
 	private String company_code; // 회사 코드 
 	private String employee_rank_value;
 	
+	private String member_code;
+	
 	
 }

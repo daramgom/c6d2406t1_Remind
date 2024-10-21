@@ -28,4 +28,11 @@ public class CompanyDAOImpl implements CompanyDAO{
 		
 		return resultList;
 	}
+	
+	@Override
+	public CompanyVO getCompany(String code) {
+		System.out.println("DAO : code : " + code);
+		
+		return sqlSession.selectOne(NAMESPACE+".getCompany", code);
+	}
 }

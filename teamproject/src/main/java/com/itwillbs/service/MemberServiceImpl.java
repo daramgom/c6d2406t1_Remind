@@ -43,6 +43,16 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
+	public String companyMemberJoin(MemberVO vo) {
+		logger.debug("(●'◡'●) 컨트롤러 -> 서비스 ");
+		logger.debug("(●'◡'●) 회원가입 메서드 memberJoin(MemberVO vo) 실행 ");
+		String hashedPassword = BCrypt.hashpw(vo.getMember_pw(), BCrypt.gensalt());
+        vo.setMember_pw(hashedPassword);
+		
+		return mdao.insertCompanyMember(vo);
+	}
+	
+	@Override
 	public MemberVO memberLoginCheck(MemberVO vo) {
 	   logger.debug("(●'◡'●) 컨트롤러가 호출 -> DAO 호출");
 	    MemberVO storedMember = mdao.loginMember(vo);
@@ -88,7 +98,6 @@ public class MemberServiceImpl implements MemberService{
 	public Integer memberDelete(MemberVO vo) {
 		
 		logger.debug("(●'◡'●) memberDelete(MemberVO vo ) 실행 " + vo);
-		
 		
 		return mdao.deleteMember(vo); 
 		

@@ -12,10 +12,18 @@
 	<!-- userid 컬럼명. -->
 	<insert id="insertMember">
 		insert into member
-		(member_id,member_pw,member_name,member_email,member_tel,employee_rank,create_date,update_date,permission_id,
+		(member_id,member_pw,member_name,member_email,member_tel,employee_rank,create_date,update_date,permission_id,code,
 		member_state,approval_status )
 		values(#{member_id},#{member_pw},#{member_name},#{member_email},#{member_tel},'01',
-		now(),now(),'01','01','00');
+		now(),now(),'01',${member_code},'01','01');
+	</insert>
+	<!-- userid 컬럼명. -->
+	<insert id="insertCompanyMember">
+		insert into member
+		(member_id,member_pw,member_name,member_email,member_tel,employee_rank,create_date,update_date,permission_id,code,
+		member_state,approval_status )
+		values(#{member_id},#{member_pw},#{member_name},#{member_email},#{member_tel},'01',
+		now(),now(),'01',${member_code},'00','02');
 	</insert>
 
 	<!-- 로그인 체크 -->

@@ -20,4 +20,8 @@
 		select company_code, company_name,company_manager,company_tel,company_email,company_address from company;
 	</select>
 	
+	<select id="getCompany"  resultMap="company">
+		select company_code, company_name,company_manager,company_tel,company_email,company_address from company where company_code = #{company_code};
+	</select>
+	
 </mapper>

@@ -55,6 +55,9 @@ public class OrdersVO {
 	private String common_value;
 	
 	private String permission_id;
+
+    private String ord_supervisor_name;
+    private String ord_manager_name;
 	
 	
 	private String formatTimestamp(Timestamp timestamp) {

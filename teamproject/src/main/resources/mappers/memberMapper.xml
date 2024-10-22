@@ -79,7 +79,6 @@
 		m.member_name,
 		m.member_email,
 		m.member_tel,
-		m.member_birth,
 		m.department_id,
 		m.employee_rank,
 		m.create_date,

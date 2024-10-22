@@ -332,6 +332,7 @@ $(document).ready(function () {
 
 					
 					if (selectedWh === '') {
+						$('#stock_wh').prop('disabled', true);
 						$('#stock_wh').empty();
 						$('#stock_wh').append('<option value="">창고 선택</option>');
 						$('#stock_qty').prop('max','');

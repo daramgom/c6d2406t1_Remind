@@ -557,15 +557,15 @@ $(document).ready(function() {
     
 
 <script>
-		
+
 function openModal(ord_count, ord_number, common_status, ord_status, 
 	ord_manager_id, manager_member_name, manager_department_name, manager_common_status, manager_member_tel, 
 	ord_supervisor_id, supervisor_member_name, supervisor_department_name, supervisor_common_status, supervisor_member_tel, 
-	prod_id, prod_name, prod_category, prod_brand, 
+	prod_id, prod_name, prod_category, prod_brand, // prod_id 삭제요청
 	ord_price, ord_quantity, ord_date, ord_date_change, 
 	company_code, company_name, company_tel, 
 	ord_text, 
-	wh_number, wh_name, wh_location, wh_admin, wh_member_name, wh_member_tel) {
+	wh_number, wh_name, wh_location, wh_admin, wh_member_name, wh_member_tel) { // wh_number 삭제요청
 	    document.getElementById('modalOrdCount').value = ord_count;
 	    document.getElementById('modalOrdNumber').value = ord_number;
 	    document.getElementById('modalCommonStatus').value = common_status;
@@ -583,15 +583,15 @@ function openModal(ord_count, ord_number, common_status, ord_status,
 	    document.getElementById('modalSupervisorCommonStatus').value = supervisor_common_status;
 	    document.getElementById('modalSupervisorMemberTel').value = supervisor_member_tel;
 	    
-	    document.getElementById('modalProdId').value = prod_id;
-	    
+	    document.getElementById('modalProdId').value = prod_id; // <-- 원인. + id값은 고유한 값인데 반복문에 들어가면 의미없음 삭제요청
+	    // console.log(prod_id); <-- 삭제요청
 	    document.getElementById('modalOrdPrice').value = ord_price;
 	    document.getElementById('modalOrdQuantity').value = ord_quantity;
 	    document.getElementById('modalOrdDate').value = ord_date;
 	    document.getElementById('modalOrdDateChange').value = ord_date_change;
 	    /* document.getElementById('modalCompanyCode').value = company_code; */
 	    document.getElementById('modalOrdText').value = ord_text;
-	    document.getElementById('modalWhNumber').value = wh_number;
+	    document.getElementById('modalWhNumber').value = wh_number; // <-- 원인. 삭제요청
         
 //         document.getElementById('modalWhName').value = wh_name;
 //         document.getElementById('modalWhLocation').value = wh_location;
@@ -609,8 +609,23 @@ function openModal(ord_count, ord_number, common_status, ord_status,
     } // openModal
         
     $(document).on('click',function(e){
-    	console.log(e.target);
+    	// console.log(e.target); //    <- 삭제요청
     });
+    
+    // test <-- 삭제요청
+        document.getElementById('prod_id').addEventListener('change', function() {
+        // 선택된 옵션의 value를 가져옴
+        var selectedValue = this.value;
+        // console.log으로 출력
+        console.log('선택된 값:', selectedValue);
+    	});
+        document.getElementById('wh_number').addEventListener('change', function() {
+            // 선택된 옵션의 value를 가져옴
+            var selectedValue2 = this.value;
+            // console.log으로 출력
+            console.log('선택된 값:', selectedValue2);
+        	});
+    // test <-- 삭제요청
     
 function renderButtons(ord_status) {
     var buttonContainer = document.getElementById('buttonContainer');

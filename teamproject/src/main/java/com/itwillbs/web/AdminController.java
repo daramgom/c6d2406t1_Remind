@@ -149,7 +149,7 @@ public class AdminController {
 	        return ResponseEntity.badRequest().body(null); // 400 Bad Request
 	    }
 
-	    CompanyVO result = cService.getCompany(company_code.getCompany_code());
+	    CompanyVO result = cService.getCompany(company_code.getCompany_code()); 
 	    
 	    if (result == null) {
 	        return ResponseEntity.notFound().build(); // 404 Not Found

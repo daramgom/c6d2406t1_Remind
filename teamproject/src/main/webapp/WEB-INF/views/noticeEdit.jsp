@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -30,8 +30,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-between align-items-center">
                                 <div class="card-title">공지사항 수정</div>
+                                <button type="button" class="btn btn-success" onclick="document.getElementById('noticeEditForm').submit();">공지사항 수정</button>
                             </div>
 
                             <div class="card-body">
@@ -49,11 +50,9 @@
                                         <textarea class="form-control" id="content" name="content" rows="5" required>${notice.content}</textarea>
                                     </div>
                                     <div class="d-flex justify-content-end mt-3">
-                                        <button type="submit" class="btn btn-success me-2">공지사항 수정</button>
-                                        <form action="${pageContext.request.contextPath}/notice/delete" method="post" style="display:inline;">
-                                            <input type="hidden" name="no" value="${notice.no}" />
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
-                                        </form>
+                                        <!-- 삭제 버튼 -->
+                                        <input type="hidden" name="no" value="${notice.no}" />
+                                        <button type="button" class="btn btn-danger me-2" onclick="if(confirm('정말로 삭제하시겠습니까?')) { document.getElementById('noticeEditForm').action='${pageContext.request.contextPath}/notice/delete'; document.getElementById('noticeEditForm').submit(); }">삭제</button>
                                         <a href="${pageContext.request.contextPath}/notice/list" class="btn btn-secondary">목록으로</a>
                                     </div>
                                 </form>

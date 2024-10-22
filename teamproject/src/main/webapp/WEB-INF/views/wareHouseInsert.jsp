@@ -61,6 +61,16 @@
                                                     <input type="text" class="form-control input-full" id="wh_reguser" name="wh_reguser" placeholder="등록 사용자" required />
                                                 </div>
                                             </div>
+                                            <div class="form-group d-flex" style="gap: 20px;">
+                                                <div style="flex: 1;">
+                                                    <label for="latitude" class="col-form-label">위도</label>
+                                                    <input type="text" class="form-control input-full" id="latitude" name="latitude" placeholder="위도" required />
+                                                </div>
+                                                <div style="flex: 1;">
+                                                    <label for="longitude" class="col-form-label">경도</label>
+                                                    <input type="text" class="form-control input-full" id="longitude" name="longitude" placeholder="경도" required />
+                                                </div>
+                                            </div>
                                             <div class="form-group">
                                                 <label for="wh_admin" class="col-form-label">담당자</label>
                                                 <input type="text" class="form-control" id="wh_admin" name="wh_admin" placeholder="담당자" required />

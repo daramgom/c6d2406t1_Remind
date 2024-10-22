@@ -65,4 +65,5 @@ public interface MemberDAO {
 	// admin(전용) 회원가입 신청 목록 삭제
 	public Integer deleteMembers(List<MemberVO> memberList);
 	
+	public Map<String, Object> getInfo();
 }

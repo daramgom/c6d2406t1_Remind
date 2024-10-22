@@ -32,7 +32,7 @@ public class SignupController {
 	
 	// http://localhost:8088/signup
 	@RequestMapping(value ="signup" , method=RequestMethod.GET)
-	public void signupGet( HttpSession session , Model model , UserVO uvo) {
+	public void signupGet(  Model model , UserVO uvo) {
 		
 		logger.info("signupPage get 실행 ");
 		logger.info("uvo  : " + uvo);
@@ -42,9 +42,10 @@ public class SignupController {
 	
 	// http://localhost:8088/signup
 	@RequestMapping(value ="signup" , method=RequestMethod.POST)
-	public void signupPOST(UserVO vo, Model model) {
+	public void signupPOST(HttpSession session ,UserVO vo, Model model) {
 		logger.debug("vo : " + vo);
 		model.addAttribute("member",vo );
+		session.removeAttribute("userInfo");
 	}
 	
 	

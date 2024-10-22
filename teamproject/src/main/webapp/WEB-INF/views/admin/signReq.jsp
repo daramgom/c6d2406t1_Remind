@@ -88,7 +88,7 @@ tr {
 
 	<c:if
 		test="${sessionScope.id == null || sessionScope.permission_id != '03'}">
-		<c:redirect url="/index" />
+		<c:redirect url="/main" />
 	</c:if>
 	
 	<div class="wrapper">

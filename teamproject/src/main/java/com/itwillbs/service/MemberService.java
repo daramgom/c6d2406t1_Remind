@@ -49,6 +49,7 @@ public interface MemberService {
 	// admin 회원가입 신청 목록 삭제
 	public Integer membersDelete(List<MemberVO> vo);
 	
+	public Map<String, Object> getInfo();
 	
 	
 }

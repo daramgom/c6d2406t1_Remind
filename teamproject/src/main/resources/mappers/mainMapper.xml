@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.mapper.MainMapper">
+
+<select id="prodAllQty" resultType="int">
+	select sum(prod_qty) as prod_all_qty  
+	 from stock
+</select>
+
+<select id="monthOrd" resultType="int">
+	select count(*) as month_ord 
+	 from orders 
+	  where ord_status = '05' 
+	   and date_format(ord_date_change, '%Y-%m') = date_format(now(), '%Y-%m')
+</select>
+
+<select id="monthRcv" resultType="int">
+	select sum(rcv_quantity) as month_rcv 
+	 from receiving_info 
+	  where rcv_status = '02' 
+	   and date_format(rcv_date, '%Y-%m') = date_format(now(), '%Y-%m')
+</select>
+
+<select id="monthShp" resultType="int">
+	select sum(shp_quantity) as month_shp 
+	 from shipping_info 
+	  where shp_status = '02' 
+	   and date_format(shp_date, '%Y-%m') = date_format(now(), '%Y-%m')
+</select>
+
+<select id="dayQty" resultType="MainVO">
+	select 
+		date_format(ord_date_change, '%Y-%m-%d') as date, 
+		sum(ord_quantity) as 'day_ord', 
+		0 as 'day_rcv', 
+		0 as 'day_shp' 
+	from 
+		orders 
+	where  
+		ord_status = '05' 
+	group by 
+		date_format(ord_date_change, '%Y-%m-%d') 
+
+	union all 
+ 
+	select 
+		date_format(rcv_date, '%Y-%m-%d') as date, 
+		0 as 'day_ord', 
+		sum(rcv_quantity) as 'day_rcv', 
+		0 as 'day_shp' 
+	from 
+		receiving_info 
+	where 
+		rcv_status = '02' 
+	group by  
+		date_format(rcv_date, '%Y-%m-%d') 
+
+	union all 
+
+	select 
+		date_format(shp_date, '%Y-%m-%d') as date, 
+		0 as 'day_ord', 
+		0 as 'day_rcv', 
+		sum(shp_quantity) as 'day_shp' 
+	from 
+		shipping_info 
+	where 
+		shp_status = '02' 
+	group by 
+		date_format(shp_date, '%Y-%m-%d') 
+
+	order by 
+		date
+</select>
+
+
+
+</mapper>

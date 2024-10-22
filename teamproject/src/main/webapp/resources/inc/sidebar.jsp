@@ -214,12 +214,12 @@
                 <div class="collapse" id="charts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a class="test" id="a17" href="/signReq">
+                      <a class="test" id="a17" href="admin/signReq">
                         <span class="sub-item">회원 가입 신청 목록</span>
                       </a>
                     </li>
                     <li>
-                      <a class="test" id="a18" href="/adminMemberList">
+                      <a class="test" id="a18" href="admin/adminMemberList">
                         <span class="sub-item">회원 목록</span>
                       </a>
                     </li>

@@ -9,9 +9,11 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,6 +54,13 @@ public class LoginController {
 	    session.setAttribute("id", result.getMember_id());
 		session.setAttribute("name", result.getMember_name());
 		session.setAttribute("permission_id", result.getPermission_id());
+		session.setAttribute("tel", result.getMember_tel());
+		session.setAttribute("email", result.getMember_email());
+		session.setAttribute("employee_rank", result.getEmployee_rank());
+		session.setAttribute("department_id", result.getDepartment_id());
+		// 밑에 있는걸로 변경할거임/
+		/* session.setAttribute("resultMemberVO",result); */
+		
 	}
 	
 	
@@ -120,7 +129,7 @@ public class LoginController {
 	    
 	    // 비교해서 member 있으면 -> 해당하는 member 정보로 로그인 -> 메인 페이지
 	    sessionAdd(session, result);
-	    return "redirect:/index"; // 메인 페이지로 리다이렉트
+	    return "redirect:/main"; // 메인 페이지로 리다이렉트
 	}
 	
 	
@@ -136,5 +145,15 @@ public class LoginController {
 	        model.addAttribute("userInfo", userInfo); // 뷰에서 사용하기 위해 다시 모델에 추가
 	    }
 	}
+	
+
+    @PostMapping("/postInfo")
+    public ResponseEntity<Map<String, Object>> postInfo() {
+    	
+    	Map<String, Object> result	= mService.getInfo();
+    	logger.debug("result : " + result);
+    	
+        return ResponseEntity.ok(result);
+    }
 
 }

@@ -36,8 +36,6 @@ public class MemberVO {
 	private String member_email; // 이메일
 	private String member_tel; // 사용자 전화번호
 	// 
-	private String member_birth; // 사용자 생일 
-	// 
 	private String department_id; // 부서번호
 	private String employee_rank; // 직급
 	private Timestamp create_date; // 회원가입일

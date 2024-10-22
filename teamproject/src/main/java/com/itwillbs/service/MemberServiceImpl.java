@@ -143,5 +143,9 @@ public class MemberServiceImpl implements MemberService{
 		return mdao.deleteMembers(vo);
 	}
 	
+	@Override
+	public Map<String, Object> getInfo() {
+		return mdao.getInfo();
+	}
 	
 }

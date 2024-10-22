@@ -261,5 +261,19 @@ public class MemberDAOImpl implements MemberDAO {
 			}
 			return totalDelete;
 		}
+		
+		@Override
+		public Map<String, Object> getInfo() {
+			Map<String, Object> commonStatuses = new HashMap<>();
+			Map<String, Object> resultEmpMap = sqlSession.selectMap(NAMESPACE + ".getEmp_rank", "common_value");
+			Map<String, Object> resultDeptMap = sqlSession.selectMap(NAMESPACE + ".getDepartment", "department_id");
+
+			// List<String> result4 = sqlSession.selectList(NAMESPACE+".getApproval");
+
+			// 결과를 map에 추가
+			commonStatuses.put("empRank", resultEmpMap); // 키와 값을 추가합니다.
+			commonStatuses.put("department", resultDeptMap);
+			return commonStatuses;
+		}
 
 }

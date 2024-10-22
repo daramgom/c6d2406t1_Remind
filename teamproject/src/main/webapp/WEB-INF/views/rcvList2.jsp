@@ -198,11 +198,11 @@ td:first-child {
 #slidePanel {
 	display: none;
 	position: fixed;
-	z-index: 1000;
+	z-index: 8000;
 	right: 0;
-	top: 95px;
+	top: 0px;
 	width: 740px;
-	height: calc(100% - 60px);
+	height: calc(100% - 0px);
 	background-color: #fff;
 	box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
 	transition: transform 0.3s ease;

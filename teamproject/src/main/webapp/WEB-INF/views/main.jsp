@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>메인페이지</title>
 <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
 	name="viewport" />
 <link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
@@ -33,7 +34,12 @@
 <link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/resources/css/plugins.min.css" />
 <link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
+<style>
+.card-category {
+	font-size: 1.5rem;
+}
 
+</style>
 </head>
 <body>
 	
@@ -51,14 +57,15 @@
 		<div class="page-inner">
             <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
               <div>
-                <h3 class="fw-bold mb-3">Dashboard</h3>
-                <h6 class="op-7 mb-2">Free Bootstrap 5 Admin Dashboard</h6>
+                <h3 class="fw-bold mb-3">메인페이지</h3>
+                <h6 class="op-7 mb-2">재고관리 시스템 메인페이지</h6>
               </div>
               <div class="ms-md-auto py-2 py-md-0">
                 <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
                 <a href="#" class="btn btn-primary btn-round">Add Customer</a>
               </div>
             </div>
+            
             <div class="row">
               <div class="col-sm-6 col-md-3">
                 <div class="card card-stats card-round">
@@ -66,13 +73,14 @@
                     <div class="row align-items-center">
                       <div class="col-icon">
                         <div class="icon-big text-center icon-primary bubble-shadow-small">
-                          <i class="fas fa-users"></i>
+                          <i class="fas fa-box"></i>
                         </div>
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                          <p class="card-category">Visitors</p>
-                          <h4 class="card-title">1,294</h4>
+                          <p class="card-category text-primary fw-bold">총 재고량</p>
+                          <h4 class="card-title text-primary"><fmt:formatNumber value="${MainQty.prod_all_qty}" pattern="#,##0" /></h4>
+                          
                         </div>
                       </div>
                     </div>
@@ -84,14 +92,14 @@
                   <div class="card-body">
                     <div class="row align-items-center">
                       <div class="col-icon">
-                        <div class="icon-big text-center icon-info bubble-shadow-small">
-                          <i class="fas fa-user-check"></i>
+                        <div class="icon-big text-center icon-warning bubble-shadow-small">
+                          <i class="fas fa-clipboard-list"></i>
                         </div>
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                          <p class="card-category">Subscribers</p>
-                          <h4 class="card-title">1303</h4>
+                          <p class="card-category text-warning fw-bold">월 발주건</p>
+                          <h4 class="card-title text-warning"><fmt:formatNumber value="${MainQty.month_ord}" pattern="#,##0" /></h4>
                         </div>
                       </div>
                     </div>
@@ -104,13 +112,13 @@
                     <div class="row align-items-center">
                       <div class="col-icon">
                         <div class="icon-big text-center icon-success bubble-shadow-small">
-                          <i class="fas fa-luggage-cart"></i>
+                          <i class="fas fa-cart-arrow-down"></i>
                         </div>
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                          <p class="card-category">Sales</p>
-                          <h4 class="card-title">$ 1,345</h4>
+                          <p class="card-category text-success fw-bold">월 입고량</p>
+                          <h4 class="card-title text-success"><fmt:formatNumber value="${MainQty.month_rcv}" pattern="#,##0" /></h4>
                         </div>
                       </div>
                     </div>
@@ -122,14 +130,14 @@
                   <div class="card-body">
                     <div class="row align-items-center">
                       <div class="col-icon">
-                        <div class="icon-big text-center icon-secondary bubble-shadow-small">
-                          <i class="far fa-check-circle"></i>
+                        <div class="icon-big text-center icon-danger bubble-shadow-small">
+                          <i class="fas fa-truck-moving"></i>
                         </div>
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                          <p class="card-category">Order</p>
-                          <h4 class="card-title">576</h4>
+                          <p class="card-category text-danger fw-bold">월 출고량</p>
+                          <h4 class="card-title text-danger"><fmt:formatNumber value="${MainQty.month_shp}" pattern="#,##0" /></h4>
                         </div>
                       </div>
                     </div>
@@ -138,7 +146,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-9">
                 <div class="card card-round">
                   <div class="card-header">
                     <div class="card-head-row">
@@ -163,11 +171,11 @@
                     <div class="chart-container" style="min-height: 375px"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                       <canvas id="statisticsChart" style="display: block; width: 1007px; height: 375px;" width="1007" height="375" class="chartjs-render-monitor"></canvas>
                     </div>
-                    <div id="myChartLegend"><ul class="0-legend html-legend"><li><span style="background-color:#f3545d"></span>Subscribers</li><li><span style="background-color:#fdaf4b"></span>New Visitors</li><li><span style="background-color:#177dff"></span>Active Users</li></ul></div>
+                    <div id="myChartLegend"><ul class="0-legend html-legend"><li><span style="background-color:#fdaf4b"></span>발주</li><li><span style="background-color:#31ce36"></span>입고</li><li><span style="background-color:#f3545d"></span>출고</li></ul></div>
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <div class="card card-primary card-round">
                   <div class="card-header">
                     <div class="card-head-row">
@@ -192,7 +200,7 @@
                       <h1>$4,578.58</h1>
                     </div>
                     <div class="pull-in"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-                      <canvas id="dailySalesChart" width="506" height="150" style="display: block; width: 506px; height: 150px;" class="chartjs-render-monitor"></canvas>
+                      <canvas id="dailySalesChart" width="506" height="335" style="display: block; width: 506px; height: 335px;" class="chartjs-render-monitor"></canvas>
                     </div>
                   </div>
                 </div>
@@ -309,5 +317,90 @@
 	<jsp:include page="/resources/inc/footer.jsp" />
 	</div>
 	
+<script type="text/javascript">
+$(document).ready(function() {
+	$.ajax({
+		url: '/main', // 데이터를 가져올 API 엔드포인트
+		method: 'POST',
+		success: function(mainList) {
+			// 날짜 레이블과 데이터셋 초기화
+			const dateLabels = [];
+			const dayOrdData = [];
+			const dayRcvData = [];
+			const dayShpData = [];
+
+			// 데이터 집계
+			mainList.forEach(item => {
+			    dateLabels.push(item.date);
+				dayOrdData.push(item.day_ord);
+				dayRcvData.push(item.day_rcv);
+				dayShpData.push(item.day_shp);
+			});
+
+			// Chart.js 그래프 생성
+			const ctx = $('#statisticsChart')[0].getContext('2d');
+			const myChart = new Chart(ctx, {
+				type: 'line', // 꺾은선 그래프
+				data: {
+					labels: dateLabels, // 날짜 레이블
+					datasets: [
+						{
+							label: '발주',
+							data: dayOrdData, // 발주 데이터
+							borderColor: '#fdaf4b', // 선 색상
+							backgroundColor: 'rgba(253, 175, 75, 0.2)', // 배경 색상
+							fill: true // 선 아래를 채움
+						},
+						{
+							label: '입고',
+							data: dayRcvData, // 입고 데이터
+							borderColor: '#31ce36', // 선 색상
+							backgroundColor: 'rgba(49, 206, 54, 0.2)', // 배경 색상
+							fill: true
+						},
+						{
+							label: '출고',
+							data: dayShpData, // 출고 데이터
+							borderColor: '#f3545d', // 선 색상
+							backgroundColor: 'rgba(243, 84, 93, 0.2)', // 배경 색상
+							fill: true
+						}
+					]
+				},
+				options: {
+					responsive: true,
+					scales: {
+						x: {
+							type: 'time',
+							time: {
+								unit: 'day',
+								tooltipFormat: 'YYYY-MM-DD',
+								displayFormats: {
+									day: 'MM-DD', // X축에 표시될 날짜 형식 설정 (일 단위)
+								},
+							},
+							ticks: {
+								autoSkip: true, // 레이블 자동 생략
+								maxTicksLimit: 7, // 최대 레이블 수 조정
+								minRotation: 90, // 최소 회전 각도
+								maxRotation: 90, // 최대 회전 각도
+							}
+						},
+						y: {
+							beginAtZero: true // y축 0부터 시작
+						}
+					}
+				}
+			});
+		},
+		error: function(error) {
+			console.error('데이터를 가져오는 데 실패했습니다:', error);
+		}
+	});
+});
+
+
+
+</script>
 </body>
 </html>

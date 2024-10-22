@@ -98,7 +98,7 @@
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
                         <div class="numbers">
-                          <p class="card-category text-warning fw-bold">월 발주건</p>
+                          <p class="card-category text-warning fw-bold">월 발주량</p>
                           <h4 class="card-title text-warning"><fmt:formatNumber value="${MainQty.month_ord}" pattern="#,##0" /></h4>
                         </div>
                       </div>
@@ -150,7 +150,7 @@
                 <div class="card card-round">
                   <div class="card-header">
                     <div class="card-head-row">
-                      <div class="card-title">User Statistics</div>
+                      <div class="card-title">일일 재고 운영</div>
                       <div class="card-tools">
                         <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
                           <span class="btn-label">
@@ -171,7 +171,6 @@
                     <div class="chart-container" style="min-height: 375px"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                       <canvas id="statisticsChart" style="display: block; width: 1007px; height: 375px;" width="1007" height="375" class="chartjs-render-monitor"></canvas>
                     </div>
-                    <div id="myChartLegend"><ul class="0-legend html-legend"><li><span style="background-color:#fdaf4b"></span>발주</li><li><span style="background-color:#31ce36"></span>입고</li><li><span style="background-color:#f3545d"></span>출고</li></ul></div>
                   </div>
                 </div>
               </div>
@@ -339,55 +338,84 @@ $(document).ready(function() {
 
 			// Chart.js 그래프 생성
 			const ctx = $('#statisticsChart')[0].getContext('2d');
+			Chart.defaults.borderColor = '#eee';
 			const myChart = new Chart(ctx, {
-				type: 'line', // 꺾은선 그래프
+				type: 'line',
 				data: {
-					labels: dateLabels, // 날짜 레이블
+					labels: dateLabels,
 					datasets: [
 						{
 							label: '발주',
-							data: dayOrdData, // 발주 데이터
-							borderColor: '#fdaf4b', // 선 색상
-							backgroundColor: 'rgba(253, 175, 75, 0.2)', // 배경 색상
-							fill: true // 선 아래를 채움
+							data: dayOrdData,
+							borderColor: '#fdaf4b',
+							backgroundColor: 'rgba(253, 175, 75, 0.75)',
+							fill: true,
+							lineTension: 0.3,
+							pointStyle: 'circle',
+							borderWidth: 4.5
 						},
 						{
 							label: '입고',
-							data: dayRcvData, // 입고 데이터
-							borderColor: '#31ce36', // 선 색상
-							backgroundColor: 'rgba(49, 206, 54, 0.2)', // 배경 색상
-							fill: true
+							data: dayRcvData,
+							borderColor: '#31ce36',
+							backgroundColor: 'rgba(49, 206, 54, 0.52)',
+							fill: true,
+							lineTension: 0.3,
+							pointStyle: 'circle',
+							borderWidth: 4.5
 						},
 						{
 							label: '출고',
-							data: dayShpData, // 출고 데이터
-							borderColor: '#f3545d', // 선 색상
-							backgroundColor: 'rgba(243, 84, 93, 0.2)', // 배경 색상
-							fill: true
-						}
+							data: dayShpData,
+							borderColor: '#f3545d',
+							backgroundColor: 'rgba(243, 84, 93, 0.52)',
+							fill: true,
+							lineTension: 0.3,
+							pointStyle: 'circle',
+							borderWidth: 4.5
+						},
 					]
 				},
 				options: {
+					elements: {
+						point: {
+							radius: 1
+						}
+					},
 					responsive: true,
 					scales: {
 						x: {
-							type: 'time',
-							time: {
-								unit: 'day',
-								tooltipFormat: 'YYYY-MM-DD',
-								displayFormats: {
-									day: 'MM-DD', // X축에 표시될 날짜 형식 설정 (일 단위)
-								},
-							},
 							ticks: {
-								autoSkip: true, // 레이블 자동 생략
-								maxTicksLimit: 7, // 최대 레이블 수 조정
-								minRotation: 90, // 최소 회전 각도
-								maxRotation: 90, // 최대 회전 각도
-							}
+								font: {
+									size: 16
+								}
+							},
+							beginAtZero: true,
 						},
 						y: {
-							beginAtZero: true // y축 0부터 시작
+							ticks: {
+								autoSkip: false,
+								maxTicksLimit: 5,
+								font: {
+									size: 16
+								}
+							},
+							beginAtZero: true,
+							grid: {
+								color: 'transparent'
+							}
+						}
+					},
+					plugins: {
+						legend: {
+							position: 'bottom',
+							labels: {
+								usePointStyle: true,
+								padding: 30,
+								font: {
+									size: 16
+								}
+							}
 						}
 					}
 				}

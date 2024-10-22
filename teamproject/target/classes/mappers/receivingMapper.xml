@@ -59,7 +59,7 @@
 <!-- 입고 정보 가져오기 -->
 <select id="getAllReceivingRequests" resultType="com.itwillbs.domain.ReceivingVO">
     SELECT r.*, 
-           m_manager.member_name AS rcv_manager_name,  -- 입고 요청자 이름
+           m_manager.member_name AS rcv_manager_name,  -- 입고 요청자 이름(홍길동)
            m_supervisor.member_name AS rcv_supervisor_name  -- 입고 승인자 이름
     FROM receiving_info r
     LEFT JOIN member m_manager ON r.rcv_manager_id = m_manager.member_id  -- 입고 요청자 조인
@@ -75,6 +75,19 @@
     LEFT JOIN member m_manager ON o.ord_manager_id = m_manager.member_id -- 발주 요청자 조인
     LEFT JOIN member m_supervisor ON o.ord_supervisor_id = m_supervisor.member_id -- 발주 승인자 조인
 </select>
+
+<select id="getOrdersName" resultType="com.itwillbs.domain.OrdersVO"> 
+    SELECT o.*, 
+           m_manager.member_name AS ord_manager_name, -- 발주 요청자 이름
+           m_supervisor.member_name AS ord_supervisor_name -- 발주 승인자 이름
+    FROM orders o
+    LEFT JOIN member m_manager ON o.ord_manager_id = m_manager.member_id -- 발주 요청자 조인
+    LEFT JOIN member m_supervisor ON o.ord_supervisor_id = m_supervisor.member_id -- 발주 승인자 조인
+    where ord_number = #{ord_number}
+</select>
+
+
+
 
 <!-- 입고 요청 최종 수정(업데이트)하는 구문(입고 승인버튼) -->
 <update id="updateReceiving" parameterType="com.itwillbs.domain.ReceivingVO">
@@ -135,7 +148,7 @@
     <update id="deleteReceiving" parameterType="map">
         UPDATE receiving_info
         SET rcv_status = '04'
-        WHERE rcv_count = #{rcv_count};
+        WHERE rcv_number = #{rcv_number};
     </update>
 	
 	<!-- 상태에 따라 입고 정보 검색하는 구문 -->

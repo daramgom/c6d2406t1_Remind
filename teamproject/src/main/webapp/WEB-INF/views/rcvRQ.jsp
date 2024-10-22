@@ -914,7 +914,7 @@ pageEncoding="UTF-8"%>
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고 요청자
                 </label>
                 <div class="underline-container">
-                    <input type="text" id="rcv_manager_id" class="underline-input" placeholder="홍길동" required name="rcv_manager_id">
+                    <input type="text" id="rcv_manager_id" class="underline-input" placeholder="홍길동" required name="rcv_manager_id" value="${sessionScope.name }" >
                     <div class="custom-underline"></div>
                 </div>
             </div>
@@ -1116,9 +1116,9 @@ pageEncoding="UTF-8"%>
 	    const confirmation = confirm("확인을 누르면 입고 요청이 완료됩니다.");
 	    if (confirmation) {
 	        // 여기서 return false를 해서 폼 제출을 방지
-	        return false;
+	        return true;
 	    }
-	    return true; // 사용자가 "취소" 클릭 시 폼 제출
+	    return false; // 사용자가 "취소" 클릭 시 폼 제출
 	}
 
 </script>

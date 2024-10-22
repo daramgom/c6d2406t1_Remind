@@ -910,6 +910,28 @@ pageEncoding="UTF-8"%>
     <form action="/shpRQ" id="ShippingForm" method="post" onsubmit="return confirmSubmission()">
         <div class="form-container">
             <div class="form-group">
+                <label for="ord_manager_id">
+                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 요청자
+                </label>
+                <div class="underline-container">
+                    <input type="text" id="ord_manager_id" class="underline-input" placeholder="홍길동" required name="ord_manager_id">
+                    <div class="custom-underline"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ord_supervisor_id">
+                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 승인자
+                </label>
+                <div class="underline-container">
+                    <input type="text" id="ord_supervisor_id" class="underline-input" placeholder="홍길동" required name="ord_supervisor_id">
+                    <div class="custom-underline"></div>
+                </div>
+            </div>
+            
+                        <div class="form-group">
                 <label for="shp_manager_id">
                     <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 요청자
@@ -1029,8 +1051,8 @@ pageEncoding="UTF-8"%>
                     document.getElementById('shp_price').value = data.ord_price; // 가격(단가) 자동 입력
                     
                     // 발주 승인자 및 요청자 이름 자동 입력
-                    document.getElementById('shp_supervisor_id').value = data.ord_supervisor_name; // 발주 승인자 이름 자동 입력
-                    document.getElementById('shp_manager_id').value = data.ord_manager_name; // 발주 요청자 이름 자동 입력
+                    document.getElementById('ord_supervisor_id').value = data.ord_supervisor_name; // 발주 승인자 이름 자동 입력
+                    document.getElementById('ord_manager_id').value = data.ord_manager_name; // 발주 요청자 이름 자동 입력
                     
                     // 창고 번호 및 이름 자동 입력
                     document.getElementById('wh_number').value = data.wh_number; // 창고 번호 자동 입력

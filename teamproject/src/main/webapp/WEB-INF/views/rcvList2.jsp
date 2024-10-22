@@ -889,7 +889,9 @@ button:hover {
 
 								<c:forEach var="item1" items="${receivingList}" varStatus="idx">
 									<tr
-										onclick="showDetails('${item1.rcv_manager_id}', '${item1.rcv_supervisor_id}', '${ordersList[idx.index].ord_manager_name}', '${ordersList[idx.index].ord_supervisor_name}', '${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.rcv_date}', '${item1.ord_date}', '${item1.rcv_remarks}')">
+										onclick="showDetails('${item1.rcv_manager_id}','${item1.rcv_supervisor_id}','${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.ord_date}','${item1.rcv_date}', '${item1.rcv_remarks}')">
+										<%-- onclick="showDetails('${item1.rcv_manager_id}', '${item1.rcv_supervisor_id}', '${ordersList[idx.index].ord_manager_name}', '${ordersList[idx.index].ord_supervisor_name}', '${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.rcv_date}', '${item1.ord_date}', '${item1.rcv_remarks}')"> --%>
+										
 										<td>${item1.rcv_count}</td>
 										<td>${item1.rcv_manager_id}</td>
 										<td>${item1.ord_number}</td>
@@ -1041,12 +1043,15 @@ button:hover {
 											</div>
 
 											<div class="button-group">
-												<button type="button" onclick="saveDetails()">입고 승인</button>
-												<button type="button" onclick="rejectReceiving()">입고
-													반려</button>
+											    <c:if test="${sessionScope.id == 'itwill1'}">
+											        <button type="button" onclick="saveDetails()">입고 승인</button>
+											        <button type="button" onclick="rejectReceiving()">입고 반려</button>
+											    </c:if>
+											    <c:if test="${sessionScope.id == 'itwil0'}">
 												<button type="button" onclick="editDetails()">입고 수정</button>
-												<button type="button" onclick="deleteReceiving()">입고
-													삭제</button>
+												<button type="button" onclick="deleteReceiving()">입고 삭제</button>
+												 </c:if>
+													
 											</div>
 										</div>
 									</form>
@@ -1061,14 +1066,40 @@ button:hover {
 
 
 	<script>
-function showDetails(rcvManagerName, rcvSupervisorName, ordManagerName, ordSupervisorName, ordNumber, rcvNumber, prodCategory, prodId, prodName, rcvQuantity, rcvPrice, whNumber, companyCode, ordDate, rcvDate, rcvRemarks) {
+function showDetails(rcvManagerName, rcvSupervisorName, ordNumber, rcvNumber, 
+		prodCategory,prodId,prodName,rcvQuantity,rcvPrice,whNumber,companyCode
+		,rcvDate,ordDate,rcvRemarks ) {
+	 const url = '/receiveOname';
+	 let ordersManagerName ="";
+	 let ordersSupervisorName ="";
+
+     fetch(url, {
+         method: 'POST',
+         headers: {
+             'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({ord_number: ordNumber})
+     })
+	 .then(response => {
+	    if (response.ok) {
+	        return response.json(); // 응답을 JSON으로 파싱
+	    } else {
+	        throw new Error('업데이트 실패');
+	    }
+	})
+	.then(data => {
+	    console.log(data.ord_manager_name); // 서버에서 받은 데이터 처리
+	    console.log(data.ord_supervisor_name); // 서버에서 받은 데이터 처리
+	
+	    ordersManagerName = data.ord_manger_name;
+	    
+	    ordersSupervisorName = data.ord_supervisor_name;
+	    
 	document.getElementById('slidePanel').classList.add('open');  // 슬라이드 열기
 	document.getElementById('rcvManagerId').value = rcvManagerName; //입고 요청자 이름
     document.getElementById('rcvSupervisorId').value = rcvSupervisorName; // 입고 승인자 이름
-    document.getElementById('ordManagerId').value = ordManagerName;  // 발주 요청자 이름
-    document.getElementById('ordSupervisorId').value = ordSupervisorName; // 발주 승인자 이름
-    document.getElementById('ordNumber').value = ordNumber;
-    document.getElementById('rcvNumber').value = rcvNumber; 
+    document.getElementById('ordManagerId').value = data.ord_manager_name;  // 발주 요청자 이름
+    document.getElementById('ordSupervisorId').value = data.ord_supervisor_name; // 발주 승인자 이름
     document.getElementById('prodCategory').value = prodCategory; 
     document.getElementById('prodId').value = prodId;
     document.getElementById('prodName').value = prodName;
@@ -1076,10 +1107,24 @@ function showDetails(rcvManagerName, rcvSupervisorName, ordManagerName, ordSuper
     document.getElementById('rcvPrice').value = rcvPrice;
     document.getElementById('whNumber').value = whNumber;   
     document.getElementById('companyCode').value = companyCode; // 거래처 추가
-    document.getElementById('ordDate').value = ordDate;
     document.getElementById('rcvDate').value = rcvDate;
+    document.getElementById('ordDate').value = ordDate;
     document.getElementById('rcvRemarks').value = rcvRemarks;
-    document.getElementById('slidePanel').classList.add('open');  // 슬라이드 열기
+    document.getElementById('rcvNumber').value = rcvNumber; // 입고
+    document.getElementById('ordNumber').value = ordNumber;
+	
+	})
+	.catch(error => {
+	    console.error('Error:', error);
+	    alert('업데이트 실패: ' + error.message);
+	});
+		
+	
+	
+	
+    
+    
+    
 }
 
     function closePanel() {
@@ -1134,78 +1179,85 @@ function showDetails(rcvManagerName, rcvSupervisorName, ordManagerName, ordSuper
     }
 
     // 모달 열기 함수 (여기에 기존의 모달 열기 코드 추가)
-    function openModal() {
-    	
-        document.getElementById('invoiceModal').style.display = 'block';
-    } 
+	function openModal() {
+	    document.getElementById('display_rcv_manager_id').innerText = document.getElementById('rcvManagerId').value;
+	    document.getElementById('display_rcv_number').innerText = document.getElementById('rcvNumber').value;
+	    document.getElementById('display_prod_id').innerText = document.getElementById('prodId').value;
+	    document.getElementById('display_prod_category').innerText = document.getElementById('prodCategory').value;
+	    document.getElementById('display_prod_name').innerText = document.getElementById('prodName').value;
+	    document.getElementById('display_company_code').innerText = document.getElementById('companyCode').value;
+	    document.getElementById('display_rcv_quantity').innerText = document.getElementById('rcvQuantity').value;
+	    document.getElementById('display_rcv_price').innerText = document.getElementById('rcvPrice').value;
+	    document.getElementById('display_rcv_date').innerText = document.getElementById('rcvDate').value;
+	    document.getElementById('display_rcv_remarks').innerText = document.getElementById('rcvRemarks').value;
+	
+	    document.getElementById('invoiceModal').style.display = 'block';
+	}
+	    
+    function closeModal() {
+        document.getElementById('invoiceModal').style.display = 'none'; // 모달 닫기
+    }
     </script>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
-	<!-- 모달 HTML -->
-	<div id="invoiceModal" class="modal">
-		<div class="modal-content">
-			<span class="close" onclick="closeModal()">&times;</span>
-
-			<h3 style="text-align: center;">거래명세서</h3>
-			<form id="invoiceForm">
-				<table class="invoice-table">
-					<tr>
-						<th>항목</th>
-						<th>내용</th>
-					</tr>
-					<tr>
-						<td>입고 담당자</td>
-						<td><input type="text" id="modal_rcv_manager_id"
-							name="rcv_manager_id"></td>
-					</tr>
-					<tr>
-						<td>입고 관리번호</td>
-						<td><input type="text" id="modal_rcv_number"
-							name="rcv_number"></td>
-					</tr>
-					<tr>
-						<td>제품 식별코드</td>
-						<td><input type="text" id="modal_prod_id" name="prod_id"></td>
-					</tr>
-					<tr>
-						<td>카테고리</td>
-						<td><input type="text" id="modal_prod_category"
-							name="prod_category"></td>
-					</tr>
-					<tr>
-						<td>품목명</td>
-						<td><input type="text" id="modal_prod_name" name="prod_name"></td>
-					</tr>
-					<tr>
-						<td>거래처</td>
-						<td><input type="text" id="modal_company_code"
-							name="company_code"></td>
-					</tr>
-					<tr>
-						<td>입고 수량</td>
-						<td><input type="number" id="modal_rcv_quantity"
-							name="rcv_quantity"></td>
-					</tr>
-					<tr>
-						<td>가격(단가)</td>
-						<td><input type="number" id="modal_rcv_price"
-							name="rcv_price"></td>
-					</tr>
-					<tr>
-						<td>입고 날짜</td>
-						<td><input type="date" id="modal_rcv_date" name="rcv_date"></td>
-					</tr>
-					<tr>
-						<td>비고</td>
-						<td><input type="text" id="modal_rcv_remarks"
-							name="rcv_remarks"></td>
-					</tr>
-				</table>
-				<button type="button" onclick="submitForm()">확인</button>
-			</form>
-		</div>
-	</div>
+<!-- 모달 HTML -->
+<div id="invoiceModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        
+        <h3 style="text-align: center;">입고명세표</h3>
+        <div class="invoice-table">
+            <table>
+                <tr>
+                    <th>항목</th>
+                    <th>내용</th>
+                </tr>
+                <tr>
+                    <td>입고 담당자</td>
+                    <td><span id="display_rcv_manager_id"></span></td>
+                </tr>
+                <tr>
+                    <td>입고 관리번호</td>
+                    <td><span id="display_rcv_number"></span></td>
+                </tr>
+                <tr>
+                    <td>제품 식별코드</td>
+                    <td><span id="display_prod_id"></span></td>
+                </tr>
+                <tr>
+                    <td>카테고리</td>
+                    <td><span id="display_prod_category"></span></td>
+                </tr>
+                <tr>
+                    <td>품목명</td>
+                    <td><span id="display_prod_name"></span></td>
+                </tr>
+                <tr>
+                    <td>거래처</td>
+                    <td><span id="display_company_code"></span></td>
+                </tr>
+                <tr>
+                    <td>입고 수량</td>
+                    <td><span id="display_rcv_quantity"></span></td>
+                </tr>
+                <tr>
+                    <td>가격(단가)</td>
+                    <td><span id="display_rcv_price"></span></td>
+                </tr>
+                <tr>
+                    <td>입고 날짜</td>
+                    <td><span id="display_rcv_date"></span></td>
+                </tr>
+                <tr>
+                    <td>비고</td>
+                    <td><span id="display_rcv_remarks"></span></td>
+                </tr>
+            </table>
+        </div>
+        <button type="button" onclick="closeModal()">확인</button>
+    </div>
+</div>
 
 	<script>
     function rejectReceiving() {

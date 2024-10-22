@@ -1,10 +1,12 @@
 package com.itwillbs.web;
 
+import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +37,7 @@ public class RcvController {
     private ReceivingDAO receivingDAO; 
 
 
-    //http://localhost:8080/rcvRQ
+    //http://localhost:8088/rcvRQ
     // GET 요청 처리
     @GetMapping("/rcvRQ")
     public String requestRcv() {
@@ -45,8 +47,9 @@ public class RcvController {
 
     // POST 요청 처리
     @PostMapping("/rcvRQ")
-    public void receiveRequest(@ModelAttribute ReceivingVO receivingVO) {
+    public void receiveRequest(@ModelAttribute ReceivingVO receivingVO , HttpSession session) {
         logger.debug("입고요청 완료");
+        receivingVO.setRcv_manager_id((String)session.getAttribute("id"));
         receivingDAO.insertRcv(receivingVO); 
     }
 
@@ -61,7 +64,7 @@ public class RcvController {
         return result;
     }
     
-    //http://localhost:8080/rcvList2
+    //http://localhost:8088/rcvList2
     // 입고 목록,출고 목록
     @GetMapping("/rcvList2")
     public String receivingList(Model model, Model model2) {
@@ -73,6 +76,15 @@ public class RcvController {
 
         return "rcvList2"; // JSP 파일 이름
     }
+    
+    //슬라이드 패널(발주 요청자,승인자)
+    @PostMapping("/receiveOname")
+    public ResponseEntity<OrdersVO> ordersname(@RequestBody OrdersVO vo){
+    logger.info("1444"+vo);
+    OrdersVO OnameList =  receivingDAO.getOrdersName(vo.getOrd_number());
+    	 return ResponseEntity.ok(OnameList);
+    }
+    
 
     //입고 업데이트(승인)
     @PostMapping("/updateReceiving")
@@ -98,14 +110,15 @@ public class RcvController {
     @ResponseBody
     public ResponseEntity<?> rejectReceiving(@RequestBody Map<String, String> request) {
         try {
-            String rcvCount = request.get("rcv_count");
-            receivingDAO.rejectReceiving(rcvCount);
+            String rcvNumber = request.get("rcv_number");
+            receivingDAO.rejectReceiving(rcvNumber);
             return ResponseEntity.ok().body("입고가 반려되었습니다.");
         } catch (Exception e) {
             logger.error("반려 실패: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("반려 실패");
-        }
+        } 
     }
+  
     
 	 // 입고 수정
     
@@ -126,9 +139,9 @@ public class RcvController {
     @ResponseBody
     public ResponseEntity<?> deleteReceiving(@RequestBody Map<String, String> request) {
         try {
-            String rcvCount = request.get("rcv_count");
-            logger.debug("입고 정보 삭제 시작, rcv_count: {}", rcvCount);
-            receivingDAO.deleteReceiving(rcvCount);
+            String rcvNumber = request.get("rcv_number");
+            logger.debug("입고 정보 삭제 시작, rcv_count: {}", rcvNumber);
+            receivingDAO.deleteReceiving(rcvNumber);
             return ResponseEntity.ok().body("입고 정보가 삭제되었습니다.");
         } catch (Exception e) {
             logger.error("삭제 실패: {}", e.getMessage());
@@ -141,6 +154,9 @@ public class RcvController {
     @GetMapping("/searchReceiving")
     public String searchReceiving(@RequestParam(required = false) String rcv_status, Model model) {
         List<ReceivingVO> receivingList;
+        
+        List<OrdersVO> ordersList = receivingDAO.getAllOrderRequests();
+        model.addAttribute("ordersList", ordersList); // 각 모델에 데이터 추가
 
         if (rcv_status != null && !rcv_status.isEmpty()) {
             receivingList = receivingDAO.getReceivingByStatus(rcv_status);
@@ -151,7 +167,6 @@ public class RcvController {
         model.addAttribute("receivingList", receivingList);
         return "rcvList2"; // JSP 파일 이름
     }
-
 
     
 }

@@ -459,8 +459,9 @@ $(document).ready(function() {
 
 
 <!-- 모달 -->
-<div id="orderModal" class="modal" style="width:1200px;" >
-    <div class="modal-content">
+
+<div id="orderModal" class="modal" style="width:auto;">
+    <div class="modal-content" style="width: 1200px;">
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>발주 상세 정보</h2>
         <form action="" id="orderForm" method="post" name="orderForm">
@@ -503,7 +504,7 @@ $(document).ready(function() {
            <!-- <input type="text" id="modalProdId" name="prod_id" class="form-control" style="width:200px;" /><br>
            <input type="text" id="modalCompanyCode" name="company_code" class="form-control" style="width:200px;" /><br> -->
            <select id="prod_id" name="prod_id" class="form-select form-control" required="required" style="width:600px;">
-			<option value="" >목록에서 값을 확인 후 선택하세요</option>
+			<!-- <option value="" >목록에서 값을 확인 후 선택하세요</option> -->
 			<c:forEach var="p" items="${pListVO }">
 				<option id="modalProdId" value="${p.prod_id }">${p.prod_id} / ${p.prod_name } / ${p.prod_category } / ${p.prod_brand } / ${p.company_code } / ${p.company_name } / ${p.company_tel }</option>
 			</c:forEach>
@@ -536,7 +537,7 @@ $(document).ready(function() {
            <input type="text" id="modalWhMemberTel" name="wh_member_tel" readonly="readonly" class="form-control" style="width:200px;" /><br> -->
            
            <select id="wh_number" name="wh_number" class="form-select form-control" required="required" style="width:500px;">
-			<option value="" >목록에서 값을 확인 후 선택하세요</option>
+			<!-- <option value="" >목록에서 값을 확인 후 선택하세요</option> -->
 			<c:forEach var="w" items="${wListVO }">
 				<option id="modalWhNumber" value="${w.wh_number }">${w.wh_number } / ${w.wh_name } / ${w.wh_location } / ${w.wh_admin } / ${w.member_name } / ${w.member_tel }</option>
 			</c:forEach>
@@ -583,15 +584,18 @@ function openModal(ord_count, ord_number, common_status, ord_status,
 	    document.getElementById('modalSupervisorCommonStatus').value = supervisor_common_status;
 	    document.getElementById('modalSupervisorMemberTel').value = supervisor_member_tel;
 	    
-	    document.getElementById('modalProdId').value = prod_id; // <-- 원인. + id값은 고유한 값인데 반복문에 들어가면 의미없음 삭제요청
-	    // console.log(prod_id); <-- 삭제요청
+	    document.getElementById('prod_id').value = prod_id;
+// 	    document.getElementById('modalProdId').value = prod_id; // <-- 원인. + id값은 고유한 값인데 반복문에 들어가면 의미없음 삭제요청
+	    
 	    document.getElementById('modalOrdPrice').value = ord_price;
 	    document.getElementById('modalOrdQuantity').value = ord_quantity;
 	    document.getElementById('modalOrdDate').value = ord_date;
 	    document.getElementById('modalOrdDateChange').value = ord_date_change;
 	    /* document.getElementById('modalCompanyCode').value = company_code; */
 	    document.getElementById('modalOrdText').value = ord_text;
-	    document.getElementById('modalWhNumber').value = wh_number; // <-- 원인. 삭제요청
+	    
+	    document.getElementById('wh_number').value = wh_number;
+// 	    document.getElementById('modalWhNumber').value = wh_number; // <-- 원인. 삭제요청
         
 //         document.getElementById('modalWhName').value = wh_name;
 //         document.getElementById('modalWhLocation').value = wh_location;
@@ -676,9 +680,9 @@ function addButtonEventListeners() {
             return response.text();
         })
         .then(data => {
-        	alert(formData);
+        	/* alert(formData);
         	console.log(formData);
-        	alert('12345');
+        	alert('12345'); */
             alert("발주 정보가 수정 되었습니다.");
             location.reload();
         })
@@ -801,6 +805,14 @@ function addButtonEventListeners() {
 window.addEventListener('click', function(event) {
     var modal = document.getElementById('orderModal');
     if (event.target === modal) {
+        closeModal();
+    }
+});
+
+//ESC 키로 모달 닫기
+document.addEventListener("keydown", function(event) {
+    // ESC 키 (키 코드 27)
+    if (event.key === "Escape" || event.keyCode === 27) {
         closeModal();
     }
 });

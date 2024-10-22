@@ -27,7 +27,8 @@ public class ReceivingVO {
 	private int rcv_count;
 	private String rcv_status;
 	private String rcv_number;
-	private String rcv_supervisor_id; 
+	private String rcv_supervisor_id;
+	private String rcv_manager_name;	
 	private int wh_number;
 	private String ord_manager_id;
 	private String ord_supervisor_id;

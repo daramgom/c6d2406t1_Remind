@@ -70,8 +70,8 @@ public class ReceivingDAOImpl implements ReceivingDAO {
     }
 
 	@Override
-	public List<ReceivingVO> getReceivingByStatus(String rcv_status) {
-		return sqlSession.selectList(NAMESPACE + ".getReceivingByStatus", rcv_status);
+	public List<ReceivingVO> getReceivingByStatus(String rcv_number) {
+		return sqlSession.selectList(NAMESPACE + ".getReceivingByStatus", rcv_number);
 	}
 	
 	@Override
@@ -81,9 +81,16 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	}
 
 	@Override
-    public void deleteReceiving(String rcv_count) {
-        int result = sqlSession.update(NAMESPACE + ".deleteReceiving", rcv_count);
-        logger.info("입고 정보 삭제 완료! rcv_count: {}, 결과: {}", rcv_count, result);
+    public void deleteReceiving(String rcv_number) {
+        int result = sqlSession.update(NAMESPACE + ".deleteReceiving", rcv_number);
+        logger.info("입고 정보 삭제 완료! rcv_number: {}, 결과: {}", rcv_number, result);
     }
+
+	@Override
+	public OrdersVO getOrdersName(String ord_number) {
+		OrdersVO result = sqlSession.selectOne(NAMESPACE+".getOrdersName",ord_number);
+		
+		return result;
+	}
 }
 	

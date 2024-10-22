@@ -864,7 +864,7 @@ button:hover {
 <div class="form-container1">
     <form action="/searchShipping" method="GET" class="search-form">
         <label for="status">출고 상태:</label>
-        <select id="status" name="shipping_status">
+        <select id="status" name="shp_status">
             <option value="">모두</option>
             <option value="01" selected="selected">출고 요청</option>
             <option value="02">출고 완료</option>
@@ -888,7 +888,7 @@ button:hover {
     </tr>
 
     <c:forEach var="item" items="${shippingList}" varStatus="idx">
-        <tr onclick="showShippingDetails('${item.shp_manager_id}', '${item.shp_supervisor_id}','${ordersList[idx.index].ord_manager_name}', '${ordersList[idx.index].ord_supervisor_name}', '${item.ord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}', ${item.shp_quantity}, ${item.shp_price}, '${item.shp_date}', '${item.shp_remarks}')">
+        <tr onclick="showShippingDetails('${item.shp_manager_id}', '${item.shp_supervisor_id}','${ordersList[idx.index].ord_manager_name}', '${ordersList[idx.index].ord_supervisor_name}', '${item.ord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}')">
             <td>${item.shp_count}</td>
             <td>${item.shp_manager_id}</td>
             <td>${item.shp_number}</td>
@@ -909,21 +909,52 @@ button:hover {
     <form id="ShippingForm" onsubmit="return confirmSubmission()">
         <div class="form-container">
             <div class="form-group">
-                <label for="shpManagerId">출고 요청자</label>
-                <input type="text" id="shpManagerId" required name="shpManagerId">
+           <label for="shpManagerId"> <img
+		    src="${pageContext.request.contextPath}/resources/img/회원.png"
+			alt="사람 아이콘"
+			style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고
+			요청자
+			</label>
+			<div class="underline-container">
+			<input type="text" id="shpManagerId"
+			class="underline-input" placeholder="홍길동" required
+			name="shpManagerId">
+			<div class="custom-underline"></div>
+			</div>
             </div>
-            <div class="form-group">
-                <label for="shpSupervisorId">출고 승인자</label>
-                <input type="text" id="shpSupervisorId" required name="shpSupervisorId">
-            </div>
-            <div class="form-group">
-                <label for="ordManagerId">발주 요청자</label>
-                <input type="text" id="ordManagerId" required name="ordManagerId">
-            </div>
-            <div class="form-group">
-                <label for="ordSupervisorId">발주 승인자</label>
-                <input type="text" id="ordSupervisorId" required name="ordSupervisorId">
-            </div>
+            
+		   <div class="form-group">
+		    <label for="shpSupervisorId">
+		        <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘" style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">
+		        출고 승인자
+		    </label>
+		    <div class="underline-container">
+		        <input type="text" id="shpSupervisorId" class="underline-input" placeholder="홍길동" required name="shpSupervisorId">
+		        <div class="custom-underline"></div>
+		    </div>
+		   </div>
+
+			<div class="form-group">
+			    <label for="ordManagerId">
+			        <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘" style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">
+			        발주 요청자
+			    </label>
+			    <div class="underline-container">
+			        <input type="text" id="ordManagerId" class="underline-input" placeholder="홍길동" required name="ordManagerId">
+			        <div class="custom-underline"></div>
+			    </div>
+			</div>
+			
+			<div class="form-group">
+			    <label for="ordSupervisorId">
+			        <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘" style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">
+			        발주 승인자
+			    </label>
+			    <div class="underline-container">
+			        <input type="text" id="ordSupervisorId" class="underline-input" placeholder="홍길동" required name="ordSupervisorId">
+			        <div class="custom-underline"></div>
+			    </div>
+			</div>
             <div class="form-group">
                 <label for="ordNumber">발주 관리번호</label>
                 <input type="text" id="ordNumber" required name="ordNumber">
@@ -937,13 +968,25 @@ button:hover {
                 <input type="text" id="prodId" required name="prodId">
             </div>
             <div class="form-group">
-                <label for="prodName">품목명</label>
+                <label for="prodName">제품명</label>
                 <input type="text" id="prodName" required name="prodName">
             </div>
+            
+			<div class="form-group">
+				<label for="companyCode">거래처</label> <input type="text"
+				id="companyCode" required name="companyCode">
+			</div>
+            
             <div class="form-group">
                 <label for="shpQuantity">출고 수량</label>
                 <input type="number" id="shpQuantity" required name="shpQuantity">
             </div>
+            
+            <div class="form-group">
+			<label for="whNumber">창고 번호</label>
+			 <input type="number" id="whNumber" required name="whNumber">
+			</div>
+            
             <div class="form-group">
                 <label for="shpPrice">가격(단가)</label>
                 <input type="text" id="shpPrice" required name="shpPrice">
@@ -970,48 +1013,51 @@ button:hover {
 <div id="invoiceModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
-        <h3 style="text-align: center;">거래명세서</h3>
-        <form id="invoiceForm">
-            <table class="invoice-table">
-                <tr>
-                    <th>항목</th>
-                    <th>내용</th>
-                </tr>
-                <tr>
-                    <td>출고 담당자</td>
-                    <td><input type="text" id="modal_shp_manager_id" name="shp_manager_id"></td>
-                </tr>
-                <tr>
-                    <td>출고 관리번호</td>
-                    <td><input type="text" id="modal_shp_number" name="shp_number"></td>
-                </tr>
-                <tr>
-                    <td>제품 식별코드</td>
-                    <td><input type="text" id="modal_prod_id" name="prod_id"></td>
-                </tr>
-                <tr>
-                    <td>품목명</td>
-                    <td><input type="text" id="modal_prod_name" name="prod_name"></td>
-                </tr>
-                <tr>
-                    <td>출고 수량</td>
-                    <td><input type="number" id="modal_shp_quantity" name="shp_quantity"></td>
-                </tr>
-                <tr>
-                    <td>가격(단가)</td>
-                    <td><input type="number" id="modal_shp_price" name="shp_price"></td>
-                </tr>
-                <tr>
-                    <td>출고 날짜</td>
-                    <td><input type="date" id="modal_shp_date" name="shp_date"></td>
-                </tr>
-                <tr>
-                    <td>비고</td>
-                    <td><input type="text" id="modal_shp_remarks" name="shp_remarks"></td>
-                </tr>
-            </table>
-            <button type="button" onclick="submitShippingForm()">확인</button>
-        </form>
+        <h3 style="text-align: center;">출고 명세서</h3>
+        <table class="invoice-table">
+            <tr>
+                <th>항목</th>
+                <th>내용</th>
+            </tr>
+            <tr>
+                <td>출고 담당자</td>
+                <td id="display_shp_manager_id">홍길동</td>
+            </tr>
+            <tr>
+                <td>출고 관리번호</td>
+                <td id="display_shp_number">123456</td>
+            </tr>
+            <tr>
+                <td>제품 식별코드</td>
+                <td id="display_prod_id">ABC123</td>
+            </tr>
+            <tr>
+                <td>품목명</td>
+                <td id="display_prod_name">제품명</td>
+            </tr>
+            <tr>
+                <td>출고 수량</td>
+                <td id="display_shp_quantity">10</td>
+            </tr>
+            <tr>
+                <td>가격(단가)</td>
+                <td id="display_shp_price">10000</td>
+            </tr>
+            <tr>
+                <td>거래처</td>
+                <td id="display_company_code">거래처명</td>
+            </tr>
+            <tr>
+                <td>출고 날짜</td>
+                <td id="display_shp_date">2024-01-01</td>
+            </tr>
+            <tr>
+                <td>비고</td>
+                <td id="display_shp_remarks">특이사항</td>
+            </tr>
+        </table>
+        <button type="button" onclick="closeModal()">확인</button>
+		<button onclick="downloadExcel()" type="button">엑셀다운</button>
     </div>
 </div>
 
@@ -1019,7 +1065,7 @@ button:hover {
 /**
  * 출고 세부 정보를 표시하는 함수
  */
-function showShippingDetails(shpManagerName, shpSupervisorName, ordManagerName, ordSupervisorName, ordNumber, shpNumber, prodCategory, prodId, prodName, shpQuantity, shpPrice, whNumber, companyCode, ordDate, shpDate, shpRemarks) {
+function showShippingDetails(shpManagerName, shpSupervisorName, ordManagerName, ordSupervisorName, ordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks) {
     document.getElementById('slidePanel').classList.add('open');
     document.getElementById('shpManagerId').value = shpManagerName;
     document.getElementById('shpSupervisorId').value = shpSupervisorName;
@@ -1027,14 +1073,14 @@ function showShippingDetails(shpManagerName, shpSupervisorName, ordManagerName, 
     document.getElementById('ordSupervisorId').value = ordSupervisorName;
     document.getElementById('ordNumber').value = ordNumber;
     document.getElementById('shpNumber').value = shpNumber;
-    document.getElementById('prodCategory').value = prodCategory;
+/*     document.getElementById('prodCategory').value = prodCategory; */
     document.getElementById('prodId').value = prodId;
     document.getElementById('prodName').value = prodName;
+    document.getElementById('companyCode').value = companyCode; 
     document.getElementById('shpQuantity').value = shpQuantity;
-    document.getElementById('shpPrice').value = shpPrice;
     document.getElementById('whNumber').value = whNumber;
-    document.getElementById('companyCode').value = companyCode;
-    document.getElementById('ordDate').value = ordDate;
+    document.getElementById('shpPrice').value = shpPrice;
+/*     document.getElementById('ordDate').value = ordDate; */
     document.getElementById('shpDate').value = shpDate;
     document.getElementById('shpRemarks').value = shpRemarks;
 }
@@ -1064,14 +1110,12 @@ function saveShippingDetails() {
         ord_supervisor_id: document.getElementById('ordSupervisorId').value,
         ord_number: document.getElementById('ordNumber').value,
         shp_number: document.getElementById('shpNumber').value,
-        prod_category: document.getElementById('prodCategory').value,
         prod_id: document.getElementById('prodId').value,
         prod_name: document.getElementById('prodName').value,
-        shp_quantity: document.getElementById('shpQuantity').value,
-        shp_price: document.getElementById('shpPrice').value,
-        wh_number: document.getElementById('whNumber').value,
         company_code: document.getElementById('companyCode').value,
-        ord_date: document.getElementById('ordDate').value,
+        shp_quantity: document.getElementById('shpQuantity').value,
+        wh_number: document.getElementById('whNumber').value,
+        shp_price: document.getElementById('shpPrice').value,
         shp_date: document.getElementById('shpDate').value,
         shp_remarks: document.getElementById('shpRemarks').value
     };
@@ -1105,9 +1149,19 @@ function saveShippingDetails() {
 /**
  * 모달을 여는 함수
  */
-function openModal() {
-    document.getElementById('invoiceModal').style.display = 'block';
-}
+ function openModal() {
+	    document.getElementById('display_shp_manager_id').innerText = document.getElementById('shpManagerId').value;
+	    document.getElementById('display_shp_number').innerText = document.getElementById('shpNumber').value;
+	    document.getElementById('display_prod_id').innerText = document.getElementById('prodId').value;
+	    document.getElementById('display_prod_name').innerText = document.getElementById('prodName').value;
+	    document.getElementById('display_shp_quantity').innerText = document.getElementById('shpQuantity').value;
+	    document.getElementById('display_shp_price').innerText = document.getElementById('shpPrice').value;
+	    document.getElementById('display_company_code').innerText = document.getElementById('companyCode').value;
+	    document.getElementById('display_shp_date').innerText = document.getElementById('shpDate').value;
+	    document.getElementById('display_shp_remarks').innerText = document.getElementById('shpRemarks').value;
+
+	    document.getElementById('invoiceModal').style.display = 'block';
+	}
 
 /**
  * 모달을 닫는 함수
@@ -1229,4 +1283,7 @@ function deleteShipping() {
         });
     }
 }
+
 </script>
+
+

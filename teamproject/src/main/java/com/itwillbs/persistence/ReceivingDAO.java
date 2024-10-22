@@ -16,15 +16,18 @@ public interface ReceivingDAO {
  
     void updateReceiving(ReceivingVO receiving); // 승인
     
-    public void rejectReceiving(String rcv_count); // 반려
+    public void rejectReceiving(String rcv_number); // 반려
     
     void editReceiving(ReceivingVO receiving); // 수정
     
-    void deleteReceiving(String rcv_count); //삭제
+    void deleteReceiving(String rcv_number); //삭제
     
     void insertIntoStock(ReceivingVO receiving); //재고
     
     public List<ReceivingVO> getReceivingByStatus(String rcv_status); // 검색!
+    
+    public OrdersVO getOrdersName(String ord_number);
+    
     
     
     

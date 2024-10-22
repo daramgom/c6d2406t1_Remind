@@ -32,7 +32,13 @@ public class WarehouseController {
 
     // 창고 추가 처리
     @PostMapping("/wareHouseInsert")
-    public String addWarehouse(@ModelAttribute WarehouseVO warehouse) {
+    public String addWarehouse(@ModelAttribute WarehouseVO warehouse,
+                               @RequestParam double latitude,  // 위도 파라미터 추가
+                               @RequestParam double longitude) { // 경도 파라미터 추가
+        // 위도와 경도를 WarehouseVO에 설정
+        warehouse.setLatitude(latitude);
+        warehouse.setLongitude(longitude);
+        
         warehouseService.addWarehouse(warehouse);
         return "redirect:/warehouse/wareHouseList"; // 추가 후 목록 페이지로 리다이렉트
     }
@@ -60,10 +66,10 @@ public class WarehouseController {
         return "redirect:/warehouse/wareHouseList"; // 수정 후 목록 페이지로 리다이렉트
     }
 
-    // 창고 삭제 처리
+    // 창고 삭제 처리 (메서드 이름 변경)
     @PostMapping("/warehouse/delete")
-    public String deleteWarehouse(@RequestParam("wh_number") int whNumber) {
-        warehouseService.deleteWarehouse(whNumber);
+    public String updateWarehouseStatus(@RequestParam("wh_number") int whNumber) {
+        warehouseService.updateWarehouseStatus(whNumber); // 서비스 메서드 호출 수정
         return "redirect:/warehouse/wareHouseList"; // 삭제 후 목록 페이지로 리다이렉트
     }
 
@@ -73,5 +79,17 @@ public class WarehouseController {
         List<WarehouseVO> products = warehouseService.getProductsByWarehouseId(whNumber);
         model.addAttribute("products", products);
         return "warehouseProductList"; // 제품 목록 JSP 페이지 경로
+    }
+    // 창고 목록을 JSON 형식으로 반환
+    @GetMapping("/getAllWarehouses")
+    @ResponseBody
+    public List<WarehouseVO> getAllWarehouses() {
+        return warehouseService.getAllWarehouses();
+    }
+
+    // 창고 지도 페이지 반환
+    @GetMapping("/wareHouseMap") // 매핑 추가
+    public String showMap() {
+        return "wareHouseMap"; // JSP 페이지 경로
     }
 }

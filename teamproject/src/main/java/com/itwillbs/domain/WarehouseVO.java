@@ -31,6 +31,15 @@ public class WarehouseVO {
     // 제품 수량
     private int prod_qty; // 제품 수량
 
+    // 삭제 상태
+    private String is_deleted; // 삭제 상태 ('01' 또는 '02')
+
+    // 위도
+    private double latitude; // 위도
+
+    // 경도
+    private double longitude; // 경도
+
     // Getter 및 Setter 메서드
 
     public int getWh_number() {
@@ -109,5 +118,35 @@ public class WarehouseVO {
     // 제품 수량을 설정하는 메서드
     public void setProd_qty(int prod_qty) {
         this.prod_qty = prod_qty;
+    }
+
+    // 삭제 상태를 반환하는 메서드
+    public String getIs_deleted() {
+        return is_deleted;
+    }
+
+    // 삭제 상태를 설정하는 메서드
+    public void setIs_deleted(String is_deleted) {
+        this.is_deleted = is_deleted;
+    }
+
+    // 위도를 반환하는 메서드
+    public double getLatitude() {
+        return latitude;
+    }
+
+    // 위도를 설정하는 메서드
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    // 경도를 반환하는 메서드
+    public double getLongitude() {
+        return longitude;
+    }
+
+    // 경도를 설정하는 메서드
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

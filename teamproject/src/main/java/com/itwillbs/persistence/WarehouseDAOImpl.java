@@ -48,9 +48,9 @@ public class WarehouseDAOImpl implements WarehouseDAO {
     }
 
     @Override
-    public void deleteWarehouse(int wh_number) {
-        int result = sqlSession.delete(NAMESPACE + ".deleteWarehouse", wh_number);
-        logger.debug("DAO: Delete warehouse result: {}", result);
+    public void updateWarehouseStatus(int wh_number) { // 메서드 이름 변경
+        int result = sqlSession.update(NAMESPACE + ".updateWarehouseStatus", wh_number); // DAO 메서드 호출 수정
+        logger.debug("DAO: Update warehouse status result: {}", result);
     }
 
     // 특정 창고에 속한 제품 목록을 조회하는 메서드 추가

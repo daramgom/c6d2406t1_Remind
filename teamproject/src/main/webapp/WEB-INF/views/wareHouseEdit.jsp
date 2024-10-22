@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>창고 수정</title>
-
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
@@ -31,8 +30,9 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header d-flex justify-content-between align-items-center">
                                 <div class="card-title">창고 정보 수정</div>
+                                <button type="button" class="btn btn-success" onclick="document.getElementById('warehouseEditForm').submit();">창고 수정</button>
                             </div>
 
                             <div class="card-body">
@@ -58,13 +58,10 @@
                                         <input type="text" class="form-control" id="wh_admin" name="wh_admin" value="${warehouse.wh_admin}" required />
                                     </div>
 
-                                    <!-- 버튼을 오른쪽 하단으로 이동 -->
+                                    <!-- 버튼들을 오른쪽으로 정렬 -->
                                     <div class="d-flex justify-content-end mt-4">
-                                        <button type="submit" class="btn btn-success me-2">창고 수정</button>
-                                        <form action="${pageContext.request.contextPath}/warehouse/delete" method="post" style="display:inline;">
-                                            <input type="hidden" name="wh_number" id="deleteWhNumber" value="${warehouse.wh_number}" />
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
-                                        </form>
+                                        <button type="button" class="btn btn-danger me-2" onclick="if(confirm('정말로 삭제하시겠습니까?')) { document.getElementById('warehouseEditForm').action='${pageContext.request.contextPath}/warehouse/delete'; document.getElementById('warehouseEditForm').submit(); }">삭제</button>
+                                        <input type="hidden" name="wh_number" id="deleteWhNumber" value="${warehouse.wh_number}" />
                                         <a href="${pageContext.request.contextPath}/warehouse/wareHouseList" class="btn btn-secondary">목록으로</a>
                                     </div>
                                 </form>

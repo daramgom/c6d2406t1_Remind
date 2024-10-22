@@ -5,9 +5,9 @@
 
 <mapper namespace="com.itwillbs.persistence.WarehouseDAO">
 
-    <!-- 모든 창고 조회 -->
+    <!-- 모든 삭제되지 않은 창고 조회 -->
     <select id="getAllWarehouses" resultType="com.itwillbs.domain.WarehouseVO">
-        SELECT * FROM warehouse
+        SELECT * FROM warehouse WHERE is_deleted = '01'  <!-- 삭제되지 않은 창고만 조회 -->
     </select>
 
     <!-- ID로 창고 조회 -->
@@ -17,8 +17,8 @@
 
     <!-- 창고 추가 -->
     <insert id="addWarehouse" parameterType="com.itwillbs.domain.WarehouseVO">
-        INSERT INTO warehouse (wh_name, wh_location, wh_reguser, wh_admin) 
-        VALUES (#{wh_name}, #{wh_location}, #{wh_reguser}, #{wh_admin})
+        INSERT INTO warehouse (wh_name, wh_location, wh_reguser, wh_admin, latitude, longitude) 
+        VALUES (#{wh_name}, #{wh_location}, #{wh_reguser}, #{wh_admin}, #{latitude}, #{longitude})
     </insert>
 
     <!-- 창고 수정 -->
@@ -28,21 +28,24 @@
             wh_location = #{wh_location},
             wh_reguser = #{wh_reguser},
             wh_updateuser = #{wh_updateuser},
-            wh_admin = #{wh_admin}
+            wh_admin = #{wh_admin},
+            latitude = #{latitude},  <!-- 위도 수정 -->
+            longitude = #{longitude}  <!-- 경도 수정 -->
         WHERE wh_number = #{wh_number}
     </update>
 
-    <!-- 창고 삭제 -->
-    <delete id="deleteWarehouse" parameterType="int">
-        DELETE FROM warehouse WHERE wh_number = #{wh_number}
-        
-    </delete>
+    <!-- 창고 상태 업데이트 (삭제) -->
+    <update id="updateWarehouseStatus" parameterType="int">
+        UPDATE warehouse 
+        SET is_deleted = '02'   /* 삭제되지 않은 상태에서 삭제된 상태로 변경 */
+        WHERE wh_number = #{wh_number}
+    </update>
 
     <!-- 특정 창고에 속한 제품 목록 조회 -->
     <select id="getProductsByWarehouseId" parameterType="int" resultType="com.itwillbs.domain.WarehouseVO">
-        SELECT p.prod_id, p.prod_name, s.prod_qty
-        FROM stock s
-        JOIN prod p ON s.prod_id = p.prod_id
+        SELECT p.prod_id, p.prod_name, s.prod_qty 
+        FROM stock s 
+        JOIN prod p ON s.prod_id = p.prod_id 
         WHERE s.wh_number = #{wh_number}
     </select>
 

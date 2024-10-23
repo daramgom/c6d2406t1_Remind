@@ -56,6 +56,12 @@ public class OrderController {
     @RequestMapping(value = "/order-insert", method = RequestMethod.GET)
     public String insertOrderForm(Model model, HttpSession session) {
     	
+    	String id = (String)session.getAttribute("id");
+    	if(id == null) {
+    		return "redirect:/login";
+    	}
+    	model.addAttribute("id", id);
+    	
     	List<OrdersVO> sListVO = orderService.listSupervisor();
     	List<OrdersVO> pListVO = orderService.listProd();
     	List<OrdersVO> wListVO = orderService.listWarehouse();
@@ -68,11 +74,6 @@ public class OrderController {
     	logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@pListVO : "+pListVO);
     	logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@wListVO : "+wListVO);
     	
-    	String id = (String)session.getAttribute("id");
-    	if(id == null) {
-    		return "redirect:/login";
-    	}
-    	model.addAttribute("id", id);
     	
         return "/order-insert";
     }

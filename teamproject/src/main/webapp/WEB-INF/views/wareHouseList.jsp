@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -45,7 +45,10 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4 class="card-title">창고 목록</h4>
-                                <a href="${pageContext.request.contextPath}/warehouse/wareHouseInsert" class="btn btn-primary">창고 추가</a>
+                                <!-- permission_id가 03일 때만 창고 추가 버튼 표시 -->
+                                <c:if test="${sessionScope.permission_id == '03'}">
+                                    <a href="${pageContext.request.contextPath}/warehouse/wareHouseInsert" class="btn btn-primary">창고 추가</a>
+                                </c:if>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -98,10 +101,11 @@
         $(document).ready(function() {
             // 데이터테이블 초기화
             $("#multi-filter-select").DataTable({
-                pageLength: 10, // 기본 페이지 길이 (3개씩 표시)
-                lengthMenu: [3, 10, 20, 50, 100, 500] // 사용자가 선택할 수 있는 페이지 길이 옵션
+                pageLength: 10, // 기본 페이지 길이
+                lengthMenu: [3, 10, 20, 50, 100, 500] // 페이지 길이 옵션
             });
         });
     </script>
 </body>
 </html>
+ 

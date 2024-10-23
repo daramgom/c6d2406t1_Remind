@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,7 +51,10 @@
 
                                 <!-- 버튼을 오른쪽 하단으로 이동 -->
                                 <div class="d-flex justify-content-end mt-4" style="position: relative;">
-                                    <a href="${pageContext.request.contextPath}/warehouse/wareHouseEdit?wh_number=${warehouse.wh_number}" class="btn btn-warning me-2">수정하기</a>
+                                    <!-- permission_id가 03일 때만 수정 버튼 표시 -->
+                                    <c:if test="${sessionScope.permission_id == '03'}">
+                                        <a href="${pageContext.request.contextPath}/warehouse/wareHouseEdit?wh_number=${warehouse.wh_number}" class="btn btn-warning me-2">수정하기</a>
+                                    </c:if>
                                     <a href="${pageContext.request.contextPath}/warehouse/wareHouseList" class="btn btn-secondary">목록으로 돌아가기</a>
                                     <a href="${pageContext.request.contextPath}/warehouse/products?wh_number=${warehouse.wh_number}" class="btn btn-info ms-2">제품 목록 보기</a> <!-- 추가된 버튼 -->
                                 </div>
@@ -69,3 +73,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
+ 

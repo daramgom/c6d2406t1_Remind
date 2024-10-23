@@ -58,7 +58,10 @@
                                 <hr>
                                 <div class="d-flex justify-content-end">
                                     <a href="${pageContext.request.contextPath}/notice/noticeList" class="btn btn-secondary me-2">목록으로 돌아가기</a>
-                                    <a href="${pageContext.request.contextPath}/notice/noticeEdit?no=${notice.no}" class="btn btn-warning me-2">수정</a>
+                                    <!-- permission_id가 03일 때만 수정 버튼 표시 -->
+                                    <c:if test="${sessionScope.permission_id == '03'}">
+                                        <a href="${pageContext.request.contextPath}/notice/noticeEdit?no=${notice.no}" class="btn btn-warning me-2">수정</a>
+                                    </c:if>
                                     <!-- 삭제 버튼 제거 -->
                                 </div>
                             </div>
@@ -71,7 +74,7 @@
         <!-- Footer -->
         <jsp:include page="/resources/inc/footer.jsp" />
     </div>
-
+ 
     <!-- Core JS Files -->
     <script src="${pageContext.request.contextPath}/resources/js/core/jquery-3.7.1.min.js?ver=1.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

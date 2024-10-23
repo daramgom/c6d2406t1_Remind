@@ -143,14 +143,7 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	@Override
 	public MemberVO updateMemberName(MemberVO uvo) {
-		MemberVO used = getMember(uvo.getMember_name());
-		System.out.println("실행되냐? : 결과는>  : ");
-		
 		MemberVO member = new MemberVO();
-		
-		if(used != null) {
-			return member;
-		}
 		
 		int result = sqlSession.update(NAMESPACE + ".updateMemberName", uvo);
 		
@@ -162,22 +155,6 @@ public class MemberDAOImpl implements MemberDAO {
 		return member;
 	}
 	
-	@Override
-	public MemberVO updateMemberEmail(MemberVO uvo) {
-		MemberVO used = getMemberEmail(uvo.getMember_email());
-		MemberVO member = new MemberVO();
-		
-		if(used != null) {
-			return member;
-		}
-		
-		int result = sqlSession.update(NAMESPACE + ".updateMemberEmail", uvo);
-		if(result != 0) {
-			member =  getMemberEmail(uvo.getMember_email());
-		}
-		
-		return member;
-	}
 	
 	
 	

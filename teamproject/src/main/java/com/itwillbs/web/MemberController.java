@@ -62,13 +62,15 @@ public class MemberController {
         System.out.println("ID: " + member_id + ", field: " + field + ", New Value: " + newValue);
         
         MemberVO result = mService.memberUpdateInfo(member_id , field, newValue);
-        
+        logger.debug("result 컨트롤러 : "+result);
+        if(result.getMember_id() == null) {
+        	return ResponseEntity.ok("{\"success\": false }");
+        }
         session.setAttribute("name", result.getMember_name());
 		session.setAttribute("tel", result.getMember_tel());
-		session.setAttribute("email", result.getMember_email());
 
         // 예시 응답
-        return ResponseEntity.ok("{\"success\": true ");
+        return ResponseEntity.ok("{\"success\": true }");
     }
     
 }

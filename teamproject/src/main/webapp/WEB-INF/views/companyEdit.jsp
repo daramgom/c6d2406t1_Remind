@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,9 +32,12 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <div class="card-title">거래처 수정</div>
-                                <form action="${pageContext.request.contextPath}/company/edit" method="post" style="display:inline;">
-                                    <button type="submit" class="btn btn-success">거래처 수정</button>
-                                </form>
+                                <!-- permission_id가 03일 때만 거래처 수정 버튼 표시 -->
+                                <c:if test="${sessionScope.permission_id == '03'}">
+                                    <form action="${pageContext.request.contextPath}/company/edit" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-success">거래처 수정</button>
+                                    </form>
+                                </c:if>
                             </div>
 
                             <div class="card-body">

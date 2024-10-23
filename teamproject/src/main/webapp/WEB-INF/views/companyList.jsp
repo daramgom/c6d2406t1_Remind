@@ -73,8 +73,9 @@
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center">
                     <h4 class="card-title">거래처 목록</h4>
-                    <!-- 항상 보이는 글쓰기 버튼 -->
-                    <a href="${pageContext.request.contextPath}/company/companyInsert" class="btn btn-primary">거래처 등록</a>
+                    <c:if test="${sessionScope.permission_id == '03'}">
+                        <a href="${pageContext.request.contextPath}/company/companyInsert" class="btn btn-primary">거래처 등록</a>
+                    </c:if>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">

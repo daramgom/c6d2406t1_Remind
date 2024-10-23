@@ -65,6 +65,9 @@
 
 	<!-- Kaiadmin JS -->
 	<script src="/resources/js/kaiadmin.min.js"></script>
+	
+	<!-- sock JS -->
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
 <script>
 $(document).ready(function(){

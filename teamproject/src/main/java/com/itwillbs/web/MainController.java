@@ -3,6 +3,7 @@ package com.itwillbs.web;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +32,12 @@ public class MainController {
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 	
 	@RequestMapping(value = "/main",method = RequestMethod.GET)
-	public void mainPageGET(Model model) {
+	public void mainPageGET(Model model, HttpSession session) {
 		logger.debug("( •̀ ω •́ )✧ MainController : /main -> /mainPageGET(Model model)실행");
 		MainVO vo = mService.getQty();
+		String userName = (String)session.getAttribute("name");
+		logger.debug("( •̀ ω •́ )✧ MainController : userName : "+userName);
+		model.addAttribute("userName", userName);
 		model.addAttribute("MainQty", vo);
 		logger.debug("( •̀ ω •́ )✧ MainController : vo : "+vo);
 	}
@@ -43,7 +47,7 @@ public class MainController {
 	public ResponseEntity<List<MainVO>> mainPagePOST() {
 		logger.debug("( •̀ ω •́ )✧ MainController : /main -> /mainPagePOST(Model model)실행");
 		List<MainVO> dayList = mService.dayQty();
-		logger.debug("( •̀ ω •́ )✧ MainController : dayList : "+dayList);
+		logger.debug("( •̀ ω •́ )✧ MainController : dayList : "+dayList.size());
 		return ResponseEntity.ok(dayList);
 	}
 	

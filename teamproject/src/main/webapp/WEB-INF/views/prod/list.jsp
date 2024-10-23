@@ -15,17 +15,17 @@
 <style>
 
     #multi-filter-select thead th {
-        background-color: #0d6efd;
-        color: white;
+       background-color: #0d6efd;
+       color: white;
     }
     
     .table td {
-    	font-size: 1.3rem !important;
+    	font-size: 1.2rem !important;
     	text-align: center;
     }
     
     .table th {
-    	font-size: 1.35rem !important;
+    	font-size: 1.25rem !important;
     	text-align: center;
     }
     
@@ -34,44 +34,44 @@
     }
     
     .modal-content {
-            height: 90vh; /* 최대 높이 설정 */
-            overflow-y: auto; /* 세로 스크롤 */
-            overflow-x: hidden; /* 가로 스크롤 숨김 */
+            height: 90vh;
+            overflow-y: auto;
+            overflow-x: hidden;
     }
     
-    #previewimg { /* 미리보기 img 태그 id */
-		width: 95%; /* 최대 너비 설정 */
+    #previewimg {
+		width: 95%;
 		height: 95%;
-		margin: 10px; /* 여백 설정 */
+		margin: 10px;
 		object-fit: contain;
 	}
 
 	.preview {
-		width: 200px; /* 최대 너비 설정 */
+		width: 200px;
 		height: 150px;
-		margin: 10px; /* 여백 설정 */
-		border: 2px dashed #ccc; /* 대시 테두리 */
+		margin: 10px;
+		border: 2px dashed #ccc;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: #f9f9f9; /* 배경색 */
+		background-color: #f9f9f9;
 	}
 	
 	#prodUpdateForm label {
-	 	font-size: 16px !important;
+	 	font-size: 1.1rem !important;
 	}
 	
 	#prodUpdateForm input {
-    	font-size: 18px !important;
+    	font-size: 1.1rem !important;
 	}
 	
 	.modal-footer i {
-		font-size: 18px;
+		font-size: 1.1rem;
 		line-height: 2;
 	}
 	
 	.modal-footer button {
-		font-size: 18px;
+		font-size: 1.1rem;
 		line-height: 2;
 		margin-bottom: 10px;
 		font-weight: bold;

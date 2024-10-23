@@ -21,26 +21,34 @@ public class ChattingHandler extends TextWebSocketHandler{
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		UriComponents uriComponents = UriComponentsBuilder.fromUriString(session.getUri().toString()).build();
-		logger.info("WebSocket URI: " + session.getUri());
 		String encodedUserName = uriComponents.getQueryParams().getFirst("userName");
 		if (encodedUserName != null) {
 			String userName = URLDecoder.decode(encodedUserName, "UTF-8");
 			session.getAttributes().put("userName", userName);
-			String welcomeMessage = userName + "님이 입장하셨습니다.";
-			session.sendMessage(new TextMessage(welcomeMessage));
+			String welcomeMessage = userName + "님이 입장하셨습니다. : )";
+			sessionList.add(session);
+			for (WebSocketSession s : sessionList) {
+				if (s != session) {
+					s.sendMessage(new TextMessage(welcomeMessage));
+				}
+			}
 		} else {
 			logger.warn("사용자 ID가 제공되지 않았습니다.");
 		}
-		sessionList.add(session);
 	}
 	
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		String userName = (String) session.getAttributes().get("userName");
-		logger.info(userName + ": " + message);
+		logger.debug("( •̀ ω •́ )✧ userName : "+userName);
+		if (message.getPayload() == null || message.getPayload().trim().isEmpty()) {
+			return;
+		}
 		
 		for(WebSocketSession s : sessionList) {
+			logger.debug("( •̀ ω •́ )✧ message.getPayload() : "+ message.getPayload());
 			s.sendMessage(new TextMessage(userName + ":" + message.getPayload()));
+			
 		}
 	}
 	
@@ -49,6 +57,5 @@ public class ChattingHandler extends TextWebSocketHandler{
 		String userName = (String) session.getAttributes().get("userName");
 		sessionList.remove(session);
 		
-		logger.info(userName + "님이 퇴장하셨습니다.");
 	}
 }

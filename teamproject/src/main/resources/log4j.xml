@@ -25,6 +25,11 @@
 		<level value="debug" />
 	</logger>
 	
+	<!-- Application Loggers -->
+	<logger name="com.itwillbs.chat">
+		<level value="debug" />
+	</logger>
+	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
 		<level value="info" />

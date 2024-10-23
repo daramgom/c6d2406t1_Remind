@@ -66,6 +66,31 @@
 		employee_rank = #{employee_rank}
 		where member_id = #{member_id}
 	</update>
+	
+	<update id="updateMemberName">
+	update member
+		set update_date = now(),
+		member_name = #{member_name}
+		where member_id = #{member_id}
+	</update>
+	
+	<update id="updateMemberEmail">
+	update member
+		set update_date = now(),
+		member_email = #{member_email}
+		where member_id = #{member_id}
+	</update>
+	<update id="updateMemberTel">
+	update member
+		set update_date = now(),
+		member_tel = #{member_tel}
+		where member_id = #{member_id}
+	</update>
+	
+	
+	
+	
+	
 
 	<!-- 퇴사처리 회원정보 삭제 -->
 	<update id="deleteMember">update member set member_state = #{member_state}

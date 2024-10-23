@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itwillbs.domain.OrdersVO;
 import com.itwillbs.domain.ReceivingVO;
@@ -52,7 +54,7 @@ public class OrderController {
     // http://localhost:8088/order-insert
     // 등록창 불러오기
     @RequestMapping(value = "/order-insert", method = RequestMethod.GET)
-    public String insertOrderForm(Model model) {
+    public String insertOrderForm(Model model, HttpSession session) {
     	
     	List<OrdersVO> sListVO = orderService.listSupervisor();
     	List<OrdersVO> pListVO = orderService.listProd();
@@ -66,6 +68,12 @@ public class OrderController {
     	logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@pListVO : "+pListVO);
     	logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@wListVO : "+wListVO);
     	
+    	String id = (String)session.getAttribute("id");
+    	if(id == null) {
+    		return "redirect:/login";
+    	}
+    	model.addAttribute("id", id);
+    	
         return "/order-insert";
     }
     
@@ -75,18 +83,20 @@ public class OrderController {
     
     // 등록 처리하기
     @RequestMapping(value = "/order-insert", method = RequestMethod.POST)
-    public String insertOrder(OrdersVO ordersVO) {
+    public String insertOrder(OrdersVO ordersVO, RedirectAttributes rttr) {
     	logger.debug("ordersVO = " +ordersVO);
     	
     	orderService.insert(ordersVO);
     	
+    	// 결과 확인 값을 전달(1회성)
+    	rttr.addFlashAttribute("checkPage", "insertOK");
     	
-    	return "redirect:/order-insert";
+    	return "redirect:/order-list";
     }
     
     // 목록창 불러오기
     @GetMapping(value = "/order-list")
-    public void listOrderGet(Model model) {
+    public String listOrderGet(Model model, HttpSession session) {
     	
     	List<OrdersVO> oListVO = orderService.listOrder();
     	List<OrdersVO> mListVO = orderService.listManager();
@@ -100,6 +110,12 @@ public class OrderController {
     	model.addAttribute("pListVO", pListVO);
     	model.addAttribute("wListVO", wListVO);
     	
+    	String id = (String)session.getAttribute("id");
+    	if(id == null) {
+    		return "redirect:/login";
+    	}
+    	
+    	return "/order-list";
     }
     
     // 수정하기

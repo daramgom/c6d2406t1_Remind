@@ -28,8 +28,6 @@ public interface MemberDAO {
 	// 로그인 
 	public MemberVO loginMember(MemberVO vo);
 	
-	// 로그인
-	public MemberVO loginMember(String userid, String userpw);
 	
 	
 	// 사용자 정보조회 (로그인 했다고 가정.);
@@ -41,6 +39,11 @@ public interface MemberDAO {
 	
 	// 사용자 정보수정
 	public int updateMember(MemberVO uvo);
+	
+	// 사용자 정보수정
+	public MemberVO updateMemberName(MemberVO uvo);
+	public MemberVO updateMemberEmail(MemberVO uvo);
+	public MemberVO updateMemberTel(MemberVO uvo);
 	
 	// 사용자 정보삭제
 	public Integer deleteMember(MemberVO dvo);

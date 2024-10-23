@@ -97,9 +97,9 @@ pageEncoding="UTF-8"%>
   </head>
   <body>
   	<c:if test="${!empty sessionScope.id}">
-  		<c:redirect url="/admin" />
+  		<c:redirect url="/main" />
   	</c:if> 
-  
+  	
     <div class="login-container">
       <h2 class="form-title">로그인</h2>
       <div class="social-login">

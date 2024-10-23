@@ -89,4 +89,10 @@ public class ShippingDAOImpl implements ShippingDAO {
         logger.info("재고 정보 추가 완료! 결과: {}", result);
 		
 	}
+
+	@Override
+	public OrdersVO getOrdersName(String ord_number) {
+		OrdersVO result = sqlSession.selectOne(NAMESPACE+".getOrdersName",ord_number);
+		return result;
+	}
 }

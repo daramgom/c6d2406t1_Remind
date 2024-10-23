@@ -51,5 +51,7 @@ public interface MemberService {
 	
 	public Map<String, Object> getInfo();
 	
+	public MemberVO memberUpdateInfo(String id,String span,String newValue);
+	
 	
 }

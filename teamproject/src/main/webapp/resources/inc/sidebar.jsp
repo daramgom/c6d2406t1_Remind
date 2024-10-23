@@ -150,14 +150,15 @@
                 </a>
                 <div class="collapse" id="ware">
                   <ul class="nav nav-collapse">
+                    
                     <li>
-                      <a class="test" id="a11" href="/wareHouseInsert">
-                        <span class="sub-item">창고 등록</span>
+                      <a class="test" id="a12" href="/warehouse/wareHouseList">
+                        <span class="sub-item">창고 목록</span>
                       </a>
                     </li>
                     <li>
-                      <a class="test" id="a12" href="/wareHouseList">
-                        <span class="sub-item">창고 목록</span>
+                      <a class="test" id="a12" href="/warehouse/wareHouseMap">
+                        <span class="sub-item">창고 지도</span>
                       </a>
                     </li>
                   </ul>
@@ -171,13 +172,9 @@
                 </a>
                 <div class="collapse" id="cp">
                   <ul class="nav nav-collapse">
+                  
                     <li>
-                      <a class="test" id="a13" href="/companyInsert">
-                        <span class="sub-item">거래처 등록</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="test" id="a14" href="/companyList">
+                      <a class="test" id="a14" href="/company/companyList">
                         <span class="sub-item">거래처 목록</span>
                       </a>
                     </li>
@@ -192,13 +189,9 @@
                 </a>
                 <div class="collapse" id="noti">
                   <ul class="nav nav-collapse">
+                   
                     <li>
-                      <a class="test" id="a15" href="/noticeInsert">
-                        <span class="sub-item">공지사항 등록</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a class="test" id="a16" href="/noticeList">
+                      <a class="test" id="a16" href="/notice/noticeList">
                         <span class="sub-item">공지사항 목록</span>
                       </a>
                     </li>
@@ -214,12 +207,12 @@
                 <div class="collapse" id="charts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a class="test" id="a17" href="admin/signReq">
+                      <a class="test" id="a17" href="/signReq">
                         <span class="sub-item">회원 가입 신청 목록</span>
                       </a>
                     </li>
                     <li>
-                      <a class="test" id="a18" href="admin/adminMemberList">
+                      <a class="test" id="a18" href="/adminMemberList">
                         <span class="sub-item">회원 목록</span>
                       </a>
                     </li>
@@ -230,4 +223,4 @@
           </div>
         </div>
       </div>
-      <!-- End Sidebar -->
+      <!-- End Sidebar --> 

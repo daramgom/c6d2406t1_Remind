@@ -108,34 +108,6 @@ public class MemberDAOImpl implements MemberDAO {
 		return resultVO;
 	}
 
-	// 안씀
-	@Override
-	public MemberVO loginMember(String userid, String userpw) {
-		System.out.println(" DAO : loginMember(String userid, String userpw) 실행");
-		// SQL 구문을 mapper에 생성
-		// SQL 구문 실행.
-		// MemberVO resultVO = sqlSession.selectOne( NAMESPACE+".loginMember", userid,
-		// userpw); X
-		// MemberVO vo = new MemberVO();
-		// vo.setUserid(userid);
-		// vo.setUserpw(userpw);
-		//
-		// MemberVO resultVO = sqlSession.selectOne( NAMESPACE+".loginMember", vo);
-		// => 전달 받은 정보를 하나의 공통객체에 저장 => 전달할때 객체로 전달
-
-		// * userid(회원가입), userpw(게시판)는 하나의 객체(MemberVO)에
-		// => 저장이 불가능하다고 가정. Ex) join구문 실행할때
-		Map<String, Object> paramMap = new HashMap<String, Object>();
-		// paramMap.put("mapper에서 호출하는 이름", 전달되는 값);
-		paramMap.put("userid", userid);
-		paramMap.put("userpw", userpw);
-
-		MemberVO resultVO = sqlSession.selectOne(NAMESPACE + ".loginMember", paramMap);
-		System.out.println(" DAO : " + resultVO);
-
-		return resultVO;
-	} // 안씀
-	// 안씀
 
 	@Override
 	public MemberVO getMember(String member_id) {
@@ -156,6 +128,7 @@ public class MemberDAOImpl implements MemberDAO {
 		System.out.println("tel : DAO " + tel);
 		return sqlSession.selectOne(NAMESPACE + ".getMemberTel", tel);
 	}
+	
 
 	@Override
 	public int updateMember(MemberVO uvo) {
@@ -168,6 +141,67 @@ public class MemberDAOImpl implements MemberDAO {
 
 		return result;
 	}
+	@Override
+	public MemberVO updateMemberName(MemberVO uvo) {
+		MemberVO used = getMember(uvo.getMember_name());
+		System.out.println("실행되냐? : 결과는>  : ");
+		
+		MemberVO member = new MemberVO();
+		
+		if(used != null) {
+			return member;
+		}
+		
+		int result = sqlSession.update(NAMESPACE + ".updateMemberName", uvo);
+		
+		if(result != 0) {
+			member = getMember(uvo.getMember_id());
+		}
+		
+		
+		return member;
+	}
+	
+	@Override
+	public MemberVO updateMemberEmail(MemberVO uvo) {
+		MemberVO used = getMemberEmail(uvo.getMember_email());
+		MemberVO member = new MemberVO();
+		
+		if(used != null) {
+			return member;
+		}
+		
+		int result = sqlSession.update(NAMESPACE + ".updateMemberEmail", uvo);
+		if(result != 0) {
+			member =  getMemberEmail(uvo.getMember_email());
+		}
+		
+		return member;
+	}
+	
+	
+	
+	@Override
+	public MemberVO updateMemberTel(MemberVO uvo) {
+		MemberVO used = getMemberTel(uvo.getMember_tel());
+		MemberVO member = new MemberVO();
+		
+		if(used != null) {
+			return member;
+		}
+		
+		int result = sqlSession.update(NAMESPACE + ".updateMemberTel", uvo);
+		if(result != 0) {
+			member = getMemberTel(uvo.getMember_tel());
+		}
+		
+		return member;
+	}
+	
+	
+	
+	
+	
 
 	@Override
 	public Integer deleteMember(MemberVO dvo) {

@@ -57,15 +57,17 @@
                                 <hr>
                                 <div class="d-flex justify-content-end">
                                     <a href="${pageContext.request.contextPath}/company/companyList" class="btn btn-secondary me-2">목록으로 돌아가기</a>
-                                    <a href="${pageContext.request.contextPath}/company/edit/${company.company_code}" class="btn btn-warning me-2">수정</a>
-                                    <!-- 삭제 버튼 제거 -->
+                                    <!-- permission_id가 03일 때만 수정 버튼 표시 -->
+                                    <c:if test="${sessionScope.permission_id == '03'}">
+                                        <a href="${pageContext.request.contextPath}/company/edit/${company.company_code}" class="btn btn-warning me-2">수정</a>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
 
         <!-- Footer -->
         <jsp:include page="/resources/inc/footer.jsp" />

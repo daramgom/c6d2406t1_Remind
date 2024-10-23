@@ -52,8 +52,8 @@ public class LoginController {
 	private void sessionAdd (HttpSession session, MemberVO result) {
 		// 비교해서 member 있으면 -> 해당하는 member 정보로 로그인 -> 메인 페이지
 	    session.setAttribute("id", result.getMember_id());
-		session.setAttribute("name", result.getMember_name());
 		session.setAttribute("permission_id", result.getPermission_id());
+		session.setAttribute("name", result.getMember_name());
 		session.setAttribute("tel", result.getMember_tel());
 		session.setAttribute("email", result.getMember_email());
 		session.setAttribute("employee_rank", result.getEmployee_rank());

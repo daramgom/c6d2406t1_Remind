@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.itwillbs.domain.MemberVO;
 import com.itwillbs.service.MemberService;
 
 @Controller
@@ -24,6 +25,8 @@ public class MemberController {
 	
 	@Inject
 	private MemberService mService;
+	
+	
 	
 	@PostMapping("/postInfo")
     public ResponseEntity<Map<String, Object>> postInfo() {
@@ -52,20 +55,20 @@ public class MemberController {
     public ResponseEntity<String> updateMemberInfo(@RequestBody Map<String, String> request , HttpSession session) {
         // 요청 본문에서 데이터를 추출
         String member_id = (String)session.getAttribute("id"); 
-        String span = request.get("span");
-        String newValue = request.get("newValue");
+        String field = request.get("field");
+        String newValue = request.get("new_value");
 
         // 여기서 id, field, newValue를 사용하여 데이터베이스를 업데이트하는 로직을 추가합니다.
-        System.out.println("ID: " + member_id + ", span: " + span + ", New Value: " + newValue);
+        System.out.println("ID: " + member_id + ", field: " + field + ", New Value: " + newValue);
         
-        mService.memberUpdateInfo(member_id , span, newValue);
+        MemberVO result = mService.memberUpdateInfo(member_id , field, newValue);
         
-        
-        
-        
+        session.setAttribute("name", result.getMember_name());
+		session.setAttribute("tel", result.getMember_tel());
+		session.setAttribute("email", result.getMember_email());
 
         // 예시 응답
-        return ResponseEntity.ok("{\"success\": true, \"message\": \"정보가 업데이트되었습니다.\"}");
+        return ResponseEntity.ok("{\"success\": true ");
     }
     
 }

@@ -146,11 +146,14 @@
 			    })
 			    .catch(error => {
 			        console.error('문제가 발생했습니다:', error);
-			    });};
+			    });
+		};
 	    function editField(field) {
 	    	
 	        const span = document.getElementById(field);
 	        const currentValue = span.textContent;
+	        
+	        console.log("span : "+ field);
 	       	let action = "";
 	        
 	        if(field == "userName" ) {
@@ -161,22 +164,22 @@
 	        	action = "전화번호를";
 	        }
 	        const newValue = prompt("수정할 " + action + " 입력하세요:", currentValue);
-	        
+	        console.log(newValue+
+	        		"asdasdasdasd");
 	        if( newValue == null ) {
 	       		return;
 	        }
 	        // span = 변경할 데이터베이스 속성 (member_name , member_email , member_tel)
 	        // newValue = 변경할 값.
-	        
 	        if( newValue != null && field == "userEmail") {
-	        	sendVerificationCode(newValue);
+	        	sendVerificationCode(newValue , field);
 	        }
-	        updateinfo( span , newValue);
+	        updateinfo( field , newValue);
 	        
 	        
 
 	    }
-	    function sendVerificationCode (newValue) {
+	    function sendVerificationCode (newValue, field) {
 	    		const url =  "/sendVerificationCode";
         		const updateEmail = {
         			email : newValue
@@ -201,21 +204,20 @@
 	    	            
 	    	            const emailcode = prompt("인증코드를  입력하세요.", currentValue);
 	    	            
-	    	            if(emailcode == null ){
-	    	            	return;
+	    	            if(emailcode != null ){
+		    	            verifyCode(emailcode, newValue, field);
 	    	            }
-	    	            verifyCode(emailcode);
+	    	            	return;
     	        	}else {
     	        		return;
     	        	}
     	        })
-    	        
     	        .catch(error => {
     	            console.error('업데이트 중 오류가 발생했습니다:', error);
     	        });
 	    }
 	    
-	    function verifyCode(emailcode) {
+	    function verifyCode(emailcode, newValue, field) {
 	    	const url =  "/verifyCode";
         		// AJAX 요청 (예: Fetch API 사용)
         		const Code = {
@@ -235,20 +237,22 @@
     	            return response.json();
     	        })
     	        .then( data => {
-    	        	updateinfo( span , newValue);  	    	        	
+    	        	updateinfo( field , newValue);  	    	        	
     	        })
     	        .catch( error => {
     	            console.error('업데이트 중 오류가 발생했습니다:', error);
     	        })
 	    }
 	    
-	    function updateinfo( span, newValue) {
+	    function updateinfo( field, newValue) {
 	    	const url =  "/updateMemberInfo";
 	    	const data = {
-	    			span : span,
+	    			field : field,
 	    			new_value : newValue 
 	    			
 	    	};
+	    	
+	    	console.log(data);
 	    	// AJAX 요청 (예: Fetch API 사용)
 	        fetch(url, {
 	            method: 'POST', // 또는 'POST'로 변경 가능
@@ -265,6 +269,7 @@
 	        })
 	        .then(data => {
 	            console.log('정보가 성공적으로 업데이트되었습니다:', data);
+	            location.reload();
 	        })
 	        .catch(error => {
 	            console.error('업데이트 중 오류가 발생했습니다:', error);

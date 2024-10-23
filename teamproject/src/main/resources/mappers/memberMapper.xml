@@ -73,6 +73,7 @@
 		member_name = #{member_name}
 		where member_id = #{member_id}
 	</update>
+	
 	<update id="updateMemberEmail">
 	update member
 		set update_date = now(),

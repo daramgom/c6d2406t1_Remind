@@ -143,7 +143,9 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	@Override
 	public MemberVO updateMemberName(MemberVO uvo) {
-		MemberVO used = getMember(uvo.getMember_id());
+		MemberVO used = getMember(uvo.getMember_name());
+		System.out.println("실행되냐? : 결과는>  : ");
+		
 		MemberVO member = new MemberVO();
 		
 		if(used != null) {
@@ -151,10 +153,10 @@ public class MemberDAOImpl implements MemberDAO {
 		}
 		
 		int result = sqlSession.update(NAMESPACE + ".updateMemberName", uvo);
+		
 		if(result != 0) {
 			member = getMember(uvo.getMember_id());
 		}
-		
 		
 		
 		return member;

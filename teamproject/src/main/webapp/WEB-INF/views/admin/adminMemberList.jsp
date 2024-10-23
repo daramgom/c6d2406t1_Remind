@@ -16,6 +16,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       href="/resources/img/kaiadmin/favicon.ico"
       type="image/x-icon"
     />
+    
 
     <style>
       .btn-confirm {
@@ -88,6 +89,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                           <th class="col-md-2">전화번호</th>
                           <th class="col-md-2">가입일자</th>
                           <th class="col-md-2">수정일자</th>
+                          <th class="col-md-1">권한</th>
                           <th class="col-md-1"></th>
                         </tr>
                         <c:forEach items="${memberList}" var="member">
@@ -97,6 +99,13 @@ uri="http://java.sun.com/jsp/jstl/core"%>
                             <td>${member.member_tel}</td>
                             <td>${member.create_date}</td>
                             <td>${member.update_date}</td>
+                            <td>${member.permission_id_value} 
+	                            <select class="userPermission">
+	                            	<option value="1"></option>
+	                            	<option value="2"></option>
+	                            </select>
+                            <button onclick="updatePermission" style="height: 24px; border: none; background: transparent ; width: 31px; font-size: 14px;">✏️</button> 
+                            </td>
                             <td>
                               <div class="nav-toggle">
                                 <button
@@ -280,6 +289,9 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       let GlobalDept;
       let GlobalStatus;
       let DeleteCode;
+      function updatePermission () {
+    	  
+      }
 
       function memberInfoDetails(data) {
         event.preventDefault();

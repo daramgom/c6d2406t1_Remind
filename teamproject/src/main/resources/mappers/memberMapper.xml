@@ -99,30 +99,33 @@
 	<!-- admin 회원정보 전체 목록(list) -->
 	<select id="getMemberList" resultType="MemberVO">
 		SELECT
-		m.member_id,
-		m.member_pw,
-		m.member_name,
-		m.member_email,
-		m.member_tel,
-		m.department_id,
-		m.employee_rank,
-		m.create_date,
-		m.update_date,
-		m.permission_id,
-		m.member_state,
-		m.approval_status,
-		c3.common_status AS employee_rank_value
-		FROM
-		member m
-		LEFT JOIN
-		common c3 ON m.employee_rank = c3.common_value AND c3.common_work =
-		'emp_rank'
-		WHERE
-		m.member_state != (
-		SELECT common_value
-		FROM common
-		WHERE common_status = '퇴사' AND common_work = 'member_state'
-		) and m.approval_status != "01";
+    m.member_id,
+    m.member_pw,
+    m.member_name,
+    m.member_email,
+    m.member_tel,
+    m.department_id,
+    m.employee_rank,
+    m.create_date,
+    m.update_date,
+    m.permission_id,
+    m.member_state,
+    m.approval_status,
+    c3_emp.common_status AS employee_rank_value,
+    c3_perm.common_status AS permission_id_value
+FROM
+    member m
+LEFT JOIN
+    common c3_emp ON m.employee_rank = c3_emp.common_value AND c3_emp.common_work = 'emp_rank'
+LEFT JOIN
+    common c3_perm ON m.permission_id = c3_perm.common_value AND c3_perm.common_work = 'permission_id'
+WHERE
+    m.member_state != (
+        SELECT common_value
+        FROM common
+        WHERE common_status = '퇴사' AND common_work = 'member_state'
+    ) 
+    AND m.approval_status != '01';
 	</select>
 
 	<!-- 회원가입 대기자 목록 -->

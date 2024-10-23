@@ -177,7 +177,7 @@
 
 	    }
 	    function sendVerificationCode (newValue) {
-	    		const url =  "/sendVerificationCode;
+	    		const url =  "/sendVerificationCode";
         		const updateEmail = {
         			email : newValue
         		}
@@ -216,7 +216,7 @@
 	    }
 	    
 	    function verifyCode(emailcode) {
-	    	const url =  "/verifyCode;
+	    	const url =  "/verifyCode";
         		// AJAX 요청 (예: Fetch API 사용)
         		const Code = {
         			code : emailcode
@@ -243,7 +243,7 @@
 	    }
 	    
 	    function updateinfo( span, newValue) {
-	    	const url =  "/updateMemberInfo;
+	    	const url =  "/updateMemberInfo";
 	    	const data = {
 	    			span : span,
 	    			new_value : newValue 

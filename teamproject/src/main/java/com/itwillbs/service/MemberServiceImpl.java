@@ -155,15 +155,18 @@ public class MemberServiceImpl implements MemberService{
 		member.setMember_id(id);
 		
 		if(span.equals("userName")) {
+			logger.debug("userName 실행");
 			
 			member.setMember_name(newValue);
 			return mdao.updateMemberName(member);
 		}
 		if (span.equals("userEmail")) {
+			logger.debug("userEmail 실행");
 			
 			member.setMember_email(newValue);
 			return mdao.updateMemberEmail(member);
 		}
+		logger.debug("userTel 실행");
 		member.setMember_tel(newValue);
 		return mdao.updateMemberTel(member);
 		

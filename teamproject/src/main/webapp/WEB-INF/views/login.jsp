@@ -99,7 +99,7 @@ pageEncoding="UTF-8"%>
   	<c:if test="${!empty sessionScope.id}">
   		<c:redirect url="/main" />
   	</c:if> 
-  
+  	
     <div class="login-container">
       <h2 class="form-title">로그인</h2>
       <div class="social-login">

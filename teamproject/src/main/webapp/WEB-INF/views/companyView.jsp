@@ -67,7 +67,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
 
         <!-- Footer -->
         <jsp:include page="/resources/inc/footer.jsp" />

@@ -692,31 +692,31 @@ button:hover {
                 </tr>
             </table>
         </div>
+        
+        <button type="button" onclick="downloadExcel()">엑셀 다운로드</button>
         <button type="button" onclick="closeModal()">확인</button>
 
         <script type="text/javascript">
             // 엑셀 다운로드 함수
             function downloadExcel() {
-            	
-                const rcvManagerId = document.getElementById('rcvManagerId').value;
-                const rcvNumber = document.getElementById('rcvNumber').value;
-                const prodId = document.getElementById('prodId').value;
-                const prodCategory = document.getElementById('prodCategory').value;
-                const prodName = document.getElementById('prodName').value;
-                const companyCode = document.getElementById('companyCode').value;
-                const rcvQuantity = document.getElementById('rcvQuantity').value;
-                const rcvPrice = document.getElementById('rcvPrice').value;
-                const rcvDate = document.getElementById('rcvDate').value;
-                const rcvRemarks = document.getElementById('rcvRemarks').value;
-        
+                // 모달에서 필요한 데이터 가져오기
+                const rcvManagerId = document.getElementById('display_rcv_manager_id').innerText;
+                const rcvNumber = document.getElementById('display_rcv_number').innerText;
+                const prodId = document.getElementById('display_prod_id').innerText;
+                const prodCategory = document.getElementById('display_prod_category').innerText;
+                const prodName = document.getElementById('display_prod_name').innerText;
+                const companyCode = document.getElementById('display_company_code').innerText;
+                const rcvQuantity = document.getElementById('display_rcv_quantity').innerText;
+                const rcvPrice = document.getElementById('display_rcv_price').innerText;
+                const rcvDate = document.getElementById('display_rcv_date').innerText;
+                const rcvRemarks = document.getElementById('display_rcv_remarks').innerText;
+
                 const url = `/downloadExcel?rcv_manager_id=${rcvManagerId}&rcv_number=${rcvNumber}&prod_id=${prodId}&prod_category=${prodCategory}&prod_name=${prodName}&company_code=${companyCode}&rcv_quantity=${rcvQuantity}&rcv_price=${rcvPrice}&rcv_date=${rcvDate}&rcv_remarks=${rcvRemarks}`;
-        
-            	console.log(url); // URL 로그
+                
+                console.log(url); // URL 로그
                 window.location.href = url;
             }
         </script>
-       
-        <button type="button" onclick="downloadExcel()">엑셀 다운로드</button>
     </div>
 </div>
 

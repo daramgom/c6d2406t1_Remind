@@ -1,11 +1,25 @@
 package com.itwillbs.web;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,7 +179,110 @@ public class ShpController {
         return "shpList2"; // 수정된 JSP 파일 이름
     }
  
-    
-    
+    @GetMapping("/downloadExcel2")
+    public void downloadExcel2(
+            @RequestParam("shpManagerId") String shpManagerId,
+            @RequestParam("shpNumber") String shpNumber,
+            @RequestParam("prodId") String prodId,
+            @RequestParam("prodName") String prodName,
+            @RequestParam("shpQuantity") String shpQuantity,
+            @RequestParam("shpPrice") String shpPrice,
+            @RequestParam("companyCode") String companyCode,
+            @RequestParam("shpDate") String shpDate,
+            @RequestParam("shpRemarks") String shpRemarks,
+            HttpServletResponse response) throws IOException {
+
+        logger.debug("downloadExcel2() 시작!");
+
+        // Excel 파일 생성
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("출고 명세서");
+
+        // 제목 스타일 생성
+        CellStyle titleStyle = workbook.createCellStyle();
+        titleStyle.setAlignment(HorizontalAlignment.CENTER);
+        titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+        Font titleFont = workbook.createFont();
+        titleFont.setBold(true);
+        titleFont.setFontHeightInPoints((short) 20);
+        titleStyle.setFont(titleFont);
+
+        // 제목 추가
+        Row titleRow = sheet.createRow(0);
+        Cell titleCell = titleRow.createCell(0);
+        titleCell.setCellValue("출고 명세서");
+        titleCell.setCellStyle(titleStyle);
+        
+        // 제목 셀 병합
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
+        sheet.getRow(0).setHeightInPoints(50);
+
+        // 스타일 생성
+        CellStyle borderStyle = workbook.createCellStyle();
+        borderStyle.setBorderTop(BorderStyle.THIN);
+        borderStyle.setBorderBottom(BorderStyle.THIN);
+        borderStyle.setBorderLeft(BorderStyle.THIN);
+        borderStyle.setBorderRight(BorderStyle.THIN);
+        borderStyle.setAlignment(HorizontalAlignment.CENTER);
+        borderStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+        CellStyle headerStyle = workbook.createCellStyle();
+        headerStyle.cloneStyleFrom(borderStyle);
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 14);
+        headerStyle.setFont(headerFont);
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        // 헤더 추가
+        Row headerRow = sheet.createRow(1);
+        String[] headers = {"항목", "내용"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell headerCell = headerRow.createCell(i);
+            headerCell.setCellValue(headers[i]);
+            headerCell.setCellStyle(headerStyle);
+        }
+
+        // 데이터 추가
+        String[][] data = {
+            {"출고 담당자", shpManagerId},
+            {"출고 관리번호", shpNumber},
+            {"제품 식별코드", prodId},
+            {"품목명", prodName},
+            {"출고 수량", shpQuantity},
+            {"가격(단가)", shpPrice},
+            {"거래처", companyCode},
+            {"출고 날짜", shpDate},
+            {"비고", shpRemarks}
+        };
+
+        for (int i = 0; i < data.length; i++) {
+            Row row = sheet.createRow(i + 2);
+            for (int j = 0; j < data[i].length; j++) {
+                Cell cell = row.createCell(j);
+                cell.setCellValue(data[i][j]);
+                cell.setCellStyle(borderStyle);
+            }
+        }
+
+        // 열 너비 조정
+        sheet.setColumnWidth(0, 30 * 256);
+        sheet.setColumnWidth(1, 50 * 256);
+
+        // 응답 설정
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=\"출고명세서.xlsx\"");
+
+        // 파일 다운로드
+        try (OutputStream out = response.getOutputStream()) {
+            workbook.write(out);
+        }
+
+        workbook.close();
+    }
+
 }
+    
+    
    

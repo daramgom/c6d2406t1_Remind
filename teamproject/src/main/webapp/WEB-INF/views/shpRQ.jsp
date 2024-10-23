@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html lang="kr">
@@ -352,8 +353,9 @@ pageEncoding="UTF-8"%>
                 <label for="shp_remarks">비고</label>
                 <textarea id="shp_remarks" placeholder="전달할 내용..." required name="shp_remarks"></textarea>
             </div>
-
+ <c:if test="${sessionScope.id == 'user1'}">
             <button class="btn btn-primary" type="submit">출고 요청</button>
+ </c:if>
         </div>
     </form>
     

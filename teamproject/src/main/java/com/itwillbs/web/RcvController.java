@@ -184,46 +184,43 @@ public class RcvController {
         return "rcvList2"; // JSP 파일 이름
     }
     
-    
-    
- // 엑셀 다운로드
+    //엑셀 파일 다운로드
     @GetMapping("/downloadExcel")
-    public void downloadExcel(HttpServletResponse response,
-                               @RequestParam String rcv_manager_id,
-                               @RequestParam String rcv_number,
-                               @RequestParam String prod_id,
-                               @RequestParam String prod_category,
-                               @RequestParam String prod_name,
-                               @RequestParam String company_code,
-                               @RequestParam String rcv_quantity,
-                               @RequestParam String rcv_price,
-                               @RequestParam String rcv_date,
-                               @RequestParam String rcv_remarks) throws IOException {
-        
-        logger.debug("downloadExcel() 시작!");
+    public void downloadExcel(
+            @RequestParam("rcv_manager_id") String rcvManagerId,
+            @RequestParam("rcv_number") String rcvNumber,
+            @RequestParam("prod_id") String prodId,
+            @RequestParam("prod_category") String prodCategory,
+            @RequestParam("prod_name") String prodName,
+            @RequestParam("company_code") String companyCode,
+            @RequestParam("rcv_quantity") String rcvQuantity,
+            @RequestParam("rcv_price") String rcvPrice,
+            @RequestParam("rcv_date") String rcvDate,
+            @RequestParam("rcv_remarks") String rcvRemarks,
+            HttpServletResponse response) throws IOException {
 
         // Excel 파일 생성
         Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("입고명세표");
+        Sheet sheet = workbook.createSheet("입고 명세서");
 
         // 제목 스타일 생성
         CellStyle titleStyle = workbook.createCellStyle();
         titleStyle.setAlignment(HorizontalAlignment.CENTER);
         titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);
         Font titleFont = workbook.createFont();
-        titleFont.setBold(true); // 제목 볼드 설정
-        titleFont.setFontHeightInPoints((short) 20); // 제목 폰트 크기 증가
+        titleFont.setBold(true);
+        titleFont.setFontHeightInPoints((short) 20);
         titleStyle.setFont(titleFont);
 
         // 제목 추가
         Row titleRow = sheet.createRow(0);
         Cell titleCell = titleRow.createCell(0);
-        titleCell.setCellValue("입고명세표");
+        titleCell.setCellValue("입고 명세서");
         titleCell.setCellStyle(titleStyle);
-        
+
         // 제목 셀 병합
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1)); // 첫 번째 행의 첫 번째 및 두 번째 열 병합
-        sheet.getRow(0).setHeightInPoints(50); // 제목 셀 높이 설정
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
+        sheet.getRow(0).setHeightInPoints(50);
 
         // 스타일 생성
         CellStyle borderStyle = workbook.createCellStyle();
@@ -237,59 +234,58 @@ public class RcvController {
         CellStyle headerStyle = workbook.createCellStyle();
         headerStyle.cloneStyleFrom(borderStyle);
         Font headerFont = workbook.createFont();
-        headerFont.setBold(true); // 헤더 볼드 설정
-        headerFont.setFontHeightInPoints((short) 14); // 헤더 폰트 크기 증가
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 14);
         headerStyle.setFont(headerFont);
-        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex()); // 연한 회색으로 변경
+        headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
         // 헤더 추가
-        Row headerRow = sheet.createRow(1); // 헤더는 1번째 행에 추가
-        Cell headerCell1 = headerRow.createCell(0);
-        headerCell1.setCellValue("항목");
-        headerCell1.setCellStyle(headerStyle);
-        
-        Cell headerCell2 = headerRow.createCell(1);
-        headerCell2.setCellValue("내용");
-        headerCell2.setCellStyle(headerStyle);
+        Row headerRow = sheet.createRow(1);
+        String[] headers = {"항목", "내용"};
+        for (int i = 0; i < headers.length; i++) {
+            Cell headerCell = headerRow.createCell(i);
+            headerCell.setCellValue(headers[i]);
+            headerCell.setCellStyle(headerStyle);
+        }
 
         // 데이터 추가
         String[][] data = {
-            {"입고 담당자", rcv_manager_id},
-            {"입고 관리번호", rcv_number},
-            {"제품 식별코드", prod_id},
-            {"카테고리", prod_category},
-            {"품목명", prod_name},
-            {"거래처", company_code},
-            {"입고 수량", rcv_quantity},
-            {"가격(단가)", rcv_price},
-            {"입고 날짜", rcv_date},
-            {"비고", rcv_remarks}
+                {"입고 담당자", rcvManagerId},
+                {"입고 관리번호", rcvNumber},
+                {"제품 식별코드", prodId},
+                {"품목명", prodName},
+                {"카테고리", prodCategory},
+                {"거래처", companyCode},
+                {"입고 수량", rcvQuantity},
+                {"가격(단가)", rcvPrice},
+                {"입고 날짜", rcvDate},
+                {"비고", rcvRemarks}
         };
 
         for (int i = 0; i < data.length; i++) {
-            Row row = sheet.createRow(i + 2); // 데이터는 2번째 행부터 시작
+            Row row = sheet.createRow(i + 2);
             for (int j = 0; j < data[i].length; j++) {
                 Cell cell = row.createCell(j);
                 cell.setCellValue(data[i][j]);
-                cell.setCellStyle(borderStyle); // 테두리 스타일 적용
+                cell.setCellStyle(borderStyle);
             }
         }
 
-        // 열 너비 조정 (수동 설정)
-        sheet.setColumnWidth(0, 30 * 256); // 첫 번째 열 너비 설정
-        sheet.setColumnWidth(1, 50 * 256); // 두 번째 열 너비 설정
+        // 열 너비 조정
+        sheet.setColumnWidth(0, 30 * 256);
+        sheet.setColumnWidth(1, 50 * 256);
 
         // 응답 설정
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=\"입고명세표.xlsx\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"입고명세서.xlsx\"");
 
         // 파일 다운로드
         try (OutputStream out = response.getOutputStream()) {
             workbook.write(out);
+        } finally {
+            workbook.close();
         }
-
-        workbook.close();
     }
 
 

@@ -9,6 +9,7 @@
    <insert id="insertRcv" parameterType="com.itwillbs.domain.ReceivingVO">
     INSERT INTO receiving_info (
         rcv_manager_id, 
+        rcv_supervisor_id,
         ord_number, 
         prod_id, 
         prod_category, 
@@ -24,6 +25,7 @@
         rcv_count     -- rcv_count를 마지막에 위치
     ) VALUES (
         #{rcv_manager_id}, 
+        #{rcv_supervisor_id}, 
         #{ord_number}, 
         #{prod_id}, 
         #{prod_category}, 

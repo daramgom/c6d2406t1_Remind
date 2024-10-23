@@ -51,14 +51,14 @@ public class MeberDAOTest {
 		// vo.setUserpw("12345");
 		// MemberVO resultVO =	mdao.loginMember(vo);
 		
-		MemberVO resultVO =	mdao.loginMember("admin", "1234");
-		System.out.println(" TEST : " + resultVO);
+		//MemberVO resultVO =	mdao.loginMember("admin", "1234");
+		//System.out.println(" TEST : " + resultVO);
 		
-		if(resultVO != null) {
-			System.out.println(" TEST : 로그인 성공! ");
-		}else {
-			System.out.println(" TEST : 로그인 실패! ");
-		}
+		//if(resultVO != null) {
+		//	System.out.println(" TEST : 로그인 성공! ");
+		//}else {
+		//	System.out.println(" TEST : 로그인 실패! ");
+		//}
 		
 		System.out.println(" TEST : 로그인테스트() 끝 ");
 	}

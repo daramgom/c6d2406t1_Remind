@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,6 +43,9 @@
 </style>
 </head>
 <body>
+<c:if test="${empty sessionScope.id}">
+	<c:redirect url="/login"/>
+</c:if>
 	
 	<div class="wrapper">
 		<!-- Header -->
@@ -175,31 +179,23 @@
                 </div>
               </div>
               <div class="col-md-3">
-                <div class="card card-primary card-round">
+                <div class="card card-round">
                   <div class="card-header">
                     <div class="card-head-row">
-                      <div class="card-title">Daily Sales</div>
-                      <div class="card-tools">
-                        <div class="dropdown">
-                          <button class="btn btn-sm btn-label-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Export
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-category">March 25 - April 02</div>
-                  </div>
+                     <div class="card-title">TEST</div>
+                     </div>
                   <div class="card-body pb-0">
                     <div class="mb-4 mt-2">
-                      <h1>$4,578.58</h1>
-                    </div>
-                    <div class="pull-in"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-                      <canvas id="dailySalesChart" width="506" height="335" style="display: block; width: 506px; height: 335px;" class="chartjs-render-monitor"></canvas>
+						<div id="msgArea" class="col">
+						</div>
+						<div class="col-12">
+						<div class="input-group mb-3">
+						<input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+						<div class="input-group-append">
+						<button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+						</div>
+						</div>
+						</div>
                     </div>
                   </div>
                 </div>
@@ -348,11 +344,11 @@ $(document).ready(function() {
 							label: '발주',
 							data: dayOrdData,
 							borderColor: '#fdaf4b',
-							backgroundColor: 'rgba(253, 175, 75, 0.75)',
+							backgroundColor: 'rgba(253, 175, 75, 0.6)',
 							fill: true,
 							lineTension: 0.3,
 							pointStyle: 'circle',
-							borderWidth: 4.5
+							borderWidth: 3
 						},
 						{
 							label: '입고',
@@ -362,7 +358,7 @@ $(document).ready(function() {
 							fill: true,
 							lineTension: 0.3,
 							pointStyle: 'circle',
-							borderWidth: 4.5
+							borderWidth: 3
 						},
 						{
 							label: '출고',
@@ -372,7 +368,7 @@ $(document).ready(function() {
 							fill: true,
 							lineTension: 0.3,
 							pointStyle: 'circle',
-							borderWidth: 4.5
+							borderWidth: 3
 						},
 					]
 				},
@@ -425,7 +421,81 @@ $(document).ready(function() {
 			console.error('데이터를 가져오는 데 실패했습니다:', error);
 		}
 	});
+	
+	
+// chatting
+	//전송 버튼 누르는 이벤트
+$("#button-send").on("click", function(e) {
+	sendMessage();
+	$('#msg').val('');
 });
+var userName = '${userName}';
+var sock = new SockJS('http://localhost:8088/chatting?userName='+encodeURIComponent(userName));
+sock.onmessage = onMessage;
+sock.onclose = onClose;
+sock.onopen = onOpen;
+
+function sendMessage() {
+	sock.send($("#msg").val());
+}
+
+//서버에서 메시지를 받았을 때
+function onMessage(msg) {
+	var data = msg.data;
+	var sessionId = null; //데이터를 보낸 사람
+	var message = null;
+
+	var arr = data.split(":");
+
+	for(var i=0; i<arr.length; i++) {
+		console.log('arr[' + i + ']: ' + arr[i]);
+	}
+
+	var cur_session = '${userName}'; //현재 세션에 로그인 한 사람
+	console.log("cur_session : " + cur_session);
+
+	sessionId = arr[0];
+	message = arr[1];
+
+	//로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
+	if(sessionId == cur_session) {
+		var str = "<div class='col-12'>";
+		str += "<div class='alert alert-secondary' style='text-align: right;'>";
+		str += "<b>" + message + " : " + sessionId + "</b> <i class='fas fa-user-astronaut'></i>";
+		str += "</div></div>";
+
+		$("#msgArea").append(str);
+	} else {
+		var str = "<div class='col-12'>";
+		str += "<div class='alert alert-warning' style='border-left: 4px solid #ffad46; border-right: none;'>";
+		str += "<i class='fas fa-user'></i> <b>" + sessionId + " : " + message + "</b>";
+		str += "</div></div>";
+
+		$("#msgArea").append(str);
+	}
+}
+
+//채팅창에서 나갔을 때
+function onClose(evt) {
+	var user = '${userName}';
+	var str = user + " 님이 퇴장하셨습니다.";
+
+	$("#msgArea").append(str);
+}
+
+//채팅창에 들어왔을 때
+function onOpen(evt) {
+	var user = '${userName}';
+	var str = user + "님이 입장하셨습니다.";
+
+	$("#msgArea").append(str);
+}
+// chatting
+	
+	
+	
+	
+});//DOM준비
 
 
 

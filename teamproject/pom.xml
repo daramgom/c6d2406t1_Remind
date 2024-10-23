@@ -254,9 +254,14 @@
 		    <version>0.4</version>
 		</dependency>
 		<!-- 비밀번호 암호화 라이브러리 -->
-				
-				
-		
+					
+		<!-- WebSocket -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<!-- WebSocket -->		
 		
 				
 		

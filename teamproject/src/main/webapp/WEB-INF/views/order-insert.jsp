@@ -173,7 +173,7 @@ pageEncoding="UTF-8"%>
 <div class="form-group">
 	<div>
 		<label for="ord_manager_id" class="col-md-3 col-form-label">발주 담당자</label>
-		<input class="form-control input-full" type="text" name="ord_manager_id" required="required" style="width:40% !important">
+		<input class="form-control input-full" value="${id }" readonly="readonly" type="text" name="ord_manager_id" required="required" style="width:40% !important">
 	</div>
 </div>
 

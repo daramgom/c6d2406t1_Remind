@@ -559,6 +559,12 @@ $(document).ready(function() {
 
 <script>
 
+var checkPage = '${checkPage}';
+
+if(checkPage == 'insertOK'){
+	alert("발주 정보가 등록 되었습니다.");
+}
+
 function openModal(ord_count, ord_number, common_status, ord_status, 
 	ord_manager_id, manager_member_name, manager_department_name, manager_common_status, manager_member_tel, 
 	ord_supervisor_id, supervisor_member_name, supervisor_department_name, supervisor_common_status, supervisor_member_tel, 

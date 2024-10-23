@@ -563,10 +563,16 @@ button:hover {
                 <textarea id="shpRemarks" required name="shpRemarks"></textarea>
             </div>
             <div class="button-group">
+            
+             <c:if test="${sessionScope.id == 'super1'}">
                 <button type="button" onclick="saveShippingDetails()">출고 승인</button>
                 <button type="button" onclick="rejectShipping()">출고 반려</button>
+             </c:if>
+             
+                <c:if test="${sessionScope.id == 'user1'}">
                 <button type="button" onclick="editShippingDetails()">출고 수정</button>
                 <button type="button" onclick="deleteShipping()">출고 삭제</button>
+                </c:if>
             </div>
         </div>
     </form>

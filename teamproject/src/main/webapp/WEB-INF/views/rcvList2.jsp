@@ -614,12 +614,14 @@ button:hover {
 
 											<div class="button-group">
 											    
+	                                            <c:if test="${sessionScope.id == 'super1'}">
 											        <button type="button" onclick="saveDetails()">입고 승인</button>
 											        <button type="button" onclick="rejectReceiving()">입고 반려</button>
-											  
-											   
-												<button type="button" onclick="editDetails()">입고 수정</button>
-												<button type="button" onclick="deleteReceiving()">입고 삭제</button>
+											    </c:if>
+											    <c:if test="${sessionScope.id == 'user1'}">
+													<button type="button" onclick="editDetails()">입고 수정</button>
+													<button type="button" onclick="deleteReceiving()">입고 삭제</button>
+												</c:if>
 																			
 											</div>
 										</div>

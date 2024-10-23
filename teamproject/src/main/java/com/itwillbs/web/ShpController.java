@@ -75,6 +75,19 @@ public class ShpController {
 
         return "shpList2"; // 수정된 JSP 파일 이름
     }
+    
+ 
+    
+    //슬라이드 패널(발주 요청자,승인자)
+    @PostMapping("/receiveOnameS")
+    public ResponseEntity<OrdersVO> ordersname(@RequestBody OrdersVO vo){
+    logger.info("1444"+vo);
+    OrdersVO OnameList =  shippingDAO.getOrdersName(vo.getOrd_number());
+    	 return ResponseEntity.ok(OnameList);
+    }
+  
+    
+    
 
     // 출고 업데이트 (승인)
     @PostMapping("/updateShipping")

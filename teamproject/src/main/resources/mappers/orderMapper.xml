@@ -38,7 +38,7 @@
 		and o.ord_status = cm.common_value 
 		and cm.common_work = 'ord_status' 
 		and ord_delete_status = '01' 
-		order by ord_count
+		order by ord_count desc
  	</select>
  	
  <!-- 발주 기안 목록 조회 -->	<!-- 미구현 -->
@@ -144,10 +144,7 @@
 	from departments d, member m, common c 
 	where d.department_id = m.department_id 
 	and m.employee_rank = c.common_value 
-	and common_work = 'emp_rank' 
-	and m.permission_id = '01' 
-	and m.member_state = '01' 
-	and m.approval_status = '02'
+	and common_work = 'emp_rank'
  </select>
  
  <!-- 발주 승인자 목록 조회 -->
@@ -172,7 +169,8 @@
  <select id="listWarehouse" resultType="OrdersVO">
 	 select w.wh_number, w.wh_name, w.wh_location, w.wh_admin, m.member_name, m.member_tel 
 	 from warehouse w, member m 
-	 where w.wh_admin = m.member_id
+	 where w.wh_admin = m.member_id 
+	 and w.is_deleted = '01'
  </select>
  
  

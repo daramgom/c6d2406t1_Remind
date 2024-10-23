@@ -271,12 +271,12 @@ pageEncoding="UTF-8"%>
 								</c:if>
 							</c:forEach>
 							
-							<c:forEach var="s" items="${sListVO }">
-								<c:if test="${s.member_id == o.ord_supervisor_id}">
-									<c:set var="supervisor_member_name" value="${s.member_name }" />
-									<c:set var="supervisor_department_name" value="${s.department_name }" />
-									<c:set var="supervisor_common_status" value="${s.common_status }" />
-									<c:set var="supervisor_member_tel" value="${s.member_tel }" />
+							<c:forEach var="m" items="${mListVO }">
+								<c:if test="${m.member_id == o.ord_supervisor_id}">
+									<c:set var="supervisor_member_name" value="${m.member_name }" />
+									<c:set var="supervisor_department_name" value="${m.department_name }" />
+									<c:set var="supervisor_common_status" value="${m.common_status }" />
+									<c:set var="supervisor_member_tel" value="${m.member_tel }" />
 								</c:if>
 							</c:forEach>
 							

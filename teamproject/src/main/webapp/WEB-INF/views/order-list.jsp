@@ -132,7 +132,7 @@ pageEncoding="UTF-8"%>
     th, td {
         border: 1px solid #ddd;
         padding: 8px;
-        text-align: left;
+        text-align: center;
     }
     
     th {
@@ -159,12 +159,22 @@ pageEncoding="UTF-8"%>
         background-color: rgba(0,0,0,0.5);
      }
      .modal-content {
-         background-color: #fff;
-         margin: 15% auto;
-         padding: 20px;
-         border: 1px solid #888;
-         width: 80%;
+        top: 0;
+    	right: -400px;
+    	height: 100%;
+	    background: white;
+	    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+	    transition: right 0.3s ease;
+	    z-index: 1000;
+	    padding: 20px;
+	    overflow-y: auto;
+	    margin: auto;
      }
+     
+     .modla-content.active{
+	 	right: 0; /* 슬라이드가 보일 때 위치 */
+     }
+     
      .close {
          color: #aaa;
          float: right;
@@ -244,21 +254,37 @@ pageEncoding="UTF-8"%>
 		                <tr role="row">
 			                <!--     <th>순번</th> -->
 			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >순번</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주관리번호</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >관리번호</th>
 			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주상태</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 담당자</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 승인 담당자</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >제품식별코드</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 금액</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 수량</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 최초 기안 시간</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주 상태별 시간</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >거래처 코드</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >입고 예정 창고</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >담당자</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >승인자</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >제품코드</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주단가</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주수량</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >기안시간</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >상태별시간</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >거래처코드</th>
+			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >입고창고</th>
 		                    <!-- <th>비고</th> -->
 		                    <!-- <th>삭제 상태</th> -->
 		                </tr>
 		             </thead>
+		             <tfoot>
+		             	<tr>
+                            <th>순번</th>
+                            <th>관리번호</th>
+                            <th>발주상태</th>
+                            <th>담당자</th>
+                            <th>승인자</th>
+                            <th>제품코드</th>
+                            <th>발주단가</th>
+                            <th>발주수량</th>
+                            <th>기안시간</th>
+                            <th>상태별시간</th>
+                            <th>거래처코드</th>
+                            <th>입고창고</th>
+                          </tr>
+		             </tfoot>
 		             <tbody>
 						 	<c:forEach var="o" items="${oListVO }">
 		 

@@ -198,11 +198,11 @@ td:first-child {
 #slidePanel {
 	display: none;
 	position: fixed;
-	z-index: 8000;
+	z-index: 1000;
 	right: 0;
-	top: 0px;
+	top: 95px;
 	width: 740px;
-	height: calc(100% - 0px);
+	height: calc(100% - 60px);
 	background-color: #fff;
 	box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
 	transition: transform 0.3s ease;
@@ -404,7 +404,7 @@ button:hover {
 
 <!-- 출고 요청 목록 -->
 <!-- 출고 요청 목록 -->
-<h1 style="margin-left: 5px;">출고 요청 목록</h1>
+<h1>출고 요청 목록</h1>
 <div class="form-container1">
     <form action="/searchShipping" method="GET" class="search-form">
         <label for="status">출고 상태:</label>
@@ -418,39 +418,21 @@ button:hover {
         <input type="submit" value="검색" class="search-button">
     </form>
 </div>
-<table id="tableSHP">
-	<thead>
-		 <tr>
-	        <th>번호</th>
-	        <th>출고 요청자</th>
-	        <th>출고 관리 번호</th>
-	        <th>제품 ID</th>
-	        <th>품목명</th>
-	        <th>출고 수량</th>
-	        <th>출고 가격</th>
-	        <th>출고 날짜</th>
-	        <th>비고</th>
-	    </tr>
-	
-	</thead>
-	<tfoot>
-	    <tr>
-	        <th>번호</th>
-	        <th>출고 요청자</th>
-	        <th>출고 관리 번호</th>
-	        <th>제품 ID</th>
-	        <th>품목명</th>
-	        <th>출고 수량</th>
-	        <th>출고 가격</th>
-	        <th>출고 날짜</th>
-	        <th>비고</th>
-	    </tr>
-	</tfoot>
-	
-	<tbody>
+<table>
+    <tr>
+        <th>번호</th>
+        <th>출고 요청자</th>
+        <th>출고 관리 번호</th>
+        <th>제품 ID</th>
+        <th>품목명</th>
+        <th>출고 수량</th>
+        <th>출고 가격</th>
+        <th>출고 날짜</th>
+        <th>비고</th>
+    </tr>
+
     <c:forEach var="item" items="${shippingList}" varStatus="idx">
-        <tr onclick="showShippingDetails('${item.shp_manager_id}', '${item.shp_supervisor_id}', '${item.ord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}')">
-       <%--  <tr onclick="showShippingDetails('${item.shp_manager_id}', '${item.shp_supervisor_id}','${ordersList[idx.index].ord_manager_name}', '${ordersList[idx.index].ord_supervisor_name}', '${item.ord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}')"> --%>
+        <tr onclick="showShippingDetails('${item.shp_manager_id}', '${item.shp_supervisor_id}','${ordersList[idx.index].ord_manager_name}', '${ordersList[idx.index].ord_supervisor_name}', '${item.ord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}')">
             <td>${item.shp_count}</td>
             <td>${item.shp_manager_id}</td>
             <td>${item.shp_number}</td>
@@ -462,8 +444,7 @@ button:hover {
             <td>${item.shp_remarks}</td>
         </tr>
     </c:forEach>
-	</table>
-	</tbody>
+</table>
 
 <!-- 출고 요청 슬라이드 패널 -->
 <div id="slidePanel" class="slide-container">
@@ -564,12 +545,12 @@ button:hover {
             </div>
             <div class="button-group">
             
-             <c:if test="${sessionScope.id == 'super1'}">
+              	<c:if test="${sessionScope.id == 'super1'}">
                 <button type="button" onclick="saveShippingDetails()">출고 승인</button>
                 <button type="button" onclick="rejectShipping()">출고 반려</button>
-             </c:if>
-             
-                <c:if test="${sessionScope.id == 'user1'}">
+                </c:if>
+                
+                 <c:if test="${sessionScope.id == 'user1'}">
                 <button type="button" onclick="editShippingDetails()">출고 수정</button>
                 <button type="button" onclick="deleteShipping()">출고 삭제</button>
                 </c:if>
@@ -578,12 +559,11 @@ button:hover {
     </form>
 </div>
 
-	</div>
+
 	<!-- Footer -->
 	<jsp:include page="/resources/inc/footer.jsp" />
 	</div>
-
-
+	
 <!-- 출고 모달 HTML -->
 <div id="invoiceModal" class="modal">
     <div class="modal-content">
@@ -631,122 +611,63 @@ button:hover {
                 <td id="display_shp_remarks">특이사항</td>
             </tr>
         </table>
-        <button type="button" onclick="closeModal()">확인</button>
-		<button onclick="downloadExcel()" type="button">엑셀다운</button>
-    </div>
-</div>
+	 <button type="button" onclick="closeModal()">확인</button>
+	
+	<script type="text/javascript">
+	    function downloadExcel2() {
+	        const shpManagerId = document.getElementById('display_shp_manager_id').innerText;
+	        const shpNumber = document.getElementById('display_shp_number').innerText;
+	        const prodId = document.getElementById('display_prod_id').innerText;
+	        const prodName = document.getElementById('display_prod_name').innerText;
+	        const shpQuantity = document.getElementById('display_shp_quantity').innerText;
+	        const shpPrice = document.getElementById('display_shp_price').innerText;
+	        const companyCode = document.getElementById('display_company_code').innerText;
+	        const shpDate = document.getElementById('display_shp_date').innerText;
+	        const shpRemarks = document.getElementById('display_shp_remarks').innerText;
+	
+	        const params = new URLSearchParams({
+	            shpManagerId,
+	            shpNumber,
+	            prodId,
+	            prodName,
+	            shpQuantity,
+	            shpPrice,
+	            companyCode,
+	            shpDate,
+	            shpRemarks
+	        });
+	
+	        // 엑셀 파일 다운로드 요청
+	        window.location.href = '/downloadExcel2?' + params.toString();
+	    }
+	</script>
+	
+	<button onclick="downloadExcel2()" type="button">엑셀다운</button>
+	
+
 
 <script>
-
-
-
-$(document).ready(function () {
-	
-	// 데이터테이블
-    $("#tableSHP").DataTable({
-    	pageLength: 10, // 기본 페이지 길이
-    	lengthMenu: [10, 20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
-    	initComplete: function () {
-    		var table = this.api();
-
-            // 필터를 적용할 열 인덱스 배열 (예: 두 번째 열과 세 번째 열)
-            var columnsToFilter = [0,1,2,3,4,5,6,7,8];
-
-            // 각 열에 대해 필터 추가
-            columnsToFilter.forEach(function (index) {
-                var column = table.column(index); // 특정 열 선택
-                var select = $(
-                  '<select class="form-select"><option value=""></option></select>'
-            	)
-            	.appendTo($(column.footer()).empty())
-            	.on("change", function () {
-                	var val = $.fn.dataTable.util.escapeRegex($(this).val());
-
-                column
-                .search(val ? "^" + val + "$" : "", true, false)
-                .draw();
-            	});
-
-            	column
-                .data()
-                .unique()
-                .sort()
-                .each(function (d, j){
-            		select.append(
-                		'<option value="' + d + '">' + d + "</option>"
-                	);
-            	});
-              });
-            }
-        });
- 	// 데이터테이블
-});
-
-
-
-
-
-
-
-
-
-
-
 /**
  * 출고 세부 정보를 표시하는 함수
  */
-function showShippingDetails(shpManagerName, shpSupervisorName, ordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks) {
-	 const url = '/receiveOnameS';
-	 let ordersManagerName ="";
-	 let ordersSupervisorName ="";
-
-     fetch(url, {
-         method: 'POST',
-         headers: {
-             'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({ord_number: ordNumber})
-     })
-	 .then(response => {
-	    if (response.ok) {
-	        return response.json(); // 응답을 JSON으로 파싱
-	    } else {
-	        throw new Error('업데이트 실패');
-	    }
-	})
-	.then(data => {
-	    console.log(data.ord_manager_name); // 서버에서 받은 데이터 처리
-	    console.log(data.ord_supervisor_name); // 서버에서 받은 데이터 처리
-	
-	    ordersManagerName = data.ord_manger_name;
-	    
-	    ordersSupervisorName = data.ord_supervisor_name;
-		
-		document.getElementById('slidePanel').classList.add('open');
-	    document.getElementById('shpManagerId').value = shpManagerName;
-	    document.getElementById('shpSupervisorId').value = shpSupervisorName;
-	    document.getElementById('ordManagerId').value = data.ord_manger_name;
-	    document.getElementById('ordSupervisorId').value = data.ord_supervisor_name;
-	    document.getElementById('ordNumber').value = ordNumber;
-	    document.getElementById('shpNumber').value = shpNumber;
-	/*     document.getElementById('prodCategory').value = prodCategory; */
-	    document.getElementById('prodId').value = prodId;
-	    document.getElementById('prodName').value = prodName;
-	    document.getElementById('companyCode').value = companyCode; 
-	    document.getElementById('shpQuantity').value = shpQuantity;
-	    document.getElementById('whNumber').value = whNumber;
-	    document.getElementById('shpPrice').value = shpPrice;
-	/*     document.getElementById('ordDate').value = ordDate; */
-	    document.getElementById('shpDate').value = shpDate;
-	    document.getElementById('shpRemarks').value = shpRemarks;
-
-	
-	})
-	.catch(error => {
-	    console.error('Error:', error);
-	    alert('업데이트 실패: ' + error.message);
-	});
-
+function showShippingDetails(shpManagerName, shpSupervisorName, ordManagerName, ordSupervisorName, ordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks) {
+    document.getElementById('slidePanel').classList.add('open');
+    document.getElementById('shpManagerId').value = shpManagerName;
+    document.getElementById('shpSupervisorId').value = shpSupervisorName;
+    document.getElementById('ordManagerId').value = ordManagerName;
+    document.getElementById('ordSupervisorId').value = ordSupervisorName;
+    document.getElementById('ordNumber').value = ordNumber;
+    document.getElementById('shpNumber').value = shpNumber;
+/*     document.getElementById('prodCategory').value = prodCategory; */
+    document.getElementById('prodId').value = prodId;
+    document.getElementById('prodName').value = prodName;
+    document.getElementById('companyCode').value = companyCode; 
+    document.getElementById('shpQuantity').value = shpQuantity;
+    document.getElementById('whNumber').value = whNumber;
+    document.getElementById('shpPrice').value = shpPrice;
+/*     document.getElementById('ordDate').value = ordDate; */
+    document.getElementById('shpDate').value = shpDate;
+    document.getElementById('shpRemarks').value = shpRemarks;
 }
 
 /**

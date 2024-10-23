@@ -5,7 +5,7 @@
 	<div class="sidebar-logo">
 		<!-- Logo Header -->
 		<div class="logo-header" data-background-color="light">
-			<a href="index.html" class="logo"> <img
+			<a href="/main" class="logo"> <img
 				src="/resources/img/logo-removebg.png" alt="navbar brand"
 				class="navbar-brand"
 				style="height: 70px; width: 150px; margin-left: 24px;" />

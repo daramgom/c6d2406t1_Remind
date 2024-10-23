@@ -1,5 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<script src="/resources/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+      WebFont.load({
+        google: {
+          families: ["Public Sans:300,400,500,600,700"],
+        },
+        custom: {
+          families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["/resources/css/fonts.min.css"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
 
 <div class="main-panel">
 	<div class="main-header">
@@ -52,7 +72,7 @@
 								<span class="op-7">님</span>
 						</span>
 					</a>
-						<ul class="dropdown-menu dropdown-user animated fadeIn"
+						<ul id="userInfo" class="dropdown-menu dropdown-user animated fadeIn"
 							style="width: 300px">
 							<div class="dropdown-user-scroll scrollbar-outer">
 								<li>
@@ -116,8 +136,19 @@
 		      }
 		      return phone; // 유효하지 않은 경우 원래 값 반환
 		  }
-		 function getInfo() {
-			 const url = "/postInfo";
+
+		  document.addEventListener("click", function(event) {
+			    const isUserInfoClick = userInfo.contains(event.target) || event.target.closest('.topbar-user'); // topbar-user 클릭 여부 확인
+
+			    if (!isUserInfoClick) {
+			        userInfo.classList.remove("show");
+			    }
+			}); 
+
+		function getInfo() {
+		 	const userInfo = document.getElementById("userInfo");
+		    	userInfo.classList.add("show");
+			const url = "/postInfo";
 
 			    fetch(url, {
 			        method: 'POST',

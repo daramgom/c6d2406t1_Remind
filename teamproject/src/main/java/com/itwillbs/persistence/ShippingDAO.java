@@ -36,6 +36,8 @@ public interface ShippingDAO {
     // 출고 상태로 검색
     List<ShippingVO> getShippingByStatus(String shp_status);
     
+    public OrdersVO getOrdersName(String ord_number);
+    
     
     
 }

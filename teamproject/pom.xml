@@ -256,6 +256,13 @@
 		<!-- 비밀번호 암호화 라이브러리 -->
 				
 				
+				<!-- poi 라이브러리 -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>5.2.3</version> <!-- 최신 버전을 확인하세요 -->
+		</dependency>
+		<!-- poi 라이브러리 -->
 		
 		
 				

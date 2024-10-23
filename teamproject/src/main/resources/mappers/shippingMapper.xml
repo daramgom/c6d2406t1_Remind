@@ -86,6 +86,18 @@
         LEFT JOIN member m_supervisor ON o.ord_supervisor_id = m_supervisor.member_id -- 발주 승인자 조인
     </select>
 
+    
+    <select id="getOrdersName" resultType="com.itwillbs.domain.OrdersVO"> 
+    SELECT o.*, 
+           m_manager.member_name AS ord_manager_name, -- 발주 요청자 이름
+           m_supervisor.member_name AS ord_supervisor_name -- 발주 승인자 이름
+    FROM orders o
+    LEFT JOIN member m_manager ON o.ord_manager_id = m_manager.member_id -- 발주 요청자 조인
+    LEFT JOIN member m_supervisor ON o.ord_supervisor_id = m_supervisor.member_id -- 발주 승인자 조인
+    where ord_number = #{ord_number}
+</select>
+    
+
     <!-- 출고 요청 최종 수정(업데이트)하는 구문(출고 승인버튼) -->
     <update id="updateShipping" parameterType="com.itwillbs.domain.ShippingVO">
         UPDATE shipping_info

@@ -147,13 +147,8 @@ public class LoginController {
 	}
 	
 
-    @PostMapping("/postInfo")
-    public ResponseEntity<Map<String, Object>> postInfo() {
-    	
-    	Map<String, Object> result	= mService.getInfo();
-    	logger.debug("result : " + result);
-    	
-        return ResponseEntity.ok(result);
-    }
+    
+    
+    
 
 }

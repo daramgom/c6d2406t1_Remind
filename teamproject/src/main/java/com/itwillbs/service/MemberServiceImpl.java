@@ -148,4 +148,29 @@ public class MemberServiceImpl implements MemberService{
 		return mdao.getInfo();
 	}
 	
+	@Override
+	public MemberVO memberUpdateInfo(String id, String span, String newValue) {
+		logger.debug("memberSerive 실행");
+		MemberVO member = new MemberVO();
+		member.setMember_id(id);
+		
+		if(span.equals("userName")) {
+			
+			member.setMember_name(newValue);
+			return mdao.updateMemberName(member);
+		}
+		if (span.equals("userEmail")) {
+			
+			member.setMember_email(newValue);
+			return mdao.updateMemberEmail(member);
+		}
+		member.setMember_tel(newValue);
+		return mdao.updateMemberTel(member);
+		
+		
+		
+		
+		
+	}
+	
 }

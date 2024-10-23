@@ -97,7 +97,7 @@ pageEncoding="UTF-8"%>
   </head>
   <body>
   	<c:if test="${!empty sessionScope.id}">
-  		<c:redirect url="/admin" />
+  		<c:redirect url="/main" />
   	</c:if> 
   
     <div class="login-container">

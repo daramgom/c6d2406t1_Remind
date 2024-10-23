@@ -42,7 +42,6 @@ public interface MemberDAO {
 	
 	// 사용자 정보수정
 	public MemberVO updateMemberName(MemberVO uvo);
-	public MemberVO updateMemberEmail(MemberVO uvo);
 	public MemberVO updateMemberTel(MemberVO uvo);
 	
 	// 사용자 정보삭제

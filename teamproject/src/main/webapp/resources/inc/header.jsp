@@ -65,17 +65,15 @@
 											<h4 style="height: 1.5rem">
 												<span id="userName">${sessionScope.name}</span> 님
 												<button onclick="editField('userName')"
-													style="height: 24px; border: none; background: transparent; position: relative; right: -97px">✏️</button>
+													style="height: 24px; border: none; background: transparent; position: absolute; right: 0px; width: 31px;">✏️</button>
 											</h4>
-											<p class="text-muted">
-												이메일 : <span id="userEmail">${sessionScope.email}</span>
-												<button onclick="editField('userEmail')"
-													style="height: 24px; border: none; background: transparent; position: relative;">✏️</button>
-											</p>
-											<p class="text-muted" >
+											<p class="text-muted" style="height: 1.5rem;">
 												전화번호 : <span id="userTel">${sessionScope.tel}</span>
 												<button onclick="editField('userTel')"
-													style="height: 24px; border: none; background: transparent; position: relative; right: -15px;">✏️</button>
+													style="height: 24px; border: none; background: transparent; position: absolute; right: 0px; width: 31px; font-size: 14px;">✏️</button>
+											</p>
+											<p class="text-muted">
+												이메일 : <span id="userEmail">${sessionScope.email}</span>
 											</p>
 											<p class="text-muted">
 												직급 : <span id="userInfoEmp">${sessionScope.emp}</span>
@@ -101,6 +99,23 @@
 	<script type="text/javascript">
 		let userInfoEmp = '${sessionScope.employee_rank}';		 
 		let userInfoDept = '${sessionScope.department_id}';	
+		 function isValidKoreanName(name) {
+			    const namePattern = /^[가-힣]{2,10}$/; // 한글만, 2자 이상 10자 이하
+			    return namePattern.test(name);
+		  }
+
+		// 전화번호 형식 정규 표현식 (하이픈 없이 10자 또는 11자)
+		  function isValidPhoneNumber(phone) {
+		      const phonePattern = /^\d{11}$/; // 숫자만, 10자 또는 11자
+		      return phonePattern.test(phone);
+		  }
+		// 전화번호에 하이픈 추가하는 함수
+		  function formatPhoneNumber(phone) {
+		      if (phone.length === 11) {
+		          return phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+		      }
+		      return phone; // 유효하지 않은 경우 원래 값 반환
+		  }
 		 function getInfo() {
 			 const url = "/postInfo";
 
@@ -123,7 +138,7 @@
 			        
 			        resultEmp.innerHTML = "";
 			        resultDept.innerHTML = "";
-			     // empRank를 HTML로 표시
+			     	// empRank를 HTML로 표시
 			        for (const key in data.empRank) {
 			            const emp = data.empRank[key];
 
@@ -148,101 +163,58 @@
 			        console.error('문제가 발생했습니다:', error);
 			    });
 		};
-	    function editField(field) {
-	    	
-	        const span = document.getElementById(field);
-	        const currentValue = span.textContent;
-	        
-	        console.log("span : "+ field);
-	       	let action = "";
-	        
-	        if(field == "userName" ) {
-	        	action = "이름을";
-	        } else if(field == "userEmail") {
-	        	action = "이메일을";
-	        } else {
-	        	action = "전화번호를";
-	        }
-	        const newValue = prompt("수정할 " + action + " 입력하세요:", currentValue);
-	        console.log(newValue+
-	        		"asdasdasdasd");
-	        if( newValue == null ) {
-	       		return;
-	        }
-	        // span = 변경할 데이터베이스 속성 (member_name , member_email , member_tel)
-	        // newValue = 변경할 값.
-	        if( newValue != null && field == "userEmail") {
-	        	sendVerificationCode(newValue , field);
-	        }
-	        updateinfo( field , newValue);
-	        
-	        
+		function editField(field) {
+		    const span = document.getElementById(field);
+		    const currentValue = span.textContent;
 
-	    }
-	    function sendVerificationCode (newValue, field) {
-	    		const url =  "/sendVerificationCode";
-        		const updateEmail = {
-        			email : newValue
-        		}
-    	        fetch(url, {
-    	            method: 'POST', // 또는 'POST'로 변경 가능
-    	            headers: {
-    	                'Content-Type': 'application/json',
-    	            },
-    	        	 body: JSON.stringify(updateEmail) // JSON 형식으로 데이터 전송
-    	        })
-    	        .then(response => {
-    	            if (!response.ok) {
-    	                throw new Error('네트워크 응답이 정상적이지 않습니다.');
-    	            }
-    	            return response.json();
-    	        })
-    	        .then(data => {
-    	        	console.log(data);
-    	        	if(data) {
-	    	            alert("인증코드가 이메일로 전송되었습니다!");
-	    	            
-	    	            const emailcode = prompt("인증코드를  입력하세요.", currentValue);
-	    	            
-	    	            if(emailcode != null ){
-		    	            verifyCode(emailcode, newValue, field);
-	    	            }
-	    	            	return;
-    	        	}else {
-    	        		return;
-    	        	}
-    	        })
-    	        .catch(error => {
-    	            console.error('업데이트 중 오류가 발생했습니다:', error);
-    	        });
-	    }
-	    
-	    function verifyCode(emailcode, newValue, field) {
-	    	const url =  "/verifyCode";
-        		// AJAX 요청 (예: Fetch API 사용)
-        		const Code = {
-        			code : emailcode
-        		}
-    	        fetch(url, {
-    	            method: 'POST', // 또는 'POST'로 변경 가능
-    	            headers: {
-    	                'Content-Type': 'application/json',
-    	            },
-    	        	 body: JSON.stringify(Code) // JSON 형식으로 데이터 전송
-    	        })
-    	        .then(response => {
-    	            if (!response.ok) {
-    	                throw new Error('네트워크 응답이 정상적이지 않습니다.');
-    	            }
-    	            return response.json();
-    	        })
-    	        .then( data => {
-    	        	updateinfo( field , newValue);  	    	        	
-    	        })
-    	        .catch( error => {
-    	            console.error('업데이트 중 오류가 발생했습니다:', error);
-    	        })
-	    }
+		    // 데이터베이스에서 가져온 전화번호를 하이픈 없이 표시하기
+		    let displayValue = currentValue;
+		    if (field === "userTel") {
+		        displayValue = displayValue.replace(/-/g, ''); // 하이픈 제거
+		    }
+
+		    console.log("span : " + field);
+		    let action = "";
+
+		    if (field == "userName") {
+		        action = "이름을";
+		    } 
+		    else {
+		        action = "전화번호를 (하이픈 없이)";
+		    }
+		    const newValue = prompt("수정할 " + action + " 입력하세요:", displayValue);
+
+		    if (newValue == null) {
+		        return;
+		    }
+
+		    // 유효성 검사
+		    if (field == "userName" && !isValidKoreanName(newValue)) {
+		        alert("잘못된 이름입니다. 한글로 2자 이상 10자 이하로 입력하세요.");
+		        return;
+		    }
+
+
+		    if (field == "userTel" && !isValidPhoneNumber(newValue)) {
+		        alert("잘못된 전화번호입니다. 하이픈 없이 11자로 입력하세요.");
+		        return;
+		    }
+
+		    // 하이픈을 포함한 전화번호로 변환
+		    let formattedPhoneNumber = newValue;
+		    if (field == "userTel") {
+		        formattedPhoneNumber = formatPhoneNumber(newValue);
+		    }
+
+		    // 변경된 값이 현재 값과 다를 경우에만 업데이트
+		    if (newValue !== currentValue) {
+		        updateinfo(field, field === "userTel" ? formattedPhoneNumber : newValue);
+		    } else {
+		        alert("변경된 값이 없습니다.");
+		    }
+		}
+
+	   
 	    
 	    function updateinfo( field, newValue) {
 	    	const url =  "/updateMemberInfo";
@@ -252,8 +224,6 @@
 	    			
 	    	};
 	    	
-	    	console.log(data);
-	    	// AJAX 요청 (예: Fetch API 사용)
 	        fetch(url, {
 	            method: 'POST', // 또는 'POST'로 변경 가능
 	            headers: {
@@ -268,11 +238,16 @@
 	            return response.json();
 	        })
 	        .then(data => {
-	            console.log('정보가 성공적으로 업데이트되었습니다:', data);
-	            location.reload();
+	            if (data.success) {
+	                alert("정상적으로 정보가 변경되었습니다.");
+	               location.reload(); 
+	            } else {
+	                alert("중복된 값입니다."); // field 값 중복 시 경고 메시지
+	            }
+	            console.log('정보가 성공적으로 업데이트되었습니다: ' + JSON.stringify(data));
 	        })
 	        .catch(error => {
-	            console.error('업데이트 중 오류가 발생했습니다:', error);
+	            console.error('업데이트 중 오류가 발생했습니다: ' + error);
 	        });
 	    }
 			    

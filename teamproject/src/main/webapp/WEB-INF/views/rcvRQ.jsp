@@ -254,18 +254,19 @@ pageEncoding="UTF-8"%>
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고 요청자
                 </label>
                 <div class="underline-container">
-                    <input type="text" id="rcv_manager_id" class="underline-input" placeholder="홍길동" required name="rcv_manager_id" value="${sessionScope.name }" >
+                    <input type="text" id="rcv_manager_id" class="underline-input" placeholder="홍길동" required name="rcv_manager_id" value="${sessionScope.name }" readonly="readonly" >
                     <div class="custom-underline"></div>
                 </div>
             </div>
             
              <div class="form-group">
-                <label for="RCV_SUPERVISOR">
+                <label for="RCV_SUPERVISOR_ID">
                     <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고 승인자
                 </label>
                 <div class="underline-container">
-                    <input type="text" id="rcv_supervisor" class="underline-input" placeholder="홍길동" required name="rcv_supervisor">
+                    <input type="text" id="rcv_supervisor_id" class="underline-input" placeholder="홍길동" required name="rcv_supervisor_id" value="승인자" readonly="readonly">
+                    
                     <div class="custom-underline"></div>
                 </div>
             </div>
@@ -276,7 +277,7 @@ pageEncoding="UTF-8"%>
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 요청자
                 </label>
                 <div class="underline-container">
-                    <input type="text" id="ord_manager_id" class="underline-input" placeholder="홍길동" required name="ord_manager_id">
+                    <input type="text" id="ord_manager_id" class="underline-input" placeholder="홍길동" required name="ord_manager_id" readonly="readonly">
                     <div class="custom-underline"></div>
                 </div>
             </div>
@@ -288,7 +289,7 @@ pageEncoding="UTF-8"%>
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 승인자
                 </label>
                 <div class="underline-container">
-                    <input type="text" id="ord_supervisor_id" class="underline-input" placeholder="홍길동" required name="ord_supervisor_id">
+                    <input type="text" id="ord_supervisor_id" class="underline-input" placeholder="홍길동" required name="ord_supervisor_id" readonly="readonly">
                     <div class="custom-underline"></div>
                 </div>
             </div>
@@ -368,7 +369,7 @@ pageEncoding="UTF-8"%>
     <!-- 발주관리번호 셀렉트박스,자동채우기 -->
     
      <script>
-        const orderNumbers = ['ORD-2024-0001','ORD-2024-0005', 'ORD-2024-0006', 'ORD004']; // 예시 발주 번호 목록
+        const orderNumbers = ['ORD-2024-0001','ORD-2024-0002', 'ORD-2024-0003', 'ORD-2024-0004']; // 예시 발주 번호 목록
 
         function showOrderList() {
             const dropdown = document.getElementById('orderDropdown');

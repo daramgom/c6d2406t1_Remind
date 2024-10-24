@@ -248,36 +248,14 @@ pageEncoding="UTF-8"%>
 <main>
     <h2>출고 요청</h2>
     <form action="/shpRQ" id="ShippingForm" method="post" onsubmit="return confirmSubmission()">
-        <div class="form-container">
-            <div class="form-group">
-                <label for="ord_manager_id">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
-                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 요청자
-                </label>
-                <div class="underline-container">
-                    <input type="text" id="ord_manager_id" class="underline-input" placeholder="홍길동" required name="ord_manager_id">
-                    <div class="custom-underline"></div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="ord_supervisor_id">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
-                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 승인자
-                </label>
-                <div class="underline-container">
-                    <input type="text" id="ord_supervisor_id" class="underline-input" placeholder="홍길동" required name="ord_supervisor_id">
-                    <div class="custom-underline"></div>
-                </div>
-            </div>
-            
+        <div class="form-container">     
                         <div class="form-group">
                 <label for="shp_manager_id">
                     <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 요청자
                 </label>
                 <div class="underline-container">
-                    <input type="text" id="shp_manager_id" class="underline-input" placeholder="홍길동" required name="shp_manager_id">
+                    <input type="text" id="shp_manager_id" class="underline-input" placeholder="홍길동" required name="shp_manager_id" value="${sessionScope.name }" readonly="readonly">
                     <div class="custom-underline"></div>
                 </div>
             </div>
@@ -288,7 +266,29 @@ pageEncoding="UTF-8"%>
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 승인자
                 </label>
                 <div class="underline-container">
-                    <input type="text" id="shp_supervisor_id" class="underline-input" placeholder="홍길동" required name="shp_supervisor_id">
+                    <input type="text" id="shp_supervisor_id" class="underline-input" placeholder="홍길동" required name="shp_supervisor_id" value="승인자"  readonly="readonly">
+                    <div class="custom-underline"></div>
+                </div>
+            </div>
+            
+                        <div class="form-group">
+                <label for="ord_manager_id">
+                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 요청자
+                </label>
+                <div class="underline-container">
+                    <input type="text" id="ord_manager_id" class="underline-input" placeholder="홍길동" required name="ord_manager_id" readonly="readonly">
+                    <div class="custom-underline"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ord_supervisor_id">
+                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 승인자
+                </label>
+                <div class="underline-container">
+                    <input type="text" id="ord_supervisor_id" class="underline-input" placeholder="홍길동" required name="ord_supervisor_id" readonly="readonly">
                     <div class="custom-underline"></div>
                 </div>
             </div>

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -56,10 +57,10 @@ public class ShpController {
 
     // POST 요청 처리: 출고 요청 저장
     @PostMapping("/shpRQ")
-    public String shippingRequest(@ModelAttribute ShippingVO shippingVO) {
+    public void shippingRequest(@ModelAttribute ShippingVO shippingVO, HttpSession session) {
         logger.debug("출고 요청 완료");
+        shippingVO.setShp_manager_id((String)session.getAttribute("id"));
         shippingDAO.insertShippingRequest(shippingVO);
-        return "redirect:/shpRQ"; // 출고 요청 후 페이지 리다이렉트
     }
 
     // 발주 관리번호로 제품 정보 가져오기

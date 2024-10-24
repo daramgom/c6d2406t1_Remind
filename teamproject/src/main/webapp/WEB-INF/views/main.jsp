@@ -182,7 +182,7 @@
                 <div class="card card-round">
                   <div class="card-header">
                     <div class="card-head-row">
-                     <div class="card-title">TEST</div>
+                     <div class="card-title">온라인 채팅</div>
                      </div>
                   <div class="card-body pb-0">
                     <div class="mb-4 mt-2 col-12">
@@ -192,7 +192,7 @@
 						<div class="input-group mb-3">
 						<input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
 						<div class="input-group-append">
-						<button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+						<button class="btn btn-secondary" type="button" id="button-send">전송</button>
 						</div>
 						</div>
 						</div>
@@ -203,8 +203,8 @@
               </div>
             </div>
           </div>
+		</div>
 	</div>
-	
 	
 	<!-- Footer -->
 	<jsp:include page="/resources/inc/footer.jsp" />
@@ -327,7 +327,8 @@ $("#button-send").on("click", function(e) {
 	sendMessage();
 	$('#msg').val('');
 });
-var userName = '${userName}';
+
+var userName = '${sessionScope.name}';
 var sock = new SockJS('http://localhost:8088/chatting?userName='+encodeURIComponent(userName));
 sock.onmessage = onMessage;
 sock.onclose = onClose;
@@ -349,7 +350,7 @@ function onMessage(msg) {
 		console.log('arr[' + i + ']: ' + arr[i]);
 	}
 
-	var cur_session = '${userName}';
+	var cur_session = userName;
 	console.log("cur_session : " + cur_session);
 
 	sessionId = arr[0];
@@ -357,16 +358,16 @@ function onMessage(msg) {
 
 	
 	if(sessionId == cur_session) {
-		var str = "<div class='col-9 ms-auto'>";
-		str += "<div class='alert alert-secondary' style='text-align: right;'>";
+		var str = "<div class='col-8 ms-auto'>";
+		str += "<div class='alert alert-secondary' style='border-left:7px solid #6861ce; text-align: right;'>";
 		str += "<b>" + message +"</b>";
 		str += "</div></div>";
 
 		$("#msgArea").append(str);
 		$('#msgArea').scrollTop($('#msgArea')[0].scrollHeight);
 	} else {
-		var str = "<div class='col-9'>";
-		str += "<div class='alert alert-warning' style='border-right: 4px solid #ffad46; border-left: none;'>";
+		var str = "<div class='col-8'>";
+		str += "<div class='alert alert-warning' style='border-right: 7px solid #ffad46; border-left: none;'>";
 		str += "<i class='fas fa-user'></i> <b>" + sessionId + " : " + message + "</b>";
 		str += "</div></div>";
 

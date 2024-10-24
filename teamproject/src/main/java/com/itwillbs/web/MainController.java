@@ -35,9 +35,6 @@ public class MainController {
 	public void mainPageGET(Model model, HttpSession session) {
 		logger.debug("( •̀ ω •́ )✧ MainController : /main -> /mainPageGET(Model model)실행");
 		MainVO vo = mService.getQty();
-		String userName = (String)session.getAttribute("name");
-		logger.debug("( •̀ ω •́ )✧ MainController : userName : "+userName);
-		model.addAttribute("userName", userName);
 		model.addAttribute("MainQty", vo);
 		logger.debug("( •̀ ω •́ )✧ MainController : vo : "+vo);
 	}

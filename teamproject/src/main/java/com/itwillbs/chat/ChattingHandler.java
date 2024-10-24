@@ -56,6 +56,17 @@ public class ChattingHandler extends TextWebSocketHandler{
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		String userName = (String) session.getAttributes().get("userName");
 		sessionList.remove(session);
+		if (userName != null) {
+			String welcomeMessage = userName + "님이 퇴장하셨습니다. : )";
+			for (WebSocketSession s : sessionList) {
+				if (s != session) {
+					s.sendMessage(new TextMessage(welcomeMessage));
+				}
+			}
+		} else {
+			logger.warn("사용자 ID가 제공되지 않았습니다.");
+		}
+		
 		
 	}
 }

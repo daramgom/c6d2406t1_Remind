@@ -40,12 +40,28 @@
 		and ord_delete_status = '01' 
 		order by ord_count desc
  	</select>
+ 
+ <!-- 거래처 발주 전체 목록 조회 -->
+ 	<select id="listOrder02" resultType="OrdersVO">
+ 		select * 
+		from orders o, member m, prod p, company cp, departments d, warehouse w, common cm 
+		where o.ord_manager_id = m.member_id 
+		and o.prod_id = p.prod_id 
+		and o.company_code = cp.company_code 
+		and m.department_id = d.department_id 
+		and o.wh_number = w.wh_number 
+		and o.ord_status = cm.common_value 
+		and cm.common_work = 'ord_status' 
+		and ord_delete_status = '01' 
+		and o.ord_status in ('03', '04', '05') 
+		order by ord_count desc
+ 	</select>
  	
  <!-- 발주 기안 목록 조회 -->	<!-- 미구현 -->
- 	<select id="getOrderList01">
- 		select * from orders 
- 		where ord_status = '01'
- 	</select>
+	<select id="getOrderList01">
+		select * from orders 
+		where ord_status = '01'
+	</select>
  	
  <!-- 발주 반려 목록 조회 -->	<!-- 미구현 -->
  	<select id="getOrderList02">
@@ -124,6 +140,45 @@
         SET ord_count = #{ord_count}, 
         	ord_number = #{ord_number}, 
             ord_status = '02', 
+            ord_manager_id = #{ord_manager_id}, 
+            ord_supervisor_id = #{ord_supervisor_id}, 
+            prod_id = #{prod_id}, 
+            ord_price = #{ord_price}, 
+            ord_quantity = #{ord_quantity}, 
+            <!-- ord_date = #{ord_date},  -->
+            ord_date_change = now(), 
+            <!-- company_code = #{company_code},  -->
+            ord_text = #{ord_text}, 
+            wh_number = #{wh_number} 
+        WHERE ord_count = #{ord_count}
+ </update>
+ 
+ 
+ <!-- 발주 기안 목록 05 거래처 발주 처리 -->
+ <update id="updateOrder05">
+ 	update orders 
+        SET ord_count = #{ord_count}, 
+        	ord_number = #{ord_number}, 
+            ord_status = '05', 
+            ord_manager_id = #{ord_manager_id}, 
+            ord_supervisor_id = #{ord_supervisor_id}, 
+            prod_id = #{prod_id}, 
+            ord_price = #{ord_price}, 
+            ord_quantity = #{ord_quantity}, 
+            <!-- ord_date = #{ord_date},  -->
+            ord_date_change = now(), 
+            <!-- company_code = #{company_code},  -->
+            ord_text = #{ord_text}, 
+            wh_number = #{wh_number} 
+        WHERE ord_count = #{ord_count}
+ </update>
+ 
+ <!-- 발주 기안 목록 04 거래처 발주 반려 -->
+ <update id="updateOrder04">
+ 	update orders 
+        SET ord_count = #{ord_count}, 
+        	ord_number = #{ord_number}, 
+            ord_status = '04', 
             ord_manager_id = #{ord_manager_id}, 
             ord_supervisor_id = #{ord_supervisor_id}, 
             prod_id = #{prod_id}, 

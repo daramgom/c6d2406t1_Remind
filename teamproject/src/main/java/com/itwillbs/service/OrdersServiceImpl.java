@@ -68,23 +68,45 @@ public class OrdersServiceImpl implements OrdersService{
 	}
 	
 	@Override
+	public List<OrdersVO> listOrder02() {
+		
+		return odao.listOrder02();
+	}
+	
+	// 발주 정보 수정(재요청)
+	@Override
 	public void updateOrder(/* Map<String, Object> data, */ OrdersVO ordersVO) {
 		odao.updateOrder(/* data, */ ordersVO);
 	}
 	
+	// 발주 정보 삭제
 	@Override
 	public void deleteOrder(OrdersVO ordersVO) {
 		odao.deleteOrder(ordersVO);
 	}
 	
+	// 발주 승인
 	@Override
 	public void updateOrder03(OrdersVO ordersVO) {
 		odao.updateOrder03(ordersVO);
 	}
 	
+	// 발주 반려
 	@Override
 	public void updateOrder02(OrdersVO ordersVO) {
 		odao.updateOrder02(ordersVO);
+	}
+	
+	// 거래처 발주 처리
+	@Override
+	public void updateOrder05(OrdersVO ordersVO) {
+		odao.updateOrder05(ordersVO);
+	}
+	
+	// 거래처 발주 반려
+	@Override
+	public void updateOrder04(OrdersVO ordersVO) {
+		odao.updateOrder04(ordersVO);
 	}
 	
 	@Override

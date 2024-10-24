@@ -16,29 +16,19 @@
         }
     </style>
 
-    <!-- Fonts and icons -->
-    <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
-    <script>
-        WebFont.load({
-            google: {
-                families: ["Public Sans:300,400,500,600,700"]
-            },
-            custom: {
-                families: ["Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
-                urls: ["/resources/css/fonts.min.css"],
-            },
-            active: function() {
-                sessionStorage.fonts = true;
-            },
-        });
-    </script>
-
     <!-- CSS Files -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"/>
+
 </head>
 <body>
+	<c:if test="${empty sessionScope.id}">
+	<c:redirect url="/login"/>
+	</c:if>
     <div class="wrapper">
 
         <!-- Header -->
@@ -124,9 +114,21 @@
  
     <!-- Core JS Files -->
     <script src="/resources/js/core/jquery-3.7.1.min.js?ver=1.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- jQuery Scrollbar -->
-    <script src="/resources/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // 데이터테이블 초기화
+            $("#multi-filter-select").DataTable({
+                pageLength: 10, // 기본 페이지 길이
+                lengthMenu: [3, 10, 20, 50, 100, 500], // 페이지 길이 옵션
+                searching: true, // 검색 기능 활성화
+                ordering: true // 정렬 기능 활성화
+            });
+        });
+    </script>
 </body>
 </html>

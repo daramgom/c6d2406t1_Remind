@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
 </head>
 <body>
+	<c:if test="${empty sessionScope.id}">
+	<c:redirect url="/login"/>
+	</c:if>
     <div class="wrapper">
         <!-- Header -->
         <jsp:include page="/resources/inc/header.jsp" />

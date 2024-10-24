@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
 </head>
 <body>
+	<!--퍼미션 아이디 03일때만 접속가능 다른 아이디면 메인페이지로 -->
+	<c:if test="${empty sessionScope.id || sessionScope.permission_id != '03'}">
+    <c:redirect url="/login"/>
+	</c:if>
     <div class="wrapper">
         <!-- Header -->
         <jsp:include page="/resources/inc/header.jsp" />

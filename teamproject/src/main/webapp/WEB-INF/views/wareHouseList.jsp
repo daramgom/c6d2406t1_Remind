@@ -26,6 +26,9 @@
 
 </head>
 <body>
+    <c:if test="${empty sessionScope.id}">
+	<c:redirect url="/login"/>
+	</c:if>
     <div class="wrapper">
 
         <!-- Header -->

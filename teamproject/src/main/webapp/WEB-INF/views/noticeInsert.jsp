@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,10 @@
     <link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
 </head>
 <body>
+	<!--퍼미션 아이디 03일때만 접속가능 다른 아이디면 메인페이지로 -->
+	<c:if test="${empty sessionScope.id || sessionScope.permission_id != '03'}">
+    <c:redirect url="/login"/>
+	</c:if>
     <div class="wrapper">
         <!-- Header -->
         <jsp:include page="/resources/inc/header.jsp" />

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.CompanyVO;
 import com.itwillbs.domain.MemberVO;
 
 /**
@@ -184,6 +185,16 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	
 	
+	@Override
+	public MemberVO memberCodeCheck(CompanyVO vo) {
+		System.out.println("DAO : "+ vo);
+		
+		MemberVO result = sqlSession.selectOne(NAMESPACE+ ".memberCodeCheck", vo.getCompany_code());
+		System.out.println(result);
+		
+		return result;
+	}
+	
 	
 	
 	
@@ -223,7 +234,11 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	}
 	
-	
+	@Override
+	public int updatePw(MemberVO vo) {
+		int result = sqlSession.update(NAMESPACE + ".updatePw", vo);
+		return result;
+	}
 
 	// admin 특정 회원 조회
 	@Override
@@ -284,6 +299,7 @@ public class MemberDAOImpl implements MemberDAO {
 		@Override
 		public Map<String, Object> getInfo() {
 			Map<String, Object> commonStatuses = new HashMap<>();
+			// "common_value" 키 값을 선택하는거임
 			Map<String, Object> resultEmpMap = sqlSession.selectMap(NAMESPACE + ".getEmp_rank", "common_value");
 			Map<String, Object> resultDeptMap = sqlSession.selectMap(NAMESPACE + ".getDepartment", "department_id");
 
@@ -293,6 +309,17 @@ public class MemberDAOImpl implements MemberDAO {
 			commonStatuses.put("empRank", resultEmpMap); // 키와 값을 추가합니다.
 			commonStatuses.put("department", resultDeptMap);
 			return commonStatuses;
+		}
+		
+		
+		
+		@Override
+		public MemberVO getMemberIdEmailSearch(MemberVO vo) {
+			System.out.println("DAO : getMemberIdEmailSearch : "+ vo);
+			
+			MemberVO result = sqlSession.selectOne(NAMESPACE+ ".getMemberIdEmailSearch", vo);
+			
+			return result;
 		}
 
 }

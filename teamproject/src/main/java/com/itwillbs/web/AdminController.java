@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.itwillbs.domain.CompanyVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.service.CompanyService;
+import com.itwillbs.service.EmailService;
 import com.itwillbs.service.MemberService;
 
 @Controller
@@ -34,6 +35,9 @@ public class AdminController {
 
 	@Inject
 	private CompanyService cService;
+	
+	@Inject
+	private EmailService eService;
 
 	Map<String, String> response = new HashMap<>();;
 
@@ -161,7 +165,7 @@ public class AdminController {
 	    return ResponseEntity.ok(result); // 200 OK
 	}
 
-	@RequestMapping(value = "checkUserEamil", method = RequestMethod.POST)
+	@RequestMapping(value = "/checkUserEamil", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, String>>  checkUserEmail(@RequestBody MemberVO email) {
 		response.clear();
 		logger.debug("selectMembers: " + email);
@@ -189,7 +193,9 @@ public class AdminController {
 	    }
 	}
 	
-	@RequestMapping(value = "checkUserId", method = RequestMethod.POST)
+	
+	
+	@RequestMapping(value = "/checkUserId", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, String>>  checkUserId(@RequestBody MemberVO member_id) {
 		response.clear();
 		logger.debug("selectMembers: " + member_id);
@@ -217,7 +223,7 @@ public class AdminController {
 	    }
 	}
 	
-	@RequestMapping(value ="companyMemberSignUp" , method=RequestMethod.POST)
+	@RequestMapping(value ="/companyMemberSignUp" , method=RequestMethod.POST)
 	public ResponseEntity<Map<String, String>> memberSignUpPost(@RequestBody MemberVO vo) {
 		response.clear();
 
@@ -257,4 +263,60 @@ public class AdminController {
 	    	return ResponseEntity.ok("{\"success\": true }");
 	    	
 	    }
+	 
+	 @RequestMapping(value = "/companyMemberCheck", method = RequestMethod.POST)
+		public ResponseEntity<Map<String, String>>  companyMemberCheck(@RequestBody CompanyVO vo) {
+			response.clear();
+
+		    try {
+		        MemberVO result = mService.memberCodeCheck(vo);
+
+		        if (result != null) {
+		            // 중복된 이메일이 있을 경우
+		        	response.put("message", "이미 회원가입한 거래처 입니다.");
+		        	response.put("result", "false");
+		            return ResponseEntity.ok(response);
+		        } else {
+		            // 사용 가능한 이메일인 경우
+		        	response.put("result", "true");
+		        	response.put("message", "회원가입이 가능한 거래처 입니다!");
+		        	return ResponseEntity.ok(response);
+		        }
+		    } catch (Exception e) {
+		        // 예외 처리
+		        response.put("message", "업데이트 중 오류가 발생했습니다.");
+		        response.put("result", "false");
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+		                .body(response);
+		    }
+		}
+	 
+	 
+	 @RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
+	 public ResponseEntity<Map<String, String>>  sendEmail(@RequestBody CompanyVO vo) {
+		 response.clear();
+		 
+		 try {
+			 
+			 MemberVO result = mService.memberCodeCheck(vo);
+			int resultInt = eService.sendIdPwCode(result); 
+			 
+			 if (resultInt == 0) {
+				 // 중복된 이메일이 있을 경우
+				 response.put("message", "비밀번호 변경중 오류가 발생했습니다.");
+				 response.put("result", "false");
+			 } else {
+				 // 사용 가능한 이메일인 경우
+				 response.put("result", "true");
+				 response.put("message", "변경된 비밀번호를 전송하였습니다.!");
+			 }
+			 return ResponseEntity.ok(response);
+		 } catch (Exception e) {
+			 // 예외 처리
+			 response.put("message", "업데이트 중 오류가 발생했습니다.");
+			 response.put("result", "false");
+			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					 .body(response);
+		 }
+	 }
 }

@@ -146,6 +146,14 @@ public class LoginController {
 	    }
 	}
 	
+	@RequestMapping(value = "findPassword")
+	public void findPassword() {
+		logger.info("findPassword");
+		
+		
+		
+	}
+	
 
     
     

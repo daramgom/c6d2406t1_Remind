@@ -11,7 +11,12 @@ uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
     <script src="./resources/js/core/jquery-3.7.1.min.js"></script>
     <script src="./resources/js/signUp.js"></script>
   </head>
+  
+  
   <body>
+  	<c:if test="${!empty sessionScope.id}">
+  		<c:redirect url="/main" />
+  	</c:if> 
     <div id="spinnerContainer" class="spinner-container" style="display: none">
       <div id="loadingSpinner" class="spinner"></div>
     </div>

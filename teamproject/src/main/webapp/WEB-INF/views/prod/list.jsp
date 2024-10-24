@@ -15,7 +15,7 @@
 <style>
 
     #multi-filter-select thead th {
-       background-color: #0d6efd;
+       background-color: #6861ce !important;
        color: white;
     }
     
@@ -75,6 +75,18 @@
 		line-height: 2;
 		margin-bottom: 10px;
 		font-weight: bold;
+	}
+	
+	textarea {
+		transition: background-color 0.3s, border 0.3s;
+	}
+	
+	input:not([readonly]):not([disabled]) {
+		transition: background-color 0.3s, border 0.3s;
+	}
+
+	input:not([readonly]):not([disabled]):hover {
+		background-color: #E6F7FF !important;
 	}
     
 </style>
@@ -330,7 +342,10 @@
                                     	id="prod_remarks" 
                                     	name="prod_remarks" 
                                     	rows="4" cols="30" 
-                                    	class="form-control"></textarea>
+                                    	class="form-control"
+                                    	style="background-color: transparent;"
+                                    	onmouseover="this.style.setProperty('background-color', '#E6F7FF', 'important')"
+                                    	onmouseout="this.style.setProperty('background-color', 'transparent', 'important')"></textarea>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
@@ -435,6 +450,7 @@
 	$(document).ready(function () {
 		let prodImage;
 		
+		
 		// 데이터테이블
         $("#multi-filter-select").DataTable({
         	pageLength: 10, // 기본 페이지 길이
@@ -512,6 +528,7 @@
 			   $("#prod_image").val(prodImage);
 			   $("#temp_image").val(prodImage);
 			   
+			   
                // 재고 리스트 표시
                const stockListBody = $("#stockListBody");
                stockListBody.empty(); // 기존 재고 리스트 초기화
@@ -576,13 +593,14 @@
 	        });
      	// 이미지 업로드 미리보기
     	
+     	// 이미지 제거
      	$("#image_delete").click(function(e) {
      		e.preventDefault();
      		$("#prod_image").val('');
      		$('#uploadfile').val('');
      		$("#previewimg").hide();
      	});
-    	
+    	// 이미지 제거
     	
     	// 제품정보 수정사항 제출
         $("#prodUpdate").click(function() {
@@ -695,17 +713,18 @@
 	});
     // 제품정보 삭제
     
-    
     // 바코드, QR코드 생성
 	$('input[name="prod_option"]').on('change', function() {
 		var selectedOption = $(this).val();
 		var prod_id = $("#prod_id").val();
+		const absoluteUrl = new URL(prodImage, window.location.origin).href;
 		
 		$.ajax({
 			url: '/prod/genCode', // 컨트롤러의 URL로 변경
 			type: 'POST',
 			data: { option: selectedOption,
-					prod_id: prod_id
+					prod_id: prod_id,
+					imgUrl: absoluteUrl
 			},
 			xhrFields: {
 				responseType: 'blob'
@@ -725,12 +744,13 @@
 	});
     // 바코드, QR코드 생성
     
-    // 모달 닫힐때 바코드 초기화
+    // 모달 닫힐때 바코드, uploadfile 초기화
 	$("#prodModal").on('hidden.bs.modal', function() {
 		$("#codeImage").attr('src',"").hide();
 		$("input[name='prod_option']").prop('checked', false);
+		$("#uploadfile").val('');
 	});
-    // 모달 닫힐때 바코드 초기화
+    // 모달 닫힐때 바코드, uploadfile 초기화
     
     
     

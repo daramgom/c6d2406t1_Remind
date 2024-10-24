@@ -71,6 +71,7 @@
 
 <script>
 $(document).ready(function(){
+	
 	$('a[data-bs-toggle="collapse"]').on('click', function() {
 		var hrefValue = $(this).attr('href');
 		$(hrefValue).closest('.nav-item').addClass('active');
@@ -93,19 +94,17 @@ $(document).ready(function(){
 		$(value).addClass('show');
 		$(value).closest('.nav-item').addClass('active');
 	} else {
-		console.log(value);
+		console.log('사이드바 메인메뉴 활성화X (footer) : '+value);
 	}
 	
-	$('.test').on('click', function(e) {
+	$('.subMenu').on('click', function(e) {
 		e.preventDefault();
-		
 		var hrefValue2 = $(this).attr('id');
 		$("#"+hrefValue2).closest('li').addClass('active');
 		if(localStorage.getItem('colActive') == null) {
 			localStorage.setItem('colActive', hrefValue2);
-		} else if(localStorage.getItem('colActive') == hrefValue2) {
-			localStorage.removeItem('colActive');
-		} else if(localStorage.getItem('colActive') != hrefValue2) {
+		} 
+		else if(localStorage.getItem('colActive') != hrefValue2) {
 			$("#"+localStorage.getItem('colActive')).closest('li').removeClass('active');
 			localStorage.setItem('colActive', hrefValue2);
 		}
@@ -116,8 +115,15 @@ $(document).ready(function(){
 	if(value2 != null && value2 != "") {
 		$("#"+value2).closest('li').addClass('active');
 	} else {
-		console.log(value2);
+		console.log('사이드바 보조메뉴 활성화X (footer) :'+value2);
 	}
+	
+	$('#mainPage').on('click', function(){
+		$(localStorage.getItem('colShow')).closest('.nav-item').removeClass('active');
+		localStorage.removeItem('colShow');
+		localStorage.removeItem('colActive');
+		$('li').removeClass('active');
+	});
 	
 });
 </script>

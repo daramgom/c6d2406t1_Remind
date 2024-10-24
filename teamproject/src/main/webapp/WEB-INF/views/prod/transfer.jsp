@@ -13,8 +13,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <!-- Fonts and icons -->
+<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
 <script>
+
 	WebFont.load({
 		google : {
 			families : [ "Public Sans:300,400,500,600,700" ]
@@ -31,12 +33,18 @@
 </script>
 
 <style>
+
+
+	body, a, h3, li, p, td, b {
+		font-family: 'NanumSquareNeo' !important;
+	}
+	
 	.btn-warning {
 		color: #fff !important;
 	} 
 	
 	#transferForm i {
-		font-size: 18px;
+		font-size: 1.2rem;
 		line-height: 2;
 	}
 	
@@ -48,20 +56,20 @@
 	}
 	
 	.form-select {
-		font-size: 1.3rem !important;
+		font-size: 1.2rem !important;
 	}
 	
 	.form-control {
-		font-size: 1.3rem !important;
+		font-size: 1.2rem !important;
 	}
 	
 	.table td {
-		font-size: 1.3rem !important;
+		font-size: 1.2rem !important;
 		text-align: center;
 	}
 
 	.table th {
-		font-size: 1.35rem !important;
+		font-size: 1.25rem !important;
 		text-align: center;
 	}
 	
@@ -113,7 +121,7 @@
 												<select class="form-select" id="prod_id" name="prod_id" required>
 													<option value="">제품식별코드</option>
 												</select>
-												<label for="prod_id" class="selectFloatingLabel" style="font-size: 1.3rem !important;" >제품식별코드</label>
+												<label for="prod_id" class="selectFloatingLabel" style="font-size: 1.2rem !important;" >제품식별코드</label>
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
 													value="테스터1" placeholder="등록작업자" />
 												<input type="hidden" id="prod_upduser" name="prod_upduser" 
@@ -123,12 +131,12 @@
 												<select class="form-select" id="wh_number" name="wh_number" required disabled>
 													<option value="">창고</option>
 												</select>
-												<label for="wh_number" class="selectFloatingLabel" style="font-size: 1.3rem !important;">창고</label>
+												<label for="wh_number" class="selectFloatingLabel" style="font-size: 1.2rem !important;">창고</label>
 											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="number" class="form-control" 
 													id="prod_qty" name="prod_qty" min="0" max="#" readonly required/>
-												<label for="prod_qty" class="col-form-label-lg" style="font-size: 1.3rem !important;">수량</label>
+												<label for="prod_qty" class="col-form-label-lg" style="font-size: 1.2rem !important;">수량</label>
 												<input type="hidden" id="current_qty" name="current_qty" value="#">
 											</div>
 										</div>
@@ -141,12 +149,12 @@
 												<select class="form-select" id="stock_wh" name="stock_wh" required disabled>
 													<option value="">창고</option>
 												</select>
-												<label for="stock_wh" class="selectFloatingLabel" style="font-size: 1.3rem !important;">창고</label>
+												<label for="stock_wh" class="selectFloatingLabel" style="font-size: 1.2rem !important;">창고</label>
 											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="number" class="form-control" 
 													id="stock_qty" name="stock_qty" placeholder="수량" min="0" max="#" required/>
-												<label for="stock_qty" class="col-form-label-lg" style="font-size: 1.3rem !important;">이동 수량</label>
+												<label for="stock_qty" class="col-form-label-lg" style="font-size: 1.2rem !important;">이동 수량</label>
 											</div>
 										</div>
 										<div class="row d-flex justify-content-center">
@@ -168,15 +176,15 @@
 											</div>
 										</div>
 										<div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
-											<button type="submit" class="btn btn-primary">
+											<button type="submit" class="btn btn-secondary">
 												<span class="btn-label">
-													<i class="fa fa-cart-shopping"> 재고 이동</i>
+													<i class="fa fa-cart-shopping"> <b>재고 이동</b></i>
 												</span>
 											</button>
 											<!-- 리셋버튼추가 -->
 											<button type="button" class="btn btn-warning" id="inputReset">
 												<span class="btn-label">
-													<i class="fa fa-exclamation-circle"> 입력 초기화</i>
+													<i class="fa fa-exclamation-circle"> <b>입력 초기화</b></i>
 												</span>
 											</button>
 										</div>

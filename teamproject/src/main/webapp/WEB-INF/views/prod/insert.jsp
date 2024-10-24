@@ -13,6 +13,7 @@
 	type="image/x-icon" />
 
 <!-- Fonts and icons -->
+<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
 <script>
 	WebFont.load({
@@ -31,47 +32,51 @@
 </script>
 
 <style>
-        #previewimg { /* 미리보기 img 태그 id */
-            display: none; /* 초기에는 숨김 */
-            width: 95%; /* 최대 너비 설정 */
-            height: 95%;
-            margin: 10px; /* 여백 설정 */
-            object-fit: contain;
-        }
+	body, a, h3, li, p, td, b {
+		font-family: 'NanumSquareNeo' !important;
+	}
+	
+	#previewimg {
+		display: none;
+		width: 95%;
+		height: 95%;
+		margin: 10px;
+		object-fit: contain;
+	}
 
-        .preview {
-            width: 200px; /* 최대 너비 설정 */
-            height: 150px;
-            margin: 10px; /* 여백 설정 */
-            border: 2px dashed #ccc; /* 대시 테두리 */
-    		display: flex;
-    		justify-content: center;
-    		align-items: center;
-    		background-color: #f9f9f9; /* 배경색 */
-        }
+	.preview {
+		width: 200px;
+		height: 150px;
+		margin: 10px;
+		border: 2px dashed #ccc;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #f9f9f9;
+	}
         
-        #prodForm label {
-        	font-size: 18px !important;
-        }
+	#prodForm label {
+		font-size: 1.2rem !important;
+		color: #6861ce !important;
+	}
         
-        #prodForm option {
-        	font-size: 18px !important;
-        }
+	#prodForm option {
+		font-size: 1.2rem !important;
+	}
         
-        #prodForm select {
-        	font-size: 18px !important;
-        }
+	#prodForm select {
+		font-size: 1.1rem !important;
+	}
         
-        #prodForm i {
-        	font-size: 18px;
-        	line-height: 2;
-        }
+	#prodForm i {
+		font-size: 1.2rem;
+		line-height: 2;
+	}
         
-        .btn-warning {
-        	color: #fff !important;
-        }
-        
-        
+	.btn-warning {
+		color: #fff !important;
+	}
+
 </style>
 
 <!-- CSS Files -->
@@ -117,13 +122,13 @@
 									<form id="prodForm" action="" method="post" enctype="multipart/form-data">
 										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
-												<input type="text" class="form-control"
-													id="prod_name" name="prod_name" placeholder="제품명" required="required"/>
+												<input type="text" class="form-control" style="font-size:1.1rem;"
+													id="prod_name" name="prod_name" required="required"/>
 												<label for="prod_name" class="col-form-label-lg">제품명</label>
 											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
-												<input type="text" class="form-control input-full"
-													id="prod_category" name="prod_category" placeholder="제품카테고리" required="required"/>
+												<input type="text" class="form-control input-full" style="font-size:1.1rem;"
+													id="prod_category" name="prod_category" required="required"/>
 												<label for="prod_category" class="col-form-label-lg"> 제품카테고리</label>
 											</div>
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
@@ -133,8 +138,8 @@
 										</div>
 										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
-												<input type="text" class="form-control input-full"
-													id="prod_brand" name="prod_brand" placeholder="제품브랜드" required="required"/>
+												<input type="text" class="form-control input-full" style="font-size:1.1rem;"
+													id="prod_brand" name="prod_brand" required="required"/>
 												<label for="prod_brand" class="col-form-label-lg"> 제품브랜드</label>
 											</div>
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
@@ -150,12 +155,12 @@
 										</div>
 										<div class="form-group d-flex" style="margin: 20px 200px; gap: 50px;">
 											<div class="input-group" style="flex: 1;">
-											<span class="input-group-text" style="font-size: 18px;">비고</span>
+											<span class="input-group-text" style="font-size: 1.2rem; color:#6861ce;">비고</span>
 												<textarea id="prod_remarks" name="prod_remarks" class="form-control"></textarea>
 											</div>
 											<div style="flex: 1;">
 												<label for="uploadfile" class="col-form-label-lg">제품이미지</label>
-												<input type="file" class="form-control input-full"
+												<input type="file" class="form-control input-full" style="font-size:1.1rem;"
 													id="uploadfile" name="uploadfile" accept=".jpeg, .jpg, .png, .gif" />
 											</div>
 											<div class="preview">
@@ -163,15 +168,15 @@
 											</div>
 										</div>
 										<div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
-											<button type="submit" class="btn btn-primary">
+											<button type="submit" class="btn btn-secondary">
 												<span class="btn-label">
-													<i class="fa fa-plus"> 제품 등록</i>
+													<i class="fa fa-plus"> <b>제품 등록</b></i>
 												</span>
 											</button>
 											<!-- 리셋버튼추가 -->
 											<button type="button" class="btn btn-warning" id="inputReset">
 												<span class="btn-label">
-													<i class="fa fa-exclamation-circle"> 입력 초기화</i>
+													<i class="fa fa-exclamation-circle"> <b>입력 초기화</b></i>
 												</span>
 											</button>
 										</div>
@@ -309,7 +314,6 @@
 	                    $('#uploadfile').val('');
 	                    $('#prod_remarks').val('');
 	                    $('#company_code').val('');
-	                    $('#company_label').hide();
 	                    $('#previewimg').hide();
 
 	                    swal({
@@ -326,15 +330,6 @@
 	                    swal.close();
 	                }
 	            });
-	        });
-	        
-	        $('#company_label').hide();
-	        $('#company_code').change(function(){
-	        	if($('#company_code').val() == "") {
-	        		$('#company_label').hide();
-	        	} else {
-		        	$('#company_label').show();
-	        	}
 	        });
 	        
 	        

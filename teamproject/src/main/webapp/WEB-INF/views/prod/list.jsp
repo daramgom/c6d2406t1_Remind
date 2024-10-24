@@ -11,9 +11,39 @@
 	name="viewport" />
 <link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
 	type="image/x-icon" />
+
+<!-- Fonts and icons -->
+<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
+<script src="/resources/js/plugin/webfont/webfont.min.js"></script>
+<script>
+	WebFont.load({
+		google : {
+			families : [ "Public Sans:300,400,500,600,700" ]
+		},
+		custom : {
+			families : [ "Font Awesome 5 Solid", "Font Awesome 5 Regular",
+					"Font Awesome 5 Brands", "simple-line-icons", ],
+			urls : [ "/resources/css/fonts.min.css" ],
+		},
+		active : function() {
+			sessionStorage.fonts = true;
+		},
+	});
+</script>
+
+<!-- CSS Files -->
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
 	
 <style>
-
+	body, a, h3, li, p, td, b {
+		font-family: 'NanumSquareNeo' !important;
+	}
+	
     #multi-filter-select thead th {
        background-color: #6861ce !important;
        color: white;
@@ -91,33 +121,6 @@
     
 </style>
 
-<!-- Fonts and icons -->
-<script src="/resources/js/plugin/webfont/webfont.min.js"></script>
-<script>
-	WebFont.load({
-		google : {
-			families : [ "Public Sans:300,400,500,600,700" ]
-		},
-		custom : {
-			families : [ "Font Awesome 5 Solid", "Font Awesome 5 Regular",
-					"Font Awesome 5 Brands", "simple-line-icons", ],
-			urls : [ "/resources/css/fonts.min.css" ],
-		},
-		active : function() {
-			sessionStorage.fonts = true;
-		},
-	});
-</script>
-
-<!-- CSS Files -->
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
-
-
 </head>
 <body>
 	<div class="wrapper">
@@ -157,7 +160,7 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4 class="card-title">제품목록</h4>
+                    <h3 class="card-title">제품목록</h3>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -410,7 +413,7 @@
                             <button
                               type="button"
                               id="prodUpdate"
-                              class="btn btn-primary"
+                              class="btn btn-secondary"
                             >
                               <i class="fa fa-pen"> 제품 수정</i>
                             </button>

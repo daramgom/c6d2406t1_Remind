@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <!-- Fonts and icons -->
+<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
 <script>
 	WebFont.load({
@@ -32,27 +33,30 @@
 </script>
 
 <style>
-
+	body, a, h3, li, p, td, b {
+		font-family: 'NanumSquareNeo' !important;
+	}
+	
     #multi-filter-select thead th {
-        background-color: #0d6efd;
+        background-color: #6861ce;
         color: white;
     }
     
 	.table td {
-		font-size: 1.1rem !important;
+		font-size: 1.2rem !important;
 		text-align: center;
 	}
 
 	.table th {
-		font-size: 1.15rem !important;
+		font-size: 1.25rem !important;
 		text-align: center;
 	}
     .form-select {
-		font-size: 1.1rem !important;
+		font-size: 1.2rem !important;
 	}
 	
 	.form-control {
-		font-size: 1.1rem !important;
+		font-size: 1.2rem !important;
 	}
 	
 	.btn-warning {
@@ -60,7 +64,7 @@
 	} 
 	
 	#transferForm i {
-		font-size: 1.1rem;
+		font-size: 1.2rem;
 		line-height: 2;
 	}
 	
@@ -127,7 +131,7 @@
 												<select class="form-select" id="prod_id" name="prod_id" required>
 													<option value="">제품식별코드</option>
 												</select>
-												<label for="prod_id" class="selectFloatingLabel" style="font-size: 1.1rem !important;">제품식별코드</label>
+												<label for="prod_id" class="selectFloatingLabel" style="font-size: 1.2rem !important;">제품식별코드</label>
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
 													value="테스터1" placeholder="등록작업자" />
 												<input type="hidden" id="prod_upduser" name="prod_upduser" 
@@ -136,7 +140,7 @@
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="number" class="form-control" 
 													id="prod_stock" name="prod_stock" placeholder="적정재고수량" min="0" max="#" required/>
-												<label for="prod_stock" class="col-form-label-lg" style="font-size: 1.1rem !important;">적정재고수량</label>
+												<label for="prod_stock" class="col-form-label-lg" style="font-size: 1.2rem !important;">적정재고수량</label>
 											</div>
 										</div>
 										
@@ -195,15 +199,15 @@
 											</div>
 										</div>
 										<div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
-											<button type="submit" class="btn btn-primary">
+											<button type="submit" class="btn btn-secondary">
 												<span class="btn-label">
-													<i class="fas fa-bell"> 적정재고수량 설정</i>
+													<i class="fas fa-bell"> <b>적정재고수량 설정</b></i>
 												</span>
 											</button>
 											<!-- 리셋버튼추가 -->
 											<button type="button" class="btn btn-warning" id="inputReset">
 												<span class="btn-label">
-													<i class="fa fa-exclamation-circle"> 입력 초기화</i>
+													<i class="fa fa-exclamation-circle"> <b>입력 초기화</b></i>
 												</span>
 											</button>
 										</div>

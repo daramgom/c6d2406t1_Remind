@@ -69,7 +69,7 @@
     <!-- 출고 정보 가져오기 -->
     <select id="getAllShippingRequests" resultType="com.itwillbs.domain.ShippingVO">
         SELECT s.*, 
-               m_requester.member_name AS shp_requester_name,  -- 출고 요청자 이름
+               m_requester.member_name AS shp_manager_name,  -- 출고 요청자 이름
                m_supervisor.member_name AS shp_supervisor_name  -- 출고 승인자 이름
         FROM shipping_info s
         LEFT JOIN member m_requester ON s.shp_manager_id = m_requester.member_id  -- 출고 요청자 조인

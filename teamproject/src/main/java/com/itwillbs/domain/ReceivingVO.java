@@ -14,6 +14,7 @@ import lombok.Data;
 public class ReceivingVO {
 
 	private String rcv_manager_id;  // 1 입고 매니저 이름
+	private String rcv_supervisor_id;// 입고 승인자 아이디
 	private String ord_number; // 2 발주관리번호
 	private String prod_id;  // 3 제품식별코드
 	private String prod_category; // 4 카테고리
@@ -27,7 +28,6 @@ public class ReceivingVO {
 	private int rcv_count;
 	private String rcv_status;
 	private String rcv_number;
-	private String rcv_supervisor_id;
 	private String rcv_manager_name;	
 	private int wh_number;
 	private String ord_manager_id;

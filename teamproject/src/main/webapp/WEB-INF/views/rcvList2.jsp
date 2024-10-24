@@ -459,11 +459,11 @@ button:hover {
 						<tbody>
 								<c:forEach var="item1" items="${receivingList}" varStatus="idx">
 									<tr
-										onclick="showDetails('${item1.rcv_manager_id}','${item1.rcv_supervisor_id}','${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.ord_date}','${item1.rcv_date}', '${item1.rcv_remarks}')">
+										onclick="showDetails('${item1.rcv_manager_name}','${item1.rcv_supervisor_id}','${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.ord_date}','${item1.rcv_date}', '${item1.rcv_remarks}')">
 										<%-- onclick="showDetails('${item1.rcv_manager_id}', '${item1.rcv_supervisor_id}', '${ordersList[idx.index].ord_manager_name}', '${ordersList[idx.index].ord_supervisor_name}', '${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.rcv_date}', '${item1.ord_date}', '${item1.rcv_remarks}')"> --%>
 										
 										<td>${item1.rcv_count}</td>
-										<td>${item1.rcv_manager_id}</td>
+										<td>${item1.rcv_manager_name}</td>
 										<td>${item1.ord_number}</td>
 										<td>${item1.rcv_number}</td>
 										<td>${item1.prod_id}</td>
@@ -614,14 +614,12 @@ button:hover {
 
 											<div class="button-group">
 											    
-	                                            <c:if test="${sessionScope.id == 'super1'}">
 											        <button type="button" onclick="saveDetails()">입고 승인</button>
 											        <button type="button" onclick="rejectReceiving()">입고 반려</button>
-											    </c:if>
-											    <c:if test="${sessionScope.id == 'user1'}">
-													<button type="button" onclick="editDetails()">입고 수정</button>
-													<button type="button" onclick="deleteReceiving()">입고 삭제</button>
-												</c:if>
+											  
+											   
+												<button type="button" onclick="editDetails()">입고 수정</button>
+												<button type="button" onclick="deleteReceiving()">입고 삭제</button>
 																			
 											</div>
 										</div>
@@ -692,31 +690,31 @@ button:hover {
                 </tr>
             </table>
         </div>
-        
-        <button type="button" onclick="downloadExcel()">엑셀 다운로드</button>
         <button type="button" onclick="closeModal()">확인</button>
 
         <script type="text/javascript">
             // 엑셀 다운로드 함수
             function downloadExcel() {
-                // 모달에서 필요한 데이터 가져오기
-                const rcvManagerId = document.getElementById('display_rcv_manager_id').innerText;
-                const rcvNumber = document.getElementById('display_rcv_number').innerText;
-                const prodId = document.getElementById('display_prod_id').innerText;
-                const prodCategory = document.getElementById('display_prod_category').innerText;
-                const prodName = document.getElementById('display_prod_name').innerText;
-                const companyCode = document.getElementById('display_company_code').innerText;
-                const rcvQuantity = document.getElementById('display_rcv_quantity').innerText;
-                const rcvPrice = document.getElementById('display_rcv_price').innerText;
-                const rcvDate = document.getElementById('display_rcv_date').innerText;
-                const rcvRemarks = document.getElementById('display_rcv_remarks').innerText;
-
+            	
+                const rcvManagerId = document.getElementById('rcvManagerId').value;
+                const rcvNumber = document.getElementById('rcvNumber').value;
+                const prodId = document.getElementById('prodId').value;
+                const prodCategory = document.getElementById('prodCategory').value;
+                const prodName = document.getElementById('prodName').value;
+                const companyCode = document.getElementById('companyCode').value;
+                const rcvQuantity = document.getElementById('rcvQuantity').value;
+                const rcvPrice = document.getElementById('rcvPrice').value;
+                const rcvDate = document.getElementById('rcvDate').value;
+                const rcvRemarks = document.getElementById('rcvRemarks').value;
+        
                 const url = `/downloadExcel?rcv_manager_id=${rcvManagerId}&rcv_number=${rcvNumber}&prod_id=${prodId}&prod_category=${prodCategory}&prod_name=${prodName}&company_code=${companyCode}&rcv_quantity=${rcvQuantity}&rcv_price=${rcvPrice}&rcv_date=${rcvDate}&rcv_remarks=${rcvRemarks}`;
-                
-                console.log(url); // URL 로그
+        
+            	console.log(url); // URL 로그
                 window.location.href = url;
             }
         </script>
+       
+        <button type="button" onclick="downloadExcel()">엑셀 다운로드</button>
     </div>
 </div>
 

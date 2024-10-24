@@ -48,6 +48,32 @@ public class EmailController {
 		return ResponseEntity.ok(response); // 200 OK 응답  		
     	
     }
+    
+    @PostMapping("/findMemberInfo")
+    public ResponseEntity<Map<String, String>> findMemberInfo(@RequestBody MemberVO vo) {
+    	response.clear(); // 메서드 시작 시 초기화
+    	
+    	System.out.println("eamil : "+ vo );
+    	
+    	
+    	MemberVO result = mService.memberIdEmailSearch(vo);
+    	
+    	
+    	System.out.println("result : "+ result );
+    	if(result == null) {
+    		response.put("message", "등록된 정보와 다릅니다.");
+    		response.put("result", "false");
+    		return	ResponseEntity.ok(response); // 200 응답
+    		
+    	}
+    	
+    	emailService.sendVerificationCode(result.getMember_email()); 
+    	
+    	response.put("result", "true");
+    	response.put("message", "인증 코드가 이메일로 전송되었습니다!");
+    	return ResponseEntity.ok(response); // 200 OK 응답  		
+    	
+    }
 
     @PostMapping("/verifyCode")
     public ResponseEntity<Map<String, String>> verifyCode(@RequestBody VerificationRequest request) {

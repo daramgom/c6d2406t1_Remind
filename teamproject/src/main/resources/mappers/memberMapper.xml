@@ -174,7 +174,7 @@ WHERE
 	<select id="getMemberState" resultType="map">
 		SELECT common_value,
 		common_status FROM common WHERE common_work = 'member_state' ORDER BY
-		common_value ASC;
+		common_value ASC
 	</select>
 
 
@@ -185,8 +185,25 @@ WHERE
 	</update>
 	
 	<delete id="deleteMembers">
-		delete from member where member_id = #{member_id};
+		delete from member where member_id = #{member_id}
 	</delete>
+	
+	<select id="memberCodeCheck" resultType="MemberVO">
+		select *
+		from member where member_code = #{company_code}
+	</select>
+	
+	<update id="updatePw">
+		update member
+		set update_date = now(),
+		member_pw = #{member_pw}
+		where member_id = #{member_id}
+	</update>
+	
+	
+	<select id="getMemberIdEmailSearch" resultType="MemberVO">
+		select * from member where member_id = #{member_id} AND member_email = #{member_email}
+	</select>
 
 
 

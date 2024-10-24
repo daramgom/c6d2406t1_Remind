@@ -3,6 +3,7 @@ package com.itwillbs.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.itwillbs.domain.CompanyVO;
 import com.itwillbs.domain.MemberVO;
 
 /**
@@ -28,7 +29,7 @@ public interface MemberDAO {
 	// 로그인 
 	public MemberVO loginMember(MemberVO vo);
 	
-	
+	public MemberVO getMemberIdEmailSearch(MemberVO vo);
 	
 	// 사용자 정보조회 (로그인 했다고 가정.);
 	public MemberVO getMember(String member_id);
@@ -72,7 +73,8 @@ public interface MemberDAO {
 	
 	public Map<String, Object> getInfo();
 
+	public MemberVO memberCodeCheck(CompanyVO vo);
 	
-	
+	public int updatePw(MemberVO vo);
 	
 }

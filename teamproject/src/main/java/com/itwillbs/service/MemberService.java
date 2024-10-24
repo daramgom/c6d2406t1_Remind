@@ -3,6 +3,7 @@ package com.itwillbs.service;
 import java.util.List;
 import java.util.Map;
 
+import com.itwillbs.domain.CompanyVO;
 import com.itwillbs.domain.MemberVO;
 
 public interface MemberService {
@@ -48,6 +49,12 @@ public interface MemberService {
 	
 	// admin 회원가입 신청 목록 삭제
 	public Integer membersDelete(List<MemberVO> vo);
+	
+	// admin 거래처 회원가입 존재여부 체크
+	public MemberVO memberCodeCheck(CompanyVO vo);
+	
+	public MemberVO memberIdEmailSearch(MemberVO vo);
+	
 	
 	public int memberPermissionUpdate(MemberVO vo);
 	

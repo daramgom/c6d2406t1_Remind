@@ -8,6 +8,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.itwillbs.domain.CompanyVO;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.persistence.MemberDAO;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,15 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	
+	@Override
+	public MemberVO memberIdEmailSearch(MemberVO vo) {
+		logger.debug("(●'◡'●)  memberIdEmailSearch (MemberVO vo)  실행 ");
+		
+		
+		return mdao.getMemberIdEmailSearch(vo);
+	}
+	
+	
 	
 	@Override
 	public MemberVO memberEmailSearch(String email) {
@@ -101,7 +111,10 @@ public class MemberServiceImpl implements MemberService{
 		return mdao.updatePermission(vo);
 	}
 	
-	
+	@Override
+	public MemberVO memberCodeCheck(CompanyVO vo) {
+		return mdao.memberCodeCheck(vo);
+	}
 	
 	
 	

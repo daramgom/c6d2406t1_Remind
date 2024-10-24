@@ -175,6 +175,14 @@ public class MemberDAOImpl implements MemberDAO {
 		return member;
 	}
 	
+	@Override
+	public int updatePermission(MemberVO vo) {
+		System.out.println("DAO : "+vo);
+		int result = sqlSession.update(NAMESPACE + ".updatePermission", vo);
+		
+		return result;
+	}
+	
 	
 	
 	
@@ -188,10 +196,10 @@ public class MemberDAOImpl implements MemberDAO {
 
 	// admin 회원 전체 조회.
 	@Override
-	public List<MemberVO> getMemberList( ) {
+	public List<MemberVO> getMemberList(String member_id) {
 		System.out.println(" DAO : getMemberList() ");
 
-		return sqlSession.selectList(NAMESPACE + ".getMemberList");
+		return sqlSession.selectList(NAMESPACE + ".getMemberList", member_id);
 
 	}
 	

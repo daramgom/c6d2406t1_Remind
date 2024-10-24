@@ -1,6 +1,7 @@
 package com.itwillbs.web;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,10 +38,12 @@ public class AdminController {
 	Map<String, String> response = new HashMap<>();;
 
 	@RequestMapping(value = "adminMemberList", method = RequestMethod.GET)
-	public void adminMemberListGET(Model model) {
+	public void adminMemberListGET(Model model, HttpSession session) {
+		
+		String member_id = (String)session.getAttribute("id");
 		logger.debug("adminMemberListGET");
 
-		List<MemberVO> memberList = mService.memberList();
+		List<MemberVO> memberList = mService.memberList(member_id);
 
 		model.addAttribute("memberList", memberList);
 	}
@@ -236,4 +239,22 @@ public class AdminController {
 		return ResponseEntity.ok(response); // 200 OK 응답
 	}
 
+	
+	 @PostMapping("/updatePermission")
+	    public ResponseEntity<String> updatePermission(@RequestBody MemberVO vo) {
+		 
+		 	logger.debug("vo : " + vo.getPermission_id());
+		 
+		 
+	    	int result = mService.memberPermissionUpdate(vo);
+	    	
+	    	
+	    	
+	    	if(result == 0) {
+	    		return ResponseEntity.ok("{\"success\": false }");
+	    	}
+	    	
+	    	return ResponseEntity.ok("{\"success\": true }");
+	    	
+	    }
 }

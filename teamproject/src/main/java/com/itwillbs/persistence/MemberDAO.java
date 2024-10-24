@@ -56,7 +56,7 @@ public interface MemberDAO {
 	public Map<String, Object> getMemberDetails(String member_id);
 	
 	// admin(전용) 사용자 정보 목록 조회
-	public List<MemberVO> getMemberList();
+	public List<MemberVO> getMemberList(String member_id);
 	
 	// admin(전용) 회원가입 신청 정보 목록 조회
 	public List<MemberVO> getSignupRequestList();
@@ -67,5 +67,12 @@ public interface MemberDAO {
 	// admin(전용) 회원가입 신청 목록 삭제
 	public Integer deleteMembers(List<MemberVO> memberList);
 	
+	// admin(전용)
+	public int updatePermission(MemberVO vo);
+	
 	public Map<String, Object> getInfo();
+
+	
+	
+	
 }

@@ -95,6 +95,17 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	@Override
+	public int memberPermissionUpdate(MemberVO vo) {
+		logger.debug("(●'◡'●)  memberUpdate(MemberVO vo) 실행 " + vo);
+		
+		return mdao.updatePermission(vo);
+	}
+	
+	
+	
+	
+	
+	@Override
 	public Integer memberDelete(MemberVO vo) {
 		
 		logger.debug("(●'◡'●) memberDelete(MemberVO vo ) 실행 " + vo);
@@ -117,10 +128,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 	// admin 전용 특정 사용자 조회
 	@Override
-	public List<MemberVO> memberList() {
+	public List<MemberVO> memberList(String id) {
 		logger.debug("memberList() 실행 ");	
 		
-		return mdao.getMemberList();
+		return mdao.getMemberList(id);
 	}
 	
 	// admin 전용 회원가입 신청 멤버 목록

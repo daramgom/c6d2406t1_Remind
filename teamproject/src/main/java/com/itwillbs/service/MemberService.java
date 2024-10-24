@@ -35,7 +35,7 @@ public interface MemberService {
 	public MemberVO memberInfoTel(String tel);
 	
 	// admin 회원정보 목록 d
-	public List<MemberVO> memberList();
+	public List<MemberVO> memberList(String id);
 	
 	// admin 회원정보 목록 d
 	public List<MemberVO> signupRequestList();
@@ -48,6 +48,8 @@ public interface MemberService {
 	
 	// admin 회원가입 신청 목록 삭제
 	public Integer membersDelete(List<MemberVO> vo);
+	
+	public int memberPermissionUpdate(MemberVO vo);
 	
 	public Map<String, Object> getInfo();
 	

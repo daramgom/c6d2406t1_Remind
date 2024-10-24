@@ -1,297 +1,352 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%> <%@ taglib prefix="c"
-uri="http://java.sun.com/jsp/jstl/core"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>회원 목록</title>
+<head>
+<meta charset="UTF-8" />
+<title>회원 목록</title>
 
-    <meta
-      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
-      name="viewport"
-    />
-    <link
-      rel="icon"
-      href="/resources/img/kaiadmin/favicon.ico"
-      type="image/x-icon"
-    />
-    
-
-    <style>
-      .btn-confirm {
-        padding: 0.65rem 1.4rem;
-        font-size: 1rem;
-        font-weight: 500;
-        opacity: 1;
-        border-radius: 3px;
-        background-color: #5f41e4; /* 확인 버튼 배경색 */
-        color: #fff; /* 확인 버튼 텍스트 색상 */
-      }
-
-      .btn-cancel {
-        padding: 0.65rem 1.4rem;
-        font-size: 1rem;
-        font-weight: 500;
-        opacity: 1;
-        border-radius: 3px;
-        background-color: #d1c6e7; /* 취소 버튼 배경색 */
-        color: #000; /* 취소 버튼 텍스트 색상 */
-      }
-    </style>
+<meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+	name="viewport" />
+<link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
+	type="image/x-icon" />
 
 
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/resources/css/plugins.min.css" />
-    <link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
-    <link rel="stylesheet" href="/resources/css/adminMemberList.css" />
-  </head>
-  <body>
-    <c:if
-      test="${sessionScope.id == null || sessionScope.permission_id != '03'}"
-    >
-      <c:redirect url="/main" />
-    </c:if>
+<style>
+.btn-confirm {
+	padding: 0.65rem 1.4rem;
+	font-size: 1rem;
+	font-weight: 500;
+	opacity: 1;
+	border-radius: 3px;
+	background-color: #5f41e4; /* 확인 버튼 배경색 */
+	color: #fff; /* 확인 버튼 텍스트 색상 */
+}
 
-    <div class="wrapper">
-      <!-- Header -->
-      <jsp:include page="/resources/inc/header.jsp" />
+.btn-cancel {
+	padding: 0.65rem 1.4rem;
+	font-size: 1rem;
+	font-weight: 500;
+	opacity: 1;
+	border-radius: 3px;
+	background-color: #d1c6e7; /* 취소 버튼 배경색 */
+	color: #000; /* 취소 버튼 텍스트 색상 */
+}
 
-      <!-- Sidebar -->
-      <jsp:include page="/resources/inc/sidebar.jsp" />
+.userPermission {
+	position: absolute;
+    right: 17.1rem;
+    width: 70px;
+    height: 30px;
+    top: 0.7rem;
+}
 
-      <!-- Main Content -->
-      <div class="container">
-        <div class="page-inner">
-          <div class="page-header">
-            <h3 class="fw-bold mb-3">회원목록</h3>
-            <ul class="breadcrumbs mb-3">
-              <li class="nav-home">
-                <a href="#"> <i class="icon-home"></i> </a>
-              </li>
-            </ul>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card w-100">
-                <div class="card-header">
-                  <div class="card-title">회원목록</div>
-                </div>
+.edit-permission {
+	height: 24px;
+	border: none;
+	background: transparent;
+	width: 31px;
+	font-size: 14px;
+	position: absolute;
+	right: 14.5rem;
+	top: 1rem;
+}
 
-                <div class="card-body d-flex flex-column">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <table class="col-md-12 table">
-                        <tr>
-                          <th class="col-md-2">이름</th>
-                          <th class="col-md-2">직급</th>
-                          <th class="col-md-2">전화번호</th>
-                          <th class="col-md-2">가입일자</th>
-                          <th class="col-md-2">수정일자</th>
-                          <th class="col-md-1">권한</th>
-                          <th class="col-md-1"></th>
-                        </tr>
-                        <c:forEach items="${memberList}" var="member">
-                          <tr>
-                            <td>${member.member_name}</td>
-                            <td>${member.employee_rank_value}</td>
-                            <td>${member.member_tel}</td>
-                            <td>${member.create_date}</td>
-                            <td>${member.update_date}</td>
-                            <td>${member.permission_id_value} 
-	                            <select class="userPermission">
-	                            	<option value="1"></option>
-	                            	<option value="2"></option>
-	                            </select>
-                            <button onclick="updatePermission" style="height: 24px; border: none; background: transparent ; width: 31px; font-size: 14px;">✏️</button> 
-                            </td>
-                            <td>
-                              <div class="nav-toggle">
-                                <button
-                                  id="infoBtn"
-                                  class="topbar-toggler more"
-                                  style="border: none; background: none"
-                                >
-                                  <i class="gg-more-vertical-alt"></i>
-                                </button>
-                                <div
-                                  class="btn-group dropstart"
-                                  style="display: none"
-                                >
-                                  <ul class="dropdown-menu show" role="menu">
-                                    <li>
-                                      <a
-                                        data-member-id="${member.member_id}"
-                                        class="dropdown-item member-details"
-                                        href="#"
-                                        >상세보기</a
-                                      >
-                                      <div class="dropdown-divider"></div>
-                                      <a
-                                        data-member-id="${member.member_id}"
-                                        class="dropdown-item memberUpdate"
-                                        href="#"
-                                        >수정</a
-                                      >
-                                      <div class="dropdown-divider"></div>
-                                      <a
-                                        data-member-id="${member.member_id}"
-                                        class="dropdown-item memberDelete"
-                                        href="#"
-                                        >삭제</a
-                                      >
-                                    </li>
-                                  </ul>
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        </c:forEach>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Footer -->
-      <jsp:include page="/resources/inc/footer.jsp" />
-    </div>
+.submit-Permission-btn {
+	display: none;
+	background: #6861ce;
+	position: absolute;
+	right: 9.6rem;
+	top: 0.7rem;
+	padding: .35rem 1.4rem;
+	border: #31ce36;
+	font-size: 1rem;
+	font-weight: 500;
+	opacity: 1;
+	border-radius: 3px;
+	color: white;
+}
 
-    <!-- 모달 구조 추가 -->
+.submit-Permission-btn:hover, .submit-Permission-btn:focus {
+	opacity: .8;
+}
+</style>
 
-    <div
-      class="modal"
-      id="detailsModal"
-      tabindex="-1"
-      role="dialog"
-      style="display: none"
-    >
-      <div
-        style="
-          background-color: rgba(0, 0, 0, 0.5);
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 100;
-        "
-      >
-        <div class="modal-dialog" role="document" style="margin-top: 8rem">
-          <div class="modal-content">
-            <div class="modal-header" id="modalHeader">
-              <h5 class="modal-title">상세보기</h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" style="text-align: center">
-              <p>
-                <i class="icon-user" style="font-size: 59px"></i>
-              </p>
-              <input type="hidden" id="member_id_hidden" />
-              <p><strong>이름 : </strong> <span id="memberName"></span></p>
-              <p><strong>전화번호 : </strong> <span id="memberTel"></span></p>
-              <p><strong>이메일 : </strong> <span id="memberEmail"></span></p>
-              <div id="selectBox">
-                <p>
-                  <strong>직급 : </strong>
-                  <select id="memberRank"></select>
-                </p>
-                <p>
-                  <strong>부서 : </strong>
-                  <select id="memberDepartment"></select>
-                </p>
-                <p>
-                  <strong>근무 상태 : </strong>
-                  <select id="memberStatus"></select>
-                </p>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-primary"
-                id="editButton"
-                style="display: none"
-              >
-                수정
-              </button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                id="deleteButton"
-                style="display: none"
-              >
-                삭제
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary closeBtn"
-                data-dismiss="modal"
-              >
-                닫기
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!--   Core JS Files   -->
-    <script src="/resources/js/core/jquery-3.7.1.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
+<!-- CSS Files -->
+<link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/resources/css/plugins.min.css" />
+<link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
+<link rel="stylesheet" href="/resources/css/adminMemberList.css" />
+</head>
+<body>
+	<c:if
+		test="${sessionScope.id == null || sessionScope.permission_id != '03'}">
+		<c:redirect url="/main" />
+	</c:if>
 
-    <!-- jQuery Scrollbar -->
-    <script src="/resources/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+	<div class="wrapper">
+		<!-- Header -->
+		<jsp:include page="/resources/inc/header.jsp" />
 
-    <!-- Chart JS -->
-    <script src="/resources/js/plugin/chart.js/chart.min.js"></script>
+		<!-- Sidebar -->
+		<jsp:include page="/resources/inc/sidebar.jsp" />
 
-    <!-- jQuery Sparkline -->
-    <script src="/resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+		<!-- Main Content -->
+		<div class="container">
+			<div class="page-inner">
+				<div class="page-header">
+					<h3 class="fw-bold mb-3">회원목록</h3>
+					<ul class="breadcrumbs mb-3">
+						<li class="nav-home"><a href="#"> <i class="icon-home"></i>
+						</a></li>
+					</ul>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="card w-100">
+							<div class="card-header">
+								<div class="card-title">회원목록</div>
+							</div>
 
-    <!-- Chart Circle -->
-    <script src="/resources/js/plugin/chart-circle/circles.min.js"></script>
+							<div class="card-body d-flex flex-column">
+								<div class="row">
+									<div class="col-md-12">
+										<table class="col-md-12 table">
+											<tr>
+												<th class="col-md-2">이름</th>
+												<th class="col-md-2">직급</th>
+												<th class="col-md-2">전화번호</th>
+												<th class="col-md-2">가입일자</th>
+												<th class="col-md-2">수정일자</th>
+												<th class="col-md-2">권한</th>
+												<th class="col-md-1"></th>
+											</tr>
+											<c:forEach items="${memberList}" var="member">
+												<tr style="position: relative;">
+													<td>${member.member_name}</td>
+													<td>${member.employee_rank_value}</td>
+													<td>${member.member_tel}</td>
+													<td>${member.create_date}</td>
+													<td>${member.update_date}</td>
+													<td>
+													<span class="permission-value">${member.permission_id_value}</span>
+													<select class="userPermission" style="display: none;">
+															<option value="01">user</option>
+															<option value="02">admin</option>
+													</select>
+														<button onclick="updatePermission(this)"
+															class="edit-permission">✏️</button>
+														<button class="submit-Permission-btn"  data-member-id="${member.member_id}" onclick="submitUpdatePermission(this)" 
+															style="display: none;">변경</button></td>
+													<td>
+														<div class="nav-toggle">
+															<button id="infoBtn" class="topbar-toggler more"
+																style="border: none; background: none">
+																<i class="gg-more-vertical-alt"></i>
+															</button>
+															<div class="btn-group dropstart" style="display: none">
+																<ul class="dropdown-menu show" role="menu">
+																	<li><a data-member-id="${member.member_id}"
+																		class="dropdown-item member-details" href="#">상세보기</a>
+																		<div class="dropdown-divider"></div> <a
+																		data-member-id="${member.member_id}"
+																		class="dropdown-item memberUpdate" href="#">수정</a>
+																		<div class="dropdown-divider"></div> <a
+																		data-member-id="${member.member_id}"
+																		class="dropdown-item memberDelete" href="#">삭제</a></li>
+																</ul>
+															</div>
+														</div>
+													</td>
+												</tr>
+											</c:forEach>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Footer -->
+		<jsp:include page="/resources/inc/footer.jsp" />
+	</div>
 
-    <!-- Datatables -->
-    <script src="/resources/js/plugin/datatables/datatables.min.js"></script>
+	<!-- 모달 구조 추가 -->
 
-    <!-- Bootstrap Notify -->
-    <script src="/resources/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+	<div class="modal" id="detailsModal" tabindex="-1" role="dialog"
+		style="display: none">
+		<div
+			style="background-color: rgba(0, 0, 0, 0.5); position: fixed; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; z-index: 100;">
+			<div class="modal-dialog" role="document" style="margin-top: 8rem">
+				<div class="modal-content">
+					<div class="modal-header" id="modalHeader">
+						<h5 class="modal-title">상세보기</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" style="text-align: center">
+						<p>
+							<i class="icon-user" style="font-size: 59px"></i>
+						</p>
+						<input type="hidden" id="member_id_hidden" />
+						<p>
+							<strong>이름 : </strong> <span id="memberName"></span>
+						</p>
+						<p>
+							<strong>전화번호 : </strong> <span id="memberTel"></span>
+						</p>
+						<p>
+							<strong>이메일 : </strong> <span id="memberEmail"></span>
+						</p>
+						<div id="selectBox">
+							<p>
+								<strong>직급 : </strong> <select id="memberRank"></select>
+							</p>
+							<p>
+								<strong>부서 : </strong> <select id="memberDepartment"></select>
+							</p>
+							<p>
+								<strong>근무 상태 : </strong> <select id="memberStatus"></select>
+							</p>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" id="editButton"
+							style="display: none">수정</button>
+						<button type="button" class="btn btn-danger" id="deleteButton"
+							style="display: none">삭제</button>
+						<button type="button" class="btn btn-secondary closeBtn"
+							data-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <!-- jQuery Vector Maps -->
-    <script src="/resources/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-    <script src="/resources/js/plugin/jsvectormap/world.js"></script>
+	<!--   Core JS Files   -->
+	<script src="/resources/js/core/jquery-3.7.1.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
 
-    <!-- Sweet Alert -->
-    <script src="/resources/js/plugin/sweetalert/sweetalert.min.js"></script>
+	<!-- jQuery Scrollbar -->
+	<script
+		src="/resources/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
-    <!-- Kaiadmin JS -->
-    <script src="/resources/js/kaiadmin.min.js"></script>
-    <script>
+	<!-- Chart JS -->
+	<script src="/resources/js/plugin/chart.js/chart.min.js"></script>
+
+	<!-- jQuery Sparkline -->
+	<script
+		src="/resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+	<!-- Chart Circle -->
+	<script src="/resources/js/plugin/chart-circle/circles.min.js"></script>
+
+	<!-- Datatables -->
+	<script src="/resources/js/plugin/datatables/datatables.min.js"></script>
+
+	<!-- Bootstrap Notify -->
+	<script
+		src="/resources/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+	<!-- jQuery Vector Maps -->
+	<script src="/resources/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+	<script src="/resources/js/plugin/jsvectormap/world.js"></script>
+
+	<!-- Sweet Alert -->
+	<script src="/resources/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+	<!-- Kaiadmin JS -->
+	<script src="/resources/js/kaiadmin.min.js"></script>
+	<script>
       let GlobalRank;
       let GlobalDept;
       let GlobalStatus;
       let DeleteCode;
-      function updatePermission () {
-    	  
-      }
+  
+
+      function updatePermission(button) {
+    	    // 클릭한 버튼의 부모 td 요소를 찾아서
+    	    const td = $(button).closest('td');
+    	    const submitButton = td.find('.submit-Permission-btn');
+    	    const selectBox = td.find('.userPermission');
+    	    const permissionValue = td.find('.permission-value');
+
+    	    // permissionValue와 selectBox의 값을 비교하여 초기 상태 설정
+    	    const currentValue = permissionValue.text().trim(); // permissionValue의 텍스트 값
+
+    	    // permissionValue에 따라 selectBox의 값 설정
+    	    selectBox.val(currentValue === 'admin' ? '02' : '01'); // admin일 경우 02, user일 경우 01로 설정
+
+    	    // 클릭한 셀렉트 박스의 현재 상태 확인
+    	    if (selectBox.is(":visible")) {
+    	        // 이미 보이는 경우 숨김
+    	        selectBox.hide();
+    	        submitButton.hide();
+    	        permissionValue.show(); // permission-value를 보임
+    	    } else {
+    	        // 모든 셀렉트 박스와 변경 버튼 숨기기
+    	        $('td .userPermission').hide(); // 모든 셀렉트 박스 숨김
+    	        $('td .submit-Permission-btn').hide(); // 모든 변경 버튼 숨김
+    	        $('td .permission-value').show(); // 모든 permission-value 보임
+
+    	        // 클릭한 셀렉트 박스와 변경 버튼 보이기
+    	        selectBox.show();
+    	        submitButton.show();
+    	        permissionValue.hide(); // 현재 permission-value 숨김
+    	    }
+    	}
+      function submitUpdatePermission(button) {
+    	    const memberId = button.getAttribute('data-member-id'); // data-member-id에서 ID 가져오기
+    	    const td = button.closest('td');
+    	    const selectBox = td.querySelector('.userPermission');
+    	    const permissionValue = td.querySelector('.permission-value');
+
+    	    const selectedValue = selectBox.value; // 선택된 값
+    	    const currentValue = permissionValue.textContent.trim(); // 현재 permissionValue
+    	    
+    	    
+    	     // 변경 사항이 없으면 AJAX 호출을 하지 않음
+    	    if (selectedValue === (currentValue === 'admin' ? '02' : '01')) {
+    	        alert("변경 사항이 없습니다."); // 변경 사항이 없음을 알림
+    	        return; // 함수 종료
+    	    } 
+    	    
+    	    // AJAX 요청 또는 패치 실행
+    	    $.ajax({
+    	        url: '/admin/updatePermission', // 요청할 URL
+    	        method: 'POST', // HTTP 메서드
+    	        data:  JSON.stringify({
+    	            member_id: memberId, // memberId를 전송
+    	            permission_id: selectedValue // 선택된 값을 전송
+    	        }),
+    	        
+    	        contentType: 'application/json', // 이 부분이 중요합니다.
+    	        success: function(response) {
+    	        	
+    	        	console.log(response);
+    	            alert("변경 사항이 성공적으로 업데이트되었습니다.");
+                    location.reload();
+    	            
+    	        },
+    	        error: function(error) {
+    	            alert("업데이트 중 오류가 발생했습니다.");
+    	            // 오류 처리
+    	        }
+    	    });
+    	}
+
+      
+
+     
 
       function memberInfoDetails(data) {
         event.preventDefault();
@@ -411,7 +466,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       }
     </script>
 
-    <script>
+	<script>
       $(document).ready(function () {
         $(".topbar-toggler").click(function (event) {
           event.stopPropagation();
@@ -542,5 +597,5 @@ uri="http://java.sun.com/jsp/jstl/core"%>
         });
       });
     </script>
-  </body>
+</body>
 </html>

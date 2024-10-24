@@ -18,6 +18,7 @@
 		now(),now(),'01',1,'01','01',0);
 	</insert>
 	<!-- userid 컬럼명. -->
+	
 	<insert id="insertCompanyMember">
 		insert into member
 		(member_id,member_pw,member_name,member_email,member_tel,employee_rank,create_date,update_date,permission_id,member_code,
@@ -87,6 +88,12 @@
 		where member_id = #{member_id}
 	</update>
 	
+	<update id="updatePermission">
+	update member
+		set update_date = now(),
+		permission_id = #{permission_id}
+		where member_id = #{member_id}
+	</update>
 	
 	
 	
@@ -125,7 +132,7 @@ WHERE
         FROM common
         WHERE common_status = '퇴사' AND common_work = 'member_state'
     ) 
-    AND m.approval_status != '01';
+    AND m.approval_status != '01' AND member_code = '1' and member_id != #{member_id};
 	</select>
 
 	<!-- 회원가입 대기자 목록 -->

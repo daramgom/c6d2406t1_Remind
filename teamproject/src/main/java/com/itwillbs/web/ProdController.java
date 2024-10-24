@@ -121,8 +121,8 @@ public class ProdController {
 	
 	// 제품 바코드
     @PostMapping("/genCode")
-    public void generateCode(@RequestParam String prod_id, @RequestParam String option,
-    		HttpServletResponse res) throws IOException, WriterException {
+    public void generateCode(@RequestParam String prod_id, @RequestParam String option, 
+    		@RequestParam String imgUrl, HttpServletResponse res) throws IOException, WriterException {
         
     	BufferedImage image = null;
 
@@ -132,7 +132,7 @@ public class ProdController {
             image = MatrixToImageWriter.toBufferedImage(bitMatrix);
         } else if ("qrcode".equals(option)) {
             QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix bitMatrix = qrCodeWriter.encode(prod_id, BarcodeFormat.QR_CODE, 300, 300);
+            BitMatrix bitMatrix = qrCodeWriter.encode(imgUrl, BarcodeFormat.QR_CODE, 300, 300);
             image = MatrixToImageWriter.toBufferedImage(bitMatrix);
         }
 

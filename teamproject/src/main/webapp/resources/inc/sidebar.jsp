@@ -6,9 +6,9 @@
 		<!-- Logo Header -->
 		<div class="logo-header" data-background-color="light">
 			<a href="/main" class="logo"> <img
-				src="/resources/img/logo-removebg.png" alt="navbar brand"
-				class="navbar-brand"
-				style="height: 70px; width: 150px; margin-left: 24px;" />
+				src="/resources/img/kaiadmin/logo_light.png" alt="navbar brand"
+				class="navbar-brand" height="30"
+				style="width: 150px; margin-left: 24px;" />
 			</a>
 			<div class="nav-toggle">
 				<button class="btn btn-toggle toggle-sidebar">

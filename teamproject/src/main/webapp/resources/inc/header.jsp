@@ -26,7 +26,7 @@
 		<div class="main-header-logo">
 			<!-- Logo Header -->
 			<div class="logo-header" data-background-color="light">
-				<a href="index.html" class="logo"> <img
+				<a href="/main" class="logo"> <img
 					src="/resources/img/kaiadmin/logo_light.svg" alt="navbar brand"
 					class="navbar-brand" height="20" />
 				</a>

@@ -56,11 +56,16 @@ public class OrderController {
     @RequestMapping(value = "/order-insert", method = RequestMethod.GET)
     public String insertOrderForm(Model model, HttpSession session) {
     	
-    	String id = (String)session.getAttribute("id");
-    	if(id == null) {
-    		return "redirect:/login";
-    	}
-    	model.addAttribute("id", id);
+    	String userId = (String) session.getAttribute("id");
+    	String userMemberCode = (String)session.getAttribute("member_code");
+    	
+    	// 뷰페이지에서 처리 예정
+//    	if(id == null) {
+//    		return "redirect:/login";
+//    	}
+    	
+    	model.addAttribute("userId", userId);
+    	model.addAttribute("userMemberCode", userMemberCode);
     	
     	List<OrdersVO> sListVO = orderService.listSupervisor();
     	List<OrdersVO> pListVO = orderService.listProd();
@@ -99,6 +104,19 @@ public class OrderController {
     @GetMapping(value = "/order-list")
     public String listOrderGet(Model model, HttpSession session) {
     	
+		String userId = (String)session.getAttribute("id");
+		String userMemberCode = (String)session.getAttribute("member_code");
+		String userPermissionId = (String)session.getAttribute("permission_id");
+		    	
+    	// 뷰페이지에서 처리 예정
+//    	if(id == null) {
+//    		return "redirect:/login";
+//    	}
+		
+		model.addAttribute("userId", userId);
+		model.addAttribute("userMemberCode", userMemberCode);
+		model.addAttribute("userPermissionId", userPermissionId);
+    	
     	List<OrdersVO> oListVO = orderService.listOrder();
     	List<OrdersVO> mListVO = orderService.listManager();
     	List<OrdersVO> sListVO = orderService.listSupervisor();
@@ -111,15 +129,42 @@ public class OrderController {
     	model.addAttribute("pListVO", pListVO);
     	model.addAttribute("wListVO", wListVO);
     	
-    	String id = (String)session.getAttribute("id");
-    	if(id == null) {
-    		return "redirect:/login";
-    	}
-    	
     	return "/order-list";
     }
     
-    // 수정하기
+    // 거래처 페이지 목록창 불러오기
+    @GetMapping(value = "/order-list02")
+    public String listOrderGet02(Model model, HttpSession session) {
+    	
+		String userId = (String)session.getAttribute("id");
+		String userMemberCode = (String)session.getAttribute("member_code");
+		String userPermissionId = (String)session.getAttribute("permission_id");
+		    	
+    	// 뷰페이지에서 처리 예정
+//    	if(id == null) {
+//    		return "redirect:/login";
+//    	}
+		
+		model.addAttribute("userId", userId);
+		model.addAttribute("userMemberCode", userMemberCode);
+		model.addAttribute("userPermissionId", userPermissionId);
+    	
+    	List<OrdersVO> oListVO02 = orderService.listOrder02();
+    	List<OrdersVO> mListVO = orderService.listManager();
+    	List<OrdersVO> sListVO = orderService.listSupervisor();
+    	List<OrdersVO> pListVO = orderService.listProd();
+    	List<OrdersVO> wListVO = orderService.listWarehouse();
+    	
+    	model.addAttribute("oListVO02", oListVO02);
+    	model.addAttribute("mListVO", mListVO);
+    	model.addAttribute("sListVO", sListVO);
+    	model.addAttribute("pListVO", pListVO);
+    	model.addAttribute("wListVO", wListVO);
+    	
+    	return "/order-list02";
+    }
+    
+    // 발주 수정하기 / 발주 재요청하기
     @PostMapping(value = "/updateOrder")
 	public String updateOrder(OrdersVO ordersVO){
     	
@@ -129,13 +174,10 @@ public class OrderController {
     	
 		orderService.updateOrder(ordersVO);
     	
-    	
-    	logger.debug("");
-    	
     	return "/order-list";
     }
     
-    // 삭제하기
+    // 발주 정보 삭제하기
     @PostMapping(value = "/deleteOrder")
     public String deleteOrder(OrdersVO ordersVO) {
     	orderService.deleteOrder(ordersVO);
@@ -143,7 +185,7 @@ public class OrderController {
     	return "/order-list";
     }
     
-    // 수정하기
+    // 발주 승인하기
     @PostMapping(value = "/updateOrder03")
     public String updateOrder03(OrdersVO ordersVO) {
     	orderService.updateOrder03(ordersVO);
@@ -151,7 +193,7 @@ public class OrderController {
     	return "/order-list";
     }
     
-    // 수정하기
+    // 발주 반려하기
     @PostMapping(value = "/updateOrder02")
     public String updateOrder02(OrdersVO ordersVO) {
     	orderService.updateOrder02(ordersVO);

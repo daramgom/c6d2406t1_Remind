@@ -41,24 +41,45 @@ public class OrdersDAOImpl implements OrdersDAO{
 	}
 	
 	@Override
+	public List<OrdersVO> listOrder02() {
+		return sqlSession.selectList(NAMESPACE+".listOrder02");
+	}
+	
+	// 발주 정보 수정(재요청)
+	@Override
 	public void updateOrder(/* Map<String, Object> data, */ OrdersVO ordersVO) {
 		sqlSession.update(NAMESPACE+".updateOrder", ordersVO/*data*/);
 	}
 	
+	// 발주 정보 삭제
 	@Override
 	public void deleteOrder(OrdersVO ordersVO) {
 		
 		sqlSession.update(NAMESPACE+".deleteOrder", ordersVO);
 	}
 	
+	// 발주 승인
 	@Override
 	public void updateOrder03(OrdersVO ordersVO) {
 		sqlSession.update(NAMESPACE+".updateOrder03", ordersVO);
 	}
 	
+	// 발주 반려
 	@Override
 	public void updateOrder02(OrdersVO ordersVO) {
 		sqlSession.update(NAMESPACE+".updateOrder02", ordersVO);
+	}
+	
+	// 거래처 발주 처리
+	@Override
+	public void updateOrder05(OrdersVO ordersVO) {
+		sqlSession.update(NAMESPACE+".updateOrder05", ordersVO);
+	}
+	
+	// 거래처 발주 반려
+	@Override
+	public void updateOrder04(OrdersVO ordersVO) {
+		sqlSession.update(NAMESPACE+".updateOrder04", ordersVO);
 	}
 	
 	@Override

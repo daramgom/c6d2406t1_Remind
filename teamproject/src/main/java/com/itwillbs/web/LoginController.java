@@ -58,6 +58,8 @@ public class LoginController {
 		session.setAttribute("email", result.getMember_email());
 		session.setAttribute("employee_rank", result.getEmployee_rank());
 		session.setAttribute("department_id", result.getDepartment_id());
+		session.setAttribute("member_state", result.getMember_state());
+		session.setAttribute("member_code", result.getMember_code());
 		// 밑에 있는걸로 변경할거임/
 		/* session.setAttribute("resultMemberVO",result); */
 		

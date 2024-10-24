@@ -143,6 +143,14 @@ pageEncoding="UTF-8"%>
     
 </head>
   	<body>
+  	
+  	<c:if test="${empty userId}">
+		<c:redirect url="/login"/>
+	</c:if>
+	<c:if test="${userMemberCode != '1'}">
+		<c:redirect url="/main"/>
+	</c:if>
+  	
     <div class="wrapper">
     
     	<!-- Header -->

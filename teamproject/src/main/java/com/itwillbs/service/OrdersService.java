@@ -16,13 +16,25 @@ public interface OrdersService {
 	
 	public List<OrdersVO> listOrder();
 	
+	public List<OrdersVO> listOrder02();
+	
+	// 발주 정보 수정(재요청)
 	public void updateOrder(/* Map<String, Object> data, */ OrdersVO ordersVO);
 	
+	// 발주 정보 삭제
 	public void deleteOrder(OrdersVO ordersVO);
-	
+
+	// 발주 승인
 	public void updateOrder03(OrdersVO ordersVO);
 	
+	// 발주 반려
 	public void updateOrder02(OrdersVO ordersVO);
+	
+	// 거래처 발주 처리
+	public void updateOrder05(OrdersVO ordersVO);
+	
+	// 거래처 발주 반려
+	public void updateOrder04(OrdersVO ordersVO);
 	
 	public List<OrdersVO> listManager();
 	

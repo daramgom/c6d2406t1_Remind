@@ -208,9 +208,10 @@ pageEncoding="UTF-8"%>
 </head>
     <body>
     
-    <c:if test="${empty userId}">
-		<c:redirect url="/login"/>
-	</c:if>
+<%--     <c:if test="${empty userId}"> --%>
+<%-- 		<c:redirect url="/login"/> --%>
+<%-- 	</c:if> --%>
+	<!-- 일단은 빼둠 -->
     
     <div class="wrapper">
     <!-- Header -->
@@ -291,7 +292,7 @@ pageEncoding="UTF-8"%>
                           </tr>
 		             </tfoot>
 		             <tbody>
-						 	<c:forEach var="o" items="${oListVO }">
+						 	<c:forEach var="o" items="${oListVO02 }">
 		 
 							<c:forEach var="m" items="${mListVO }">
 								<c:if test="${m.member_id == o.ord_manager_id}">

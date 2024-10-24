@@ -8,7 +8,7 @@
 			<a href="/main" class="logo"> <img
 				src="/resources/img/kaiadmin/logo_light.png" alt="navbar brand"
 				class="navbar-brand" height="30"
-				style="width: 150px; margin-left: 24px;" />
+				style="width: 200px;" />
 			</a>
 			<div class="nav-toggle">
 				<button class="btn btn-toggle toggle-sidebar">

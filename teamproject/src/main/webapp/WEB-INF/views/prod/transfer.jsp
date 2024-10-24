@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <!-- Fonts and icons -->
-<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
 <script>
 
@@ -32,12 +32,13 @@
 	});
 </script>
 
+<!-- CSS Files -->
+<link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/resources/css/plugins.min.css" />
+<link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
+<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
+
 <style>
-
-
-	body, a, h3, li, p, td, b {
-		font-family: 'NanumSquareNeo' !important;
-	}
 	
 	.btn-warning {
 		color: #fff !important;
@@ -74,12 +75,6 @@
 	}
 	
 </style>
-
-<!-- CSS Files -->
-<link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
-<link rel="stylesheet" href="/resources/css/plugins.min.css" />
-<link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
-
 
 </head>
 <body>

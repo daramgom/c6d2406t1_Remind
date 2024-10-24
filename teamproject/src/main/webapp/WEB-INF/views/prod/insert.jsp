@@ -13,7 +13,6 @@
 	type="image/x-icon" />
 
 <!-- Fonts and icons -->
-<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
 <script>
 	WebFont.load({
@@ -31,11 +30,13 @@
 	});
 </script>
 
+<!-- CSS Files -->
+<link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/resources/css/plugins.min.css" />
+<link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
+<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
+
 <style>
-	body, a, h3, li, p, td, b {
-		font-family: 'NanumSquareNeo' !important;
-	}
-	
 	#previewimg {
 		display: none;
 		width: 95%;
@@ -57,7 +58,7 @@
         
 	#prodForm label {
 		font-size: 1.2rem !important;
-		color: #6861ce !important;
+		color: #2a2f5b !important;
 	}
         
 	#prodForm option {
@@ -78,13 +79,6 @@
 	}
 
 </style>
-
-<!-- CSS Files -->
-<link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
-<link rel="stylesheet" href="/resources/css/plugins.min.css" />
-<link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
-<!-- CSS Just for demo purpose, don't include it in your project -->
-<link rel="stylesheet" href="/resources/css/demo.css" />
 
 </head>
 <body>
@@ -155,7 +149,7 @@
 										</div>
 										<div class="form-group d-flex" style="margin: 20px 200px; gap: 50px;">
 											<div class="input-group" style="flex: 1;">
-											<span class="input-group-text" style="font-size: 1.2rem; color:#6861ce;">비고</span>
+											<span class="input-group-text" style="font-size: 1.2rem; color:#2a2f5b;">비고</span>
 												<textarea id="prod_remarks" name="prod_remarks" class="form-control"></textarea>
 											</div>
 											<div style="flex: 1;">

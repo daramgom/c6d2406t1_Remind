@@ -25,25 +25,25 @@ public class MainDAOImpl implements MainDAO {
 		MainVO vo = new MainVO();
 		Integer result = sqlSession.selectOne(NAMESPACE + ".prodAllQty");
 		if(result == null) {
-			return vo;
+			vo.setProd_all_qty(0);
 		} else {
 			vo.setProd_all_qty((int)result);
 		}
 		Integer result2 = sqlSession.selectOne(NAMESPACE + ".monthOrd");
 		if(result2 == null) {
-			return vo;
+			vo.setMonth_ord(0);
 		} else {
 			vo.setMonth_ord(sqlSession.selectOne(NAMESPACE + ".monthOrd"));
 		}
 		Integer result3 = sqlSession.selectOne(NAMESPACE + ".monthRcv");
 		if(result3 == null) {
-			return vo;
+			vo.setMonth_rcv(0);
 		} else {
 			vo.setMonth_rcv(sqlSession.selectOne(NAMESPACE + ".monthRcv"));
 		}
 		Integer result4 = sqlSession.selectOne(NAMESPACE + ".monthShp");
 		if(result4 == null) {
-			return vo;
+			vo.setMonth_shp(0);
 		} else {
 			vo.setMonth_shp(sqlSession.selectOne(NAMESPACE + ".monthShp"));
 		}

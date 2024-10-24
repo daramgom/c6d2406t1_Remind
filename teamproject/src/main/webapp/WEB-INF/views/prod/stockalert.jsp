@@ -14,7 +14,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <!-- Fonts and icons -->
-<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
 <script>
 	WebFont.load({
@@ -32,10 +31,13 @@
 	});
 </script>
 
+<!-- CSS Files -->
+<link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/resources/css/plugins.min.css" />
+<link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
+<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
+
 <style>
-	body, a, h3, li, p, td, b {
-		font-family: 'NanumSquareNeo' !important;
-	}
 	
     #multi-filter-select thead th {
         background-color: #6861ce;
@@ -84,11 +86,6 @@
 	}
 	
 </style>
-
-<!-- CSS Files -->
-<link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
-<link rel="stylesheet" href="/resources/css/plugins.min.css" />
-<link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
 
 
 </head>
@@ -269,72 +266,6 @@ $(document).ready(function () {
         });
  	// 데이터테이블
 	
-	
-
-	// 알림 테스트
-	function checkStock() {
-		const alertShown = localStorage.getItem('alertShown');
-
-		if (alertShown) {
-			return;
-		}
-
-		$.ajax({
-			url: '/prod/stockalertdata',
-			method: 'POST',
-			dataType: 'json',
-			success: function(data) {
-				let lowStockProd = [];
-
-				data.forEach(function(item) {
-					const prod_qty = item.prod_qty;
-					const prod_stock = item.prod_stock;
-
-					if (prod_qty < prod_stock) {
-						lowStockProd.push(item.prod_id + ' - ' + item.prod_name + ' - ' + item.prod_brand);
-					}
-				});
-
-				if (lowStockProd.length > 0) {
-					const displayCount = 2;
-					let message;
-
-					if (lowStockProd.length > displayCount) {
-						message = '<b class="text-warning">' + lowStockProd.slice(0, displayCount).join(', ') + '</b>' + ' 등 <b class="text-warning"> ' + (lowStockProd.length) + '개</b> 제품의 재고수량이 부족합니다.';
-					} else {
-						message = '<b class="text-warning">' + lowStockProd.join('/ ') + '</b>' + '의 재고수량이 부족합니다!';
-					}
-
-					$.notify({}, {
-						type: "warning",
-						delay: 5000,
-						placement: {
-							from: "bottom",
-							align: "right"
-						},
-						template: '<div data-notify="container" class="alert alert-warning" role="alert">' +
-							'<span data-notify="icon" class="icon-bell"></span>' +
-							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-							'<span data-notify="title" style="font-size: 20px;"><strong>적정재고수량 경고</strong></span> ' +
-							'<span data-notify="message" style="font-size: 16px;">' +
-							message + '</span>' +
-							'</div>'
-					});
-
-					localStorage.setItem('alertShown', 'true');
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('데이터 불러오기 실패:', error);
-			}
-		});
-	}
-	
- 	
-		checkStock();
- 	
-	// 알림 테스트
-
 	
 	// select 요소 클릭 시 데이터 가져오기
 	$('#prod_id').on('click', function() {

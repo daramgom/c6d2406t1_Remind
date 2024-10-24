@@ -13,7 +13,6 @@
 	type="image/x-icon" />
 
 <!-- Fonts and icons -->
-<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css" rel="stylesheet">
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
 <script>
 	WebFont.load({
@@ -32,17 +31,12 @@
 </script>
 
 <!-- CSS Files -->
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
-	
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
+<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
+
 <style>
-	body, a, h3, li, p, td, b {
-		font-family: 'NanumSquareNeo' !important;
-	}
 	
     #multi-filter-select thead th {
        background-color: #6861ce !important;
@@ -116,7 +110,7 @@
 	}
 
 	input:not([readonly]):not([disabled]):hover {
-		background-color: #E6F7FF !important;
+		background-color: rgba(104,97,206,0.1) !important;
 	}
     
 </style>
@@ -347,7 +341,7 @@
                                     	rows="4" cols="30" 
                                     	class="form-control"
                                     	style="background-color: transparent;"
-                                    	onmouseover="this.style.setProperty('background-color', '#E6F7FF', 'important')"
+                                    	onmouseover="this.style.setProperty('background-color', 'rgba(104,97,206,0.1)', 'important')"
                                     	onmouseout="this.style.setProperty('background-color', 'transparent', 'important')"></textarea>
                                   </div>
                                 </div>

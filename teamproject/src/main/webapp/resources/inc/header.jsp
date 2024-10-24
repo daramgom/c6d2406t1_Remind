@@ -296,7 +296,10 @@
 				})
 				.then(() => {
 				    alert("로그아웃이 정상적으로 실행되었습니다.");
-				    location.href = "login";
+				    localStorage.removeItem('colShow');
+					localStorage.removeItem('colActive');
+					localStorage.removeItem('alertShown');
+				    location.href = "/login";
 				})
 				.catch(error => {
 				    console.error('문제가 발생했습니다:', error);

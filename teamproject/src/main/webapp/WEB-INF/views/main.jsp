@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>메인페이지</title>
+<title>REMIND</title>
 <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
 	name="viewport" />
 <link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
@@ -156,9 +156,9 @@
                     <div class="card-head-row">
                       <div class="card-title">일일 재고 운영</div>
                       <div class="card-tools">
-                        <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
+                        <a href="#" class="btn btn-label-success btn-round btn-sm me-2" id="exportImage">
                           <span class="btn-label">
-                            <i class="fa fa-pencil"></i>
+                            <i class="far fa-image"></i>
                           </span>
                           Export
                         </a>
@@ -184,13 +184,15 @@
                     <div class="card-head-row">
                      <div class="card-title">온라인 채팅</div>
                      </div>
+                    </div>
                   <div class="card-body pb-0">
                     <div class="mb-4 mt-2 col-12">
 						<div id="msgArea" class="col" style="height:325px; overflow-y:auto;">
 						</div>
 						<div class="col-12">
 						<div class="input-group mb-3">
-						<input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+						<input type="text" id="msg" class="form-control" maxlength="300" 
+							aria-label="Recipient's username" aria-describedby="button-addon2">
 						<div class="input-group-append">
 						<button class="btn btn-secondary" type="button" id="button-send">전송</button>
 						</div>
@@ -198,7 +200,6 @@
 						</div>
                     </div>
                   </div>
-                </div>
                 
               </div>
             </div>
@@ -384,10 +385,25 @@ function onClose(evt) {
 function onOpen(evt) {
 }
 // chatting
+
+
+// 그래프 이미지 저장
+$('#exportImage').on('click', function() {
+	const canvas = $('#statisticsChart')[0];
+	const canvasImg = canvas.toDataURL("image/png");
 	
-	
-	
-	
+	const link = $('<a></a>');
+	link.attr('href', canvasImg);
+	link.attr('download', 'REMIND_Daily_Chart.png');
+	link[0].click();
+});
+// 그래프 이미지 저장
+
+
+
+
+
+
 });//DOM준비
 
 

@@ -240,20 +240,29 @@ pageEncoding="UTF-8"%>
 	        		<h1>발주 목록</h1>
 	        		<hr>
 	        
-	        <div class="row">
-	        	<div class="col-sm-12 col-md-6">
-	        	</div>
-	        	
-	        	<div class="col-sm-12 col-md-6">
-	        		<div id="basic-datatables_filter" class="dataTables_filter">
-		        		<label>
-		        			Search:<input type="search" id="search-input" class="form-control form-control-sm" placeholder="" aria-controls="basic-datatables">
-		        		</label>
-	        		</div>
-	        	</div>
-	        </div>
+	        <div class="row mb-3">
+			    <div class="col-sm-12 col-md-6">
+			        <select id="status-filter" class="form-control" style="width: 200px;">
+			            <option value="">모든 발주상태</option>
+			            <option value="발주 기안">발주 기안</option>
+			            <option value="발주 반려">발주 반려</option>
+			            <option value="발주 결재">발주 결재</option>
+			            <option value="거래처 반려">거래처 반려</option>
+			            <option value="발주 완료">발주 완료</option>
+			            <option value="입고요청완료">입고 요청 완료</option>
+			        </select>
+			    </div>
+			    <div class="col-sm-12 col-md-6">
+			        <div id="basic-datatables_filter" class="dataTables_filter">
+			            <label>
+			                Search:<input type="search" id="search-input" class="form-control form-control-sm" placeholder="" aria-controls="basic-datatables">
+			            </label>
+			        </div>
+			    </div>
+			</div>
 	        
 	        <div class="row">
+				
 		        <table id="basic-datatables" class="display table table-striped table-hover dataTable" role="grid" aria-describedby="basic-datatables_info">
 		            <thead>
 		                <tr role="row">
@@ -274,22 +283,7 @@ pageEncoding="UTF-8"%>
 		                    <!-- <th>삭제 상태</th> -->
 		                </tr>
 		             </thead>
-		             <tfoot>
-		             	<tr>
-                            <th>순번</th>
-                            <th>관리번호</th>
-                            <th>발주상태</th>
-                            <th>담당자</th>
-                            <th>승인자</th>
-                            <th>제품코드</th>
-                            <th>발주단가</th>
-                            <th>발주수량</th>
-                            <th>기안시간</th>
-                            <th>상태별시간</th>
-                            <th>거래처코드</th>
-                            <th>입고창고</th>
-                          </tr>
-		             </tfoot>
+		             
 		             <tbody>
 						 	<c:forEach var="o" items="${oListVO }">
 		 
@@ -414,25 +408,22 @@ $(document).ready(function() {
     var currentPage = 1;
 
     function updateTable() {
-        // 검색어 가져오기
         var searchValue = $('#search-input').val().toLowerCase();
+        var selectedStatus = $('#status-filter').val();
 
-        // 필터링된 행 찾기
         var filteredRows = rows.filter(function() {
-            return $(this).text().toLowerCase().indexOf(searchValue) > -1;
+            var matchesSearch = $(this).text().toLowerCase().indexOf(searchValue) > -1;
+            var matchesStatus = selectedStatus ? $(this).find('td:nth-child(3)').text() === selectedStatus : true; // 3번째 열은 발주상태
+            return matchesSearch && matchesStatus;
         });
 
-        // 총 필터링된 행 수와 페이지 수 계산
         var totalRows = filteredRows.length;
         var totalPages = Math.ceil(totalRows / rowsPerPage);
 
-        // 모든 행 숨기기
         rows.hide();
-
-        // 현재 페이지에 맞는 행만 보여주기
         filteredRows.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage).show();
 
-        // 페이지네이션 버튼 업데이트
+        // 페이지네이션 업데이트
         $('#basic-datatables_paginate .pagination').empty();
         $('#basic-datatables_paginate .pagination').append('<li class="paginate_button page-item previous"><a href="#" class="page-link">Previous</a></li>');
         for (var i = 1; i <= totalPages; i++) {
@@ -440,20 +431,16 @@ $(document).ready(function() {
         }
         $('#basic-datatables_paginate .pagination').append('<li class="paginate_button page-item next"><a href="#" class="page-link">Next</a></li>');
 
-        // 페이지 버튼 활성화/비활성화 처리
         $('#basic-datatables_paginate .pagination .page-item').removeClass('active');
         $('#basic-datatables_paginate .pagination .page-item').eq(currentPage).addClass('active');
 
-        // 이전 및 다음 버튼 비활성화 처리
         $('.previous').toggleClass('disabled', currentPage === 1);
         $('.next').toggleClass('disabled', currentPage === totalPages);
-        
-    } // updateTable()
+    }
 
     // 페이지네이션 클릭 이벤트
     $('#basic-datatables_paginate').on('click', '.page-link', function(e) {
         e.preventDefault();
-
         if ($(this).parent().hasClass('previous')) {
             if (currentPage > 1) currentPage--;
         } else if ($(this).parent().hasClass('next')) {
@@ -461,7 +448,6 @@ $(document).ready(function() {
         } else {
             currentPage = parseInt($(this).text());
         }
-
         updateTable();
     });
 
@@ -471,10 +457,15 @@ $(document).ready(function() {
         updateTable();
     });
 
+    // 상태 필터링
+    $('#status-filter').on('change', function() {
+        currentPage = 1; // 필터 변경 시 첫 페이지로 리셋
+        updateTable();
+    });
+
     // 초기 설정
     updateTable();
-    
-}); // 돔레디
+});
 	
 </script>
 

@@ -46,4 +46,6 @@ public interface OrdersService {
 	
 	public List<OrdersVO> listWarehouse();
 	
+	public List<OrdersVO> listProd02();
+	
 }

@@ -113,4 +113,10 @@ public class OrdersDAOImpl implements OrdersDAO{
 		return sqlSession.selectList(NAMESPACE+".listWarehouse");
 	}
 	
+	@Override
+	public List<OrdersVO> listProd02() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(NAMESPACE+".listProd02");
+	}
+	
 }

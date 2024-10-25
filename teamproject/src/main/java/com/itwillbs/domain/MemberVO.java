@@ -49,6 +49,8 @@ public class MemberVO {
 	private String employee_rank_value;
 	private String permission_id_value;
 	
+	private String company_status; // 본사, 입고처, 출고처 
+	
 	private String member_code;
 	
 	

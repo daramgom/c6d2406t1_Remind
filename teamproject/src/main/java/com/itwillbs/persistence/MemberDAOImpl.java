@@ -324,4 +324,12 @@ public class MemberDAOImpl implements MemberDAO {
 			return result;
 		}
 
+		@Override
+		public int UpdatePwMember(MemberVO vo) {
+			System.out.println("DAO : UpdatePwMember(MemberVO vo) : "+ vo);
+			
+			int result = sqlSession.update(NAMESPACE+ ".updatePw", vo);
+			
+			return result;
+		}
 }

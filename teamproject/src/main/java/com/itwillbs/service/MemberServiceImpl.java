@@ -36,6 +36,7 @@ public class MemberServiceImpl implements MemberService{
 	public String memberJoin(MemberVO vo) {
 		logger.debug("(●'◡'●) 컨트롤러 -> 서비스 ");
 		logger.debug("(●'◡'●) 회원가입 메서드 memberJoin(MemberVO vo) 실행 ");
+		
 		String hashedPassword = BCrypt.hashpw(vo.getMember_pw(), BCrypt.gensalt());
         vo.setMember_pw(hashedPassword);
 		
@@ -46,30 +47,38 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public String companyMemberJoin(MemberVO vo) {
 		logger.debug("(●'◡'●) 컨트롤러 -> 서비스 ");
-		logger.debug("(●'◡'●) 회원가입 메서드 memberJoin(MemberVO vo) 실행 ");
+		logger.debug("(●'◡'●) 거래처 회원가입 메서드 memberJoin(MemberVO vo) 실행 ");
+		
 		String hashedPassword = BCrypt.hashpw(vo.getMember_pw(), BCrypt.gensalt());
         vo.setMember_pw(hashedPassword);
 		
 		return mdao.insertCompanyMember(vo);
 	}
 	
+	
+	
 	@Override
 	public MemberVO memberLoginCheck(MemberVO vo) {
 	   logger.debug("(●'◡'●) 컨트롤러가 호출 -> DAO 호출");
 	    MemberVO storedMember = mdao.loginMember(vo);
 
-	    // 아이디가 존재하지 않는 경우
 	    if (storedMember == null) {
 	        return null; // 아이디가 없음
 	    }
-
-	    // 비밀번호 확인
-	    if (!BCrypt.checkpw(vo.getMember_pw(), storedMember.getMember_pw())) {
-	        return new MemberVO(); // 빈 MemberVO 객체 반환 (비밀번호 틀림)
+	    
+	    // 아이디가 존재하는 경우 storeMember가 있음.
+	    
+	    // 비밀번호 확인 -> 비밀번호가 맞으면
+	    logger.debug("이거 실행되니? ");
+	    if (BCrypt.checkpw(vo.getMember_pw(), storedMember.getMember_pw())) {
+	    	logger.debug("이거 실행되니? ");
+	    	// 로그인 성공
+	    	return storedMember; // 비밀번호 일치
 	    }
 
-	    // 로그인 성공
-	    return storedMember; // 비밀번호 일치
+	    logger.debug("비밀번호 맞는지 ");
+	    logger.debug("(●'◡'●) 컨트롤러가 호출 -> DAO 호출 비밀번호 틀림" );
+	    return new MemberVO(); // 빈 MemberVO 객체 반환 (비밀번호 틀림)
 	}
 	
 	
@@ -186,7 +195,15 @@ public class MemberServiceImpl implements MemberService{
 		logger.debug("userTel 실행");
 		member.setMember_tel(newValue);
 		return mdao.updateMemberTel(member);
+	}
+	
+	
+	@Override
+	public int memberUpdatePw(MemberVO vo) {
+		String hashedPassword = BCrypt.hashpw(vo.getMember_pw(), BCrypt.gensalt());
+        vo.setMember_pw(hashedPassword);
 		
+		return mdao.UpdatePwMember(vo);
 	}
 	
 }

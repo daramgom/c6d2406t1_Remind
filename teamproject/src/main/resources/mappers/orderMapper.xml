@@ -53,7 +53,7 @@
 		and o.ord_status = cm.common_value 
 		and cm.common_work = 'ord_status' 
 		and ord_delete_status = '01' 
-		and o.ord_status in ('03', '04', '05') 
+		and o.ord_status in ('03', '04', '05', '06') 
 		order by ord_count desc
  	</select>
  	

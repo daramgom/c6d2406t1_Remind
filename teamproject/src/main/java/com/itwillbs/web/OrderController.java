@@ -201,5 +201,14 @@ public class OrderController {
     	return "/order-list";
     }
     
+    // 입고요청으로
+    @GetMapping("/processRcvRQ")
+    public String processRcvRQ(@RequestParam("ord_number") String ord_number, Model model) {
+        // 필요한 데이터 모델에 추가하고 JSP로 포워딩
+        model.addAttribute("ord_number", ord_number);
+        
+        return "rcvRQ";
+    }
+    
     
 }

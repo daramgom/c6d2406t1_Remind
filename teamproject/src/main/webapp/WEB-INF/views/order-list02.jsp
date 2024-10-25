@@ -763,6 +763,17 @@ function renderButtons(ord_status) {
         modalOrdQuantity.readOnly = true;
         wh_number.disabled = true;
     } // else if (ord_status === '05')
+    	
+ 	// 발주 상태가 입고요청완료 (06 : 발주완료에서 입고요청까지 한 상태)
+    else if (ord_status === '06') {
+    	// 발주 상태 안내
+        buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">입고 요청 완료</button>';
+     	// input태그 select 태그 비활성화
+        prod_id.disabled = true;
+        modalOrdPrice.readOnly = true;
+        modalOrdQuantity.readOnly = true;
+        wh_number.disabled = true;
+    } // else if (ord_status === '06')
 
     // 버튼에 이벤트 리스너 추가
     addButtonEventListeners();

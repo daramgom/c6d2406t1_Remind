@@ -39,6 +39,7 @@ public class EmailService {
  	@Inject
  	private MemberDAO mdao;
     
+
     
     public int sendIdPwCode(MemberVO vo) {
     	String verificationCode = VerificationCodeGenerator.generateVerificationCode();
@@ -49,19 +50,19 @@ public class EmailService {
     	
     	
     	
-    	
     	String subject = "부산 ITWILL 재고관리 시스템 ID, 변경된 PW 발송";
 //      여기서 태그를 꾸밀 수 있음.
        String body = "<!DOCTYPE html>"
-               + "<html lang=\"ko\">"
+    		   + "<html lang=\"ko\">"
                + "<head>"
                + "    <meta charset=\"UTF-8\">"
                + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
                + "</head>"
                + "<body style=\"font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;\">"
-               + "    <div style=\"background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 20px; padding: 20px;\">"
-               + "        <h1 style=\"font-size: 24px; color: #333; margin-bottom: 10px;\">이메일 인증</h1>"
-               + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">안녕하세요! 재고관시 시스템 입니다.</p>"
+               + "    <div style=\"background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 20px auto; padding: 20px; text-align : center;\">"
+               + "        <img src=\"https://lh3.googleusercontent.com/pw/AP1GczMRNpEAjBt6pDduaBvxXIuleQDM1gda--SrYnezTcYGk9wk4jmV2rdROa3nIN4P-EmVGmeQzuQf4XS1rs1t-ijbwfze581bv9WDNXhTs_6AOBN_htVtg_3-M-typzW4NXU0F1kXCaVsaCE6L-ow45M=w538-h80-s-no-gm?authuser=0\" alt=\"로고\" style=\"max-width: 50%; height: auto;\" >"
+               + "        <h1 style=\"font-size: 24px; color: #333; border-top: 1px solid; margin: 12px; padding: 10px;\">이메일 인증</h1>"
+               + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">안녕하세요! <span style=\"color: #5a00d8; \">REMIND</span> 재고관리 시스템 입니다.</p>"
                + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">아이디 : <div style=\"font-size: 20px; font-weight: bold; color: #007BFF; margin: 20px 0;\">" + vo.getMember_id() + "</div></p>"
                + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">임시 비밀번호  : <div style=\"font-size: 20px; font-weight: bold; color: #007BFF; margin: 20px 0;\">" + verificationCode + "</div></p>"
                + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">요청하신 아이디와 임시 비밀번호입니다.</p>"
@@ -113,9 +114,10 @@ public class EmailService {
                 + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
                 + "</head>"
                 + "<body style=\"font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;\">"
-                + "    <div style=\"background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 20px; padding: 20px;\">"
-                + "        <h1 style=\"font-size: 24px; color: #333; margin-bottom: 10px;\">이메일 인증</h1>"
-                + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">안녕하세요! 재고관시 시스템 입니다.</p>"
+                + "    <div style=\"background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 20px auto; padding: 20px; text-align : center;\">"
+                + "        <img src=\"https://lh3.googleusercontent.com/pw/AP1GczMRNpEAjBt6pDduaBvxXIuleQDM1gda--SrYnezTcYGk9wk4jmV2rdROa3nIN4P-EmVGmeQzuQf4XS1rs1t-ijbwfze581bv9WDNXhTs_6AOBN_htVtg_3-M-typzW4NXU0F1kXCaVsaCE6L-ow45M=w538-h80-s-no-gm?authuser=0\" alt=\"로고\" style=\"max-width: 50%; height: auto;\" >"
+                + "        <h1 style=\"font-size: 24px; color: #333; border-top: 1px solid; margin: 12px; padding: 10px;\">이메일 인증</h1>"
+                + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">안녕하세요! <span style=\"color: #5a00d8; \">REMIND</span>  재고관리 시스템 입니다.</p>"
                 + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">다음 인증 코드를 입력하세요 : <div style=\"font-size: 20px; font-weight: bold; color: #007BFF; margin: 20px 0;\">" + verificationCode + "</div></p>"
                 + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">위 코드를 입력하여 인증을 완료해 주세요.</p>"
                 + "        <p style=\"font-size: 16px; line-height: 1.5; color: #555; margin: 5px 0;\">감사합니다!</p>"

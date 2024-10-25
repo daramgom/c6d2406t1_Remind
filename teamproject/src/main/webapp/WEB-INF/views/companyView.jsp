@@ -702,6 +702,7 @@
          const email = $("#email").val().trim();
          const phone = $("#phone").val().trim();
          const code = $("#companyCode").val().trim();
+         const company_status = $("#company_status").val().trim();
 
        // 회원가입 데이터 객체 생성
        const signupData = {
@@ -711,6 +712,7 @@
          member_email: email,
          member_tel: phone,
          member_code : code,
+         company_status : company_status,
        };
 
        // AJAX 요청으로 회원가입 처리

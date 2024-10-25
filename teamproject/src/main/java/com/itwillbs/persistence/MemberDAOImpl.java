@@ -65,6 +65,8 @@ public class MemberDAOImpl implements MemberDAO {
 		return "회원가입 완료";
 	}
 	
+	
+	// 거래처 회원가입
 	@Override
 	public String insertCompanyMember(MemberVO vo) {
 		System.out.println(" DAO : 회원가입 동작 실행! ");

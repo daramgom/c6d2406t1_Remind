@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +31,9 @@ public class EmailService {
 
     // 스케줄러 서비스
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    
+    // 쓰레드풀 생성
+    private ExecutorService emailExecutor = Executors.newCachedThreadPool();
     
     // MemberDAO 객체 주입
  	@Inject
@@ -66,19 +70,21 @@ public class EmailService {
                + "</body>"
                + "</html>";
 
-       try {
-           // MimeMessage를 사용하여 HTML 이메일 전송
-           MimeMessage message = mailSender.createMimeMessage();
-           MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-           
-           helper.setTo(vo.getMember_email());
-           helper.setSubject(subject);
-           helper.setText(body, true); // 두 번째 인자를 true로 설정하여 HTML 본문 사용
-
-           mailSender.send(message);
-       } catch (Exception e) {
-           e.printStackTrace();
-       }
+       // 메일 전송을 쓰레드로 처리
+       emailExecutor.submit(() -> {
+           try {
+               MimeMessage message = mailSender.createMimeMessage();
+               MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+               
+               helper.setTo(vo.getMember_email());
+               helper.setSubject(subject);
+               helper.setText(body, true);
+               
+               mailSender.send(message);
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+       });
     	
        
        return result;
@@ -116,20 +122,21 @@ public class EmailService {
                 + "    </div>"
                 + "</body>"
                 + "</html>";
+        // 메일 전송을 쓰레드로 처리
+        emailExecutor.submit(() -> {
+            try {
+                MimeMessage message = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+                
+                helper.setTo(to);
+                helper.setSubject(subject);
+                helper.setText(body, true);
 
-        try {
-            // MimeMessage를 사용하여 HTML 이메일 전송
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(body, true); // 두 번째 인자를 true로 설정하여 HTML 본문 사용
-
-            mailSender.send(message);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                mailSender.send(message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         
         // 6분 후에 인증 코드를 삭제하는 작업 예약
         scheduler.schedule(() -> verificationCodes.remove(to), 6, TimeUnit.MINUTES);

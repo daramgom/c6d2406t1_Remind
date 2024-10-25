@@ -46,6 +46,9 @@
 <c:if test="${empty sessionScope.id}">
 	<c:redirect url="/login"/>
 </c:if>
+<c:if test="${sessionScope.member_code != 1}">
+	<c:redirect url="/cmain"/>
+</c:if>
 	
 	<div class="wrapper">
 		<!-- Header -->

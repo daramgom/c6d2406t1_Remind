@@ -32,6 +32,8 @@ public class ProdVO {
 	private MultipartFile uploadfile;
 	private String company_code;
 	private String company_name;
+	private String prod_regname;
+	private String prod_updname;
 	private int wh_number;
 	private int stock_wh;
 	private String wh_name;

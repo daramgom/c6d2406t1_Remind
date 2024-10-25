@@ -11,6 +11,7 @@
 	name="viewport" />
 <link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
 	type="image/x-icon" />
+	
 
 <!-- Fonts and icons -->
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
@@ -82,6 +83,12 @@
 
 </head>
 <body>
+<c:if test="${empty sessionScope.id}">
+	<c:redirect url="/login"/>
+</c:if>
+<c:if test="${sessionScope.member_code != 1}">
+	<c:redirect url="/cmain"/>
+</c:if>
 	<div class="wrapper">
 		<!-- Header -->
 		<jsp:include page="/resources/inc/header.jsp" />
@@ -126,9 +133,9 @@
 												<label for="prod_category" class="col-form-label-lg"> 제품카테고리</label>
 											</div>
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
-													value="테스터1" placeholder="등록작업자" />
+													value="${sessionScope.id }" placeholder="등록작업자" />
 												<input type="hidden" id="prod_upduser" name="prod_upduser" 
-													value="테스터1" placeholder="수정작업자" />
+													value="${sessionScope.id }" placeholder="수정작업자" />
 										</div>
 										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
@@ -188,7 +195,6 @@
 		<jsp:include page="/resources/inc/footer.jsp" />
 	</div>
 
-	
 	<script type="text/javascript">
     
 	    $(document).ready(function () {
@@ -210,53 +216,62 @@
 	                ]; // 허용하는 이미지 타입
 
 	                if (!ImageTypes.includes(file.type)) {
-	                    swal("오류!", "이미지 파일만 업로드 가능합니다.", "error");
-	                    $('#uploadfile').val(''); // 입력값 초기화 (업로드 자체를 막음)
-	                    $('#previewimg').hide(); // 미리보기 숨김
-	                    return; // 함수 종료
+	                	swal({
+	                    	title: "오류!",
+	                    	text: "이미지 파일만 업로드 가능합니다.",
+	                    	icon: "error",
+	                    	buttons: {
+	                    		confirm:{
+	                    			text: "확인",
+									className: 'btn btn-secondary'
+	                    		}
+							}
+	                    });
+	                    $('#uploadfile').val('');
+	                    $('#previewimg').hide();
+	                    return;
 	                }
 
-	                const reader = new FileReader(); // FileReader 객체 생성
+	                const reader = new FileReader();
 
-	                // 파일이 로드되면 미리보기 이미지 src를 설정
-	                reader.onload = function(e) {
-	                	$('#previewimg').attr('src', e.target.result); // jQuery로 src 설정
-	                    $('#previewimg').css('display', 'inline-block'); // 미리보기 보여줌
-	                };
+					reader.onload = function(e) {
+						$('#previewimg').attr('src', e.target.result);
+						$('#previewimg').css('display', 'inline-block');
+					};
 
-	                reader.readAsDataURL(file); // 파일을 Data URL로 읽기
-	                
-	            } else {
-	                // 파일 선택이 취소된 경우
-	                $('#uploadfile').val(''); // 입력값 초기화
-	                $('#previewimg').hide(); // 미리보기 숨김
-	            }
-	        });
+					reader.readAsDataURL(file);
+					
+				} else {
+					$('#uploadfile').val('');
+					$('#previewimg').hide();
+				}
+			});
 	    	
 	    	
 	        $('#prodForm').on('submit', function (e) {
-	            e.preventDefault(); // 기본 제출 이벤트 방지
+	            e.preventDefault();
 	            
-	         	// 버튼 비활성화
 	            $('button[type="submit"]').prop('disabled', true);
 	            
-	            var formData = new FormData(this); // FormData 객체 생성
+	            var formData = new FormData(this);
 	
 	            $.ajax({
-	                url: '/prod/insert', // 서버의 처리 URL
+	                url: '/prod/insert',
 	                type: 'POST',
 	                data: formData,
-	                processData: false, // jQuery가 데이터를 처리하지 않도록 설정
-	                contentType: false, // jQuery가 Content-Type을 설정하지 않도록 설정
+	                processData: false,
+	                contentType: false,
 	                success: function (response) {
-	                    // 성공 시 SweetAlert 모달 표시
 	                    swal({
 	                    	title: "성공!",
 	                    	text: "제품이 등록되었습니다!",
 	                    	icon: "success",
 	                    	buttons: {
-	                    		text: "확인",
-	                    	}
+	                    		confirm:{
+	                    			text: "확인",
+									className: 'btn btn-secondary'
+	                    		}
+							}
 	                    });
 	                    $('input').val('');
 	                    $('#uploadfile').val('');
@@ -268,17 +283,21 @@
 	                	$('#prod_upduser').val("테스터1");
 	                },
 	                error: function (error) {
-	                    // 오류 시 SweetAlert 모달 표시
 	                    swal({
 	                    	title: "오류!",
 	                    	text: "제품 등록에 실패했습니다.",
-	                    	icon: "error"
+	                    	icon: "error",
+	                    	buttons: {
+	                    		confirm:{
+	                    			text: "확인",
+									className: 'btn btn-secondary'
+	                    		}
+							}
 	                    });
-	                	$('#prod_reguser').val("테스터1");
-	                	$('#prod_upduser').val("테스터1");
+	                	$('#prod_reguser').val("${sessionScope.id}");
+	                	$('#prod_upduser').val("${sessionScope.id}");
 	                },
 	                complete: function() {
-	                    // 요청이 완료되면 버튼 활성화
 	                    $('button[type="submit"]').prop('disabled', false);
 	                }
 	            });
@@ -316,7 +335,8 @@
 	                        icon: "success",
 	                        buttons: {
 	                            confirm: {
-	                                className: "btn btn-primary",
+	                            	text: "확인",
+	                                className: "btn btn-secondary",
 	                            },
 	                        },
 	                    });

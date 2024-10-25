@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -78,6 +79,12 @@
 
 </head>
 <body>
+<c:if test="${empty sessionScope.id}">
+	<c:redirect url="/login"/>
+</c:if>
+<c:if test="${sessionScope.member_code != 1}">
+	<c:redirect url="/cmain"/>
+</c:if>
 	<div class="wrapper">
 		<!-- Header -->
 		<jsp:include page="/resources/inc/header.jsp" />
@@ -118,13 +125,11 @@
 												</select>
 												<label for="prod_id" class="selectFloatingLabel" style="font-size: 1.2rem !important;" >제품식별코드</label>
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
-													value="테스터1" placeholder="등록작업자" />
-												<input type="hidden" id="prod_upduser" name="prod_upduser" 
-													value="테스터1" placeholder="수정작업자" />
+													value="${sessionScope.id }" placeholder="등록작업자" />
 											</div>
 											<div class="form-floating form-floating-custom mb-3" style="flex: 1;">
 												<select class="form-select" id="wh_number" name="wh_number" required disabled>
-													<option value="">창고</option>
+													<option value="">출발창고</option>
 												</select>
 												<label for="wh_number" class="selectFloatingLabel" style="font-size: 1.2rem !important;">창고</label>
 											</div>
@@ -142,7 +147,7 @@
 											 </div>
 											 <div class="form-floating form-floating-custom mb-3" style="flex: 1;">
 												<select class="form-select" id="stock_wh" name="stock_wh" required disabled>
-													<option value="">창고</option>
+													<option value="">도착창고</option>
 												</select>
 												<label for="stock_wh" class="selectFloatingLabel" style="font-size: 1.2rem !important;">창고</label>
 											</div>
@@ -371,6 +376,7 @@ $(document).ready(function () {
 			buttons: {
 				confirm: {
 					text: "확인",
+					className: "btn btn-secondary",
 				}
 			}
 		});
@@ -382,6 +388,7 @@ $(document).ready(function () {
 			buttons: {
 				confirm: {
 					text: "확인",
+					className: "btn btn-secondary",
 				}
 			}
 		});
@@ -424,7 +431,8 @@ $(document).ready(function () {
 	                type: "success",
 	                buttons: {
 	                    confirm: {
-	                        className: "btn btn-primary",
+	                    	text: "확인",
+	                        className: "btn btn-secondary",
 	                    },
 	                },
 	            });

@@ -38,10 +38,16 @@
 
 <!-- 제품 조회 -->
 <select id="findProd" resultType="ProdVO">
-	select *, date_format(p.prod_regdate, '%Y-%m-%d (%a) %H:%i') as formatted_regdate, 
-	 date_format(p.prod_upddate, '%Y-%m-%d (%a) %H:%i') as formatted_upddate 
-	   from prod p join company c on p.company_code = c.company_code 
-	    where prod_id = #{prod_id} and prod_status != '02'
+	select p.prod_id, p.prod_name, p.prod_category, p.prod_regdate, 
+	 p.prod_reguser, p.prod_upduser, m_reg.member_name as prod_regname, m_upd.member_name prod_updname,  
+	  p.prod_brand, p.prod_image, p.prod_upddate, p.company_code, c.company_name, p.prod_remarks, 
+	   date_format(p.prod_regdate, '%Y-%m-%d (%a) %H:%i') as formatted_regdate, 
+	    date_format(p.prod_upddate, '%Y-%m-%d (%a) %H:%i') as formatted_upddate 
+	from prod p 
+	 join company c on p.company_code = c.company_code 
+	  left join member m_reg on p.prod_reguser = m_reg.member_id 
+	   left join member m_upd on p.prod_upduser = m_upd.member_id 
+		where p.prod_id = 'P-3G4OCA-1004' and p.prod_status != '02'
 </select>
 
 <select id="findProdList" resultType="ProdVO">
@@ -90,6 +96,11 @@
      values (#{prod_id}, #{stock_wh}, #{stock_qty}) 
       on duplicate key update 
        prod_qty = coalesce(prod_qty, 0) + #{stock_qty}
+</insert>
+
+<insert id="stockMove">
+	insert into inven_move (prod_id, from_wh, to_wh, stock_qty, member_id) 
+	 values (#{prod_id}, #{wh_number}, #{stock_wh}, #{stock_qty}, #{prod_reguser})
 </insert>
 
 <select id="transferSelect" resultType="ProdVO">

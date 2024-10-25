@@ -103,6 +103,7 @@ public class ProdDAOImpl implements ProdDAO {
 		logger.debug("( •̀ ω •́ )✧ DAO : transferProd(ProdVO vo) 실행");
 		int result = sqlSession.update(NAMESPACE+ ".transferProd", vo);
 		result += sqlSession.insert(NAMESPACE+ ".transferProd2", vo);
+		result += sqlSession.insert(NAMESPACE+ ".stockMove",vo);
 		return result;
 	}
 

@@ -89,7 +89,8 @@ body {
 	width: 100%;
 	position: relative;
 	margin-bottom: 1.8rem;
-	margin-top: 1.8rem
+	margin-top: 1.8rem;
+	transition: transform 0.5s ease; /* 슬라이드 애니메이션을 위한 트랜지션 */
 }
 
 .signup-form .input-wrapper .input-label {
@@ -284,4 +285,8 @@ width: 17rem;
     position: absolute;
     top: 1.6rem;
     right: -278px;
+}
+
+#EmailInput {
+    display: none; /* 초기 상태에서 숨김 */
 }

@@ -135,7 +135,7 @@ pageEncoding="UTF-8"%>
       </form>
 
       <p class="signup-text">
-      	<a href="/findPassword">비밀번호 찾기</a>
+      	<a href="/pwInquiry">비밀번호 찾기</a>
       </p>
       <p class="signup-text">
         회원이 아니신가요? <a href="/signup">회원가입</a>

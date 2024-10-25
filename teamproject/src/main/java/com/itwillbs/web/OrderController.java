@@ -105,18 +105,22 @@ public class OrderController {
     	model.addAttribute("userId", userId);
     	model.addAttribute("userMemberCode", userMemberCode);
     	
-    	List<OrdersVO> pListVO = orderService.listProd();
+    	List<OrdersVO> pListVO02 = orderService.listProd02();
     	
-    	model.addAttribute("pListVO", pListVO);
+    	model.addAttribute("pListVO02", pListVO02);
     	
     	return "/order-insert02";
     }
     
     @RequestMapping(value = "/order-insert02", method = RequestMethod.POST)
-    public String insertOrder02(OrdersVO ordersVO) {
+    public String insertOrder02(OrdersVO ordersVO, HttpSession session) {
     	orderService.insert02(ordersVO);
     	
-    	return "/order-insert02";
+    	String ord_number = ordersVO.getOrd_number();
+    	
+    	session.setAttribute("ord_number", ord_number);
+    	
+    	return "redirect:/order-insert02";
     }
     
     

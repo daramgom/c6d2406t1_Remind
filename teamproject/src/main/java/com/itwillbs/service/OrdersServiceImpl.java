@@ -135,4 +135,10 @@ public class OrdersServiceImpl implements OrdersService{
 		return odao.listWarehouse();
 	}
 	
+	@Override
+	public List<OrdersVO> listProd02() {
+		// TODO Auto-generated method stub
+		return odao.listProd02();
+	}
+	
 }

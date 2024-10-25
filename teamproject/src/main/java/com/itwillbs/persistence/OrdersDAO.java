@@ -43,4 +43,7 @@ public interface OrdersDAO {
 	public List<OrdersVO> listProd();
 	
 	public List<OrdersVO> listWarehouse();
+	
+	public List<OrdersVO> listProd02();
+	
 }

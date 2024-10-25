@@ -756,12 +756,25 @@ function renderButtons(ord_status) {
     else if (ord_status === '05') {
     	// 발주 상태 안내
         buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">완료</button>';
+        // 발주관리번호를 가지고 입고요청으로 이동
+        buttonContainer.innerHTML += `<button id="toRcvRq" class="btn btn-success">입고요청으로</button>`;
      	// input태그 select 태그 비활성화
         prod_id.disabled = true;
         modalOrdPrice.readOnly = true;
         modalOrdQuantity.readOnly = true;
         wh_number.disabled = true;
     } // else if (ord_status === '05')
+    	
+	// 발주 상태가 입고요청완료 (06 : 발주완료에서 입고요청까지 한 상태)
+    else if (ord_status === '06') {
+    	// 발주 상태 안내
+        buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">입고 요청 완료</button>';
+     	// input태그 select 태그 비활성화
+        prod_id.disabled = true;
+        modalOrdPrice.readOnly = true;
+        modalOrdQuantity.readOnly = true;
+        wh_number.disabled = true;
+    } // else if (ord_status === '06')
 
     // 버튼에 이벤트 리스너 추가
     addButtonEventListeners();
@@ -947,6 +960,31 @@ function addButtonEventListeners() {
             alert("반려 중 오류가 발생했습니다.");
         });
     }); // updateBtn04
+    
+    document.getElementById('toRcvRq')?.addEventListener('click', function(event) {
+        event.preventDefault(); // 기본 동작 방지
+        
+     	// ord_number를 가져옵니다
+        var ord_number = document.getElementById('modalOrdNumber').value;
+
+        // AJAX 요청을 통해 컨트롤러로 ord_number를 전송합니다
+        fetch(`/processRcvRQ?ord_number=${ord_number}`, {
+            method: "GET"
+        })
+        .then(response => {
+            if (!response.ok) throw new Error("Network response was not ok " + response.statusText);
+            return response.text();
+        })
+        .then(data => {
+            // 서버에서 처리 후 페이지 이동
+            window.location.href = "rcvRQ"; // 여기서 이동할 페이지를 설정
+        })
+        .catch(error => {
+            console.error(error);
+            alert("처리 중 오류가 발생했습니다.");
+        });
+    }); // toRcvRq
+
         
 } //addButtonEventListeners()
 

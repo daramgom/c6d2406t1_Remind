@@ -26,7 +26,7 @@
 		<div class="main-header-logo">
 			<!-- Logo Header -->
 			<div class="logo-header" data-background-color="light">
-				<a href="/main" class="logo"> <img
+				<a href="#" class="logo"> <img
 					src="/resources/img/kaiadmin/logo_light.svg" alt="navbar brand"
 					class="navbar-brand" height="20" />
 				</a>
@@ -50,7 +50,6 @@
 			<div class="container-fluid">
 				<nav
 					class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-					
 				</nav>
 
 				<ul class="navbar-nav topbar-nav ms-md-auto align-items-center">

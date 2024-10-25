@@ -53,66 +53,6 @@
     	text-align: center;
     }
     
-    .modal-dialog {
-    	--bs-modal-width: 1200px;
-    }
-    
-    .modal-content {
-            height: 90vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-    }
-    
-    #previewimg {
-		width: 95%;
-		height: 95%;
-		margin: 10px;
-		object-fit: contain;
-	}
-
-	.preview {
-		width: 200px;
-		height: 150px;
-		margin: 10px;
-		border: 2px dashed #ccc;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: #f9f9f9;
-	}
-	
-	#prodUpdateForm label {
-	 	font-size: 1.1rem !important;
-	}
-	
-	#prodUpdateForm input {
-    	font-size: 1.1rem !important;
-	}
-	
-	.modal-footer i {
-		font-size: 1.2rem;
-		line-height: 2;
-	}
-	
-	.modal-footer button {
-		font-size: 1.2rem;
-		line-height: 2;
-		margin-bottom: 10px;
-		font-weight: bold;
-	}
-	
-	textarea {
-		transition: background-color 0.3s, border 0.3s;
-	}
-	
-	input:not([readonly]):not([disabled]) {
-		transition: background-color 0.3s, border 0.3s;
-	}
-
-	input:not([readonly]):not([disabled]):hover {
-		background-color: rgba(104,97,206,0.1) !important;
-	}
-    
 </style>
 
 </head>
@@ -152,7 +92,7 @@
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">제품목록</a>
+                  <a href="#">제품이동내역</a>
                 </li>
               </ul>
             </div>
@@ -160,7 +100,7 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <h3 class="card-title">제품목록</h3>
+                    <h3 class="card-title">제품이동내역</h3>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive">
@@ -171,12 +111,12 @@
                         <thead>
                           <tr>
                             <th>제품식별코드</th>
-                            <th>제품명</th>
-                            <th>카테고리</th>
-                            <th>수량</th>
-                            <th>입고처</th>
-                            <th>등록일시</th>
-                            <th>제품이미지</th>
+                            <th>출발창고</th>
+                            <th>도착창고</th>
+                            <th>이동수량</th>
+                            <th>작업자</th>
+                            <th>작업일시</th>
+                            <th>비고</th>
                           </tr>
                         </thead>
                         <tfoot>
@@ -190,249 +130,20 @@
                           </tr>
                         </tfoot>
                         <tbody>
-						<c:forEach var="p" items="${plistVO}">
-							<tr class="prod_detail">
-								<td style="padding:0 !important;">${p.prod_id}</td>
-								<td style="padding:0 !important;">${p.prod_name}</td>
-								<td style="padding:0 !important;">${p.prod_category}</td>
-								<td style="padding:0 !important;">${p.prod_qty}</td>
-								<td style="padding:0 !important;">${p.company_name}</td>
-								<td style="padding:0 !important;">${p.formatted_regdate}</td>
-								<td style="padding:0 !important;"><img src="${p.prod_image}" alt="제품이미지" style="width:75px; height:75px; object-fit: contain;"></td>
+						<c:forEach var="" items="">
+							<tr>
+								<td style="padding:0 !important;"></td>
+								<td style="padding:0 !important;"></td>
+								<td style="padding:0 !important;"></td>
+								<td style="padding:0 !important;"></td>
+								<td style="padding:0 !important;"></td>
+								<td style="padding:0 !important;"></td>
+								<td style="padding:0 !important;"></td>
 							</tr>
 						</c:forEach>
                         </tbody>
                       </table>
-                      
-					<!-- Modal -->
-                    <div
-                      class="modal fade"
-                      id="prodModal"
-                      tabindex="-1"
-                      role="dialog"
-                      aria-hidden="true"
-                    >
-                      <div class="modal-dialog" role="document" style="width:1200px">
-                        <div class="modal-content">
-                          <div class="modal-header border-0">
-                            <h5 class="modal-title">
-                              <span class="fw-mediumbold"> 제품상세정보 </span>
-                            </h5>
-                            <button
-                              type="button"
-                              class="close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            >
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <form action="/prod/update" id="prodUpdateForm" method="post" enctype="multipart/form-data">
-                              <div class="row">
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>제품식별코드</label>
-                                    <input
-                                      id="prod_id"
-                                      name="prod_id"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="제품식별코드"
-                                      readonly="readonly"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>제품이름</label>
-                                    <input
-                                      id="prod_name"
-                                      name="prod_name"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="제품이름"
-                                      required="required"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>제품카테고리</label>
-                                    <input
-                                      id="prod_category"
-                                      name="prod_category"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="제품카테고리"
-                                      required="required"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>브랜드</label>
-                                    <input
-                                      id="prod_brand"
-                                      name="prod_brand"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="브랜드"
-                                      required="required"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>입고처</label>
-                                    <input
-                                      id="company_code"
-                                      name="company_code"
-                                      type="text"
-                                      class="form-control"
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>등록일시</label>
-                                    <input
-                                      id="prod_regdate"
-                                      type="text"
-                                      class="form-control"
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>등록자</label>
-                                    <input
-                                      id="prod_regname"
-                                      type="text"
-                                      class="form-control"
-                                      disabled
-                                    />
-                                  </div>
-                              	</div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>수정일시</label>
-                                    <input
-                                      id="prod_upddate"
-                                      type="text"
-                                      class="form-control"
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>수정자</label>
-                                    <input
-                                      id="prod_updname"
-                                      type="text"
-                                      class="form-control"
-                                      disabled
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>비고</label>
-                                    <textarea 
-                                    	id="prod_remarks" 
-                                    	name="prod_remarks" 
-                                    	rows="4" cols="30" 
-                                    	class="form-control"
-                                    	style="background-color: transparent;"
-                                    	onmouseover="this.style.setProperty('background-color', 'rgba(104,97,206,0.1)', 'important')"
-                                    	onmouseout="this.style.setProperty('background-color', 'transparent', 'important')"></textarea>
-                                  </div>
-                                </div>
-                                <div class="col-md-4">
-                                  <div class="form-group form-group-default">
-                                    <label>이미지</label>
-                                    <input type="file" 
-                                    	class="form-control input-full"
-										id="uploadfile" 
-										name="uploadfile" 
-										accept=".jpeg, .jpg, .png, .gif" />
-                                  </div>
-									<div class="form-group-default"> 
-										<div class="d-flex justify-content-center">
-											<div class="form-check d-flex align-items-center">
-												<input class="form-check-input" type="radio" name="prod_option" id="prod_barcode" value="barcode">
-												<label class="form-check-label" for="prod_barcode">바코드</label>
-											</div>
-											<div style="flex:1">
-											</div>
-											<div class="form-check d-flex align-items-center">
-												<input class="form-check-input" type="radio" name="prod_option" id="prod_qrcode" value="qrcode">
-												<label class="form-check-label" for="prod_qrcode">QR코드</label>
-											</div>
-											<div style="flex:1">
-											</div>
-										</div>
-										<div class="d-flex align-items-center justify-content-center">
-											<img id="codeImage" alt="#" src="#" 
-											style="width: #; height: #; margin-bottom: 10px; display: none; object-fit: contain;">
-										</div>
-									</div>
-                               </div>
-								<div class="col-md-4" style="display: flex;">
-									<div class="preview">
-										<img id="previewimg" alt="미리보기이미지" src="#"/>
-									</div>
-									<div style="margin-top:10px;">
-										<button class="btn btn-black btn-border btn-sm" id="image_delete">이미지제거</button>
-									</div>
-								</div>
-								<input type="hidden" id="prod_upduser" name="prod_upduser">
-								<input type="hidden" id="prod_image" name="prod_image">
-								<input type="hidden" id="temp_image" name="temp_image">
-                              </div>
-                         	</form>
-							<div class="card-body">
-	                         	 <table class="table table-hover" id="stockList">
-							        <thead>
-							            <tr>
-							                <th>제품식별코드</th>
-							                <th>창고</th>
-							                <th>수량</th>
-							            </tr>
-							        </thead>
-							        <tbody id="stockListBody">
-							            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
-							        </tbody>
-							    </table>
-							</div>
-						</div>
-						
-                          <div class="modal-footer border-0" style="justify-content : center;">
-                            <button
-                              type="button"
-                              id="prodUpdate"
-                              class="btn btn-secondary"
-                            >
-                              <i class="fa fa-pen"><b> 제품 수정</b></i>
-                            </button>
-                            <button
-                              type="button"
-                              id="prodDelete"
-                              class="btn btn-danger"
-                            >
-                             <i class="fa fa-trash"><b> 제품 삭제</b></i>
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-black"
-                              data-bs-dismiss="modal"
-                            >
-                              닫기
-                            </button>
-                          </div>
+                      				
                         </div>
                       </div>
                     </div>
@@ -441,9 +152,7 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+           
 		
 		<!-- Footer -->
 		<jsp:include page="${pageContext.request.contextPath}/resources/inc/footer.jsp" />

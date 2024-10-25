@@ -98,9 +98,9 @@
        prod_qty = coalesce(prod_qty, 0) + #{stock_qty}
 </insert>
 
-<insert id="stockMove">
-	insert into inven_move (prod_id, from_wh, to_wh, stock_qty, member_id) 
-	 values (#{prod_id}, #{wh_number}, #{stock_wh}, #{stock_qty}, #{prod_reguser})
+<insert id="moveStock">
+	insert into move_stock (prod_id, move_fromwh, move_towh, move_qty, move_reguser, move_reason) 
+	 values (#{prod_id}, #{wh_number}, #{stock_wh}, #{stock_qty}, #{prod_reguser}, #{move_reason})
 </insert>
 
 <select id="transferSelect" resultType="ProdVO">

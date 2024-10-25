@@ -44,6 +44,7 @@ public class ProdVO {
 	private int stock_qty;
 	private int current_qty;
 	private String prod_remarks;
+	private String move_reason;
 	private String formatted_regdate;
 	private String formatted_upddate;
 

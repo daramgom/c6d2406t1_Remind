@@ -292,6 +292,9 @@
 				    localStorage.removeItem('colShow');
 					localStorage.removeItem('colActive');
 					localStorage.removeItem('alertShown');
+					// 로그인 페이지로 이동하기 전에 현재 상태를 변경
+		            window.history.replaceState(null, '', '/login');
+		            // 로그인 페이지로 리디렉션
 				    location.href = "/login";
 				})
 				.catch(error => {

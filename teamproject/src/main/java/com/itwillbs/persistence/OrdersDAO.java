@@ -12,6 +12,8 @@ import com.itwillbs.domain.OrdersVO;
 public interface OrdersDAO {
 	public int insert(OrdersVO ordersVO);
 	
+	public int insert02(OrdersVO ordersVO);
+	
 	public List<OrdersVO> listOrder();
 	
 	public List<OrdersVO> listOrder02();

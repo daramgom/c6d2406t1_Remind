@@ -7,8 +7,17 @@
  	 	
  <!-- 발주 요청 정보 입력 -->
     <insert id="insert">
-    	insert into orders(ord_delete_status,ord_status, ord_manager_id, ord_supervisor_id, prod_id, ord_price, ord_quantity, ord_date, ord_date_change, company_code, ord_text, wh_number,ord_number,ord_count) 
-    	values ('01','01',#{ord_manager_id},#{ord_supervisor_id},#{prod_id},#{ord_price},#{ord_quantity},now(),now(),#{company_code},#{ord_text},#{wh_number}, 
+    	insert into orders(ord_who_status,ord_delete_status,ord_status, ord_manager_id, ord_supervisor_id, prod_id, ord_price, ord_quantity, ord_date, ord_date_change, company_code, ord_text, wh_number,ord_number,ord_count) 
+    	values ('01','01','01',#{ord_manager_id},#{ord_supervisor_id},#{prod_id},#{ord_price},#{ord_quantity},now(),now(),#{company_code},#{ord_text},#{wh_number}, 
+    	(SELECT CONCAT('ORD-', YEAR(CURRENT_DATE), '-', LPAD(IFNULL(MAX(SUBSTRING(ord_number, -4)), 0) + 1, 4, '0')) 
+         FROM (SELECT ord_number FROM orders WHERE ord_number LIKE CONCAT('ORD-', YEAR(CURRENT_DATE), '%')) AS temp), 
+         (SELECT COALESCE(MAX(ord_count), 0) + 1 FROM (SELECT ord_count FROM orders) AS temp2))
+    </insert>
+    
+ <!-- 거래처의 발주 요청 정보 입력 -->
+    <insert id="insert02">
+    	insert into orders(ord_who_status,ord_delete_status,ord_manager_id,prod_id,ord_price,ord_quantity,ord_date,company_code,ord_text,ord_number,ord_count) 
+    	values ('02','01',#{ord_manager_id},#{prod_id},#{ord_price},#{ord_quantity},now(),#{company_code},#{ord_text}, 
     	(SELECT CONCAT('ORD-', YEAR(CURRENT_DATE), '-', LPAD(IFNULL(MAX(SUBSTRING(ord_number, -4)), 0) + 1, 4, '0')) 
          FROM (SELECT ord_number FROM orders WHERE ord_number LIKE CONCAT('ORD-', YEAR(CURRENT_DATE), '%')) AS temp), 
          (SELECT COALESCE(MAX(ord_count), 0) + 1 FROM (SELECT ord_count FROM orders) AS temp2))
@@ -37,7 +46,8 @@
 		and o.wh_number = w.wh_number 
 		and o.ord_status = cm.common_value 
 		and cm.common_work = 'ord_status' 
-		and ord_delete_status = '01' 
+		and o.ord_delete_status = '01' 
+		and o.ord_who_status = '01' 
 		order by ord_count desc
  	</select>
  
@@ -52,8 +62,9 @@
 		and o.wh_number = w.wh_number 
 		and o.ord_status = cm.common_value 
 		and cm.common_work = 'ord_status' 
-		and ord_delete_status = '01' 
+		and o.ord_delete_status = '01' 
 		and o.ord_status in ('03', '04', '05', '06') 
+		and o.ord_delete_status = '01' 
 		order by ord_count desc
  	</select>
  	

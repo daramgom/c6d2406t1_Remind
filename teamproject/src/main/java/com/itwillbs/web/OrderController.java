@@ -83,10 +83,6 @@ public class OrderController {
         return "/order-insert";
     }
     
-    
-    
-    
-    
     // 등록 처리하기
     @RequestMapping(value = "/order-insert", method = RequestMethod.POST)
     public String insertOrder(OrdersVO ordersVO, RedirectAttributes rttr) {
@@ -99,6 +95,30 @@ public class OrderController {
     	
     	return "redirect:/order-list";
     }
+    
+    @RequestMapping(value = "/order-insert02", method = RequestMethod.GET)
+    public String insertOrderForm02(Model model, HttpSession session) {
+    	
+    	String userId = (String)session.getAttribute("id");
+    	String userMemberCode = (String)session.getAttribute("member_code");
+    	
+    	model.addAttribute("userId", userId);
+    	model.addAttribute("userMemberCode", userMemberCode);
+    	
+    	List<OrdersVO> pListVO = orderService.listProd();
+    	
+    	model.addAttribute("pListVO", pListVO);
+    	
+    	return "/order-insert02";
+    }
+    
+    @RequestMapping(value = "/order-insert02", method = RequestMethod.POST)
+    public String insertOrder02(OrdersVO ordersVO) {
+    	orderService.insert02(ordersVO);
+    	
+    	return "/order-insert02";
+    }
+    
     
     // 목록창 불러오기
     @GetMapping(value = "/order-list")

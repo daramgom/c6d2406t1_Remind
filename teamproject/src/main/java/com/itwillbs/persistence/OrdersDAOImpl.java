@@ -35,6 +35,13 @@ public class OrdersDAOImpl implements OrdersDAO{
 	}
 	
 	@Override
+	public int insert02(OrdersVO ordersVO) {
+		int result = sqlSession.insert(NAMESPACE+".insert02", ordersVO);
+		
+		return result;
+	}
+	
+	@Override
 	public List<OrdersVO> listOrder() {
 		
 		return sqlSession.selectList(NAMESPACE+".listOrder");

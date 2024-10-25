@@ -24,10 +24,6 @@ public class OrdersServiceImpl implements OrdersService{
 	private static final Logger logger = LoggerFactory.getLogger(OrdersServiceImpl.class);
 	
 	
-	
-	
-	
-	
 	@Override
 	public int insert(OrdersVO ordersVO) {
 		
@@ -59,6 +55,12 @@ public class OrdersServiceImpl implements OrdersService{
 		return result;
 	}
 	
+	@Override
+	public int insert02(OrdersVO ordersVO) {
+		int result = odao.insert02(ordersVO);
+		
+		return result;
+	}
 	
 	
 	@Override

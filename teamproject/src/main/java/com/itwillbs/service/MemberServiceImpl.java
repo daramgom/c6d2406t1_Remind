@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.itwillbs.domain.CompanyVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.persistence.MemberDAO;
 import org.springframework.stereotype.Service;
@@ -158,9 +159,9 @@ public class MemberServiceImpl implements MemberService{
 	
 	// admin 전용 회원가입 신청 멤버 목록
 	@Override
-	public List<MemberVO> signupRequestList() {
-	
-		return  mdao.getSignupRequestList();
+	public List<MemberVO> signupRequestList(Criteria cri) {
+		
+		return  mdao.getSignupRequestList(cri);
 	}
 	
 	// admin 전용 회원가입 신청 멤버 승인.

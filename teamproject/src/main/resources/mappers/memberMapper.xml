@@ -138,13 +138,18 @@ WHERE
 
 	<!-- 회원가입 대기자 목록 -->
 	<select id="getWaitingMember" resultType="MemberVO">
-		SELECT
-		*
-		FROM
-		member
-		where
-		approval_status = "01"
+		<![CDATA[
+  	 select * from member
+  	  where approval_status = "01" 
+  	   ORDER BY create_date desc 
+  	    limit #{startPage},#{pageSize}
+  	]]>
 	</select>
+	<!-- 회원가입 총 대기자 목록 -->
+	<select id="getWaitingMemberCount" resultType="int">
+    SELECT COUNT(*) FROM member
+    WHERE approval_status = '01'
+</select>
 
 	<!-- 특정 회원정보 -->
 	<select id="getMemberById" resultType="MemberVO">

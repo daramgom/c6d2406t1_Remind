@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.CompanyVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 
 /**
@@ -217,20 +218,28 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	
 	@Override
-	public List<MemberVO> getSignupRequestList() {
+	public List<MemberVO> getSignupRequestList(Criteria cri) {
 		List resultList = new ArrayList();
-		
+		/* Criteria cri */
 			// 합쳐진 List결과를 리턴
-			List resultWaitingMember = sqlSession.selectList(NAMESPACE + ".getWaitingMember");
-			if(resultWaitingMember.isEmpty()) {
-				return resultList;
-				
-			}
+			int totalCount = sqlSession.selectOne(NAMESPACE + ".getWaitingMemberCount");
+			List resultWaitingMember = sqlSession.selectList(NAMESPACE + ".getWaitingMember", cri);
+			// 대기 회원이 없을 경우 빈 결과 반환
+		    if (resultWaitingMember.isEmpty()) {
+		    	resultList.add(resultWaitingMember);
+		    	resultList.add(new ArrayList<>()); // 빈 직원 목록
+		        resultList.add(new ArrayList<>()); // 빈 부서 목록
+		        resultList.add(totalCount); // 전체 회원 수
+		        return resultList;
+		    }
 			List resultEmpMap = sqlSession.selectList(NAMESPACE + ".getEmp_rank", "common_value");
 			List resultDeptMap = sqlSession.selectList(NAMESPACE + ".getDepartment", "department_id");
+			
+			
 			resultList.add(resultWaitingMember);
-			resultList.add(resultEmpMap);
-			resultList.add(resultDeptMap);
+		    resultList.add(resultEmpMap);
+		    resultList.add(resultDeptMap);
+		    resultList.add(totalCount); // 전체 대기 회원 수 추가
 			return resultList;
 
 	

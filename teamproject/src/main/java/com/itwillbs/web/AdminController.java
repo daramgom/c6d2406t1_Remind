@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.itwillbs.domain.CompanyVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 import com.itwillbs.service.CompanyService;
 import com.itwillbs.service.EmailService;
@@ -92,17 +93,32 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/signReq", method = RequestMethod.GET)
-	public void memberRequest(Model model) {
+	public void memberRequest(Criteria cri,Model model) {
 		logger.debug("signReq");
 
-		List result = mService.signupRequestList();
-		logger.debug("result +: " + result.isEmpty());
+	    // 페이지 크기 설정 (5명)
+	    cri.setPageSize(5);  // Criteria에 페이지 크기 설정
 
-		if (!result.isEmpty()) {
-			model.addAttribute("WaitingList", result.get(0));
-			model.addAttribute("EmpList", result.get(1));
-			model.addAttribute("DeptList", result.get(2));
-		}
+	    // 서비스 메서드 호출
+	    List result = mService.signupRequestList(cri);
+	    logger.debug("result +: " + result.isEmpty());
+
+	    if (!result.isEmpty()) {
+	        model.addAttribute("WaitingList", result.get(0)); // 대기 회원 목록
+	        model.addAttribute("EmpList", result.get(1));     // 직원 목록
+	        model.addAttribute("DeptList", result.get(2));    // 부서 목록
+	        model.addAttribute("totalCount", result.get(3));  // 전체 대기 회원 수
+	    }
+
+	    // 페이지 크기를 모델에 추가
+	    model.addAttribute("pageSize", cri.getPageSize());
+
+	    // 페이지 수 계산 (totalCount를 사용하여 계산)
+	    int totalCount = (int) result.get(3);
+	    int pageCount = (int) Math.ceil((double) totalCount / cri.getPageSize());
+	    model.addAttribute("pageCount", pageCount); // 페이지 수 모델에 추가
+	 // 현재 페이지 모델에 추가
+	    model.addAttribute("currentPage", cri.getPage()); // 현재 페이지 추가
 
 	}
 

@@ -54,6 +54,15 @@ tr {
 	padding: 0;
 	box-sizing: border-box;
 }
+.currentpage {
+
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 30px;
+	color : #6861ce;
+	border-color: #ddd; background-color: var(--bs-pagination-disabled-bg);     border-radius: 100px;
+	padding: 0 10px
+}
 </style>
 
 <!-- Fonts and icons -->
@@ -74,10 +83,10 @@ tr {
 	
 	<div class="wrapper">
 		<!-- Header -->
-		<jsp:include page="/resources/inc/header.jsp" />
+		<jsp:include page="${pageContext.request.contextPath}/resources/inc/header.jsp" />
 
 		<!-- Sidebar -->
-		<jsp:include page="/resources/inc/sidebar.jsp" />
+		<jsp:include page="${pageContext.request.contextPath}/resources/inc/sidebar.jsp" />
 
 		<!-- Main Content -->
 		<div class="container">
@@ -152,6 +161,28 @@ tr {
 
 											</table>
 										</form>
+										<div style="    float: right;
+    margin-right: 30px;"><!-- 페이지 네비게이션 -->
+<c:if test="${pageCount > 1}">
+    <div class="pagination">
+        <!-- 이전 페이지 링크 -->
+        <c:if test="${currentPage > 1}">
+            <a href="?page=${currentPage - 1}" style="padding: 0 10px; color:black; font-size : 18px;     border-color: #ddd; background-color: var(--bs-pagination-disabled-bg);     border-radius: 100px;">Previous</a>
+        </c:if> 
+
+        <!-- 페이지 번호 링크 -->
+        <c:forEach var="i" begin="1" end="${pageCount}">
+            <a href="?page=${i}" style="padding: 0 10px; color:black; font-size : 20px;">
+                <span class="${currentPage == i ? 'currentpage' : ''}">${i}</span>
+            </a>
+        </c:forEach>
+
+        <!-- 다음 페이지 링크 -->
+        <c:if test="${currentPage < pageCount}">
+            <a href="?page=${currentPage + 1}"  style="padding: 0 10px; color:black; font-size : 18px;     border-color: #ddd; background-color: var(--bs-pagination-disabled-bg);     border-radius: 100px;">Next</a>
+        </c:if>
+    </div>
+</c:if> </div>
 									</div>
 								</div>
 								<c:if test="${WaitingList == null}">
@@ -166,8 +197,10 @@ tr {
 
 			</div>
 		</div>
+		
+		
 		<!-- Footer -->
-		<jsp:include page="/resources/inc/footer.jsp" />
+			<jsp:include page="${pageContext.request.contextPath}/resources/inc/footer.jsp" />
 	</div>
 	<!--   Core JS Files   -->
 	<script src="/resources/js/core/jquery-3.7.1.min.js"></script>

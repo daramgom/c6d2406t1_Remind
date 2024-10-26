@@ -74,6 +74,9 @@ pageEncoding="UTF-8"%>
                         case "INVALID_PASSWORD":
                             showWarningAlert(response.message);
                             break;
+                        case "REGISTRATION_PENDING":
+                            showWarningAlert(response.message);
+                            break;
                         case "PENDING_APPROVAL":
                             showWarningAlert(response.message);
                             break;
@@ -121,7 +124,6 @@ pageEncoding="UTF-8"%>
             }
             document.cookie = name + "=" + (value || "") + expires + "; path=/";
             
-            alert(document.cookie);
         }
         // 쿠키 삭제 함수
         function deleteCookie(name) { // /// 쿠키 삭제 함수

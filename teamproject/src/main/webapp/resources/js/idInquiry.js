@@ -1,16 +1,17 @@
 $(document).ready(function () {
 	let timer; // 타이머 변수 추가
 	
+	 function isValidKoreanName(name) {
+		    const namePattern = /^[가-힣]{2,10}$/; // 한글만, 2자 이상 10자 이하
+		    return namePattern.test(name);
+		  }
 	
-	function isValidUsername(username) {
-	    const usernamePattern = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{5,10}$/; // 영문자와 숫자가 모두 포함된 5자 이상 10자 이하
-	    return usernamePattern.test(username);
-	  }
 	  // 이메일 형식 정규 표현식
 	  function isValidEmail(email) {
 	    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 	    return emailPattern.test(email);
 	  }
+	  
 	  function showSuccessAlert(message, detail) {
 		    return new Promise((resolve) => {
 		      swal(message, detail, {
@@ -40,23 +41,38 @@ $(document).ready(function () {
 /*	$("#next-btn").prop("disabled", false);
 */	
 	// 아이디 길이에 따른 이메일 입력란 활성화
-	$("#username").on("input", function () {
-	    const userid = $(this).val().trim();
-	    if (isValidUsername(userid)) {
-	        $(this).css("border-color", "#bfb3f2"); // 유효한 경우 색상 변경
-	        // 이메일 입력란 보이기
-	        if ($("#EmailInput").css("display") === "none") { // display: none일 때만 나타나게 함
-	            $("#EmailInput").css("display", "block").hide().fadeIn(500); // 비밀번호 입력란 보이기
-	        }
+	  let timeout; // 타임아웃 변수
 
-	    } else {
-	        $(this).css("border-color", "red"); // 유효하지 않은 경우 색상 변경
-	        $("#EmailInput").fadeOut(500, function() {
-	            $(this).css("display", "none"); // 비밀번호 입력란 숨기기
-	        });
-	        
-	    }
-	});
+	  $("#name").on("input", function () {
+	      clearTimeout(timeout); // 이전 타임아웃을 클리어
+
+	      const name = $(this).val().trim();
+
+	      timeout = setTimeout(function() {
+	          // 이름이 2글자 이상일 때
+	          if (name.length >= 2) {
+	              if (isValidKoreanName(name)) {
+	                  $("#name").css("border-color", "#bfb3f2"); // 유효한 경우 색상 변경
+	                  
+	                  // 이메일 입력란 보이기
+	                  if ($("#EmailInput").is(":hidden")) {
+	                      $("#EmailInput").fadeIn(500); // 이메일 입력란 보이기
+	                  }
+	              } else {
+	                  $("#name").css("border-color", "red"); // 유효하지 않은 경우 색상 변경
+	              }
+	          } else {
+	              $("#name").css("border-color", "red"); // 2글자 미만일 경우 색상 변경
+	          }
+
+	          // 이름이 유효하지 않거나 2글자 미만인 경우 이메일 입력란 숨기기
+	          if (name.length < 2 || !isValidKoreanName(name)) {
+	              $("#EmailInput").fadeOut(500); // 이메일 입력란 숨기기
+	          }
+	      }, 300); // 300ms 후에 실행
+	  });
+
+
 	
 	// 이메일 입력 필드의 input 이벤트 리스너
 	  $("#email").on("input", function () {
@@ -97,19 +113,16 @@ $(document).ready(function () {
 	  
 	  // 인증 코드 요청 함수
 	  $("#requestCodeBtn").click(function () {
-		  
 	    var email = $("#email").val();
-	    const userid = $("#username").val().trim();
 	    // 로딩 스피너 표시
 	    $("#spinnerContainer").show(); // 여기서 스피너를 보여줍니다.
 
 	    $.ajax({
-	      url: "/findMemberInfo",
+	      url: "/sendEmailCode",
 	      type: "POST",
 	      contentType: "application/json",
 	      data: JSON.stringify({ 
 	    	  member_email: email,
-	    	  member_id : userid
 	    	  
 	      }),
 	      success: function (response) {
@@ -121,7 +134,7 @@ $(document).ready(function () {
 	          );
 	          clearInterval(timer);
 	          startTimer(300); // 5분 타이머 시작
-
+	          $("#name").prop("readonly", true); // 이름 입력란을 읽기 전용으로 설정
 	          $("#requestCodeBtn").prop("disabled", true);
 	          $("#code").prop("disabled", false);
 	          // 인증 코드 입력란 보이기
@@ -158,7 +171,6 @@ $(document).ready(function () {
 	    var email = $("#email").val();
 	    var code = $("#code").val();
 
-	    console.log(code);
 	    $.ajax({
 	      url: "/verifyCode",
 	      type: "POST",
@@ -186,7 +198,7 @@ $(document).ready(function () {
 	  
 	  $("#next-btn").click(function () {
 		  var email = $("#email").val();
-		  var userid = $("#username").val().trim();
+		  var name = $("#name").val().trim();
 
 		    $.ajax({
 		      url: "/idInquiry",
@@ -194,13 +206,16 @@ $(document).ready(function () {
 		      contentType: "application/json",
 		      data: JSON.stringify({
 		        member_email: email,
-		        member_id: userid,
+		        member_name: name,
 		      }),
 		      success: function (response) {
 		        if ("true" == response.result) {
 		          $("#next-btn").css("display", "none");
+		          
 		          $("#EmailInput").css("display" , "none");
-		          $("#checkIdEmailInfo").css("display" , "none");
+		          
+		          $("#checkNameEmailInfo").css("display" , "none");
+		          
 		          $("#ResultId").css("display" , "block");
 		          $("#title-h2").text("요청하신 회원님의 ID 입니다.");
 		          $("#findId").val(response.id);
@@ -210,7 +225,6 @@ $(document).ready(function () {
 		        			response.message
 		        	);
 		        }
-		        console.log(response.id);
 		      },
 		      error: function (xhr, status, error) {
 		        // 오류 메시지 표시

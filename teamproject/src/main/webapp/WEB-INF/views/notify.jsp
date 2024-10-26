@@ -8,7 +8,8 @@ pageEncoding="UTF-8"%>
     <title>알림</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./resources/js/core/jquery-3.7.1.min.js"></script>
-
+<link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
+	type="image/x-icon" />
     <script type="text/javascript">
       let result = "${isFirstVisit}";
       

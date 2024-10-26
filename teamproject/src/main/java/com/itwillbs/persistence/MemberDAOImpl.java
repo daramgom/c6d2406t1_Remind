@@ -333,5 +333,11 @@ public class MemberDAOImpl implements MemberDAO {
 			return result;
 		}
 		
+		@Override
+		public MemberVO getMemberNameEmailSearch(MemberVO vo) {
+			MemberVO result = sqlSession.selectOne(NAMESPACE+".getMemberNameEmailSearch" , vo);
+			return result;
+		}
+		
 		
 }

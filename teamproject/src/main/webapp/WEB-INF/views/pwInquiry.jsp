@@ -10,7 +10,8 @@
 <link rel="stylesheet" href="./resources/css/pwInquiry.css" />
 <script src="./resources/js/core/jquery-3.7.1.min.js"></script>
 <script src="./resources/js/pwInquiry.js"></script>
-
+<link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
+	type="image/x-icon" />
 
 
 </head>

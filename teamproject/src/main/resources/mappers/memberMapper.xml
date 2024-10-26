@@ -205,6 +205,10 @@ WHERE
 	<select id="getMemberIdEmailSearch" resultType="MemberVO">
 		select * from member where member_id = #{member_id} AND member_email = #{member_email}
 	</select>
+	
+	<select id="getMemberNameEmailSearch" resultType="MemberVO">
+		select * from member where member_name = #{member_name} AND member_email = #{member_email}
+	</select>
 
 
 

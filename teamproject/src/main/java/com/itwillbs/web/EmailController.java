@@ -25,6 +25,23 @@ public class EmailController {
     
     @Autowired 
     private MemberService mService;
+    
+    @PostMapping("/sendEmailCode")
+    public ResponseEntity<Map<String, String>> sendEmailCode(@RequestBody MemberVO vo) {
+    	response.clear(); // 메서드 시작 시 초기화
+    	
+		 try {
+			 emailService.sendVerificationCode(vo.getMember_email());
+		        response.put("message", "인증 코드가 이메일로 전송되었습니다!");
+		        response.put("result", "true");
+		        return ResponseEntity.ok(response); // 200 OK 응답
+		    } catch (Exception e) {
+		        response.put("message", "인증 코드 전송에 실패했습니다. 다시 시도해주세요.");
+		        response.put("result", "false");
+		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response); // 500 Internal Server Error 응답
+		    }
+    	
+    }
 
     @PostMapping("/sendVerificationCode")
     public ResponseEntity<Map<String, String>> sendVerificationCode(@RequestBody VerificationRequest request) {

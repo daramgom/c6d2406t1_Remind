@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8" />
 <title>아이디 찾기</title>
+<link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
+	type="image/x-icon" />
 <link rel="stylesheet" href="./resources/css/idInquiry.css" />
 <script src="./resources/js/core/jquery-3.7.1.min.js"></script>
 <script src="./resources/js/idInquiry.js"></script>
@@ -25,19 +27,18 @@
 		<div id="loadingSpinner" class="spinner"></div>
 	</div>
 	<div class="signup-container">
-		<h2 class="form-title" id="title-h2">찾으려는 ID를 입력해 주세요.</h2>
+		<h2 class="form-title" id="title-h2">찾으려는 ID의 정보를 입력해 주세요.</h2>
 
 		<p class="separator"></p>
 
 		<form id="signupForm" action="membersignup" class="signup-form"
 			method="post">
-			<div id="checkIdEmailInfo"  >
-				<div class="input-wrapper" id="usernameInput">
-					<label for="username" class="input-label">아이디</label> <input
-						type="text" id="username"
-						placeholder="영문자와 숫자가 모두 포함된 5자 이상 10자 이하" class="input-field"
-						required name="member_id" />
-				</div>
+			<div id="checkNameEmailInfo"  >
+				<div class="input-wrapper">
+				<label for="name" class="input-label">이름</label> <input type="text"
+					id="name" placeholder="홍길동" class="input-field" required
+					name="member_name" />
+			</div>
 				<!-- 메시지를 표시할 span 추가 -->
 
 				<div id="EmailInput">
@@ -59,13 +60,16 @@
 				</div>
 			</div>
 
-			<div id="ResultId" style="display: none">
+			<div id="ResultId" style="display: none;margin-top: 3rem;">
 				<div class="input-wrapper">
 					<label for="username" class="input-label">아이디</label> <input
 						type="text" id="findId"
 						placeholder="영문자와 숫자가 모두 포함된 5자 이상 10자 이하" class="input-field"
 						required name="member_id" readonly />
+						
 				</div>
+				<div style="margin-top: 2.2rem;
+    float: right;"><a href="/login" class="loginBtn">로그인</a>으로 가기</div>
 			</div>
 
 		</form>

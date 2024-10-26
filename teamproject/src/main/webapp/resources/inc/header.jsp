@@ -56,7 +56,7 @@
 				<ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
 
 					<li class="nav-item topbar-user dropdown hidden-caret"><a
-						onclick="getInfo()" class="dropdown-toggle profile-pic"
+						 class="dropdown-toggle profile-pic"
 						data-bs-toggle="dropdown" href="#" aria-expanded="false">
 							<div class="avatar-sm"
 								style="text-align: center; line-height: 54px;">
@@ -130,13 +130,44 @@
 		      return phone; // 유효하지 않은 경우 원래 값 반환
 		  }
 
-		  document.addEventListener("click", function(event) {
-			    const isUserInfoClick = userInfo.contains(event.target) || event.target.closest('.topbar-user'); // topbar-user 클릭 여부 확인
+		// 드롭다운 메뉴 호버 이벤트 처리
+		    const userInfo = document.getElementById("userInfo");
+		    const topbarUser = document.querySelector('.topbar-user');
 
-			    if (!isUserInfoClick) {
-			        userInfo.classList.remove("show");
-			    }
-			}); 
+		    let isHovered = false;
+		    let cachedUserInfo = null; // 캐시를 위한 변수
+		    
+		    topbarUser.addEventListener("mouseover", function() {
+		    	  if (!cachedUserInfo) { // 캐시가 없을 때만 요청
+		              getInfo(); // 호버 시 정보 요청
+		          } else {
+		              populateUserInfo(cachedUserInfo); // 캐시된 데이터로 UI 업데이트
+		          }
+		        userInfo.classList.add("show");
+		        isHovered = true;
+		    });
+
+		    topbarUser.addEventListener("mouseout", function() {
+		        isHovered = false;
+		        setTimeout(() => {
+		            if (!isHovered) {
+		                userInfo.classList.remove("show");
+		            }
+		        }, 200);
+		    });
+
+		    userInfo.addEventListener("mouseover", function() {
+		        isHovered = true;
+		    });
+
+		    userInfo.addEventListener("mouseout", function() {
+		        isHovered = false;
+		        setTimeout(() => {
+		            if (!isHovered) {
+		                userInfo.classList.remove("show");
+		            }
+		        }, 200);
+		    });   
 
 		function getInfo() {
 		 	const userInfo = document.getElementById("userInfo");
@@ -156,30 +187,8 @@
 			        return response.json(); // 응답을 JSON으로 변환
 			    })
 			    .then(data => {
-			        
-			        const resultEmp = document.getElementById('userInfoEmp');
-			        const resultDept = document.getElementById('userInfoDept');
-			        
-			        resultEmp.innerHTML = "";
-			        resultDept.innerHTML = "";
-			     	// empRank를 HTML로 표시
-			        for (const key in data.empRank) {
-			            const emp = data.empRank[key];
-
-			            // 입력한 값과 비교
-			            if (emp.common_value == userInfoEmp) {
-			                resultEmp.innerHTML += emp.common_status;
-			            }
-			        }
-			     
-			        for (const key in data.department) {
-			            const dept = data.department[key];
-
-			            // 입력한 값과 비교
-			            if (dept.department_id == userInfoDept) {
-			            	resultDept.innerHTML += dept.department_name;
-			            }
-			        }
+			    	 cachedUserInfo = data; // 데이터를 캐시
+			            populateUserInfo(data); // UI 업데이트
 
 
 			    })
@@ -187,6 +196,30 @@
 			        console.error('문제가 발생했습니다:', error);
 			    });
 		};
+		
+		function populateUserInfo(data) {
+	        const resultEmp = document.getElementById('userInfoEmp');
+	        const resultDept = document.getElementById('userInfoDept');
+
+	        resultEmp.innerHTML = "";
+	        resultDept.innerHTML = "";
+
+	        // empRank를 HTML로 표시
+	        for (const key in data.empRank) {
+	            const emp = data.empRank[key];
+	            if (emp.common_value == userInfoEmp) {
+	                resultEmp.innerHTML += emp.common_status;
+	            }
+	        }
+
+	        for (const key in data.department) {
+	            const dept = data.department[key];
+	            if (dept.department_id == userInfoDept) {
+	                resultDept.innerHTML += dept.department_name;
+	            }
+	        }
+	    };
+
 		function editField(field) {
 		    const span = document.getElementById(field);
 		    const currentValue = span.textContent;

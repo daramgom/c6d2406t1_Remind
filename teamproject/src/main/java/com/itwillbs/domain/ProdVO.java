@@ -37,8 +37,13 @@ public class ProdVO {
 	private int wh_number;
 	private int stock_wh;
 	private String wh_name;
+	private String wh_name2;
 	private String wh_location;
+	private String wh_location2;
 	private String wh_dt_location;
+	private String wh_dt_location2;
+	private String wh_admin;
+	private String wh_admin2;
 	private int prod_stock;
 	private int prod_qty;
 	private int stock_qty;

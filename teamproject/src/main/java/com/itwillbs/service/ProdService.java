@@ -27,11 +27,13 @@ public interface ProdService {
 	
 	
 	// 제품삭제
-	public void deleteProd(ProdVO vo, HttpServletRequest req);
+	public void deleteProd(ProdVO vo);
 	
 	
 	// 재고이동
-	public int transferProd(ProdVO vo, HttpServletRequest req);
+	public int transferProd(ProdVO vo);
+	public int moveStock(ProdVO vo);
+	public List<ProdVO> moveStockList(ProdVO vo);
 	public List<ProdVO> transferSelect();
 	public List<ProdVO> transferSelect2(ProdVO vo);
 	public List<ProdVO> transferSelect3();

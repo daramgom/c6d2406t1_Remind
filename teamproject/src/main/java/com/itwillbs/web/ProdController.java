@@ -62,8 +62,6 @@ public class ProdController {
 	@RequestMapping(value = "/insert",method = RequestMethod.GET)
 	public void insertProdGet(Model model) {
 		logger.debug(" ( •̀ ω •́ )✧ /prod/insert -> insertProdGet() 실행 ");
-		logger.debug(" ( •̀ ω •́ )✧ 연결된 뷰(jsp)를 보여주기 ");
-		// 페이지 이동(X) --> 스프링이 자동으로 연결
 		List<ProdVO> companyList = pService.insertList();
 		model.addAttribute("companyList", companyList);
 		logger.debug(" ( •̀ ω •́ )✧ /views/prod/insert.jsp 뷰페이지 연결 ");
@@ -95,12 +93,10 @@ public class ProdController {
 	@GetMapping(value = "/list")
 	public void listProdGet(Model model) {
 		logger.debug(" ( •̀ ω •́ )✧ /prod/list -> listProdGet(Model model) 실행 ");
-		// 서비스 -> DAO : 제품목록조회
 		List<ProdVO> plistVO = pService.listProd();
 		logger.debug(" ( •̀ ω •́ )✧ plistVO : "+plistVO.size());
 		
 		model.addAttribute("plistVO",plistVO);
-		// 서비스에서 가져온 데이터를 연결된 뷰페이지에 전달해서 출력
 	}
 	
 	
@@ -155,33 +151,42 @@ public class ProdController {
 	
 	// 제품 삭제
 	@PostMapping(value = "/delete")
-	public String deleteProdPost(ProdVO vo, HttpServletRequest req) {
+	public String deleteProdPost(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ ProdController : deleteProdPost(ProdVO vo, HttpServletRequest req) 실행 ");
 		logger.debug("( •̀ ω •́ )✧ ProdController : vo "+vo);
-		pService.deleteProd(vo, req);
+		pService.deleteProd(vo);
 		return "/prod/list";
 	}
 
 	
-	// 재고 이동(get)
+	// 재고 이동 신청(get)
 	// http://localhost:8088/prod/transfer
 	@GetMapping(value = "/transfer")
 	public void transferProdGet() {
 		logger.debug("( •̀ ω •́ )✧ ProdController : transferProdGet() 실행 ");
 	}
 	
-	// 재고 이동(post)
+	// 재고 이동 신청(post)
 	@PostMapping(value = "/transfer")
-	public String transferProdPost(ProdVO vo, HttpServletRequest req, RedirectAttributes rttr) {
+	public String transferProdPost(ProdVO vo, RedirectAttributes rttr) {
 		logger.debug("( •̀ ω •́ )✧ ProdController : transferProdPost(ProdVO vo, HttpServletRequest req) 실행 ");
 		logger.debug("( •̀ ω •́ )✧ vo : "+vo);
-		int result = pService.transferProd(vo, req);
+		int result = pService.moveStock(vo);
 		if(result > 0) {
-			rttr.addFlashAttribute("trans_message", "제품이 이동되었습니다.");
+			rttr.addFlashAttribute("trans_message", "제품 이동 신청되었습니다.");
 		} else {
-			rttr.addFlashAttribute("trans_error", "제품 이동에 실패했습니다!");
+			rttr.addFlashAttribute("trans_error", "제품 이동 신청이 실패했습니다!");
 		}
 		return "redirect:/prod/transfer";
+	}
+	
+	// 재고이동이력(get)
+	@GetMapping(value = "/movestock")
+	public void movestockGet(ProdVO vo, Model model) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : movestockGet(ProdVO vo, RedirectAttributes rttr) 실행");
+		List<ProdVO> moveList = pService.moveStockList(vo);
+		
+		model.addAttribute("moveList", moveList);
 	}
 	
 	// 재고 이동 선택(post)
@@ -201,6 +206,7 @@ public class ProdController {
 	public ResponseEntity<List<ProdVO>>transferFindPost(@RequestBody ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ ProdController : transferListPost() 실행");
 		List<ProdVO> transferFindList = pService.findProdList(vo);
+		
 		return ResponseEntity.ok(transferFindList);
 	}
 	

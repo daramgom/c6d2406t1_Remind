@@ -38,32 +38,34 @@
 
 <style>
 	
-    #multi-filter-select thead th {
-       background-color: #6861ce !important;
-       color: white;
-    }
+	#multi-filter-select thead th {
+		background-color: #6861ce !important;
+		color: white;
+	}
     
-    .table td {
-    	font-size: 1.2rem !important;
-    	text-align: center;
-    }
+	.table td {
+		font-size: 1.2rem !important;
+		text-align: center;
+		white-space: nowrap;
+	}
     
-    .table th {
-    	font-size: 1.25rem !important;
-    	text-align: center;
-    }
+	.table th {
+		font-size: 1.25rem !important;
+		text-align: center;
+		white-space: nowrap;
+	}
+
+	.modal-dialog {
+		--bs-modal-width: 1200px;
+	}
+
+	.modal-content {
+		height: 90vh;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
     
-    .modal-dialog {
-    	--bs-modal-width: 1200px;
-    }
-    
-    .modal-content {
-            height: 90vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-    }
-    
-    #previewimg {
+	#previewimg {
 		width: 95%;
 		height: 95%;
 		margin: 10px;
@@ -82,11 +84,11 @@
 	}
 	
 	#prodUpdateForm label {
-	 	font-size: 1.1rem !important;
+		font-size: 1.1rem !important;
 	}
-	
+
 	#prodUpdateForm input {
-    	font-size: 1.1rem !important;
+		font-size: 1.1rem !important;
 	}
 	
 	.modal-footer i {
@@ -100,7 +102,7 @@
 		margin-bottom: 10px;
 		font-weight: bold;
 	}
-	
+
 	textarea {
 		transition: background-color 0.3s, border 0.3s;
 	}
@@ -112,7 +114,7 @@
 	input:not([readonly]):not([disabled]):hover {
 		background-color: rgba(104,97,206,0.1) !important;
 	}
-    
+
 </style>
 
 </head>
@@ -163,7 +165,7 @@
                     <h3 class="card-title">제품목록</h3>
                   </div>
                   <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
                       <table
                         id="multi-filter-select"
                         class="display table table-hover"

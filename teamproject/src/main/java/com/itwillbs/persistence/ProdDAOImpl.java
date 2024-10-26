@@ -103,10 +103,23 @@ public class ProdDAOImpl implements ProdDAO {
 		logger.debug("( •̀ ω •́ )✧ DAO : transferProd(ProdVO vo) 실행");
 		int result = sqlSession.update(NAMESPACE+ ".transferProd", vo);
 		result += sqlSession.insert(NAMESPACE+ ".transferProd2", vo);
-		result += sqlSession.insert(NAMESPACE+ ".stockMove",vo);
 		return result;
 	}
-
+	
+	// 재고이동내역기록
+	@Override
+	public int moveStock(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO : moveStock(ProdVO vo) 실행");
+		int result = sqlSession.insert(NAMESPACE+ ".moveStock", vo);
+		return result;
+	}
+	
+	// 재고이동내역리스트
+	@Override
+	public List<ProdVO> moveStockList(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO : moveStockList(ProdVO vo) 실행");
+		return sqlSession.selectList(NAMESPACE+ ".moveStockList", vo);
+	}
 
 	// 재고이동선택1
 	@Override

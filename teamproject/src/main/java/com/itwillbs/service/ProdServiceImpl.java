@@ -101,7 +101,7 @@ public class ProdServiceImpl implements ProdService {
 	
 	// 제품삭제
 	@Override
-	public void deleteProd(ProdVO vo, HttpServletRequest req) {
+	public void deleteProd(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ Service : deleteProd(ProdVO vo, HttpServletRequest req) 실행 ");
 		pdao.deleteProd(vo);
 	}
@@ -109,7 +109,7 @@ public class ProdServiceImpl implements ProdService {
 	
 	// 재고이동
 	@Override
-	public int transferProd(ProdVO vo, HttpServletRequest req) {
+	public int transferProd(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ Service : transferProd(ProdVO vo, HttpServletRequest req) 실행 ");
 		if(vo.getProd_qty() == vo.getCurrent_qty() && vo.getCurrent_qty() >= vo.getStock_qty()) {
 				if(vo.getStock_qty() >= 0) {
@@ -119,6 +119,19 @@ public class ProdServiceImpl implements ProdService {
 		} return 0;
 	}
 
+	// 재고이동내역기록
+	@Override
+	public int moveStock(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ Service : moveStock(ProdVO vo, HttpServletRequest req) 실행 ");
+		return pdao.moveStock(vo);
+	}
+	
+	// 재고이동이력리스트
+	@Override
+	public List<ProdVO> moveStockList(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ Service : moveStockList(ProdVO vo) 실행 ");
+		return pdao.moveStockList(vo);
+	}
 
 	// 재고이동선택
 	@Override

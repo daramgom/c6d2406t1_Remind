@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itwillbs.domain.CompanyVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 
 /**
@@ -63,7 +64,7 @@ public interface MemberDAO {
 	public List<MemberVO> getMemberList(String member_id);
 	
 	// admin(전용) 회원가입 신청 정보 목록 조회
-	public List<MemberVO> getSignupRequestList();
+	public List<MemberVO> getSignupRequestList(Criteria cri);
 	
 	// admin(전용) 회원가입 신청 승인
 	public int updateMembers(List<MemberVO> memberList);

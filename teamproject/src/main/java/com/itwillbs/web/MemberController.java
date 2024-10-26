@@ -204,11 +204,14 @@ public class MemberController {
  		if (result == null) {
  		    // 아이디가 존재하지 않음
  		    response.put("code", "NOT_REGISTERED");
- 		    response.put("message", "등록된 회원이 아닙니다!");
+ 		    response.put("message", "등록된 회원이 아닙니다.");
  		} else if (result.getMember_pw() == null) {
  		    // 비밀번호 틀림
  		    response.put("code", "INVALID_PASSWORD");
  		    response.put("message", "비밀번호가 일치하지 않습니다.");
+ 		} else if(result.getApproval_status().equals("01")) {
+ 		   response.put("code", "REGISTRATION_PENDING"); // "회원가입 승인 대기 중"
+ 		    response.put("message", "회원가입 승인이 대기 중입니다.");
  		} else {
  		    // 로그인 성공
  			response.put("code", "SUCCESS");

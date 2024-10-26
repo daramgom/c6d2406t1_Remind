@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itwillbs.domain.CompanyVO;
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
 
 public interface MemberService {
@@ -39,7 +40,7 @@ public interface MemberService {
 	public List<MemberVO> memberList(String id);
 	
 	// admin 회원정보 목록 d
-	public List<MemberVO> signupRequestList();
+	public List<MemberVO> signupRequestList(Criteria cri);
 
 	// admin 특정 회원 조회. d
 	public Map<String, Object> memberInfo(String Member_id);

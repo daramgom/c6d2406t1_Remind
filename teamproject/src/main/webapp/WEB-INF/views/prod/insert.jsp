@@ -89,6 +89,7 @@
 <c:if test="${sessionScope.member_code != 1}">
 	<c:redirect url="/cmain"/>
 </c:if>
+
 	<div class="wrapper">
 		<!-- Header -->
 		<jsp:include page="/resources/inc/header.jsp" />
@@ -121,7 +122,7 @@
 								<div class="row">
 									<div class="col-md-12">
 									<form id="prodForm" action="" method="post" enctype="multipart/form-data">
-										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
+										<div class="form-group d-flex" style="margin: 0; gap: 100px;">
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="text" class="form-control" style="font-size:1.1rem;"
 													id="prod_name" name="prod_name" required="required"/>
@@ -137,7 +138,7 @@
 												<input type="hidden" id="prod_upduser" name="prod_upduser" 
 													value="${sessionScope.id }" placeholder="수정작업자" />
 										</div>
-										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
+										<div class="form-group d-flex" style="margin: 0; gap: 100px;">
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="text" class="form-control input-full" style="font-size:1.1rem;"
 													id="prod_brand" name="prod_brand" required="required"/>
@@ -154,7 +155,7 @@
 												<label id="company_label" for="company_code" class="col-form-label-lg"> 입고처</label>
 											</div>
 										</div>
-										<div class="form-group d-flex" style="margin: 20px 200px; gap: 50px;">
+										<div class="form-group d-flex" style="margin: 0; gap: 50px;">
 											<div class="input-group" style="flex: 1;">
 											<span class="input-group-text" style="font-size: 1.2rem; color:#2a2f5b;">비고</span>
 												<textarea id="prod_remarks" name="prod_remarks" class="form-control"></textarea>
@@ -182,173 +183,159 @@
 											</button>
 										</div>
 									</form>
-									</div>
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- Footer -->
-		<jsp:include page="/resources/inc/footer.jsp" />
+	</div>
+	
+	<!-- Footer -->
+	<jsp:include page="/resources/inc/footer.jsp" />
 	</div>
 
-	<script type="text/javascript">
-    
-	    $(document).ready(function () {
-
-	        $('#uploadfile').on('change', function(event) {
-	            const file = event.target.files[0]; // 선택된 파일
-	            if (file) {
-	                // MIME 타입 확인
-	                const ImageTypes = [
-	                    'image/jpeg',  // JPEG
-	                    'image/png',   // PNG
-	                    'image/gif',   // GIF
-	                    //'image/bmp',   // BMP
-	                    //'image/tiff',  // TIFF
-	                    //'image/webp',  // WEBP
-	                    //'image/svg+xml', // SVG
-	                    //'image/heif',  // HEIF
-	                    //'image/heic'   // HEIC
-	                ]; // 허용하는 이미지 타입
-
-	                if (!ImageTypes.includes(file.type)) {
-	                	swal({
-	                    	title: "오류!",
-	                    	text: "이미지 파일만 업로드 가능합니다.",
-	                    	icon: "error",
-	                    	buttons: {
-	                    		confirm:{
-	                    			text: "확인",
-									className: 'btn btn-secondary'
-	                    		}
+<script type="text/javascript">
+$(document).ready(function () {
+	
+	$('#uploadfile').on('change', function(event) {
+		const file = event.target.files[0]; // 선택된 파일
+		if (file) {
+			const ImageTypes = [
+				'image/jpeg',
+				'image/png',
+				'image/gif',
+				'image/bmp',
+				'image/tiff',
+				'image/webp',
+				'image/svg+xml',
+				'image/heif',
+				'image/heic'
+				];
+			if (!ImageTypes.includes(file.type)) {
+				swal({
+					title: "오류!",
+					text: "이미지 파일만 업로드 가능합니다.",
+					icon: "error",
+					buttons: {
+						confirm:{
+							text: "확인",
+							className: 'btn btn-secondary'
 							}
-	                    });
-	                    $('#uploadfile').val('');
-	                    $('#previewimg').hide();
-	                    return;
-	                }
-
-	                const reader = new FileReader();
-
-					reader.onload = function(e) {
-						$('#previewimg').attr('src', e.target.result);
-						$('#previewimg').css('display', 'inline-block');
-					};
-
-					reader.readAsDataURL(file);
-					
-				} else {
-					$('#uploadfile').val('');
-					$('#previewimg').hide();
+					}
+				});
+				$('#uploadfile').val('');
+				$('#previewimg').hide();
+				return;
+			}
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				$('#previewimg').attr('src', e.target.result);
+				$('#previewimg').css('display', 'inline-block');
+			};
+			reader.readAsDataURL(file);
+			} else {
+				$('#uploadfile').val('');
+				$('#previewimg').hide();
+				}
+		});
+	$('#prodForm').on('submit', function (e) {
+		e.preventDefault();
+		$('button[type="submit"]').prop('disabled', true);
+		var formData = new FormData(this);
+		$.ajax({
+			url: '/prod/insert',
+			type: 'POST',
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function (response) {
+				swal({
+					title: "성공!",
+					text: "제품이 등록되었습니다!",
+					icon: "success",
+					buttons: {
+						confirm:{
+							text: "확인",
+							className: 'btn btn-secondary'
+							}
+					}
+				});
+				$('input').val('');
+				$('#uploadfile').val('');
+				$('#company_code').val('');
+				$('#company_label').hide();
+				$('#prod_remarks').val('');
+				$('#previewimg').hide();
+				$('#prod_reguser').val("테스터1");
+				$('#prod_upduser').val("테스터1");
+				},
+				error: function (error) {
+					swal({
+						title: "오류!",
+						text: "제품 등록에 실패했습니다.",
+						icon: "error",
+						buttons: {
+							confirm:{
+								text: "확인",
+								className: 'btn btn-secondary'
+							}
+						}
+				});
+				
+				$('#prod_reguser').val("${sessionScope.id}");
+				$('#prod_upduser').val("${sessionScope.id}");
+				},
+				complete: function() {
+					$('button[type="submit"]').prop('disabled', false);
 				}
 			});
-	    	
-	    	
-	        $('#prodForm').on('submit', function (e) {
-	            e.preventDefault();
-	            
-	            $('button[type="submit"]').prop('disabled', true);
-	            
-	            var formData = new FormData(this);
+		});
 	
-	            $.ajax({
-	                url: '/prod/insert',
-	                type: 'POST',
-	                data: formData,
-	                processData: false,
-	                contentType: false,
-	                success: function (response) {
-	                    swal({
-	                    	title: "성공!",
-	                    	text: "제품이 등록되었습니다!",
-	                    	icon: "success",
-	                    	buttons: {
-	                    		confirm:{
-	                    			text: "확인",
-									className: 'btn btn-secondary'
-	                    		}
-							}
-	                    });
-	                    $('input').val('');
-	                    $('#uploadfile').val('');
-	                    $('#company_code').val('');
-	                    $('#company_label').hide();
-	                    $('#prod_remarks').val('');
-	                    $('#previewimg').hide();
-	                    $('#prod_reguser').val("테스터1");
-	                	$('#prod_upduser').val("테스터1");
-	                },
-	                error: function (error) {
-	                    swal({
-	                    	title: "오류!",
-	                    	text: "제품 등록에 실패했습니다.",
-	                    	icon: "error",
-	                    	buttons: {
-	                    		confirm:{
-	                    			text: "확인",
-									className: 'btn btn-secondary'
-	                    		}
-							}
-	                    });
-	                	$('#prod_reguser').val("${sessionScope.id}");
-	                	$('#prod_upduser').val("${sessionScope.id}");
-	                },
-	                complete: function() {
-	                    $('button[type="submit"]').prop('disabled', false);
-	                }
-	            });
-	        });
+	$("#inputReset").click(function (e) {
+		swal({
+			title: "입력값을 초기화하시겠습니까?",
+			text: "입력값이 모두 지워집니다!",
+			icon: "warning",
+			buttons: {
+				confirm: {
+					text: "네, 지우겠습니다.",
+					className: "btn btn-warning",
+				},
+				cancel: {
+					visible: true,
+					text: "취소",
+					className: "btn btn-danger",
+				},
+			},
+		}).then(function(clear) { // [confirm --> true / cancel --> false] - clear 값으로 전달
+			if (clear) {
+				$('input').val('');
+				$('#uploadfile').val('');
+				$('#prod_remarks').val('');
+				$('#company_code').val('');
+				$('#previewimg').hide();
+				swal({
+					title: "초기화되었습니다.",
+					text: "모든 입력값이 초기화되었습니다.",
+					icon: "success",
+					buttons: {
+						confirm: {
+							text: "확인",
+							className: "btn btn-secondary",
+						},
+					},
+				});
+			} else {
+				swal.close();
+			}
+		});
+	});
 	        
 	        
-	        $("#inputReset").click(function (e) {
-	            swal({
-	                title: "입력값을 초기화하시겠습니까?",
-	                text: "입력값이 모두 지워집니다!",
-	                icon: "warning",
-	                buttons: {
-	                    confirm: {
-	                        text: "네, 지우겠습니다.",
-	                        className: "btn btn-warning",
-	                    },
-	                    cancel: {
-	                    	visible: true,
-	                        text: "취소",
-	                        className: "btn btn-danger",
-	                    },
-	                },
-	            }).then(function(clear) { // [confirm --> true / cancel --> false] - clear 값으로 전달
-	                if (clear) {
-	                    // 입력 필드 비우기 로직
-	                    $('input').val('');
-	                    $('#uploadfile').val('');
-	                    $('#prod_remarks').val('');
-	                    $('#company_code').val('');
-	                    $('#previewimg').hide();
-
-	                    swal({
-	                        title: "초기화되었습니다.",
-	                        text: "모든 입력값이 초기화되었습니다.",
-	                        icon: "success",
-	                        buttons: {
-	                            confirm: {
-	                            	text: "확인",
-	                                className: "btn btn-secondary",
-	                            },
-	                        },
-	                    });
-	                } else {
-	                    swal.close();
-	                }
-	            });
-	        });
-	        
-	        
-	    });//DOM 준비 이벤트
-	</script>
+});//DOM 준비 이벤트
+</script>
    
 </body>
 </html>

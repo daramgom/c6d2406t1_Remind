@@ -118,7 +118,7 @@
 								<div class="col-md-12">
 									<form id="transferForm" action="" method="post">
 									
-										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
+										<div class="form-group d-flex" style="margin: 0; gap: 100px;">
 											<div class="form-floating form-floating-custom mb-3" style="flex: 1;">
 												<select class="form-select" id="prod_id" name="prod_id" required>
 													<option value="">제품식별코드</option>
@@ -141,7 +141,7 @@
 											</div>
 										</div>
 										
-										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px; align-items: center;">
+										<div class="form-group d-flex" style="margin: 0x; gap: 100px; align-items: center;">
 											 <div style="flex: 1;">
 											 	<img id="prod_image" src="#">
 											 </div>
@@ -155,6 +155,12 @@
 												<input type="number" class="form-control" 
 													id="stock_qty" name="stock_qty" placeholder="수량" min="0" max="#" required/>
 												<label for="stock_qty" class="col-form-label-lg" style="font-size: 1.2rem !important;">이동 수량</label>
+											</div>
+										</div>
+										<div class="form-group d-flex" style="margin: 0x; gap: 100px; align-items: center;">
+											<div class="input-group" style="flex: 0.5;">
+												<span class="input-group-text" style="font-size: 1.2rem; color:#2a2f5b;">재고이동사유</span>
+													<textarea id="move_reason" name="move_reason" class="form-control" required></textarea>
 											</div>
 										</div>
 										<div class="row d-flex justify-content-center">

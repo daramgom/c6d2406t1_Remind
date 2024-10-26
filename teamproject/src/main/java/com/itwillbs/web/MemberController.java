@@ -280,7 +280,7 @@ public class MemberController {
  		logger.debug("idInquiry Post");
  		response.clear(); // 메서드 시작 시 초기화
  		
- 		MemberVO result = mService.memberIdEmailSearch(vo);
+ 		MemberVO result = mService.memberNameEmailSearch(vo);
   		
   		if(result == null ) {
   			response.put("result", "false");

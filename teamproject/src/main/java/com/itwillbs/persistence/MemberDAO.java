@@ -31,6 +31,9 @@ public interface MemberDAO {
 	
 	public MemberVO getMemberIdEmailSearch(MemberVO vo);
 	
+	
+	public MemberVO getMemberNameEmailSearch(MemberVO vo);
+	
 	// 사용자 정보조회 (로그인 했다고 가정.);
 	public MemberVO getMember(String member_id);
 	

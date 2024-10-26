@@ -207,5 +207,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	
+	@Override
+	public MemberVO memberNameEmailSearch(MemberVO vo) {
+		return mdao.getMemberNameEmailSearch(vo);
+	}
+	
 	
 }

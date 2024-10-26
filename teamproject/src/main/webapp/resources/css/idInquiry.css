@@ -81,7 +81,11 @@ body {
 .center-text {
 	text-align: center;
 }
-
+.loginBtn {
+	 text-decoration: none;
+    color: #5F41E4;
+    font-weight: 500;
+}
 
 
 .signup-form .input-wrapper {

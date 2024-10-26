@@ -6,12 +6,20 @@ pageEncoding="UTF-8"%>
   <head>
     <meta charset="UTF-8" />
     <title>로그인</title>
+    <link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
+	type="image/x-icon" />
     <link rel="stylesheet" href="./resources/css/login.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./resources/js/core/jquery-3.7.1.min.js"></script>
 
     <script>
       $(document).ready(function () {
+    	// 페이지 로드 시 쿠키에서 아이디를 가져오기
+          const savedUsername = getCookie("remind_username"); // /// 쿠키에서 아이디 가져오기
+          if (savedUsername) {
+              $("#member_id").val(savedUsername); // /// 입력 필드에 아이디 채우기
+              $("#rememberMe").prop("checked", true); // /// 체크박스 체크
+          }
         $("#loginBtn").click(function () {
           event.preventDefault(); // 기본 동작 방지 (폼 제출 등)
           performLogin();
@@ -34,6 +42,11 @@ pageEncoding="UTF-8"%>
             member_id: member_id,
             member_pw: member_pw,
           };
+       // 입력값 검증
+          if (!member_id || !member_pw) {
+              showErrorAlert("아이디와 비밀번호를 입력하세요.");
+              return;
+          }
 
           $.ajax({
             url: "/login",
@@ -42,26 +55,32 @@ pageEncoding="UTF-8"%>
             contentType: "application/json",
             dataType: "json",
             success: function (response) {
-              console.log("서버 응답:", response); // 디버깅용
-
-              switch (response.code) {
-                case "SUCCESS":
-                  showSuccessAlert("로그인 성공", response.message).then(() => {
-                    location.href = "/main"; // 관리자 페이지로 이동
-                  });
-                  break;
-                case "NOT_REGISTERED":
-                  showErrorAlert(response.message);
-                  break;
-                case "INVALID_PASSWORD":
-                  showWarningAlert(response.message);
-                  break;
-                case "PENDING_APPROVAL":
-                  showWarningAlert(response.message);
-                  break;
-                default:
-                  showErrorAlert("알 수 없는 오류가 발생했습니다.");
-              }
+            	 // 로그인 성공 시 쿠키 저장
+                if (response.code === "SUCCESS") { // /// 로그인 성공 확인
+                    if ($("#rememberMe").is(":checked")) { // /// 체크박스 확인
+                        setCookie("remind_username", member_id, 7); // /// 쿠키에 아이디 저장 (7일 동안)
+                    } else {
+                        deleteCookie("remind_username"); // /// 체크 해제 시 쿠키 삭제
+                    }
+                    
+                    showSuccessAlert("로그인 성공", response.message).then(() => {
+                        location.href = "/main"; // 관리자 페이지로 이동
+                    });
+                } else {
+                    switch (response.code) {
+                        case "NOT_REGISTERED":
+                            showErrorAlert(response.message);
+                            break;
+                        case "INVALID_PASSWORD":
+                            showWarningAlert(response.message);
+                            break;
+                        case "PENDING_APPROVAL":
+                            showWarningAlert(response.message);
+                            break;
+                        default:
+                            showErrorAlert("알 수 없는 오류가 발생했습니다.");
+                    }
+                }
             },
             error: function (xhr, status, error) {
               console.error("AJAX 오류:", status, error);
@@ -91,6 +110,35 @@ pageEncoding="UTF-8"%>
             text: message,
             icon: "warning",
           });
+        }
+        // 쿠키 설정 함수 추가
+        function setCookie(name, value, days) { // /// 쿠키 설정 함수
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            
+            alert(document.cookie);
+        }
+        // 쿠키 삭제 함수
+        function deleteCookie(name) { // /// 쿠키 삭제 함수
+            document.cookie = name + '=; Max-Age=-99999999;';  
+        }
+
+        
+     // 쿠키 가져오기 함수
+        function getCookie(name) { // /// 쿠키 가져오기 함수
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
         }
       });
     </script>
@@ -130,6 +178,13 @@ pageEncoding="UTF-8"%>
             name="member_pw"
           />
         </div>
+        <div class="input-wrapper" style="margin: 0;
+    height: 0;
+    top: -16px;">
+                <label>
+                    <input type="checkbox" id="rememberMe"> 아이디 저장하기
+                </label>
+            </div>
 
         <button class="login-button" id="loginBtn">로그인</button>
       </form>

@@ -55,6 +55,8 @@ public interface MemberService {
 	
 	public MemberVO memberIdEmailSearch(MemberVO vo);
 	
+	public MemberVO memberNameEmailSearch(MemberVO vo); 
+	
 	
 	public int memberPermissionUpdate(MemberVO vo);
 	

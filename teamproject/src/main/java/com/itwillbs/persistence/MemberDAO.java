@@ -77,6 +77,7 @@ public interface MemberDAO {
 	
 	public int updatePw(MemberVO vo);
 	
-	public int UpdatePwMember(MemberVO vo);
+	public int UpdatePwMember(MemberVO vo); 
+	
 	
 }

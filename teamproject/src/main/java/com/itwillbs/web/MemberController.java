@@ -111,8 +111,8 @@ public class MemberController {
  	@RequestMapping(value ="signup" , method=RequestMethod.GET)
  	public void signupGet(  Model model , UserVO uvo) {
  		
- 		logger.info("signupPage get 실행 ");
- 		logger.info("uvo  : " + uvo);
+ 		logger.debug("signupPage get 실행 ");
+ 		logger.debug("uvo  : " + uvo);
  		
  		model.addAttribute("member" , uvo);
  	}
@@ -154,7 +154,7 @@ public class MemberController {
  		response.clear();
  		
  		
- 		logger.info("memberId 중복검사 : "+vo.getMember_id() );
+ 		logger.debug("memberId 중복검사 : "+vo.getMember_id() );
  		String member_id = vo.getMember_id();
  		
  		MemberVO result =  mService.memberIdCheck(member_id);
@@ -180,7 +180,7 @@ public class MemberController {
  // http://localhost:8088/login
  	@RequestMapping(value = "/login", method = RequestMethod.GET)
  	public String snsLogin(Model model) {
- 		logger.info(" Login page ");
+ 		logger.debug(" Login page ");
  		/*
  		 * SNSLogin snsLogin = new SNSLogin(naverSns);
  		 * 
@@ -194,10 +194,10 @@ public class MemberController {
  	@RequestMapping( value = "login" , method= RequestMethod.POST )
  	public ResponseEntity<Map<String, String>> login(@RequestBody MemberVO vo, HttpSession session) {
  		response.clear(); // 메서드 시작 시 초기화
- 		logger.info("로그인  VO :  " + vo );
+ 		logger.debug("로그인  VO :  " + vo );
  		
  		MemberVO result = mService.memberLoginCheck(vo);
- 		logger.info("result :  " + result );
+ 		logger.debug("result :  " + result );
  		
  		
  	
@@ -227,7 +227,7 @@ public class MemberController {
  	    SNSLogin snsLogin = new SNSLogin(naverSns);
  	    UserVO snsUser = snsLogin.getUserProfile(code);
  	    
- 	    logger.info("Profile >> " + snsUser);
+ 	    logger.debug("Profile >> " + snsUser);
  	    
  	    // sns로그인한 사용자의 전화번호를 DB에 있는 member 테이블과 비교함.
  	    MemberVO result = uService.getBySns(snsUser.getTel());
@@ -262,15 +262,44 @@ public class MemberController {
  	// 비밀번호 찾기 페이지
  	@RequestMapping(value = "pwInquiry" , method = RequestMethod.GET)
  	public void pwInquiryGet() {
- 		logger.info("pwInquiry");
- 		
+ 		logger.debug("pwInquiry");
  		
  	};
+ 	
+ 	// 아이디 찾기 페이지
+ 	@RequestMapping(value = "idInquiry" , method = RequestMethod.GET)
+ 	public void idInquiryGet() {
+ 		logger.debug("idInquiry get");
+ 		
+ 	};
+ 	
+
+ 	// 아이디 찾기 페이지
+ 	@RequestMapping(value = "idInquiry" , method = RequestMethod.POST)
+ 	public ResponseEntity<Map<String, String>> idInquiryPost(@RequestBody MemberVO vo) {
+ 		logger.debug("idInquiry Post");
+ 		response.clear(); // 메서드 시작 시 초기화
+ 		
+ 		MemberVO result = mService.memberIdEmailSearch(vo);
+  		
+  		if(result == null ) {
+  			response.put("result", "false");
+  			response.put("message", "등록된 회원정보와  다릅니다.");
+  			return ResponseEntity.ok(response);
+  		}
+  		
+  		response.put("result", "true");
+  		response.put("message", "요청하신 회원 ID입니다.");
+  		response.put("id", result.getMember_id());
+  		return ResponseEntity.ok(response);
+ 	};
+ 	
+ 	
  	
  	// 비밀번호 찾기 페이지
   	@RequestMapping(value = "pwInquiry" , method = RequestMethod.POST)
   	public ResponseEntity<Map<String, String>> pwInquiryPost(@RequestBody MemberVO vo) {
-  		logger.info("pwInquiry POST" + vo);
+  		logger.debug("pwInquiry POST" + vo);
   		response.clear(); // 메서드 시작 시 초기화
   		
   		int result = mService.memberUpdatePw(vo);
@@ -278,7 +307,6 @@ public class MemberController {
   		if(result == 0) {
   			response.put("result", "false");
   			response.put("message", "비밀번호 변경중 오류가 발생하였습니다.");
-  			
   		}
   		
   		response.put("result", "true");

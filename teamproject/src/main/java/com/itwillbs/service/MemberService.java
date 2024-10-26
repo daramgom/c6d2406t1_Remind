@@ -63,4 +63,5 @@ public interface MemberService {
 	public MemberVO memberUpdateInfo(String id,String span,String newValue);
 	
 	public int memberUpdatePw(MemberVO vo);
+	
 }

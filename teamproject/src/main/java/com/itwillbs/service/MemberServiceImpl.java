@@ -206,4 +206,6 @@ public class MemberServiceImpl implements MemberService{
 		return mdao.UpdatePwMember(vo);
 	}
 	
+	
+	
 }

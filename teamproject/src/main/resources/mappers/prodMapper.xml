@@ -98,6 +98,12 @@
        prod_qty = coalesce(prod_qty, 0) + #{stock_qty}
 </insert>
 
+<update id="transferProd3">
+	update move_stock  
+	 set move_rcvuser = #{wh_admin2}, move_rcvdate = now() 
+	  where prod_id = #{prod_id} and move_towh = #{stock_wh} and move_qty = #{stock_qty}
+</update>
+
 <insert id="moveStock">
 	insert into move_stock (prod_id, move_fromwh, move_towh, move_qty, move_reguser, move_reason) 
 	 values (#{prod_id}, #{wh_number}, #{stock_wh}, #{stock_qty}, #{prod_reguser}, #{move_reason})
@@ -108,16 +114,17 @@
      ms.move_fromwh as wh_number, w1.wh_name, w1.wh_location, w1.wh_dt_location, w1.wh_admin, 
       ms.move_towh as stock_wh, w2.wh_name as wh_name2, w2.wh_location as wh_location2, 
        w2.wh_dt_location as wh_dt_location2, w2.wh_admin as wh_admin2, ms.move_qty as stock_qty,  
-	    ms.move_reguser as prod_reguser, m1.member_name as prod_regname, date_format(ms.move_regdate, '%Y-%m-%d (%a) %H:%i') as formatted_regdate, 
-	     ms.move_reason, ms.move_rcvuser as prod_upduser, m2.member_name as prod_updname, 
-	      date_format(ms.move_rcvdate, '%Y-%m-%d (%a) %H:%i') as formatted_upddate 
-	       from prod p join move_stock ms on p.prod_id = ms.prod_id 
-	        join company c on p.company_code = c.company_code 
-	         left join warehouse w1 on ms.move_fromwh = w1.wh_number 
-              left join warehouse w2 on ms.move_towh = w2.wh_number 
-	           left join member m1 on ms.move_reguser = m1.member_id 
-	            left join member m2 on ms.move_rcvuser = m2.member_id 
-	             where p.prod_status != '02'
+	    ms.move_reguser as prod_reguser, m1.member_name as prod_regname,  
+	     date_format(ms.move_regdate, '%Y-%m-%d (%a) %H:%i') as formatted_regdate, 
+	      ms.move_reason, ms.move_rcvuser as prod_upduser, m2.member_name as prod_updname, 
+	       date_format(ms.move_rcvdate, '%Y-%m-%d (%a) %H:%i') as formatted_upddate 
+    from prod p join move_stock ms on p.prod_id = ms.prod_id 
+     join company c on p.company_code = c.company_code 
+      left join warehouse w1 on ms.move_fromwh = w1.wh_number 
+       left join warehouse w2 on ms.move_towh = w2.wh_number 
+        left join member m1 on ms.move_reguser = m1.member_id 
+         left join member m2 on ms.move_rcvuser = m2.member_id 
+          where p.prod_status != '02'
 </select>
 
 <select id="transferSelect" resultType="ProdVO">

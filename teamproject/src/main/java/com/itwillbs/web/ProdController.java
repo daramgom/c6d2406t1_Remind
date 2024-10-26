@@ -1,6 +1,4 @@
 package com.itwillbs.web;
-//@RequestMapping(value = "/member/*")
-//	--> 특정 동작의 형태를 구분 (*.me, *.bo, *.do)
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -15,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,18 +36,11 @@ import com.itwillbs.domain.ProdVO;
 import com.itwillbs.persistence.ProdDAO;
 import com.itwillbs.service.ProdService;
 
-// servlet-context.xml
-// <context:component-scan base-package="com.itwillbs.web" />
 
 @Controller
 @RequestMapping(value = "/prod/*")
 public class ProdController {
 	
-	// 객체 주입 --> 이후 서비스 영역에서 동작 구현
-	// @Inject
-	// private ProdDAO pdao;
-	
-	// 생성자 주입
 	private ProdService pService;
 	
 	public ProdController(ProdService pService) {
@@ -71,17 +63,8 @@ public class ProdController {
 	@RequestMapping(value = "/insert",method = RequestMethod.POST)
 	public void insertProdPost(ProdVO vo, HttpServletRequest req) {
 		logger.debug(" ( •̀ ω •́ )✧ /prod/insert -> insertProdPost() 실행 ");
-		// 한글 인코딩 처리
-		// 	--> web.xml filter 처리
-		
-		// 전달정보(파라메터) 저장
 		logger.debug(" ( •̀ ω •́ )✧ vo : "+vo);
 		
-		// DB 객체 생성 - 제품 등록
-		// ProdDAO 객체 생성 --> 객체 주입
-		// pdao.insertProd(vo);
-		
-		// ProdService 객체를 주입 -> 해당동작 수행
 		pService.insertProd(vo,req);
 		logger.debug(" ( •̀ ω •́ )✧ 제품등록 성공 ");
 		
@@ -168,9 +151,11 @@ public class ProdController {
 	
 	// 재고 이동 신청(post)
 	@PostMapping(value = "/transfer")
-	public String transferProdPost(ProdVO vo, RedirectAttributes rttr) {
+	public String transferProdPost(ProdVO vo, RedirectAttributes rttr, HttpServletRequest req) {
 		logger.debug("( •̀ ω •́ )✧ ProdController : transferProdPost(ProdVO vo, HttpServletRequest req) 실행 ");
 		logger.debug("( •̀ ω •́ )✧ vo : "+vo);
+		vo.setProd_reguser((String)req.getSession().getAttribute("id"));
+		logger.debug("( •̀ ω •́ )✧ vo.prod_reguser : "+vo.getProd_reguser());
 		int result = pService.moveStock(vo);
 		if(result > 0) {
 			rttr.addFlashAttribute("trans_message", "제품 이동 신청되었습니다.");
@@ -187,6 +172,19 @@ public class ProdController {
 		List<ProdVO> moveList = pService.moveStockList(vo);
 		
 		model.addAttribute("moveList", moveList);
+	}
+	
+	// 재고이동이력(post)
+	@PostMapping("/movestock")
+	public ResponseEntity<String> movestockPost(@RequestBody List<ProdVO> moveList) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : movestockPost(@RequestBody List<ProdVO> moveList) 실행 ");
+		logger.debug("( •̀ ω •́ )✧ moveList : "+moveList.size());
+		int result = pService.transferProd(moveList);
+		
+		if(result>0) {
+			return ResponseEntity.ok("재고 이동이 승인되었습니다.");
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 이동 승인에 실패하였습니다.");
 	}
 	
 	// 재고 이동 선택(post)

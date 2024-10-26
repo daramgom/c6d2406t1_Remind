@@ -122,7 +122,7 @@
 								<div class="row">
 									<div class="col-md-12">
 									<form id="prodForm" action="" method="post" enctype="multipart/form-data">
-										<div class="form-group d-flex" style="margin: 0; gap: 100px;">
+										<div class="form-group d-flex" style="margin: 0 250px; gap: 100px;">
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="text" class="form-control" style="font-size:1.1rem;"
 													id="prod_name" name="prod_name" required="required"/>
@@ -138,7 +138,7 @@
 												<input type="hidden" id="prod_upduser" name="prod_upduser" 
 													value="${sessionScope.id }" placeholder="수정작업자" />
 										</div>
-										<div class="form-group d-flex" style="margin: 0; gap: 100px;">
+										<div class="form-group d-flex" style="margin: 0 250px; gap: 100px;">
 											<div class="form-floating form-floating-custom mb-1" style="flex: 1;">
 												<input type="text" class="form-control input-full" style="font-size:1.1rem;"
 													id="prod_brand" name="prod_brand" required="required"/>
@@ -155,7 +155,7 @@
 												<label id="company_label" for="company_code" class="col-form-label-lg"> 입고처</label>
 											</div>
 										</div>
-										<div class="form-group d-flex" style="margin: 0; gap: 50px;">
+										<div class="form-group d-flex" style="margin: 0 250px; gap:100px;">
 											<div class="input-group" style="flex: 1;">
 											<span class="input-group-text" style="font-size: 1.2rem; color:#2a2f5b;">비고</span>
 												<textarea id="prod_remarks" name="prod_remarks" class="form-control"></textarea>

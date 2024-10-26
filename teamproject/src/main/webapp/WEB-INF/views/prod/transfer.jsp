@@ -118,14 +118,12 @@
 								<div class="col-md-12">
 									<form id="transferForm" action="" method="post">
 									
-										<div class="form-group d-flex" style="margin: 0; gap: 100px;">
+										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px;">
 											<div class="form-floating form-floating-custom mb-3" style="flex: 1;">
 												<select class="form-select" id="prod_id" name="prod_id" required>
 													<option value="">제품식별코드</option>
 												</select>
 												<label for="prod_id" class="selectFloatingLabel" style="font-size: 1.2rem !important;" >제품식별코드</label>
-												<input type="hidden" id="prod_reguser" name="prod_reguser" 
-													value="${sessionScope.id }" placeholder="등록작업자" />
 											</div>
 											<div class="form-floating form-floating-custom mb-3" style="flex: 1;">
 												<select class="form-select" id="wh_number" name="wh_number" required disabled>
@@ -138,10 +136,12 @@
 													id="prod_qty" name="prod_qty" min="0" max="#" readonly required/>
 												<label for="prod_qty" class="col-form-label-lg" style="font-size: 1.2rem !important;">수량</label>
 												<input type="hidden" id="current_qty" name="current_qty" value="#">
+												<input type="hidden" id="prod_reguser" name="prod_reguser" 
+													value="${sessionScope.id }" placeholder="등록작업자" />
 											</div>
 										</div>
 										
-										<div class="form-group d-flex" style="margin: 0x; gap: 100px; align-items: center;">
+										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px; align-items: center;">
 											 <div style="flex: 1;">
 											 	<img id="prod_image" src="#">
 											 </div>
@@ -157,11 +157,13 @@
 												<label for="stock_qty" class="col-form-label-lg" style="font-size: 1.2rem !important;">이동 수량</label>
 											</div>
 										</div>
-										<div class="form-group d-flex" style="margin: 0x; gap: 100px; align-items: center;">
-											<div class="input-group" style="flex: 0.5;">
+										<div class="form-group d-flex" style="margin: 0 200px; gap: 100px; align-items: center;">
+											<div style="flex: 0.5;"></div>
+											<div class="input-group" style="flex: 1;">
 												<span class="input-group-text" style="font-size: 1.2rem; color:#2a2f5b;">재고이동사유</span>
 													<textarea id="move_reason" name="move_reason" class="form-control" required></textarea>
 											</div>
+											<div style="flex: 0.5;"></div>
 										</div>
 										<div class="row d-flex justify-content-center">
 											<div class="col-md-8">

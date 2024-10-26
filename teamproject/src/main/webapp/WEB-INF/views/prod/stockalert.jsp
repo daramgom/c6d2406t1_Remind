@@ -179,18 +179,18 @@
 															<tbody>
 															<c:forEach var="s" items="${stockList}">
 																<tr class="prod_detail ${s.prod_qty < s.prod_stock ? 'highlight' : ''}">
-																	<td>${s.prod_id}</td>
-																	<td>${s.prod_name}</td>
-																	<td>${s.prod_brand}</td>
-																	<td><img src="${s.prod_image}" alt="제품이미지" style="width:75px; height:75px; object-fit: contain;"></td>
-																	<td>${s.prod_qty}</td>
-																	<td>${s.prod_stock}</td>
+																	<td style="padding:0 !important;">${s.prod_id}</td>
+																	<td style="padding:0 !important;">${s.prod_name}</td>
+																	<td style="padding:0 !important;">${s.prod_brand}</td>
+																	<td style="padding:0 !important;"><img src="${s.prod_image}" alt="제품이미지" style="width:75px; height:75px; object-fit: contain;"></td>
+																	<td style="padding:0 !important;">${s.prod_qty}</td>
+																	<td style="padding:0 !important;">${s.prod_stock}</td>
 																	<c:choose>
 																		<c:when test="${s.prod_qty < s.prod_stock}">
-																			<td class="text-danger fw-bold">${s.prod_stock - s.prod_qty}</td>
+																			<td class="text-danger fw-bold" style="padding:0 !important;">${s.prod_stock - s.prod_qty}</td>
 																		</c:when>
 																		<c:otherwise>
-																			<td></td>
+																			<td style="padding:0 !important;"></td>
 																		</c:otherwise>
 																	</c:choose>
 																</tr>
@@ -299,7 +299,7 @@ $(document).ready(function () {
 	// select 요소 클릭 시 데이터 가져오기
 	    	
 	    	
-	// swal 처리
+	// 재고 알람 설정 swal 처리
 	if ("${trans_message}" != "") {
 		swal({
 			title: "성공!",
@@ -308,6 +308,7 @@ $(document).ready(function () {
 			buttons: {
 				confirm: {
 					text: "확인",
+					className: "btn btn-secondary"
 				}
 			}
 		});
@@ -319,11 +320,12 @@ $(document).ready(function () {
 			buttons: {
 				confirm: {
 					text: "확인",
+					className: "btn btn-secondary"
 				}
 			}
 		});
 	}
-	// swal 처리
+	// 재고 알람 설정 swal 처리
 	
 	        
 	$("#inputReset").click(function (e) {
@@ -355,7 +357,8 @@ $(document).ready(function () {
 	                type: "success",
 	                buttons: {
 	                    confirm: {
-	                        className: "btn btn-primary",
+	                    	text: "확인",
+	                        className: "btn btn-secondary",
 	                    },
 	                },
 	            });

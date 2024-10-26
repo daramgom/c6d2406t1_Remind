@@ -31,7 +31,7 @@ public interface ProdService {
 	
 	
 	// 재고이동
-	public int transferProd(ProdVO vo);
+	public int transferProd(List<ProdVO> moveList);
 	public int moveStock(ProdVO vo);
 	public List<ProdVO> moveStockList(ProdVO vo);
 	public List<ProdVO> transferSelect();

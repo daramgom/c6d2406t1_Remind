@@ -176,7 +176,7 @@
                   </div>
                   <div class="card-body">
                     <div class="chart-container" style="min-height: 375px"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-                      <canvas id="statisticsChart" style="display: block; width: 1007px; height: 475px;" width="1007" height="475" class="chartjs-render-monitor"></canvas>
+                      <canvas id="statisticsChart" style="display: block; width: 1007px; height: 405px;" width="1007" height="405" class="chartjs-render-monitor"></canvas>
                     </div>
                   </div>
                 </div>
@@ -190,7 +190,7 @@
                     </div>
                   <div class="card-body pb-0">
                     <div class="mb-4 mt-2 col-12">
-						<div id="msgArea" class="col" style="height:325px; overflow-y:auto;">
+						<div id="msgArea" class="col" style="height:350px; overflow-y:auto;">
 						</div>
 						<div class="col-12">
 						<div class="input-group mb-3">
@@ -395,9 +395,20 @@ $('#exportImage').on('click', function() {
 	const canvas = $('#statisticsChart')[0];
 	const canvasImg = canvas.toDataURL("image/png");
 	
+	const canvasToday = new Date();
+	const canvasWeekAgo = new Date();
+	canvasWeekAgo.setDate(canvasToday.getDate() - 7);
+	
+	const formatDate = (date) => {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+		return year+'-'+month+'-'+day;
+	};
+	
 	const link = $('<a></a>');
 	link.attr('href', canvasImg);
-	link.attr('download', 'REMIND_Daily_Chart.png');
+	link.attr('download', 'REMIND_Daily_Chart_'+ formatDate(canvasToday) +'_to_'+ formatDate(canvasWeekAgo) +'.png');
 	link[0].click();
 });
 // 그래프 이미지 저장

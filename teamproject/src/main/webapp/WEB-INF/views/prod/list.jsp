@@ -165,7 +165,8 @@
                     <h3 class="card-title">제품목록</h3>
                   </div>
                   <div class="card-body">
-                    <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+                    <div class="table-responsive" 
+                    style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
                       <table
                         id="multi-filter-select"
                         class="display table table-hover"
@@ -189,6 +190,7 @@
                             <th>수량</th>
                             <th>입고처</th>
                             <th>등록일시</th>
+                            <th></th>
                           </tr>
                         </tfoot>
                         <tbody>
@@ -459,6 +461,7 @@
 		
 		// 데이터테이블
         $("#multi-filter-select").DataTable({
+        	autoWidth: false,
         	pageLength: 10, // 기본 페이지 길이
         	lengthMenu: [10, 20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
         	initComplete: function () {

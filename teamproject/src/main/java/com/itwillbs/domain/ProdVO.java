@@ -23,6 +23,7 @@ public class ProdVO {
 	private String prod_name;
 	private Timestamp prod_regdate;
 	private String prod_reguser;
+	private String move_reguser;
 	private Timestamp prod_upddate;
 	private String prod_upduser;
 	private String prod_category;

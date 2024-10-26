@@ -38,7 +38,7 @@
 
 <style>
 		
-	#multi-filter-select thead th {
+	#moveStockTable thead th {
 		background-color: #6861ce !important;
 		color: white;
 	}
@@ -53,6 +53,11 @@
 		font-size: 1.25rem !important;
 		text-align: center;
 		white-space: nowrap;
+	}
+	
+	.btn-label b {
+		font-size: 1.2rem;
+		line-height: 2;
 	}
 
 </style>
@@ -107,11 +112,12 @@
                   <div class="card-body">
                     <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
                       <table
-                        id="multi-filter-select"
+                        id="moveStockTable"
                         class="display table table-hover"
                       >
                         <thead>
                         <tr>
+                        	<th></th>
                             <th>제품식별코드</th>
                             <th>출발창고</th>
                             <th>도착창고</th>
@@ -125,13 +131,14 @@
                         </thead>
                         <tfoot>
 						<tr>
+							<th><button class="btn btn-secondary btn-sm" id="boxClear" style="display: none;">체크 해제</button></th>
 							<th>제품식별코드</th>
 							<th>출발창고</th>
 							<th>도착창고</th>
 							<th>이동수량</th>
 							<th>작업자</th>
 							<th>작업일시</th>
-							<th>재고이동사유</th>
+							<th></th>
 							<th>승인자</th>
 							<th>승인일시</th>
 						</tr>
@@ -139,9 +146,30 @@
                         <tbody>
 						<c:forEach var="m" items="${moveList}">
 							<tr>
+								<c:choose>
+									<c:when test="${empty m.prod_updname && empty m.formatted_upddate && m.wh_admin2 == sessionScope.id}">
+									<td id="boxCheck" style="padding:0 !important;">
+										<div class="selectgroup selectgroup-secondary selectgroup-pills">
+											<label class="selectgroup-item">
+												<input type="checkbox" name="moveCheck" class="selectgroup-input"
+												data-prod-id="${m.prod_id}"
+												data-wh-number="${m.wh_number}"
+												data-stock-wh="${m.stock_wh}"
+												data-stock-qty="${m.stock_qty}"
+												data-wh-admin2="${m.wh_admin2}"
+												>
+												<span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-dolly-flatbed"></i></span>
+											</label>
+										</div>
+		                            </td>
+		                            </c:when>
+		                            <c:otherwise>
+		                            <td></td>
+		                            </c:otherwise>
+	                            </c:choose>
 								<td style="padding:0 !important;">${m.prod_id}<br> ${m.prod_name}<br> ${m.prod_brand}<br> ${m.company_code}</td>
-								<td style="padding:0 !important;">${m.wh_number}<br> ${m.wh_name}<br> ${m.wh_location}<br> ${m.wh_dt_location}</td>
-								<td style="padding:0 !important;">${m.stock_wh}<br> ${m.wh_name2}<br> ${m.wh_location2}<br> ${m.wh_dt_location2}<br></td>
+								<td style="padding:0 !important;">${m.wh_name}<br> ${m.wh_location}-${m.wh_dt_location}</td>
+								<td style="padding:0 !important;">${m.wh_name2}<br> ${m.wh_location2}-${m.wh_dt_location2}<br></td>
 								<td style="padding:0 !important;">${m.stock_qty}</td>
 								<td style="padding:0 !important;">${m.prod_regname}<br>(${m.prod_reguser})</td>
 								<td style="padding:0 !important;">${m.formatted_regdate}</td>
@@ -166,10 +194,16 @@
 						</c:forEach>
                         </tbody>
                       </table>
-                      				
-                        </div>
+						<div style="display: flex; justify-content: center; margin-bottom: 20px;">
+	                      	<button type="submit" class="btn btn-secondary" id="moveStockConfirm" style="display: none;">
+								<span class="btn-label">
+									<i class="fas fa-cart-arrow-down"> <b>재고 이동 승인</b></i>
+								</span>
+							</button>
+						</div>
                       </div>
                     </div>
+                  </div>
 					
                     </div>
                   </div>
@@ -180,20 +214,21 @@
 		<!-- Footer -->
 		<jsp:include page="${pageContext.request.contextPath}/resources/inc/footer.jsp" />
 	</div>
-
 	
 <script type="text/javascript">
 $(document).ready(function () {
 	let prodImage;
 		
 	// 데이터테이블
-	$("#multi-filter-select").DataTable({
+	$("#moveStockTable").DataTable({
 		pageLength: 10,
 		lengthMenu: [10, 20, 50, 100, 500],
+		columnDefs: [{ orderable: false, targets: [0] }],
+		order: [[6, 'desc']],
 		initComplete: function () {
 			var table = this.api();
 
-			var columnsToFilter = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+			var columnsToFilter = [1, 2, 3, 4, 5, 6, 8, 9];
 
 			columnsToFilter.forEach(function (index) {
 				var column = table.column(index);
@@ -220,6 +255,90 @@ $(document).ready(function () {
 		}
 	});
 	// 데이터테이블
+	
+	
+	// 라디오버튼 체크해제, 조건제어
+	if($('#boxCheck input[type="checkbox"]').length > 0) {
+		$('#boxClear').show();
+		$('#moveStockConfirm').show();
+	}
+	$('#boxClear').on('click', function() {
+		$('input[name="moveCheck"]').prop('checked', false);
+	});
+	// 라디오버튼 체크해제, 조건제어
+	
+	
+	// 재고이동승인 버튼 처리
+	$('#moveStockConfirm').on('click', function() {
+	var selectedMoveStock = [];
+
+	$('#moveStockTable tr').each(function() {
+			var checkbox = $(this).find('input[name="moveCheck"]');
+			if (checkbox.is(':checked')) {
+				selectedMoveStock.push({
+					prod_id: checkbox.data('prodId'),
+					wh_number: checkbox.data('whNumber'),
+					stock_wh: checkbox.data('stockWh'),
+					stock_qty: checkbox.data('stockQty'),
+					wh_admin2: checkbox.data('whAdmin2')
+				});
+			}
+		});
+	
+		if (selectedMoveStock.length > 0) {
+			$.ajax({
+				url: '/prod/movestock',
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(selectedMoveStock),
+				success: function(response) {
+					swal({
+						title: "성공!",
+						text: "재고 이동이 승인되었습니다!",
+						icon: "success",
+						buttons: {
+							confirm:{
+								text: "확인",
+								className: 'btn btn-secondary'
+								}
+						}
+					}).then(() => {
+                    	location.reload();
+                    });
+				},
+				error: function(xhr, status, error) {
+					swal({
+						title: "오류!",
+						text: "재고 이동 승인에 실패하였습니다.",
+						icon: "error",
+						buttons: {
+							confirm:{
+								text: "확인",
+								className: 'btn btn-secondary'
+								}
+						}
+					});
+				}
+			});
+		} else {
+			swal({
+				title: "오류!",
+				text: "선택된 항목이 없습니다!",
+				icon: "error",
+				buttons: {
+					confirm:{
+						text: "확인",
+						className: 'btn btn-secondary'
+						}
+				}
+			});
+		}
+	});
+	
+	
+	// 재고이동승인 버튼 처리
+	
+	
 	
 	
 });//jquery DOM 준비

@@ -23,17 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.itwillbs.domain.ProdVO;
 import com.itwillbs.persistence.ProdDAO;
 
-
-// @Service : 서비스 영역(비지니스 로직 영역) 에서의 동작을 구현하도록 설정
-//			  root-context.xml에 빈(MemberService)으로 등록 사용.
-
-/**
-* 
-* 비즈니스 영역, Action페이지, ~pro.jsp 동작을 처리하는 공간.
-* => 컨트롤러와 DAO를 연결다리(접착제) / 완충영역
-* => 고객사마다 유연한 대처가 가능.
-*/
-
 @Service
 public class ProdServiceImpl implements ProdService {
 	
@@ -109,21 +98,21 @@ public class ProdServiceImpl implements ProdService {
 	
 	// 재고이동
 	@Override
-	public int transferProd(ProdVO vo) {
+	public int transferProd(List<ProdVO> moveList) {
 		logger.debug("( •̀ ω •́ )✧ Service : transferProd(ProdVO vo, HttpServletRequest req) 실행 ");
-		if(vo.getProd_qty() == vo.getCurrent_qty() && vo.getCurrent_qty() >= vo.getStock_qty()) {
-				if(vo.getStock_qty() >= 0) {
-					logger.debug("( •̀ ω •́ )✧ Service : 수량 == 현재수량 && 수량 >= && 이동수량 >= 0");
-					return pdao.transferProd(vo);
-				} return 0;
-		} return 0;
+		return pdao.transferProd(moveList);
 	}
 
 	// 재고이동내역기록
 	@Override
 	public int moveStock(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ Service : moveStock(ProdVO vo, HttpServletRequest req) 실행 ");
-		return pdao.moveStock(vo);
+		if(vo.getProd_qty() == vo.getCurrent_qty() && vo.getCurrent_qty() >= vo.getStock_qty()) {
+			if(vo.getStock_qty() >= 0) {
+				logger.debug("( •̀ ω •́ )✧ Service : 수량 == 현재수량 && 수량 >= && 이동수량 >= 0");
+				return pdao.moveStock(vo);
+			} return 0;
+		} return 0;
 	}
 	
 	// 재고이동이력리스트

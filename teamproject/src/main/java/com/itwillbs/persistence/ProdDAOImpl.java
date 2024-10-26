@@ -12,21 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.itwillbs.domain.ProdVO;
 
-//@Repository : 스프링이 해당클래스를 DAO객체 (Bean)로 인식
-//				root-context.xml파일에서 해당객체를 사용하도록 설정.
 
 @Repository
 public class ProdDAOImpl implements ProdDAO {
 	
 	@Inject
 	private SqlSession sqlSession; 
-	// 객체 주입으로 DB 연결 작업 완료 : 자동으로 연결, 자원해제, SQL실행, mybatis...
-	// root-context.xml에서 beans 연결 SqlSession --> SqlSessionFactory --> dataSource --> hikariConfig
-	// sqlSession : <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory" />
-	// sqlSessionFactory : <property name="dataSource" ref="dataSource" />
-	//					   <property name="configLocation" value="classpath:/mybatis-config.xml" />
-	//                     <property name="mapperLocations" value="classpath:/mappers/**/*Mapper.xml" />
-	// dataSource: <constructor-arg ref="hikariConfig" />
 	
 	
 	// Mapper namespace 정보 저장
@@ -37,10 +28,6 @@ public class ProdDAOImpl implements ProdDAO {
 	// 제품등록
 	@Override
 	public void insertProd(ProdVO vo) {
-		// 1.2 디비연결  => 생략 SqlSession 객체 주입
-		// 3. SQL 구문(Mapper 생성) & pstmt 객체 (mybatis 관리)
-		// 4. SQL 실행
-		// [com.itwillbs.mapper.ProdMapper.insertProd]
 		logger.debug("( •̀ ω •́ )✧ DAO : insertProd(ProdVO vo) 실행");
 		int result = sqlSession.insert(NAMESPACE+".insertProd", vo);
 		logger.debug("( •̀ ω •́ )✧ DAO : result : "+result);
@@ -58,10 +45,6 @@ public class ProdDAOImpl implements ProdDAO {
 	// 제품목록
 	@Override
 	public List<ProdVO> listProd() {
-		// 1.2 디비연결  => 생략 SqlSession 객체 주입
-		// 3. SQL 구문(Mapper 생성) & pstmt 객체 (mybatis 관리)
-		// 4. SQL 실행
-		// [com.itwillbs.mapper.ProdMapper.listProd]
 		logger.debug("( •̀ ω •́ )✧ DAO : listProd(); 실행");
 		return sqlSession.selectList(NAMESPACE + ".listProd");
 	}
@@ -99,10 +82,15 @@ public class ProdDAOImpl implements ProdDAO {
 	// 재고이동
 	@Override
 	@Transactional
-	public int transferProd(ProdVO vo) {
+	public int transferProd(List<ProdVO> moveList) {
 		logger.debug("( •̀ ω •́ )✧ DAO : transferProd(ProdVO vo) 실행");
-		int result = sqlSession.update(NAMESPACE+ ".transferProd", vo);
-		result += sqlSession.insert(NAMESPACE+ ".transferProd2", vo);
+		int result = 0;
+		for(ProdVO vo: moveList) {
+			result += sqlSession.update(NAMESPACE+".transferProd", vo);
+			result += sqlSession.insert(NAMESPACE+".transferProd2", vo);
+			result += sqlSession.update(NAMESPACE+".transferProd3", vo);
+		}
+		logger.debug("( •̀ ω •́ )✧ DAO : result : "+result);
 		return result;
 	}
 	

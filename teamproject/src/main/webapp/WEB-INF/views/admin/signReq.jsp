@@ -76,8 +76,14 @@ tr {
 </head>
 <body>
 
-	<c:if
+<c:if
 		test="${sessionScope.id == null || sessionScope.permission_id != '03'}">
+		<c:redirect url="/main" />
+	</c:if>
+	
+	
+	<c:if
+		test="${sessionScope.member_code != '01'}">
 		<c:redirect url="/main" />
 	</c:if>
 	
@@ -95,7 +101,8 @@ tr {
 					<h3 class="fw-bold mb-3">회원 가입 신청 목록</h3>
 					<ul class="breadcrumbs mb-3">
 						<li class="nav-home"><a href="#"> <i class="icon-home"></i>
-						</a></li>
+						</a>
+						</li>
 					</ul>
 				</div>
 				<div class="row">
@@ -105,7 +112,7 @@ tr {
 								style="display: flex; justify-content: space-between;">
 								<div class="card-title">목록</div>
 								<c:if test="${ WaitingList != null}">
-									<div style="margin-right: 3rem;">
+									<div style="margin-right: 1rem;">
 										<button id="approveBtn"
 											style="margin-right: 1rem; padding: 0.7rem 2rem; background: #5f41e4 ! IMPORTANT; border: none;"
 											class="btn btn-success hover-btn">승인</button>

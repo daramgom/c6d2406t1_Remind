@@ -71,6 +71,15 @@
 .submit-Permission-btn:hover, .submit-Permission-btn:focus {
 	opacity: .8;
 }
+.currentpage {
+
+	font-size: 26px;
+	font-weight: 400;
+	line-height: 30px;
+	color : #6861ce;
+	border-color: #ddd; background-color: var(--bs-pagination-disabled-bg);     border-radius: 100px;
+	padding: 0 10px
+}
 </style>
 
 
@@ -82,10 +91,10 @@
 </head>
 <body>
 	<c:if
-		test="${sessionScope.id == null || sessionScope.permission_id != '03'}">
+		test="${sessionScope.id == null || sessionScope.permission_id != '03' || sessionScope.member_code != '01'}">
 		<c:redirect url="/main" />
 	</c:if>
-
+	
 	<div class="wrapper">
 		<!-- Header -->
 		<jsp:include page="/resources/inc/header.jsp" />
@@ -164,6 +173,30 @@
 											</c:forEach>
 										</table>
 									</div>
+									<!-- 페이지 네비게이션 -->
+								</div>
+								<div style="display: flex;margin-right: 12px;justify-content: end;">
+									<!-- 페이지 네비게이션 -->
+								    <c:if test="${pageCount > 1}">
+								        <div class="pagination">
+								            <!-- 이전 페이지 링크 -->
+								            <c:if test="${currentPage > 1}">
+								                <a href="?page=${currentPage - 1}" style="padding: 0 10px; color:black; font-size: 18px; border-color: #ddd; background-color: var(--bs-pagination-disabled-bg); border-radius: 100px;">Previous</a>
+								            </c:if> 
+								
+								            <!-- 페이지 번호 링크 -->
+								            <c:forEach var="i" begin="1" end="${pageCount}">
+								                <a href="?page=${i}" style="padding: 0 10px; color:black; font-size: 20px;">
+								                    <span class="${currentPage == i ? 'currentpage' : ''}">${i}</span>
+								                </a>
+								            </c:forEach>
+								
+								            <!-- 다음 페이지 링크 -->
+								            <c:if test="${currentPage < pageCount}">
+								                <a href="?page=${currentPage + 1}" style="padding: 0 10px; color:black; font-size: 18px; border-color: #ddd; background-color: var(--bs-pagination-disabled-bg); border-radius: 100px;">Next</a>
+								            </c:if>
+								        </div>
+								    </c:if>
 								</div>
 							</div>
 						</div>
@@ -216,6 +249,7 @@
 							</p>
 						</div>
 					</div>
+					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" id="editButton"
 							style="display: none">수정</button>
@@ -224,6 +258,10 @@
 						<button type="button" class="btn btn-secondary closeBtn"
 							data-dismiss="modal">닫기</button>
 					</div>
+					
+				<div style="float: right; margin-right: 30px;">
+    
+</div>
 				</div>
 			</div>
 		</div>

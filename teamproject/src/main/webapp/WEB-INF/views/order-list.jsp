@@ -188,6 +188,7 @@ pageEncoding="UTF-8"%>
          cursor: pointer;
      }
     
+    
 </style>
 
 
@@ -211,6 +212,9 @@ pageEncoding="UTF-8"%>
     <c:if test="${empty userId}">
 		<c:redirect url="/login"/>
 	</c:if>
+	<c:if test="${userMemberCode != '1'}">
+		<c:redirect url="/cmain"/>
+	</c:if>
     
     <div class="wrapper">
     <!-- Header -->
@@ -233,7 +237,10 @@ pageEncoding="UTF-8"%>
 				</ul>
 			</div>
 			
-			<main>
+			<main style="
+			    margin-left: 20px;
+			    margin-right: 20px;
+			    width:100%;">
 			<div class="container">
  				<div class="table-responsive">
 	 				<div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
@@ -265,20 +272,20 @@ pageEncoding="UTF-8"%>
 				
 		        <table id="basic-datatables" class="display table table-striped table-hover dataTable" role="grid" aria-describedby="basic-datatables_info">
 		            <thead>
-		                <tr role="row">
+		                <tr role="row" style="text-align: center; vertical-align: middle;">
 			                <!--     <th>순번</th> -->
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >순번</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >관리번호</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주상태</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >담당자</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >승인자</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >제품코드</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주단가</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주수량</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >기안시간</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >상태별시간</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >거래처코드</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >입고창고</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >순번</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >관리번호</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주상태</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >담당자</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >승인자</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >제품코드</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주단가</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주수량</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >기안시간</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >상태별시간</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >거래처코드</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >입고창고</th>
 		                    <!-- <th>비고</th> -->
 		                    <!-- <th>삭제 상태</th> -->
 		                </tr>
@@ -487,6 +494,7 @@ $(document).ready(function() {
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>발주 상세 정보</h2>
         <form action="" id="orderForm" method="post" name="orderForm">
+        
         	<div style="display: flex; gap: 10px;">
          		<label>순번 : </label>
         		<input type="text" id="modalOrdCount" name="ord_count" readonly="readonly" class="form-control" style="width:200px;" />
@@ -496,13 +504,15 @@ $(document).ready(function() {
             	<input type="text" id="modalCommonStatus" name="common_status" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" /><br>
             	<input type="hidden" id="modalOrdStatus" name="ord_status" readonly="readonly" class="form-control" style="width:200px;" /><br>
         	</div>
-           
+        	
            <div style="display: flex; gap: 10px;">
            		<label>발주 담당자:</label>
            </div>
           <div style="display: flex; gap: 10px;">
           	<input type="text" id="modalOrdManagerId" name="ord_manager_id" readonly="readonly" class="form-control" style="width:200px;" /><br>
           	<input type="text" id="modalManagerMemberName" name="manager_member_name" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
+          	
+          	
           	<input type="text" id="modalManagerDepartmentName" name="manager_department_name" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
           	<input type="text" id="modalManagerCommonStatus" name="manager_common_status" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
           	<input type="text" id="modalManagerMemberTel" name="manager_member_tel" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" />
@@ -570,6 +580,7 @@ $(document).ready(function() {
           <textarea class="form-control" id="modalOrdText" name="ord_text" class="form-control" style="width:750px;" ></textarea><br>
           <!-- <label>삭제 상태:</label> -->
           <input type="hidden" id="modalOrdDeleteStatus" name="ord_delete_status" /><br>
+          
          </form>
          
          <div id="buttonContainer"></div>

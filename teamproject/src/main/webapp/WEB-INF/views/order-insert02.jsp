@@ -148,6 +148,9 @@ WebFont.load({
   	<c:if test="${empty userId}">
 		<c:redirect url="/login"/>
 	</c:if>
+	<c:if test="${userMemberCode == '1'}">
+		<c:redirect url="/main"/>
+	</c:if>
 <%-- 	<c:if test="${userMemberCode != '1'}"> --%>
 <%-- 		<c:redirect url="/main"/> --%>
 <%-- 	</c:if> --%>

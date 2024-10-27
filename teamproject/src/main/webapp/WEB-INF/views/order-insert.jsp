@@ -148,7 +148,7 @@ pageEncoding="UTF-8"%>
 		<c:redirect url="/login"/>
 	</c:if>
 	<c:if test="${userMemberCode != '1'}">
-		<c:redirect url="/main"/>
+		<c:redirect url="/cmain"/>
 	</c:if>
   	
     <div class="wrapper">

@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 <html lang="kr">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>아이티윌 팀프로젝트</title>
+    <title>출고요청</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
@@ -42,10 +42,10 @@ pageEncoding="UTF-8"%>
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #e9ecef;
         margin: 0;
-        padding: 20px;
+        /* padding: 20px; */
     }
     header {
-        background: #001f3f; /* 남색 */
+        background: #001f3f; 
         padding: 10px;
         display: flex;
         justify-content: space-between;
@@ -205,20 +205,22 @@ pageEncoding="UTF-8"%>
     
     <!-- 발주관리번호 -->
        <style>
-        .dropdown {
+        .dropdown1 {
             display: none;
             border: 1px solid #ccc;
             max-height: 150px;
             overflow-y: auto;
-            position: absolute;
-            background: white;
+           position: relative;
+		    background: white;
+		    top: 0px;
+		    width: 240px;
             z-index: 1000;
         }
-        .dropdown div {
+        .dropdown1 div {
             padding: 8px;
             cursor: pointer;
         }
-        .dropdown div:hover {
+        .dropdown1 div:hover {
             background-color: #f0f0f0;
         }
     </style>
@@ -253,6 +255,8 @@ pageEncoding="UTF-8"%>
 		
         <div class="container">
           <div class="page-inner">
+          
+        
 
 <main>
     <h2>출고 요청</h2>
@@ -304,11 +308,11 @@ pageEncoding="UTF-8"%>
 
             <div class="form-group">
                 <label for="ord_number">발주 관리 번호</label>
-                <div style="display: flex; align-items: center;">
+                <div style="display: flex; align-items: center; position:relative;">
                     <input type="text" id="ord_number" placeholder="발주 관리 번호 입력" required onfocus="showOrderList()" oninput="fetchOrderData()" name="ord_number">
                     <button type="button" onclick="submitOrderNumber()">조회</button>
                 </div>
-                <div class="dropdown" id="orderDropdown"></div>
+                <div class="dropdown1" id="orderDropdown1"></div>
             </div>
 
             <div class="form-group">
@@ -375,11 +379,12 @@ pageEncoding="UTF-8"%>
 	</div>
     
 
+</main>
     <script>
         const orderNumbers = ['ORD-2024-0001', 'ORD-2024-0005', 'ORD-2024-0006', 'ORD004']; // 예시 발주 번호 목록
 
         function showOrderList() {
-            const dropdown = document.getElementById('orderDropdown');
+            const dropdown = document.getElementById('orderDropdown1');
             dropdown.innerHTML = ''; // 기존 목록 초기화
             dropdown.style.display = 'block'; // 드롭다운 표시
             
@@ -393,7 +398,7 @@ pageEncoding="UTF-8"%>
 
         function selectOrder(order) {
             document.getElementById('ord_number').value = order; // 입력란에 선택한 발주 번호 넣기
-            document.getElementById('orderDropdown').style.display = 'none'; // 드롭다운 숨기기
+            document.getElementById('orderDropdown1').style.display = 'none'; // 드롭다운 숨기기
             fetchProductByOrderNumber(order); // 발주번호에 대한 제품 정보 요청
         }
 
@@ -423,7 +428,7 @@ pageEncoding="UTF-8"%>
 
         function fetchOrderData() {
             const input = document.getElementById('ord_number').value.toLowerCase();
-            const dropdown = document.getElementById('orderDropdown');
+            const dropdown = document.getElementById('orderDropdown1');
             dropdown.innerHTML = ''; // 기존 목록 초기화
             
             const filteredOrders = orderNumbers.filter(order => order.toLowerCase().includes(input));
@@ -440,7 +445,7 @@ pageEncoding="UTF-8"%>
 
         // 클릭 시 드롭다운 숨기기 (입력 외부 클릭 시)
         document.addEventListener('click', (event) => {
-            const dropdown = document.getElementById('orderDropdown');
+            const dropdown = document.getElementById('orderDropdown1');
             const input = document.getElementById('ord_number');
             if (!input.contains(event.target) && !dropdown.contains(event.target)) {
                 dropdown.style.display = 'none';
@@ -467,8 +472,7 @@ pageEncoding="UTF-8"%>
             return confirmation; // 확인하면 true, 아니면 false
         }
     </script>
-</main>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </body>
 </html>

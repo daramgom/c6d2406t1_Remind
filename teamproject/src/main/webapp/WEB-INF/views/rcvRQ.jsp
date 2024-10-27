@@ -42,7 +42,7 @@ pageEncoding="UTF-8"%>
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #e9ecef;
         margin: 0;
-        padding: 20px;
+       /*  padding: 20px; */
     }
     header {
         background: #001f3f; /* 남색 */
@@ -205,20 +205,22 @@ pageEncoding="UTF-8"%>
     
     <!-- 발주관리번호 -->
        <style>
-        .dropdown {
+        .dropdown1 {
             display: none;
             border: 1px solid #ccc;
             max-height: 150px;
             overflow-y: auto;
-            position: absolute;
-            background: white;
-            z-index: 9000;
+           position: relative;
+		    background: white;
+		    top: 0px;
+		    width: 240px;
+            z-index: 1000;
         }
-        .dropdown div {
+        .dropdown1 div {
             padding: 8px;
             cursor: pointer;
         }
-        .dropdown div:hover {
+        .dropdown1 div:hover {
             background-color: #f0f0f0;
         }
     </style>
@@ -322,7 +324,7 @@ pageEncoding="UTF-8"%>
 			        <input type="text" id="ord_number" placeholder="발주관리번호입력" required onfocus="showOrderList()" oninput="fetchOrderData()" name="ord_number">
 			        <button type="button" onclick="submitOrderNumber()">조회</button> <!-- 추가된 버튼 -->
 			    </div>
-			    <div class="dropdown" id="orderDropdown"></div>
+			    <div class="dropdown1" id="orderDropdown"></div>
 			</div>
 
             <div class="form-group">

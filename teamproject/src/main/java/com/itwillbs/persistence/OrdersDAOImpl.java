@@ -34,12 +34,7 @@ public class OrdersDAOImpl implements OrdersDAO{
 		return result;
 	}
 	
-	@Override
-	public int insert02(OrdersVO ordersVO) {
-		int result = sqlSession.insert(NAMESPACE+".insert02", ordersVO);
-		
-		return result;
-	}
+	
 	
 	@Override
 	public List<OrdersVO> listOrder() {
@@ -113,10 +108,6 @@ public class OrdersDAOImpl implements OrdersDAO{
 		return sqlSession.selectList(NAMESPACE+".listWarehouse");
 	}
 	
-	@Override
-	public List<OrdersVO> listProd02() {
-		// TODO Auto-generated method stub
-		return sqlSession.selectList(NAMESPACE+".listProd02");
-	}
+	
 	
 }

@@ -96,32 +96,7 @@ public class OrderController {
     	return "redirect:/order-list";
     }
     
-    @RequestMapping(value = "/order-insert02", method = RequestMethod.GET)
-    public String insertOrderForm02(Model model, HttpSession session) {
-    	
-    	String userId = (String)session.getAttribute("id");
-    	String userMemberCode = (String)session.getAttribute("member_code");
-    	
-    	model.addAttribute("userId", userId);
-    	model.addAttribute("userMemberCode", userMemberCode);
-    	
-    	List<OrdersVO> pListVO02 = orderService.listProd02();
-    	
-    	model.addAttribute("pListVO02", pListVO02);
-    	
-    	return "/order-insert02";
-    }
     
-    @RequestMapping(value = "/order-insert02", method = RequestMethod.POST)
-    public String insertOrder02(OrdersVO ordersVO, HttpSession session) {
-    	orderService.insert02(ordersVO);
-    	
-    	String ord_number = ordersVO.getOrd_number();
-    	
-    	session.setAttribute("ord_number", ord_number);
-    	
-    	return "redirect:/order-insert02";
-    }
     
     
     // 목록창 불러오기

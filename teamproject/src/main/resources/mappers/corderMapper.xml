@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.itwillbs.mapper.CorderMapper">
+ 	<!-- namespace를 사용해서 mapper 파일을 찾아오는 주소 설정 -->
+ 
+ 
+ <!-- 거래처의 발주 요청 정보 입력 -->
+ 	<insert id="insert02">
+    	insert into corders(cord_delete_status,cord_status,cord_manager_id,cprod_id,cord_price,cord_quantity,cord_date,cord_date_change,ccompany_code,cord_text,cord_number,cord_count) 
+    	values ('01','01',#{cord_manager_id},#{cprod_id},#{cord_price},#{cord_quantity},now(),now(),#{ccompany_code},#{cord_text}, 
+    	(SELECT CONCAT('CORD-', YEAR(CURRENT_DATE), '-', LPAD(IFNULL(MAX(SUBSTRING(cord_number, -4)), 0) + 1, 4, '0')) 
+         FROM (SELECT cord_number FROM corders WHERE cord_number LIKE CONCAT('CORD-', YEAR(CURRENT_DATE), '%')) AS temp), 
+         (SELECT COALESCE(MAX(cord_count), 0) + 1 FROM (SELECT cord_count FROM corders) AS temp2))
+    </insert>
+    
+ <!-- 거래처의 발주 전체 목록 조회 -->
+	<select id="listOrder03" resultType="CordersVO">
+		select * 
+		from corders co, member m, prod p, company cp, departments d, common cm 
+		where co.cord_manager_id = m.member_id 
+		and co.cprod_id = p.prod_id 
+		and co.ccompany_code = cp.company_code 
+		and m.department_id = d.department_id 
+		and co.cord_status = cm.common_value 
+		and cm.common_work = 'cord_status' 
+		and co.cord_delete_status = '01' 
+		order by cord_count desc
+	</select>
+ 
+ <!-- 상대 거래처에서 발주 제품 목록 조회 -->
+	 <select id="listProd02" resultType="CordersVO">
+	 	select prod_id, prod_name, prod_category, prod_brand 
+		from prod 
+		where prod_status = '01'
+	 </select>
+ 
+ <!-- 거래처 발주 담당자 목록 조회 -->
+	 <select id="listManager02" resultType="CordersVO">
+	 	select m.member_id, m.member_name, d.department_name, c.common_status, m.member_tel 
+		from departments d, member m, common c 
+		where d.department_id = m.department_id 
+		and m.employee_rank = c.common_value 
+		and common_work = 'emp_rank'
+	 </select>
+ 
+ <!-- 거래처 발주 기안 목록 수정 -->
+ <update id="updateOrderC">
+ 	update corders 
+        SET cord_count = #{cord_count}, 
+        	cord_number = #{cord_number}, 
+            cord_status = '01', 
+            cord_manager_id = #{cord_manager_id}, 
+            cprod_id = #{cprod_id}, 
+            cord_price = #{cord_price}, 
+            cord_quantity = #{cord_quantity}, 
+            <!-- ord_date = #{ord_date},  -->
+            cord_date_change = now(), 
+            ccompany_code = #{ccompany_code}, 
+            <!-- company_code = #{company_code},  -->
+            cord_text = #{cord_text}, 
+            cord_delete_status = '01' 
+        WHERE cord_count = #{cord_count}
+ </update>
+ 
+ <!-- 거래처 발주 기안 목록 삭제 -->
+ 	<update id="deleteOrderC">
+ 		update corders 
+ 		set cord_delete_status = '02' 
+ 		where cord_count = #{cord_count}
+ 	</update>
+ 
+ </mapper>

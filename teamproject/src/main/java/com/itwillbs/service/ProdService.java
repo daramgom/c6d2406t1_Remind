@@ -31,12 +31,14 @@ public interface ProdService {
 	
 	
 	// 재고이동
-	public int transferProd(List<ProdVO> moveList);
-	public int moveStock(ProdVO vo);
-	public List<ProdVO> moveStockList(ProdVO vo);
+	public int transferProd(ProdVO vo);
 	public List<ProdVO> transferSelect();
 	public List<ProdVO> transferSelect2(ProdVO vo);
 	public List<ProdVO> transferSelect3();
+	public List<ProdVO> moveStockList(ProdVO vo);
+	public int moveStock(List<ProdVO> moveList);
+	public int moveStockCancel(List<ProdVO> moveList);
+	public List<ProdVO> moveStockAlert();
 	
 	// 재고 알람 설정
 	public int setStock(ProdVO vo);

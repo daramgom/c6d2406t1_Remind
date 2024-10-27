@@ -240,58 +240,80 @@ $(document).ready(function () {
 				$('#previewimg').hide();
 				}
 		});
+	
+	
 	$('#prodForm').on('submit', function (e) {
 		e.preventDefault();
 		$('button[type="submit"]').prop('disabled', true);
 		var formData = new FormData(this);
-		$.ajax({
-			url: '/prod/insert',
-			type: 'POST',
-			data: formData,
-			processData: false,
-			contentType: false,
-			success: function (response) {
-				swal({
-					title: "성공!",
-					text: "제품이 등록되었습니다!",
-					icon: "success",
-					buttons: {
-						confirm:{
-							text: "확인",
-							className: 'btn btn-secondary'
+		
+		swal({
+	        title: "알림!",
+	        text: "제품을 등록하시겠습니까?",
+	        icon: "info",
+	        buttons: {
+	            confirm: {
+	                text: "네, 등록하겠습니다.",
+	                className: "btn btn-secondary",
+	            },
+	            cancel: {
+	            	visible: true,
+	                text: "취소",
+	                className: "btn btn-black",
+	            },
+	        },
+	    }).then(function(confirm) {
+	    	if(confirm) {
+				$.ajax({
+					url: '/prod/insert',
+					type: 'POST',
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function (response) {
+						swal({
+							title: "성공!",
+							text: "제품이 등록되었습니다!",
+							icon: "success",
+							buttons: {
+								confirm:{
+									text: "확인",
+									className: 'btn btn-secondary'
+									}
 							}
-					}
-				});
-				$('input').val('');
-				$('#uploadfile').val('');
-				$('#company_code').val('');
-				$('#company_label').hide();
-				$('#prod_remarks').val('');
-				$('#previewimg').hide();
-				$('#prod_reguser').val("테스터1");
-				$('#prod_upduser').val("테스터1");
-				},
-				error: function (error) {
-					swal({
-						title: "오류!",
-						text: "제품 등록에 실패했습니다.",
-						icon: "error",
-						buttons: {
-							confirm:{
-								text: "확인",
-								className: 'btn btn-secondary'
-							}
+						});
+						$('input').val('');
+						$('#uploadfile').val('');
+						$('#company_code').val('');
+						$('#company_label').hide();
+						$('#prod_remarks').val('');
+						$('#previewimg').hide();
+						$('#prod_reguser').val("테스터1");
+						$('#prod_upduser').val("테스터1");
+						},
+						error: function (error) {
+							swal({
+								title: "오류!",
+								text: "제품 등록에 실패했습니다.",
+								icon: "error",
+								buttons: {
+									confirm:{
+										text: "확인",
+										className: 'btn btn-secondary'
+									}
+								}
+						});
+						
+						$('#prod_reguser').val("${sessionScope.id}");
+						$('#prod_upduser').val("${sessionScope.id}");
+						},
+						complete: function() {
+							$('button[type="submit"]').prop('disabled', false);
 						}
 				});
-				
-				$('#prod_reguser').val("${sessionScope.id}");
-				$('#prod_upduser').val("${sessionScope.id}");
-				},
-				complete: function() {
-					$('button[type="submit"]').prop('disabled', false);
-				}
-			});
-		});
+	    	} $('button[type="submit"]').prop('disabled', false);
+	    });
+	});
 	
 	$("#inputReset").click(function (e) {
 		swal({

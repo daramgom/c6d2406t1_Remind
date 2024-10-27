@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.github.scribejava.core.model.Response;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -153,38 +154,14 @@ public class ProdController {
 	@PostMapping(value = "/transfer")
 	public String transferProdPost(ProdVO vo, RedirectAttributes rttr, HttpServletRequest req) {
 		logger.debug("( •̀ ω •́ )✧ ProdController : transferProdPost(ProdVO vo, HttpServletRequest req) 실행 ");
-		logger.debug("( •̀ ω •́ )✧ vo : "+vo);
 		vo.setProd_reguser((String)req.getSession().getAttribute("id"));
-		logger.debug("( •̀ ω •́ )✧ vo.prod_reguser : "+vo.getProd_reguser());
-		int result = pService.moveStock(vo);
+		int result = pService.transferProd(vo);
 		if(result > 0) {
 			rttr.addFlashAttribute("trans_message", "제품 이동 신청되었습니다.");
 		} else {
 			rttr.addFlashAttribute("trans_error", "제품 이동 신청이 실패했습니다!");
 		}
 		return "redirect:/prod/transfer";
-	}
-	
-	// 재고이동이력(get)
-	@GetMapping(value = "/movestock")
-	public void movestockGet(ProdVO vo, Model model) {
-		logger.debug("( •̀ ω •́ )✧ ProdController : movestockGet(ProdVO vo, RedirectAttributes rttr) 실행");
-		List<ProdVO> moveList = pService.moveStockList(vo);
-		
-		model.addAttribute("moveList", moveList);
-	}
-	
-	// 재고이동이력(post)
-	@PostMapping("/movestock")
-	public ResponseEntity<String> movestockPost(@RequestBody List<ProdVO> moveList) {
-		logger.debug("( •̀ ω •́ )✧ ProdController : movestockPost(@RequestBody List<ProdVO> moveList) 실행 ");
-		logger.debug("( •̀ ω •́ )✧ moveList : "+moveList.size());
-		int result = pService.transferProd(moveList);
-		
-		if(result>0) {
-			return ResponseEntity.ok("재고 이동이 승인되었습니다.");
-		}
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 이동 승인에 실패하였습니다.");
 	}
 	
 	// 재고 이동 선택(post)
@@ -231,6 +208,51 @@ public class ProdController {
 	}
 	
 	
+	// 재고이동이력(get)
+	@GetMapping(value = "/movestock")
+	public void movestockGet(ProdVO vo, Model model) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : movestockGet(ProdVO vo, RedirectAttributes rttr) 실행");
+		List<ProdVO> moveList = pService.moveStockList(vo);
+		
+		model.addAttribute("moveList", moveList);
+	}
+	
+	// 재고이동이력승인(post)
+	@PostMapping("/movestock")
+	public ResponseEntity<String> movestockPost(@RequestBody List<ProdVO> moveList) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : movestockPost(@RequestBody List<ProdVO> moveList) 실행 ");
+		logger.debug("( •̀ ω •́ )✧ moveList : "+moveList.size());
+		int result = pService.moveStock(moveList);
+		
+		if(result>0) {
+			return ResponseEntity.ok("재고 이동이 승인되었습니다.");
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 이동 승인에 실패하였습니다.");
+	}
+	
+	// 재고이동이력취소(post)
+	@PostMapping("/movestockcancel")
+	public ResponseEntity<String> movestockcancelPost(@RequestBody List<ProdVO> moveList) {
+		logger.debug("( •̀ ω •́ )✧ ProdController : movestockcancelPost(@RequestBody List<ProdVO> moveList) 실행 ");
+		logger.debug("( •̀ ω •́ )✧ moveList : "+moveList.size());
+		int result = pService.moveStockCancel(moveList);
+		
+		if(result>0) {
+			return ResponseEntity.ok("재고 이동이 취소되었습니다.");
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("재고 이동 취소에 실패하였습니다.");
+	}
+	
+	// 재고이동알람
+	@PostMapping(value = "/movestockalert")
+	@ResponseBody
+	public ResponseEntity<List<ProdVO>> moveStockAlertPost() {
+		logger.debug("( •̀ ω •́ )✧ ProdController : moveStockAlertPost() 실행 ");
+		List<ProdVO> moveStockAlertList = pService.moveStockAlert();
+		return ResponseEntity.ok(moveStockAlertList);
+	}
+	
+	
 	// 재고 알람 설정(GET)
 	// http://localhost:8088/prod/stockalert
 	@GetMapping(value = "/stockalert")
@@ -244,8 +266,8 @@ public class ProdController {
 	// 재고 알람 리스트(POST)
 	@PostMapping(value = "/stockalertdata")
 	@ResponseBody
-	public ResponseEntity<List<ProdVO>> stockalertGet() {
-		logger.debug("( •̀ ω •́ )✧ ProdController : stockalertGet() 실행 ");
+	public ResponseEntity<List<ProdVO>> stockalertPost() {
+		logger.debug("( •̀ ω •́ )✧ ProdController : stockalertPost() 실행 ");
 		List<ProdVO> stockList = pService.setStockList();
 		logger.debug(" ( •̀ ω •́ )✧ stockList : "+stockList.size());
 		return ResponseEntity.ok(stockList);

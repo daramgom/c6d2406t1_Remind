@@ -47,10 +47,12 @@ public class ProdVO {
 	private String wh_admin2;
 	private int prod_stock;
 	private int prod_qty;
-	private int stock_qty;
 	private int current_qty;
+	private int current_qty2;
+	private int stock_qty;
 	private String prod_remarks;
 	private String move_reason;
+	private String move_result;
 	private String formatted_regdate;
 	private String formatted_upddate;
 

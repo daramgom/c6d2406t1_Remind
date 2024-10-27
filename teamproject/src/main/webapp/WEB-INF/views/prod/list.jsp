@@ -546,7 +546,7 @@
                data.stockListVO.forEach(stock => {
                    const stockRow = $('<tr></tr>');
                    stockRow.append('<td style="padding:0 !important;">' + stock.prod_id + '</td>');
-                   stockRow.append('<td style="padding:0 !important;">' + stock.wh_name + ' - ' + stock.wh_location + ' - ' + stock.wh_dt_location + '</td>');
+                   stockRow.append('<td style="padding:0 !important;">' + stock.wh_number + ' - ' + stock.wh_name + ' - ' + stock.wh_location + ' - ' + stock.wh_dt_location + '</td>');
                    stockRow.append('<td style="padding:0 !important;">' + stock.prod_qty + '</td>');
                    stockListBody.append(stockRow);
                });
@@ -623,60 +623,75 @@
     	// 이미지 제거
     	
     	// 제품정보 수정사항 제출
-        $("#prodUpdate").click(function() {
-            $("#prodUpdateForm").submit();
-        });
-        
-        
-        $('#prodUpdateForm').on('submit', function (e) {
-			e.preventDefault(); // 기본 제출 이벤트 방지
-            
-            $("#prodUpdate").prop('disabled', true);
-            
-            var formData = new FormData(this); // FormData 객체 생성
-
-            $.ajax({
-                url: '/prod/update', // 서버의 처리 URL
-                type: 'POST',
-                data: formData,
-                processData: false, // jQuery가 데이터를 처리하지 않도록 설정
-                contentType: false, // jQuery가 Content-Type을 설정하지 않도록 설정
-                success: function (response) {
-                    swal({
-                    	title: "성공!",
-                    	text: "제품이 수정되었습니다!",
-                    	icon: "success",
-                    	buttons: {
-                    		confirm: {
-                    			text: "확인",
-								className: "btn btn-secondary"                    			
-                    		}
-                    	}
-                    }).then(() => {
-                    	location.reload();
-                    });
-                },
-                error: function (error) {
-                    swal({
-                    	title: "오류!",
-                    	text: "제품 수정에 실패했습니다.",
-                    	icon: "error",
-                    	buttons: {
-                    		confirm: {
-                    			text: "확인",
-								className: "btn btn-secondary"                    			
-                    		}
-                    	}
-                    });
-                    var currentImage = $('#prod_image').val(); // 히든 필드에서 값 가져오기
-                    $('#prod_image').val(currentImage);
-                },
-                complete: function() {
-                    // 요청이 완료되면 버튼 활성화
-                    $('#prodUpdate').prop('disabled', false);
-                }
-            });
-        });
+		$("#prodUpdate").click(function() {
+			$("#prodUpdateForm").submit();
+		});
+		
+		$('#prodUpdateForm').on('submit', function (e) {
+			e.preventDefault();
+			$("#prodUpdate").prop('disabled', true);
+			var formData = new FormData(this);
+			
+			swal({
+		        title: "알림!",
+		        text: "제품을 수정하시겠습니까?",
+		        icon: "info",
+		        buttons: {
+		            confirm: {
+		                text: "네, 수정하겠습니다.",
+		                className: "btn btn-secondary",
+		            },
+		            cancel: {
+		            	visible: true,
+		                text: "취소",
+		                className: "btn btn-black",
+		            },
+		        },
+		    }).then(function(confirm) {
+		    	if(confirm) {
+					$.ajax({
+						url: '/prod/update',
+						type: 'POST',
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function (response) {
+							swal({
+								title: "성공!",
+								text: "제품이 수정되었습니다!",
+								icon: "success",
+								buttons: {
+									confirm: {
+										text: "확인",
+										className: "btn btn-secondary"
+									}
+								}
+							}).then(() => {
+								location.reload();
+							});
+						},
+						error: function (error) {
+							swal({
+								title: "오류!",
+								text: "제품 수정에 실패했습니다.",
+								icon: "error",
+								buttons: {
+									confirm: {
+										text: "확인",
+										className: "btn btn-secondary"
+									}
+								}
+							});
+							var currentImage = $('#prod_image').val();
+							$('#prod_image').val(currentImage);
+						},
+						complete: function() {
+							$('#prodUpdate').prop('disabled', false);
+						}
+					});
+				} $('#prodUpdate').prop('disabled', false);
+		    });
+		});
      	// 제품정보 수정사항 제출
         
      	

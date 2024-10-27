@@ -79,43 +79,24 @@ public class ProdDAOImpl implements ProdDAO {
 		sqlSession.update(NAMESPACE + ".deleteProd", vo);
 	}
 
-	// 재고이동
+	
+	// 재고이동이력기록
 	@Override
-	@Transactional
-	public int transferProd(List<ProdVO> moveList) {
+	public int transferProd(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ DAO : transferProd(ProdVO vo) 실행");
-		int result = 0;
-		for(ProdVO vo: moveList) {
-			result += sqlSession.update(NAMESPACE+".transferProd", vo);
-			result += sqlSession.insert(NAMESPACE+".transferProd2", vo);
-			result += sqlSession.update(NAMESPACE+".transferProd3", vo);
-		}
-		logger.debug("( •̀ ω •́ )✧ DAO : result : "+result);
+		int result = sqlSession.insert(NAMESPACE+ ".transferProd", vo);
+		result += sqlSession.update(NAMESPACE+".moveStock", vo);
+		result += sqlSession.insert(NAMESPACE+".moveStock2", vo);
 		return result;
 	}
 	
-	// 재고이동내역기록
-	@Override
-	public int moveStock(ProdVO vo) {
-		logger.debug("( •̀ ω •́ )✧ DAO : moveStock(ProdVO vo) 실행");
-		int result = sqlSession.insert(NAMESPACE+ ".moveStock", vo);
-		return result;
-	}
-	
-	// 재고이동내역리스트
-	@Override
-	public List<ProdVO> moveStockList(ProdVO vo) {
-		logger.debug("( •̀ ω •́ )✧ DAO : moveStockList(ProdVO vo) 실행");
-		return sqlSession.selectList(NAMESPACE+ ".moveStockList", vo);
-	}
-
 	// 재고이동선택1
 	@Override
 	public List<ProdVO> transferSelect() {
 		logger.debug("( •̀ ω •́ )✧ DAO : transferSelect(ProdVO vo) 실행");
 		return sqlSession.selectList(NAMESPACE + ".transferSelect");
 	}
-
+	
 	// 재고이동선택2
 	@Override
 	public List<ProdVO> transferSelect2(ProdVO vo) {
@@ -131,6 +112,49 @@ public class ProdDAOImpl implements ProdDAO {
 	}
 	
 	
+	
+	// 재고이동내역리스트
+	@Override
+	public List<ProdVO> moveStockList(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO : moveStockList(ProdVO vo) 실행");
+		return sqlSession.selectList(NAMESPACE+ ".moveStockList", vo);
+	}
+
+	// 재고이동승인
+	@Override
+	@Transactional
+	public int moveStock(List<ProdVO> moveList) {
+		logger.debug("( •̀ ω •́ )✧ DAO : moveStock(List<ProdVO> moveList) 실행");
+		int result = 0;
+		for(ProdVO vo: moveList) {
+			result += sqlSession.update(NAMESPACE+".moveStock3", vo);
+		}
+		logger.debug("( •̀ ω •́ )✧ DAO : result : "+result);
+		return result;
+	}
+	
+	// 재고이동취소
+	@Override
+	@Transactional
+	public int moveStockCancel(List<ProdVO> moveList) {
+		logger.debug("( •̀ ω •́ )✧ DAO : moveStockCancel(List<ProdVO> moveList) 실행");
+		int result = 0;
+		for(ProdVO vo: moveList) {
+			result += sqlSession.update(NAMESPACE+".moveStockCancel", vo);
+			result += sqlSession.update(NAMESPACE+".moveStockCancel2", vo);
+			result += sqlSession.update(NAMESPACE+".moveStock3", vo);
+		}
+		logger.debug("( •̀ ω •́ )✧ DAO : result : "+result);
+		return result;
+	}
+	
+	// 재고이동알람
+	@Override
+	public List<ProdVO> moveStockAlert() {
+		logger.debug("( •̀ ω •́ )✧ DAO : moveStockAlert() 실행");
+		return sqlSession.selectList(NAMESPACE+".moveStockAlert");
+	}
+
 	// 재고알람설정
 	@Override
 	public int setStock(ProdVO vo) {

@@ -26,6 +26,9 @@ public interface NoticeService {
     // 공지사항 삭제
     void deleteNotice(int noticeNo);
 
-    // 조회 수 증가
-    void incrementViewCount(int noticeNo);
+    // 공지사항 Pinned 상태 설정
+    void pinNotice(int noticeNo, boolean pinned);
+
+    // Pinned 공지사항 조회
+    List<NoticeVO> getPinnedNotices();
 }

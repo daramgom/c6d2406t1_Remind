@@ -40,8 +40,38 @@ public class NoticeDAOImpl implements NoticeDAO {
     }
 
     @Override
-    public void incrementViewCount(int noticeNo) {
-        sqlSession.update(NAMESPACE + ".incrementViewCount", noticeNo);
+    public List<NoticeVO> getPinnedNotices() {
+        return sqlSession.selectList(NAMESPACE + ".getPinnedNotices");
+    }
+
+    @Override
+    public void updatePinnedStatus(int noticeNo, boolean pinned) {
+        sqlSession.update(NAMESPACE + ".updatePinnedStatus", 
+                          new PinnedStatusUpdate(noticeNo, pinned ? 1 : 0));
+    }
+
+    // Pinned 상태를 설정하는 메서드 추가
+    @Override
+    public void pinNotice(int noticeNo, boolean pinned) {
+        updatePinnedStatus(noticeNo, pinned);
+    }
+
+    // 내부 클래스 또는 DTO를 사용하여 noticeNo와 pinned 상태를 함께 전달
+    private static class PinnedStatusUpdate {
+        private int noticeNo;
+        private int pinned;
+
+        public PinnedStatusUpdate(int noticeNo, int pinned) {
+            this.noticeNo = noticeNo;
+            this.pinned = pinned;
+        }
+
+        public int getNoticeNo() {
+            return noticeNo;
+        }
+
+        public int getPinned() {
+            return pinned;
+        }
     }
 }
-

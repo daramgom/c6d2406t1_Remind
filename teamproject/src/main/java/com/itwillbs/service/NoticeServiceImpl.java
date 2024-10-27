@@ -59,9 +59,16 @@ public class NoticeServiceImpl implements NoticeService {
         noticeDAO.deleteNotice(noticeNo);
     }
 
+    // Pinned 기능 추가
     @Override
-    public void incrementViewCount(int noticeNo) {
-        logger.debug("조회 수 증가 메서드 호출: incrementViewCount(int noticeNo) - 번호: " + noticeNo);
-        noticeDAO.incrementViewCount(noticeNo);
+    public void pinNotice(int noticeNo, boolean pinned) {
+        logger.debug("공지사항 Pinned 상태 설정 메서드 호출: pinNotice(int noticeNo, boolean pinned) - 번호: " + noticeNo + ", Pinned: " + pinned);
+        noticeDAO.pinNotice(noticeNo, pinned);
+    }
+
+    @Override
+    public List<NoticeVO> getPinnedNotices() {
+        logger.debug("Pinned 공지사항 조회 메서드 호출: getPinnedNotices()");
+        return noticeDAO.getPinnedNotices();
     }
 }

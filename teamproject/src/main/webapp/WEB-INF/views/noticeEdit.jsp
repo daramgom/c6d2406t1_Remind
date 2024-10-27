@@ -53,6 +53,11 @@
                                         <label for="content" class="col-form-label">내용</label>
                                         <textarea class="form-control" id="content" name="content" rows="5" required>${notice.content}</textarea>
                                     </div>
+                                    <div class="form-group">
+								    <label for="pinned">고정하기:</label>
+								    <input type="checkbox" id="pinned" name="pinned" ${notice.pinned ? 'checked' : ''}>
+									</div>
+                                    
                                     <div class="d-flex justify-content-end mt-3">
                                         <!-- 삭제 버튼 -->
                                         <input type="hidden" name="no" value="${notice.no}" />

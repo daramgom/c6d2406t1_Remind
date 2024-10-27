@@ -9,11 +9,10 @@ public class NoticeVO {
     private int no;                 // 공지사항 번호
     private String title;           // 제목
     private String content;         // 내용
-    private int viewcnt;            // 조회수
     private Date regdate;           // 등록일
     private Date fixdate;           // 수정일
-    private String notice_status;    // 공지사항 상태
-    private String writer;          // 작성자 추가
+    private String writer;          // 작성자
+    private boolean pinned;         // 고정 여부 추가
 
     // Getters and Setters
     public int getNo() {
@@ -40,14 +39,6 @@ public class NoticeVO {
         this.content = content;
     }
 
-    public int getViewcnt() {
-        return viewcnt;
-    }
-
-    public void setViewcnt(int viewcnt) {
-        this.viewcnt = viewcnt;
-    }
-
     public Date getRegdate() {
         return regdate;
     }
@@ -64,20 +55,20 @@ public class NoticeVO {
         this.fixdate = fixdate;
     }
 
-    public String getNotice_status() {
-        return notice_status;
-    }
-
-    public void setNotice_status(String notice_status) {
-        this.notice_status = notice_status;
-    }
-
     public String getWriter() {
         return writer; // 작성자 getter
     }
 
     public void setWriter(String writer) {
         this.writer = writer; // 작성자 setter
+    }
+
+    public boolean isPinned() { // pinned getter
+        return pinned;
+    }
+
+    public void setPinned(boolean pinned) { // pinned setter
+        this.pinned = pinned;
     }
 
     // 유효성 검사 메소드 추가
@@ -90,9 +81,6 @@ public class NoticeVO {
         }
         if (writer == null || writer.isEmpty()) {
             throw new IllegalArgumentException("작성자는 필수 입력 항목입니다.");
-        }
-        if (notice_status == null || notice_status.isEmpty()) {
-            throw new IllegalArgumentException("공지 상태는 필수 입력 항목입니다.");
         }
     }
 }

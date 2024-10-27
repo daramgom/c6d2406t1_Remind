@@ -41,14 +41,14 @@ public class NoticeController {
         return "noticeInsert"; // 공지사항 추가 JSP 페이지 경로
     }
 
-    // 공지사항 추가 처리
+ // 공지사항 추가 처리
     @PostMapping("/noticeInsert")
-    public String addNotice(NoticeVO notice) {
-        logger.info("공지사항 추가 요청, 제목: {}, 작성자: {}", notice.getTitle(), notice.getWriter());
+    public String addNotice(@ModelAttribute NoticeVO notice) {
         noticeService.addNotice(notice);
         logger.info("공지사항 추가 완료, 제목: {}", notice.getTitle());
         return "redirect:/notice/noticeList"; // 추가 후 목록 페이지로 리다이렉트
     }
+
 
     // 본문 내용 보기
     @GetMapping("/view")
@@ -59,7 +59,7 @@ public class NoticeController {
         return "noticeView"; // 공지사항 상세 JSP 페이지 경로
     }
 
- // 공지사항 수정 폼
+    // 공지사항 수정 폼
     @GetMapping("/noticeEdit")
     public String editForm(@RequestParam("no") int noticeNo, Model model) {
         // 수정할 공지사항 정보를 조회
@@ -69,16 +69,14 @@ public class NoticeController {
         return "noticeEdit"; // 공지사항 수정 JSP 페이지 경로
     }
 
-
- // 공지사항 수정 처리
+    // 공지사항 수정 처리
     @PostMapping("/edit")
     public String editNotice(@ModelAttribute NoticeVO notice) {
         // 공지사항 수정 서비스 호출
         noticeService.updateNotice(notice);
-        logger.info("공지사항 수정 완료, ID: {}", notice.getNo());
+        logger.info("공지사항 수정 완료, ID: {}, 고정 여부: {}", notice.getNo(), notice.isPinned());
         return "redirect:/notice/noticeList"; // 수정 후 목록 페이지로 리다이렉트
     }
-
 
     // 공지사항 삭제 처리
     @PostMapping("/delete")

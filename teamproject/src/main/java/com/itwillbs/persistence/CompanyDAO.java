@@ -4,15 +4,38 @@ import java.util.List;
 import com.itwillbs.domain.CompanyVO;
 
 public interface CompanyDAO {
-    List<CompanyVO> getCompanyList(); // 거래처 목록 조회
+    /**
+     * 모든 거래처 목록을 조회합니다.
+     */
+    List<CompanyVO> getCompanyList();
 
-    void insertCompany(CompanyVO company); // 거래처 등록
+    /**
+     * 활성 상태의 거래처 목록을 조회합니다.
+     */
+    List<CompanyVO> getActiveCompanyList();
 
-    CompanyVO getCompanyByCode(String companyCode); // 거래처 상세 조회
+    /**
+     * 새로운 거래처를 등록합니다.
+     */
+    void insertCompany(CompanyVO company);
 
-    void updateCompany(CompanyVO company); // 거래처 수정
+    /**
+     * 거래처 코드로 특정 거래처를 조회합니다.
+     */
+    CompanyVO getCompanyByCode(String companyCode);
 
-    void deleteCompany(int companyCode); // 거래처 삭제
-    
-    public CompanyVO getCompany(String code);
+    /**
+     * 거래처 정보를 수정합니다.
+     */
+    void updateCompany(CompanyVO company);
+
+    /**
+     * 거래처의 상태를 업데이트합니다. (논리적 삭제 포함)
+     */
+    void updateCompanyStatus(String companyCode, String status);
+
+    /**
+     * 거래처 코드로 특정 거래처를 조회합니다. (getCompanyByCode와 동일한 기능)
+     */
+    CompanyVO getCompany(String code);
 }

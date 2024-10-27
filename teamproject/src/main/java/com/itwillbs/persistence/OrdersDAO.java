@@ -12,8 +12,6 @@ import com.itwillbs.domain.OrdersVO;
 public interface OrdersDAO {
 	public int insert(OrdersVO ordersVO);
 	
-	public int insert02(OrdersVO ordersVO);
-	
 	public List<OrdersVO> listOrder();
 	
 	public List<OrdersVO> listOrder02();
@@ -44,6 +42,5 @@ public interface OrdersDAO {
 	
 	public List<OrdersVO> listWarehouse();
 	
-	public List<OrdersVO> listProd02();
 	
 }

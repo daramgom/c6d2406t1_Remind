@@ -176,24 +176,24 @@ WebFont.load({
 
 <main>
 <h2>발주 요청</h2>
-<form action="/order-insert02" method="post" id="orderForm02">
+<form action="/order-insert02" method="post" id="corderForm02">
 
 
 <div class="form-group">
 	<div>
-		<label for="ord_manager_id" class="col-md-3 col-form-label">발주 담당자</label>
-		<input class="form-control input-full" value="${userId }" readonly="readonly" type="text" name="ord_manager_id" required="required" style="width:40% !important">
+		<label for="cord_manager_id" class="col-md-3 col-form-label">발주 담당자</label>
+		<input class="form-control input-full" value="${userId }" readonly="readonly" type="text" name="cord_manager_id" required="required" style="width:40% !important">
 	</div>
 </div>
 
 
 <div class="form-group">
 	<div>
-		<label for="prod_id" class="col-md-3 col-form-label">제품<br>제품코드 / 제품 이름 / 카테고리 / 브랜드 </label>
+		<label for="cprod_id" class="col-md-3 col-form-label">제품<br>제품코드 / 제품 이름 / 카테고리 / 브랜드 </label>
 <!-- 		<input class="form-control input-full" type="text" name="prod_id" required="required"> -->
 		
 		
-		<select id="prod_id" name="prod_id" class="form-select form-control" required="required">
+		<select id="cprod_id" name="cprod_id" class="form-select form-control" required="required">
 		    <option value="">선택하세요</option>
 		    <c:forEach var="p" items="${pListVO02 }">
 		    	<option value="${p.prod_id}"<%--  data-company-code="${p.company_code}" --%>>${p.prod_id} / ${p.prod_name} / ${p.prod_category} / ${p.prod_brand} </option>
@@ -204,20 +204,20 @@ WebFont.load({
 </div>
 
 
-		<input type="hidden" id="company_code" value="${userMemberCode }" name="company_code" readonly>
+		<input type="hidden" id="ccompany_code" value="${userMemberCode }" name="ccompany_code" readonly>
 
 
 <div class="form-group">
 	<div>
-		<label for="ord_price" class="col-md-3 col-form-label">발주 금액</label>
-		<input class="form-control input-full" type="text" name="ord_price" required="required" style="width: 40% !important">
+		<label for="cord_price" class="col-md-3 col-form-label">발주 금액</label>
+		<input class="form-control input-full" type="text" name="cord_price" required="required" style="width: 40% !important">
 	</div>
 </div>
 
 <div class="form-group">
 	<div>
-		<label for="ord_quantity" class="col-md-3 col-form-label">발주 수량</label>
-		<input class="form-control input-full" type="number" name="ord_quantity" required="required" style="width: 40% !important">
+		<label for="cord_quantity" class="col-md-3 col-form-label">발주 수량</label>
+		<input class="form-control input-full" type="number" name="cord_quantity" required="required" style="width: 40% !important">
 	</div>
 </div>
 
@@ -231,8 +231,8 @@ WebFont.load({
 
 <div class="form-group">
 	<div>
-		<label for="ord_text" class="col-md-3 col-form-label">비고</label>
-		<textarea class="form-control" id="ord_text" name="ord_text"></textarea>
+		<label for="cord_text" class="col-md-3 col-form-label">비고</label>
+		<textarea class="form-control" id="cord_text" name="cord_text"></textarea>
 	</div>
 </div>
         <button type="submit" onclick="submitForm();" class="btn btn-success">발주 요청</button>
@@ -251,7 +251,7 @@ WebFont.load({
 <script>
 function submitForm(){
 	alert("자사의 서비스를 이용해 주셔서 감사합니다 !! \n 발주 요청이 등록되었습니다 !!");
-	document.getElementById("orderForm02").submit();
+	document.getElementById("corderForm02").submit();
 }
 </script>
 

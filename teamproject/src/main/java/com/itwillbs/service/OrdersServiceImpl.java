@@ -55,12 +55,7 @@ public class OrdersServiceImpl implements OrdersService{
 		return result;
 	}
 	
-	@Override
-	public int insert02(OrdersVO ordersVO) {
-		int result = odao.insert02(ordersVO);
-		
-		return result;
-	}
+	
 	
 	
 	@Override
@@ -135,10 +130,6 @@ public class OrdersServiceImpl implements OrdersService{
 		return odao.listWarehouse();
 	}
 	
-	@Override
-	public List<OrdersVO> listProd02() {
-		// TODO Auto-generated method stub
-		return odao.listProd02();
-	}
+	
 	
 }

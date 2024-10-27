@@ -14,7 +14,6 @@ public interface OrdersService {
 	/* 발주 요청 시 정보 입력 직후 관리번호 생성 */
 	public int insert(OrdersVO ordersVO);
 	
-	public int insert02(OrdersVO ordersVO);
 	
 	public List<OrdersVO> listOrder();
 	
@@ -46,6 +45,5 @@ public interface OrdersService {
 	
 	public List<OrdersVO> listWarehouse();
 	
-	public List<OrdersVO> listProd02();
 	
 }

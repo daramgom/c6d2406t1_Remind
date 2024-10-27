@@ -25,6 +25,12 @@ public interface NoticeDAO {
     // 공지사항 삭제
     void deleteNotice(int noticeNo);
 
-    // 조회 수 증가
-    void incrementViewCount(int noticeNo);
+    // 고정된 공지사항 조회
+    List<NoticeVO> getPinnedNotices();
+
+    // 공지사항 고정 상태 업데이트
+    void updatePinnedStatus(int noticeNo, boolean pinned);
+    
+    // Pinned 상태를 설정하는 메서드 추가
+    void pinNotice(int noticeNo, boolean pinned);
 }

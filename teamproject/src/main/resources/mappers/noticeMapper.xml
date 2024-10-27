@@ -5,10 +5,9 @@
 <mapper namespace="com.itwillbs.mapper.NoticeMapper">
 
     <insert id="addNotice" parameterType="com.itwillbs.domain.NoticeVO">
-    INSERT INTO notice (title, content, notice_status, writer) 
-    VALUES (#{title}, #{content}, #{notice_status}, #{writer})
-	</insert>
-
+        INSERT INTO notice (title, content, writer, pinned) 
+        VALUES (#{title}, #{content}, #{writer}, #{pinned})
+    </insert>
 
     <select id="getNotices" resultType="com.itwillbs.domain.NoticeVO">
         SELECT * FROM notice
@@ -22,7 +21,7 @@
         UPDATE notice 
         SET title = #{title}, 
             content = #{content}, 
-            notice_status = #{notice_status}, 
+            pinned = #{pinned}, 
             fixdate = CURRENT_TIMESTAMP 
         WHERE no = #{no}
     </update>
@@ -31,8 +30,9 @@
         DELETE FROM notice WHERE no = #{noticeNo}
     </delete>
 
-    <update id="incrementViewCount" parameterType="int">
-        UPDATE notice SET viewcnt = viewcnt + 1 WHERE no = #{noticeNo}
-    </update>
+    <!-- 핀된 공지사항을 조회하는 메서드 추가 -->
+    <select id="getPinnedNotices" resultType="com.itwillbs.domain.NoticeVO">
+        SELECT * FROM notice WHERE pinned = true
+    </select>
 
 </mapper>

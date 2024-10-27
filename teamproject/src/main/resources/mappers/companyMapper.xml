@@ -11,25 +11,24 @@
         <result property="company_tel" column="company_tel" />
         <result property="company_email" column="company_email" />
         <result property="company_address" column="company_address" />
+        <result property="is_deleted" column="is_deleted" />
     </resultMap>
 
-    <!-- 거래처 목록 조회 -->
     <select id="getCompanyList" resultMap="company">
-        SELECT company_code, company_name, company_manager, company_tel, company_email, company_address FROM company 
-    </select>
+    SELECT company_code, company_name, company_manager, company_tel, company_email, company_address 
+    FROM company 
+    WHERE is_deleted = '01'
+	</select>
 
-    <!-- 거래처 상세 조회 -->
     <select id="getCompanyByCode" resultMap="company">
-        SELECT * FROM company WHERE company_code = #{company_code} 
+        SELECT * FROM company WHERE company_code = #{company_code}
     </select>
 
-    <!-- 거래처 추가 -->
     <insert id="insertCompany">
-        INSERT INTO company (company_code, company_name, company_manager, company_tel, company_email, company_address) 
-        VALUES (#{company_code}, #{company_name}, #{company_manager}, #{company_tel}, #{company_email}, #{company_address}) 
+        INSERT INTO company (company_code, company_name, company_manager, company_tel, company_email, company_address ) 
+        VALUES (#{company_code}, #{company_name}, #{company_manager}, #{company_tel}, #{company_email}, #{company_address} )
     </insert>
 
-    <!-- 거래처 수정 -->
     <update id="updateCompany">
         UPDATE company 
         SET company_name = #{company_name}, 
@@ -40,13 +39,15 @@
         WHERE company_code = #{company_code} 
     </update>
 
-    <!-- 거래처 삭제 -->
-      <delete id="deleteCompany" parameterType="int">
-        DELETE FROM company WHERE company_code = #{company_code}
-   	 </delete>
-   	 
-   	 <select id="getCompany"  resultMap="company">
-		select company_code, company_name,company_manager,company_tel,company_email,company_address from company where company_code = #{company_code};
-	</select>
+    <update id="updateCompanyStatus">
+        UPDATE company 
+        SET is_deleted = #{status}
+        WHERE company_code = #{company_code}
+    </update>
+
+    <!-- getCompany와 getCompanyByCode를 통합 -->
+    <select id="getCompany" resultMap="company">
+        SELECT * FROM company WHERE company_code = #{company_code}
+    </select>
 
 </mapper>

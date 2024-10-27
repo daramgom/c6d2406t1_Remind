@@ -64,6 +64,11 @@
                                                 <label for="content" class="col-form-label">내용</label>
                                                 <textarea class="form-control" id="content" name="content" rows="5" placeholder="공지사항 내용" required></textarea>
                                             </div>
+                                            <div class="form-group">
+										    <label for="pinned">고정하기:</label>
+										    <input type="checkbox" id="pinned" name="pinned">
+											</div>
+                                            
                                             <div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
                                                 <button type="submit" class="btn btn-success">공지사항 등록</button>
                                                 <button type="button" class="btn btn-danger" id="alert_demo_7">입력 초기화</button>

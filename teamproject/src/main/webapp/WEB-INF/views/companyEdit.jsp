@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
 </head>
 <body>
-	<!--퍼미션 아이디 03일때만 접속가능 다른 아이디면 메인페이지로 -->
-	<c:if test="${empty sessionScope.id || sessionScope.permission_id != '03'}">
-    <c:redirect url="/login"/>
-	</c:if>
+    <!--퍼미션 아이디 03일때만 접속가능 다른 아이디면 메인페이지로 -->
+    <c:if test="${empty sessionScope.id || sessionScope.permission_id != '03'}">
+        <c:redirect url="/login"/>
+    </c:if>
     <div class="wrapper">
         <!-- Header -->
         <jsp:include page="/resources/inc/header.jsp" />
@@ -36,16 +36,14 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <div class="card-title">거래처 수정</div>
-                                <!-- permission_id가 03일 때만 거래처 수정 버튼 표시 -->
-                                <c:if test="${sessionScope.permission_id == '03'}">
-                                    <form action="${pageContext.request.contextPath}/company/edit" method="post" style="display:inline;">
-                                        <button type="submit" class="btn btn-success">거래처 수정</button>
-                                    </form>
-                                </c:if>
+                                <button type="submit" form="companyEditForm" class="btn btn-success">수정</button>
                             </div>
 
                             <div class="card-body">
                                 <form id="companyEditForm" action="${pageContext.request.contextPath}/company/edit" method="post">
+                                    <!-- CSRF 토큰 추가 (Spring MVC 사용 시) -->
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                    
                                     <div class="form-group">
                                         <label for="company_code" class="col-form-label">거래처 코드</label>
                                         <input type="text" class="form-control" id="company_code" name="company_code" value="${company.company_code}" readonly required />
@@ -71,9 +69,7 @@
                                         <input type="text" class="form-control" id="company_address" name="company_address" value="${company.company_address}" required />
                                     </div>
                                     <div class="d-flex justify-content-end mt-3">
-                                        <form action="${pageContext.request.contextPath}/company/delete/${company.company_code}" method="post" style="display:inline;">
-                                            <button type="submit" class="btn btn-danger me-2" onclick="return confirm('정말로 삭제하시겠습니까?');">삭제</button>
-                                        </form>
+                                        <button type="button" class="btn btn-danger me-2" onclick="deleteCompany('${company.company_code}')">삭제</button>
                                         <a href="${pageContext.request.contextPath}/company/companyList" class="btn btn-secondary">목록으로</a>
                                     </div>
                                 </form>
@@ -91,5 +87,23 @@
     <!-- Core JS Files -->
     <script src="${pageContext.request.contextPath}/resources/js/core/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    function deleteCompany(companyCode) {
+        if(confirm('정말로 삭제하시겠습니까?')) {
+            $.ajax({
+                url: '${pageContext.request.contextPath}/company/delete/' + companyCode,
+                type: 'POST',
+                success: function(response) {
+                    alert('거래처가 삭제되었습니다.');
+                    window.location.href = '${pageContext.request.contextPath}/company/companyList';
+                },
+                error: function(xhr, status, error) {
+                    alert('삭제 중 오류가 발생했습니다.');
+                }
+            });
+        }
+    }
+    </script>
 </body>
 </html>

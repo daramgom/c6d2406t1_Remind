@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,8 +12,11 @@
     <style>
         /* 테이블 헤더 배경색 */
         #multi-filter-select thead th {
-            background-color: #0d6efd; /* 원하는 색상으로 변경 */
+            background-color: #0d6efd;
             color: white;
+        }
+        .pinned {
+            font-weight: bold; /* 핀된 항목 스타일 */
         }
     </style>
 
@@ -26,9 +30,9 @@
 
 </head>
 <body>
-	<c:if test="${empty sessionScope.id}">
-	<c:redirect url="/login"/>
-	</c:if>
+    <c:if test="${empty sessionScope.id}">
+        <c:redirect url="/login"/>
+    </c:if>
     <div class="wrapper">
 
         <!-- Header -->
@@ -61,7 +65,6 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4 class="card-title">공지목록</h4>
-                                <!-- permission_id가 03일 때만 글쓰기 버튼 표시 -->
                                 <c:if test="${sessionScope.permission_id == '03'}">
                                     <a href="${pageContext.request.contextPath}/notice/noticeInsert" class="btn btn-primary">글쓰기</a>
                                 </c:if>
@@ -74,7 +77,7 @@
                                                 <th>번호</th>
                                                 <th>제목</th>
                                                 <th>작성일자</th>
-                                                <th>조회수</th>
+                                                <th>작성자</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
@@ -82,22 +85,70 @@
                                                 <th>번호</th>
                                                 <th>제목</th>
                                                 <th>작성일자</th>
-                                                <th>조회수</th>
+                                                <th>작성자</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
-                                            <c:forEach var="n" items="${noticeList}">
-                                                <tr>
-                                                    <td>${n.no}</td>
-                                                    <td>
-                                                        <a href="${pageContext.request.contextPath}/notice/view?no=${n.no}">
-                                                            ${n.title}
-                                                        </a>
-                                                    </td>
-                                                    <td>${n.regdate}</td>
-                                                    <td>${n.viewcnt}</td>
-                                                </tr>
-                                            </c:forEach>
+                                            <c:choose>
+                                                <c:when test="${not empty noticeList}">
+                                                    <c:forEach var="n" items="${noticeList}">
+                                                        <c:choose>
+                                                            <c:when test="${n.pinned}">
+                                                                <tr class="pinned">
+                                                                    <td>${n.no}</td>
+                                                                    <td>
+                                                                        <a href="${pageContext.request.contextPath}/notice/view?no=${n.no}">
+                                                                            ${n.title}
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <c:choose>
+                                                                            <c:when test="${not empty n.regdate}">
+                                                                                <fmt:formatDate value="${n.regdate}" pattern="yyyy.MM.dd" />
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                -
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td>${n.writer}</td>
+                                                                </tr>
+                                                            </c:when>
+                                                        </c:choose>
+                                                    </c:forEach>
+
+                                                    <c:forEach var="n" items="${noticeList}">
+                                                        <c:choose> 
+                                                            <c:when test="${!n.pinned}">
+                                                                <tr>
+                                                                    <td>${n.no}</td>
+                                                                    <td>
+                                                                        <a href="${pageContext.request.contextPath}/notice/view?no=${n.no}">
+                                                                            ${n.title}
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <c:choose>
+                                                                            <c:when test="${not empty n.regdate}">
+                                                                                <fmt:formatDate value="${n.regdate}" pattern="yyyy.MM.dd" />
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                -
+                                                                            </c:otherwise>
+                                                                        </c:choose>
+                                                                    </td>
+                                                                    <td>${n.writer}</td> 
+                                                                </tr>
+                                                            </c:when>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <tr>
+                                                        <td colspan="4" class="text-center">등록된 공지사항이 없습니다.</td>
+                                                    </tr>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </tbody>
                                     </table>
                                 </div>
@@ -111,7 +162,7 @@
         <!-- Footer -->
         <jsp:include page="/resources/inc/footer.jsp" />
     </div>
- 
+
     <!-- Core JS Files -->
     <script src="/resources/js/core/jquery-3.7.1.min.js?ver=1.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -126,7 +177,17 @@
                 pageLength: 10, // 기본 페이지 길이
                 lengthMenu: [3, 10, 20, 50, 100, 500], // 페이지 길이 옵션
                 searching: true, // 검색 기능 활성화
-                ordering: true // 정렬 기능 활성화
+                ordering: true, // 정렬 기능 활성화
+                order: [], // 기본 정렬 초기화
+                columns: [
+                    { data: 'no' },
+                    { data: 'title' },
+                    { data: 'regdate' },
+                    { data: 'writer' }
+                ],
+                language: {
+                    emptyTable: "등록된 공지사항이 없습니다."
+                }
             });
         });
     </script>

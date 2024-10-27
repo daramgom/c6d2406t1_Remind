@@ -63,8 +63,10 @@ public class CorderController {
 	public String listOrderGet03(Model model, HttpSession session) {
 		
 		String userId = (String)session.getAttribute("id");
+		String userMemberCode = (String)session.getAttribute("member_code");
 		
 		model.addAttribute("userId", userId);
+		model.addAttribute("userMemberCode", userMemberCode);
 		
 		List<CordersVO> oListVO03 = corderService.listOrder03();
 		List<CordersVO> pListVO02 = corderService.listProd02();

@@ -208,10 +208,13 @@ pageEncoding="UTF-8"%>
 </head>
     <body>
     
-<%--     <c:if test="${empty userId}"> --%>
-<%-- 		<c:redirect url="/login"/> --%>
-<%-- 	</c:if> --%>
-	<!-- 일단은 빼둠 -->
+    <c:if test="${empty userId}">
+		<c:redirect url="/login"/>
+	</c:if>
+	<c:if test="${userMemberCode == '1'}">
+		<c:redirect url="/main"/>
+	</c:if>
+
     
     <div class="wrapper">
     <!-- Header -->
@@ -234,7 +237,10 @@ pageEncoding="UTF-8"%>
 				</ul>
 			</div>
 			
-			<main>
+			<main style="
+			    margin-left: 20px;
+			    margin-right: 20px;
+			    width:100%;">
 			<div class="container">
  				<div class="table-responsive">
 	 				<div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
@@ -262,23 +268,25 @@ pageEncoding="UTF-8"%>
 	        <div class="row">
 		        <table id="basic-datatables" class="display table table-striped table-hover dataTable" role="grid" aria-describedby="basic-datatables_info">
 		            <thead>
-		                <tr role="row">
+		                <tr role="row" style="text-align: center; vertical-align: middle;">
 			                <!--     <th>순번</th> -->
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >순번</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >관리번호</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주상태</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >담당자</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >제품코드</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주단가</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주수량</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >기안시간</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >상태별시간</th>
-			                <th tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >거래처코드</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >순번</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >관리번호</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주상태</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >담당자</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >제품코드</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주단가</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >발주수량</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >기안시간</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >상태별시간</th>
+			                <th style="color: white; background-color: #6861ce;" tabindex="0" aria-controls="basic-datatables" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" >거래처코드</th>
 		                </tr>
 		             </thead>
 		             
 		             <tbody>
 						 	<c:forEach var="co" items="${oListVO03 }">
+						 	
+						 	<c:if test="${co.ccompany_code == userMemberCode }">
 		 
 							<c:forEach var="m" items="${mListVO02 }">
 								<c:if test="${m.member_id == co.cord_manager_id}">
@@ -336,6 +344,8 @@ pageEncoding="UTF-8"%>
 <%-- 		                        <td style="display: none;">${company_tel}</td> --%>
 		                        
 		                    </tr>
+		                    
+		                    </c:if>
 		                    
 						 </c:forEach>
 						 

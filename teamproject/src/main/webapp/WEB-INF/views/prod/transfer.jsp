@@ -68,11 +68,13 @@
 	.table td {
 		font-size: 1.2rem !important;
 		text-align: center;
+		white-space: nowrap;
 	}
 
 	.table th {
 		font-size: 1.25rem !important;
 		text-align: center;
+		white-space: nowrap;
 	}
 	
 </style>
@@ -136,6 +138,7 @@
 													id="prod_qty" name="prod_qty" min="0" max="#" readonly required/>
 												<label for="prod_qty" class="col-form-label-lg" style="font-size: 1.2rem !important;">수량</label>
 												<input type="hidden" id="current_qty" name="current_qty" value="#">
+												<input type="hidden" id="current_qty2" name="current_qty2" value="#">
 												<input type="hidden" id="prod_reguser" name="prod_reguser" 
 													value="${sessionScope.id }" placeholder="등록작업자" />
 											</div>
@@ -177,19 +180,18 @@
 												            </tr>
 												        </thead>
 												        <tbody id="stockListBody">
-												            <!-- 자바스크립트로 동적으로 추가되는 내용 -->
+															<!-- 자바스크립트로 동적으로 추가되는 내용 -->
 												        </tbody>
 												    </table>
 												</div>
 											</div>
 										</div>
 										<div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
-											<button type="submit" class="btn btn-secondary">
+											<button type="submit" class="btn btn-secondary" id="transferbutton">
 												<span class="btn-label">
 													<i class="fa fa-cart-shopping"> <b>재고 이동</b></i>
 												</span>
 											</button>
-											<!-- 리셋버튼추가 -->
 											<button type="button" class="btn btn-warning" id="inputReset">
 												<span class="btn-label">
 													<i class="fa fa-exclamation-circle"> <b>입력 초기화</b></i>
@@ -216,6 +218,7 @@
 $(document).ready(function () {
 	    	
 	// select 요소 클릭 시 데이터 가져오기
+	// 첫번째 select
 	$('#prod_id').on('click', function() {
 		if ($(this).find('option').length > 1) {
 			return;
@@ -235,11 +238,11 @@ $(document).ready(function () {
 				
 				$('#prod_id').off('change').on('change',function() {
 					$('#wh_number').empty();
-					$('#wh_number').append('<option value="">창고 선택</option>');
+					$('#wh_number').append('<option value="">출발창고 선택</option>');
 					$('#prod_qty').val('');
 					$('#stock_qty').val('');
 					$('#stock_wh').empty();
-					$('#stock_wh').append('<option value="">창고 선택</option>');
+					$('#stock_wh').append('<option value="">도착창고 선택</option>');
 					$('#stockList').hide();
 					
 					var selectedProductId = $(this).val();
@@ -260,7 +263,7 @@ $(document).ready(function () {
 									$('#stockListBody').append(
 										'<tr>' +
 											'<td>' + item.prod_id +' - '+ item.prod_name +' - '+ item.prod_brand + '</td>' +
-											'<td>' + item.wh_number + '</td>' +
+											'<td>' + item.wh_number + ' - ' + item.wh_name + ' - ' + item.wh_location + ' - ' + item.wh_dt_location + '</td>' +
 											'<td>' + item.prod_qty + '</td>' +
 										'</tr>'
 									);
@@ -298,6 +301,7 @@ $(document).ready(function () {
 		});
 	});
 	
+	// 두번째 select
 	$('#wh_number').on('click', function() {
 		if ($(this).find('option').length > 1) {
 			return;
@@ -312,7 +316,7 @@ $(document).ready(function () {
 			dataType: 'json',
 			success: function(data) {
 				$('#wh_number').empty();
-				$('#wh_number').append('<option value="">창고 선택</option>');
+				$('#wh_number').append('<option value="">출발창고 선택</option>');
 				
 				$.each(data, function(index, s) {
 					$('#wh_number').append('<option value="' + s.wh_number + '">' + s.wh_number + ' - ' + s.wh_name + ' - ' + s.wh_location + ' - ' + s.wh_dt_location + '</option>');
@@ -322,7 +326,7 @@ $(document).ready(function () {
 					var selectedWh = $(this).val();
 					
 					$('#stock_wh').empty();
-					$('#stock_wh').append('<option value="">창고 선택</option>');
+					$('#stock_wh').append('<option value="">도착창고 선택</option>');
 					$('#stock_wh').prop('disabled', false);
 					$('#stock_qty').val('');
 					
@@ -350,7 +354,7 @@ $(document).ready(function () {
 					if (selectedWh === '') {
 						$('#stock_wh').prop('disabled', true);
 						$('#stock_wh').empty();
-						$('#stock_wh').append('<option value="">창고 선택</option>');
+						$('#stock_wh').append('<option value="">도착창고 선택</option>');
 						$('#stock_qty').prop('max','');
 						$('#stock_qty').val('');
 						$('#prod_qty').val('');
@@ -372,6 +376,36 @@ $(document).ready(function () {
 			}
 		});
 	});
+	
+	// 세번째 select
+	$('#stock_wh').on('change', function() {
+		var selectedSWh = $(this).val();
+		var index = -1;
+	
+		$('#stockListBody tr').each(function(i) {
+			var cellValue = $(this).find('td').eq(1).text().split('-')[0].trim();
+			if (cellValue == selectedSWh) {
+				index = i;
+				console.log('i : '+i);
+				return false;
+			}
+		});
+	
+		if (index !== -1) {
+			var currentQty = $('#stockListBody tr').eq(index).find('td').eq(2).text();
+			console.log('currentQty : '+currentQty);
+			$('#current_qty2').val(currentQty);
+		} else {
+			console.log(index);
+			$('#current_qty2').val(0);
+		}
+		
+		if (selectedSWh === '') {
+			$('#current_qty2').val('');
+		}
+		
+	});
+	
 	// select 요소 클릭 시 데이터 가져오기
 	    	
 	    	
@@ -403,7 +437,41 @@ $(document).ready(function () {
 	}
 	// swal 처리
 	
-	        
+	
+	// 제출
+	$('#transferbutton').on('click',function(e){
+		e.preventDefault();
+		$('#transferbutton').prop('disabled', true);
+		
+		swal({
+			title: "알림!",
+			text: "재고 이동 신청하시겠습니까?",
+			icon: "info",
+			buttons: {
+				confirm: {
+					text: "네, 신청하겠습니다.",
+					className: "btn btn-secondary",
+				},
+				cancel: {
+					visible: true,
+					text: "취소",
+					className: "btn btn-black",
+				},
+			},
+		}).then(function(confirm) {
+			if(confirm) {
+				$('#transferbutton').prop('disabled', false);
+				$('#transferForm').submit();
+			}	
+				$('#transferForm').off('submit');
+				$('#transferbutton').prop('disabled', false);
+		});
+	});
+	// 제출
+	
+	
+	
+	
 	$("#inputReset").click(function (e) {
 	    swal({
 	        title: "입력값을 초기화하시겠습니까?",
@@ -426,12 +494,13 @@ $(document).ready(function () {
 	        	$('select').empty();
 	        	$('input').val('');
 	        	$('#prod_id').append('<option value="">제품식별코드 선택</option>');
-	        	$('#wh_number').append('<option value="">창고 선택</option>');
-	        	$('#stock_wh').append('<option value="">창고 선택</option>');
+	        	$('#wh_number').append('<option value="">출발창고 선택</option>');
+	        	$('#stock_wh').append('<option value="">도착창고 선택</option>');
 	        	$('#prod_image').prop('src', '');
 	        	$('#prod_image').css('visibility', 'hidden');
 	        	$('#stockList').hide();
 	        	$('#stockListBody').empty();
+	        	$('#move_reason').val('');
 	        	
 	            swal({
 	                title: "초기화되었습니다.",

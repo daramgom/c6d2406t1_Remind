@@ -42,6 +42,7 @@
 	<!-- Chart JS -->
 	<script src="/resources/js/plugin/chart.js/chart.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 	<!-- jQuery Sparkline -->
 	<script	src="${pageContext.request.contextPath }/resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
@@ -72,7 +73,7 @@
 <script>
 $(document).ready(function(){
 	
-	// 알림 테스트
+	// 재고 적정 수량 부족알람
 	function checkStock() {
 		const alertShown = localStorage.getItem('alertShown');
 
@@ -120,13 +121,11 @@ $(document).ready(function(){
 							'<span data-notify="message" style="font-size: 16px;">' +
 							message + '</span>' +
 							'</div>',
-							onClosed: function() {
-								localStorage.setItem('alertShown', 'true');
-							}
+						onClosed: function() {
+							localStorage.setItem('alertShown', 'true');
+						}
 					});
-
 				}
-				console.log();	
 			},
 			error: function(xhr, status, error) {
 				console.error('데이터 불러오기 실패:', error);
@@ -135,60 +134,52 @@ $(document).ready(function(){
 	}
 	
 	checkStock();
-	// 알림 테스트
+	// 재고 적정 수량 부족알람
 	
 	
-	/* // 알림 테스트
-	function checkStock() {
-		const alertShown = localStorage.getItem('alertShown');
+	// 재고 이동 알람
+	function checkStock2() {
+		const alertShown2 = localStorage.getItem('alertShown2');
 
-		if (alertShown) {
+		if (alertShown2) {
 			return;
 		}
 
 		$.ajax({
-			url: '/prod/stockalertdata',
+			url: '/prod/movestockalert',
 			method: 'POST',
 			dataType: 'json',
 			success: function(data) {
-				let lowStockProd = [];
+				let moveStockAdmin = [];
 
 				data.forEach(function(item) {
-					const prod_qty = item.prod_qty;
-					const prod_stock = item.prod_stock;
-
-					if (prod_qty < prod_stock) {
-						lowStockProd.push(item.prod_id + ' - ' + item.prod_name + ' - ' + item.prod_brand);
-					}
+					moveStockAdmin.push(item.wh_admin);
 				});
-
-				if (lowStockProd.length > 0) {
-					const displayCount = 2;
-					let message;
-
-					if (lowStockProd.length > displayCount) {
-						message = '<b class="text-secondary">' + lowStockProd.slice(0, displayCount).join(', ') + '</b>' + ' 등 <b class="text-warning"> ' + (lowStockProd.length) + '개</b> 제품의 재고수량이 부족합니다.';
-					} else {
-						message = '<b class="text-secondary">' + lowStockProd.join('/ ') + '</b>' + '의 재고수량이 부족합니다!';
-					}
-
-					$.notify({}, {
-						type: "warning",
-						delay: 5000,
-						placement: {
-							from: "bottom",
-							align: "right"
-						},
-						template: '<div data-notify="container" class="alert alert-secondary" role="alert">' +
-							'<span data-notify="icon" class="icon-bell"></span>' +
-							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-							'<span data-notify="title" style="font-size: 20px;"><b>적정재고수량 경고</b></span> ' +
-							'<span data-notify="message" style="font-size: 16px;">' +
-							message + '</span>' +
-							'</div>'
+				
+				if(moveStockAdmin.length > 0){
+					const message2 = message = '<b class="text-primary"> 재고 이동 신청이 있습니다. </b>'+'확인해주세요!';
+					moveStockAdmin.forEach(function(whId) {
+						if(whId == '${sessionScope.id}'){
+							$.notify({}, {
+								type: "warning",
+								delay: 0,
+								placement: {
+									from: "bottom",
+									align: "right"
+								},
+								template: '<div data-notify="container" class="alert alert-primary" role="alert">' +
+									'<span data-notify="icon" class="icon-bell"></span>' +
+									'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+									'<span data-notify="title" style="font-size: 20px;"><b>재고 이동 신청 알림</b></span> ' +
+									'<span data-notify="message" style="font-size: 16px;">' +
+									message + '</span>' +
+									'</div>',
+								onClosed: function() {
+									localStorage.setItem('alertShown2', 'true');
+								}
+							});
+						}
 					});
-
-					localStorage.setItem('alertShown', 'true');
 				}
 			},
 			error: function(xhr, status, error) {
@@ -197,8 +188,8 @@ $(document).ready(function(){
 		});
 	}
 	
-	checkStock();
-	// 알림 테스트 */
+	checkStock2();
+	// 재고 이동 알람
 	
 	
 	

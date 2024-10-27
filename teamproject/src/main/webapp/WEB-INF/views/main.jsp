@@ -35,9 +35,29 @@
 <link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/resources/css/plugins.min.css" />
 <link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
+<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
+
 <style>
 .card-category {
 	font-size: 1.5rem;
+}
+
+.numbers {
+	display: inline-block;
+	transition: transform 0.2s;
+}
+
+.numbers:hover {
+	transform: scale(1.07);
+}
+
+.overview {
+	display: inline-block;
+	transition: transform 0.2s;
+}
+
+.overview:hover {
+	transform: scale(1.03);
 }
 
 </style>
@@ -74,8 +94,9 @@
             </div>
             
             <div class="row">
-              <div class="col-sm-6 col-md-3">
+              <div class="col-sm-6 col-md-3 numbers">
                 <div class="card card-stats card-round">
+	              <a href="/prod/list">
                   <div class="card-body">
                     <div class="row align-items-center">
                       <div class="col-icon">
@@ -84,18 +105,19 @@
                         </div>
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
-                        <div class="numbers">
+                        <div>
                           <p class="card-category text-primary fw-bold">총 재고량</p>
                           <h4 class="card-title text-primary"><fmt:formatNumber value="${MainQty.prod_all_qty}" pattern="#,##0" /></h4>
-                          
                         </div>
                       </div>
                     </div>
                   </div>
+	               </a>
                 </div>
               </div>
-              <div class="col-sm-6 col-md-3">
+              <div class="col-sm-6 col-md-3 numbers">
                 <div class="card card-stats card-round">
+             	<a href="/order-list">
                   <div class="card-body">
                     <div class="row align-items-center">
                       <div class="col-icon">
@@ -104,17 +126,19 @@
                         </div>
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
-                        <div class="numbers">
+                        <div>
                           <p class="card-category text-warning fw-bold">월 발주량</p>
                           <h4 class="card-title text-warning"><fmt:formatNumber value="${MainQty.month_ord}" pattern="#,##0" /></h4>
                         </div>
                       </div>
                     </div>
                   </div>
+	              </a>
                 </div>
               </div>
-              <div class="col-sm-6 col-md-3">
+              <div class="col-sm-6 col-md-3 numbers">
                 <div class="card card-stats card-round">
+                 <a href="/rcvList2">
                   <div class="card-body">
                     <div class="row align-items-center">
                       <div class="col-icon">
@@ -123,17 +147,19 @@
                         </div>
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
-                        <div class="numbers">
+                        <div>
                           <p class="card-category text-success fw-bold">월 입고량</p>
                           <h4 class="card-title text-success"><fmt:formatNumber value="${MainQty.month_rcv}" pattern="#,##0" /></h4>
                         </div>
                       </div>
                     </div>
                   </div>
+                  </a>
                 </div>
               </div>
-              <div class="col-sm-6 col-md-3">
+              <div class="col-sm-6 col-md-3 numbers">
                 <div class="card card-stats card-round">
+               	 <a href="/shpList2">
                   <div class="card-body">
                     <div class="row align-items-center">
                       <div class="col-icon">
@@ -142,34 +168,29 @@
                         </div>
                       </div>
                       <div class="col col-stats ms-3 ms-sm-0">
-                        <div class="numbers">
+                        <div>
                           <p class="card-category text-danger fw-bold">월 출고량</p>
                           <h4 class="card-title text-danger"><fmt:formatNumber value="${MainQty.month_shp}" pattern="#,##0" /></h4>
                         </div>
                       </div>
                     </div>
                   </div>
+                  </a>
                 </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-8">
+              <div class="col-md-8 overview">
                 <div class="card card-round">
                   <div class="card-header">
                     <div class="card-head-row">
                       <div class="card-title">일일 재고 운영</div>
                       <div class="card-tools">
-                        <a href="#" class="btn btn-label-success btn-round btn-sm me-2" id="exportImage">
+                        <a href="#" class="btn btn-label-info btn-round btn-sm me-2" id="exportImage">
                           <span class="btn-label">
                             <i class="far fa-image"></i>
                           </span>
                           Export
-                        </a>
-                        <a href="#" class="btn btn-label-info btn-round btn-sm">
-                          <span class="btn-label">
-                            <i class="fa fa-print"></i>
-                          </span>
-                          Print
                         </a>
                       </div>
                     </div>
@@ -181,7 +202,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 overview">
                 <div class="card card-round">
                   <div class="card-header">
                     <div class="card-head-row">
@@ -311,12 +332,29 @@ $(document).ready(function() {
 								usePointStyle: true,
 								padding: 30,
 								font: {
-									size: 16
+									size: 18
 								}
 							}
+						},
+						datalabels: {
+							anchor: 'end',
+							align: 'end',
+							font: {
+								size: 16,
+								weight: 'bold'
+							},
+							formatter: (value) => {
+								return new Intl.NumberFormat('ko-KR').format(value);
+							},
+							backgroundColor: 'rgba(104, 97, 206, 0.1)',
+							borderColor: 'rgba(104, 97, 206, 1)',
+							borderWidth: 1.5,
+							borderRadius: 7,
+							padding: 3
 						}
 					}
-				}
+				},
+				plugins: [ChartDataLabels] 
 			});
 		},
 		error: function(error) {
@@ -412,8 +450,6 @@ $('#exportImage').on('click', function() {
 	link[0].click();
 });
 // 그래프 이미지 저장
-
-
 
 
 

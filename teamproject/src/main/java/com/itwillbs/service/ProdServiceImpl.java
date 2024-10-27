@@ -96,30 +96,16 @@ public class ProdServiceImpl implements ProdService {
 	}
 	
 	
-	// 재고이동
+	// 재고이동이력기록
 	@Override
-	public int transferProd(List<ProdVO> moveList) {
-		logger.debug("( •̀ ω •́ )✧ Service : transferProd(ProdVO vo, HttpServletRequest req) 실행 ");
-		return pdao.transferProd(moveList);
-	}
-
-	// 재고이동내역기록
-	@Override
-	public int moveStock(ProdVO vo) {
-		logger.debug("( •̀ ω •́ )✧ Service : moveStock(ProdVO vo, HttpServletRequest req) 실행 ");
+	public int transferProd(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ Service : transferProd(ProdVO vo) 실행 ");
 		if(vo.getProd_qty() == vo.getCurrent_qty() && vo.getCurrent_qty() >= vo.getStock_qty()) {
 			if(vo.getStock_qty() >= 0) {
 				logger.debug("( •̀ ω •́ )✧ Service : 수량 == 현재수량 && 수량 >= && 이동수량 >= 0");
-				return pdao.moveStock(vo);
+				return pdao.transferProd(vo);
 			} return 0;
 		} return 0;
-	}
-	
-	// 재고이동이력리스트
-	@Override
-	public List<ProdVO> moveStockList(ProdVO vo) {
-		logger.debug("( •̀ ω •́ )✧ Service : moveStockList(ProdVO vo) 실행 ");
-		return pdao.moveStockList(vo);
 	}
 
 	// 재고이동선택
@@ -144,6 +130,35 @@ public class ProdServiceImpl implements ProdService {
 	}
 	
 	
+
+	// 재고이동이력리스트
+	@Override
+	public List<ProdVO> moveStockList(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ Service : moveStockList(ProdVO vo) 실행 ");
+		return pdao.moveStockList(vo);
+	}
+	
+	// 재고이동승인
+	@Override
+	public int moveStock(List<ProdVO> moveList) {
+		logger.debug("( •̀ ω •́ )✧ Service : moveStock(List<ProdVO> moveList) 실행 ");
+		return pdao.moveStock(moveList);
+	}
+	
+	// 재고이동취소
+	@Override
+	public int moveStockCancel(List<ProdVO> moveList) {
+		logger.debug("( •̀ ω •́ )✧ Service : moveStockCancel(List<ProdVO> moveList) 실행 ");
+		return pdao.moveStockCancel(moveList);
+	}
+	
+	// 재고이동알람
+	@Override
+	public List<ProdVO> moveStockAlert() {
+		logger.debug("( •̀ ω •́ )✧ Service : moveStockAlert() 실행 ");
+		return pdao.moveStockAlert();
+	}
+
 	// 재고알람설정
 	@Override
 	public int setStock(ProdVO vo) {

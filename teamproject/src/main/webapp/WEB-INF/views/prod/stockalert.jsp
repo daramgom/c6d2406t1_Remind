@@ -78,7 +78,7 @@
 	}
 	
 	.highlight {
-		background-color: rgba(255, 0, 0, 0.1);
+		background-color: rgba(255,192,203,0.2);
 	}
 	
 	.custom-table {

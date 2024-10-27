@@ -402,6 +402,16 @@ button:hover {
 <link rel="stylesheet" href="./resources/css/demo.css" />
 </head>
 <body>
+
+  	  <c:if test="${empty sessionScope.id}">
+	  <c:redirect url="/login"/>
+	  </c:if>
+
+	 <c:if test="${sessionScope.member_code != '1'}">
+	 <c:redirect url="/cmain"/>
+	 </c:if>
+	
+
 	<div class="wrapper">
 		<!-- Header -->
 		<jsp:include page="/resources/inc/header.jsp" />
@@ -416,7 +426,7 @@ button:hover {
 							<h1 style="margin-left: 5px;">입고 요청 목록</h1>
 
 							<div class="form-container1">
-								<form action="/searchReceiving" method="GET" class="search-form">
+								<form action="/rcvList2" method="GET" class="search-form">
 									<label for="status">입고 상태:</label> <select id="status"
 										name="rcv_status">
 										<option value="">모두</option>
@@ -427,6 +437,7 @@ button:hover {
 									</select> <input type="submit" value="검색" class="search-button">
 								</form>
 							</div>
+							
 							<table id = "tableRCV">
 							<thead>
 								<tr>
@@ -459,7 +470,7 @@ button:hover {
 						<tbody>
 								<c:forEach var="item1" items="${receivingList}" varStatus="idx">
 									<tr
-										onclick="showDetails('${item1.rcv_manager_name}','${item1.rcv_supervisor_id}','${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.ord_date}','${item1.rcv_date}', '${item1.rcv_remarks}')">
+										onclick="showDetails('${item1.rcv_manager_name}','${item1.rcv_supervisor_name}','${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.ord_date}','${item1.rcv_date}', '${item1.rcv_remarks}', '${item1.rcv_manager_id}','${item1.rcv_supervisor_id}')">
 										<%-- onclick="showDetails('${item1.rcv_manager_id}', '${item1.rcv_supervisor_id}', '${ordersList[idx.index].ord_manager_name}', '${ordersList[idx.index].ord_supervisor_name}', '${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.rcv_date}', '${item1.ord_date}', '${item1.rcv_remarks}')"> --%>
 										
 										<td>${item1.rcv_count}</td>
@@ -474,6 +485,8 @@ button:hover {
 										<td>${item1.rcv_remarks}</td>
 									</tr>
 								</c:forEach>
+								
+								
 			           </tbody>
 								<!-- 슬라이드 패널 -->
 								<div id="slidePanel" class="slide-container">
@@ -496,6 +509,8 @@ button:hover {
 												</div>
 											</div>
 
+<input type="hidden" id="rcvManagerId2">
+<input type="hidden" id="rcv_supervisor_id2">
 											<div class="form-group">
 												<label for="rcvSupervisorId"> <img
 													src="${pageContext.request.contextPath}/resources/img/회원.png"
@@ -613,11 +628,18 @@ button:hover {
 											</div>
 
 											<div class="button-group">
-											    
+											
+											
+											        <c:if test="${sessionScope.permission_id != '01'}">
 											        <button type="button" onclick="saveDetails()">입고 승인</button>
 											        <button type="button" onclick="rejectReceiving()">입고 반려</button>
+											        </c:if>
 											  
-											   
+											
+											       	  <c:if test="${sessionScope.permission_id != ''}"></c:if>
+											     
+									
+											     
 												<button type="button" onclick="editDetails()">입고 수정</button>
 												<button type="button" onclick="deleteReceiving()">입고 삭제</button>
 																			
@@ -776,9 +798,10 @@ button:hover {
 	
 	
 	
-function showDetails(rcvManagerName, rcvSupervisorName, ordNumber, rcvNumber, 
+function showDetails(
+		rcvManagerName,rcv_supervisor_name, ordNumber, rcvNumber, 
 		prodCategory,prodId,prodName,rcvQuantity,rcvPrice,whNumber,companyCode
-		,rcvDate,ordDate,rcvRemarks ) {
+				,ordDate,rcvDate,rcvRemarks,rcv_manager_id,rcv_supervisor_id) {
 	 const url = '/receiveOname';
 	 let ordersManagerName ="";
 	 let ordersSupervisorName ="";
@@ -807,7 +830,7 @@ function showDetails(rcvManagerName, rcvSupervisorName, ordNumber, rcvNumber,
 	    
 	document.getElementById('slidePanel').classList.add('open');  // 슬라이드 열기
 	document.getElementById('rcvManagerId').value = rcvManagerName; //입고 요청자 이름
-    document.getElementById('rcvSupervisorId').value = rcvSupervisorName; // 입고 승인자 이름
+    document.getElementById('rcvSupervisorId').value = rcv_supervisor_name; // 입고 승인자 이름
     document.getElementById('ordManagerId').value = data.ord_manager_name;  // 발주 요청자 이름
     document.getElementById('ordSupervisorId').value = data.ord_supervisor_name; // 발주 승인자 이름
     document.getElementById('prodCategory').value = prodCategory; 
@@ -822,6 +845,8 @@ function showDetails(rcvManagerName, rcvSupervisorName, ordNumber, rcvNumber,
     document.getElementById('rcvRemarks').value = rcvRemarks;
     document.getElementById('rcvNumber').value = rcvNumber; // 입고
     document.getElementById('ordNumber').value = ordNumber;
+    document.getElementById('rcvManagerId2').value = rcv_manager_id;
+    
 	
 	})
 	.catch(error => {
@@ -844,7 +869,7 @@ function showDetails(rcvManagerName, rcvSupervisorName, ordNumber, rcvNumber,
 
     function saveDetails() {
         const updatedData = {
-            rcv_manager_id: document.getElementById('rcvManagerId').value,
+            rcv_manager_id: document.getElementById('rcvManagerId2').value,
             rcv_supervisor_id: document.getElementById('rcvSupervisorId').value,
             ord_manager_id: document.getElementById('ordManagerId').value,
             ord_supervisor_id: document.getElementById('ordSupervisorId').value,
@@ -861,8 +886,6 @@ function showDetails(rcvManagerName, rcvSupervisorName, ordNumber, rcvNumber,
             rcv_date: document.getElementById('rcvDate').value,
             rcv_remarks: document.getElementById('rcvRemarks').value
         };
-
-        alert("저장중");
         const url = '/updateReceiving';
 
         fetch(url, {
@@ -982,7 +1005,7 @@ function showDetails(rcvManagerName, rcvSupervisorName, ordNumber, rcvNumber,
     
     function editDetails() {
         const updatedData = {
-            rcv_manager_id: document.getElementById('rcvManagerId').value,
+            rcv_manager_id: document.getElementById('rcvManagerId2').value,
             rcv_supervisor_id: document.getElementById('rcvSupervisorId').value,
             ord_manager_id: document.getElementById('ordManagerId').value,
             ord_supervisor_id: document.getElementById('ordSupervisorId').value,
@@ -998,8 +1021,6 @@ function showDetails(rcvManagerName, rcvSupervisorName, ordNumber, rcvNumber,
             ord_date: document.getElementById('ordDate').value,
             rcv_remarks: document.getElementById('rcvRemarks').value
         };
-
-        alert("수정중...");
         const url = '/editReceiving'; // 수정 요청을 처리할 URL
 
         fetch(url, {
@@ -1012,7 +1033,7 @@ function showDetails(rcvManagerName, rcvSupervisorName, ordNumber, rcvNumber,
         .then(response => {
             if (response.ok) {
                 alert('입고 정보가 수정되었습니다!');
-                closePanel(); // 슬라이드 닫기
+                location.reload();
             } else {
                 throw new Error('수정 실패');
             }

@@ -17,7 +17,7 @@ public class ShippingVO {
     private String prod_category; // 카테고리
     private String shp_price; // 가격(단가)		
     private Date shp_date; // 출고 날짜 
-    private Date ord_date; // 발주 날짜
+    private Date cord_date; // 발주 날짜
     private int shp_quantity; // 출고 수량
     private String shp_manager_id; // 출고 요청자 ID
     private String shp_supervisor_id; // 출고 승인자 ID
@@ -25,5 +25,6 @@ public class ShippingVO {
     private String prod_name;  // 제품명
     private String company_code; // 거래처
     private int wh_number; // 창고
-    private String ord_number; // 발주 관리 번호 추가
+    private String cord_number; // 발주 관리 번호 추가
+    private String shp_manager_name; // 출고 요청자 ID
 }

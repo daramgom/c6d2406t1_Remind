@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.OrdersVO;
 import com.itwillbs.domain.ReceivingVO;
 import com.itwillbs.web.RcvController;
@@ -91,6 +92,18 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 		OrdersVO result = sqlSession.selectOne(NAMESPACE+".getOrdersName",ord_number);
 		
 		return result;
+	}
+
+	@Override
+	public List<OrdersVO> getOrders() {
+	    List<OrdersVO> result = sqlSession.selectList(NAMESPACE + ".getOrders");
+	    return result;
+	}
+
+	@Override
+	public List<OrdersVO> getRcvSupervisorInfo() {
+		List<OrdersVO> result =  sqlSession.selectList(NAMESPACE + ".getRcvSupervisorInfo");
+		 return result;
 	}
 }
 	

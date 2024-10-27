@@ -212,7 +212,7 @@ pageEncoding="UTF-8"%>
             overflow-y: auto;
             position: absolute;
             background: white;
-            z-index: 1000;
+            z-index: 9000;
         }
         .dropdown div {
             padding: 8px;
@@ -234,7 +234,21 @@ pageEncoding="UTF-8"%>
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="./resources/css/demo.css" />
   </head>
+  
+  
+  
+  
   <body>
+  
+  	  <c:if test="${empty sessionScope.id}">
+	  <c:redirect url="/login"/>
+	  </c:if>
+
+	 <c:if test="${sessionScope.member_code != '1'}">
+	 <c:redirect url="/cmain"/>
+	 </c:if>
+	
+	
     <div class="wrapper">
 		<!-- Header -->
 		<jsp:include page="/resources/inc/header.jsp" />
@@ -244,6 +258,9 @@ pageEncoding="UTF-8"%>
 
         <div class="container">
           <div class="page-inner">
+          
+          
+          
 <main>
     <h2>입고 요청</h2>
     <form action="/rcvRQ" id="ReceivingForm" method="post" onsubmit="return confirmSubmission()">
@@ -265,8 +282,12 @@ pageEncoding="UTF-8"%>
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고 승인자
                 </label>
                 <div class="underline-container">
-                    <input type="text" id="rcv_supervisor_id" class="underline-input" placeholder="홍길동" required name="rcv_supervisor_id" value="승인자" readonly="readonly">
-                    
+                   <select id="rcv_supervisor_id" name="rcv_supervisor_id" required="required">
+			<option value="" >선택하세요</option>
+			<c:forEach var="r" items="${RsList }">
+				<option value="${r.member_id}"> ${r.member_name} / ${r.department_name} / ${r.common_status} / ${r.member_tel }</option>
+			</c:forEach>
+		   </select>
                     <div class="custom-underline"></div>
                 </div>
             </div>
@@ -354,7 +375,7 @@ pageEncoding="UTF-8"%>
                 <textarea id="rcv_remarks" placeholder="전달 할 '내용' ..." required name="rcv_remarks"></textarea>
             </div>
             
- <c:if test="${sessionScope.id == 'user1'}">
+ <c:if test="${ sessionScope.permission_id == '01'}">
             <button class="btn btn-primary" type="submit">입고 요청</button>
  </c:if>
         </div>
@@ -366,10 +387,13 @@ pageEncoding="UTF-8"%>
 	</div>
     
     
+    
     <!-- 발주관리번호 셀렉트박스,자동채우기 -->
     
      <script>
-        const orderNumbers = ['ORD-2024-0001','ORD-2024-0002', 'ORD-2024-0003', 'ORD-2024-0004']; // 예시 발주 번호 목록
+ 
+     // 서버에서 전달받은 발주 번호 목록
+    const orderNumbers = ['ORD-2024-0001','ORD-2024-0002', 'ORD-2024-0003','ORD-2024-0004']; // 예시 발주 번호 목록
 
         function showOrderList() {
             const dropdown = document.getElementById('orderDropdown');
@@ -384,6 +408,7 @@ pageEncoding="UTF-8"%>
             });
         }
 
+
         function selectOrder(order) {
             document.getElementById('ord_number').value = order; // 입력란에 선택한 발주 번호 넣기
             document.getElementById('orderDropdown').style.display = 'none'; // 드롭다운 숨기기
@@ -392,7 +417,12 @@ pageEncoding="UTF-8"%>
 
         function fetchProductByOrderNumber(orderNumber) {
             return fetch(`/getProductByOrderNumber?ord_number=` + orderNumber)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     document.getElementById('prod_id').value = data.prod_id; // 제품 식별 코드 자동 입력
                     document.getElementById('prod_category').value = data.prod_category; // 제품 카테고리 자동입력
@@ -401,7 +431,7 @@ pageEncoding="UTF-8"%>
                     document.getElementById('rcv_price').value = data.ord_price; // 가격(단가) 자동입력
                     
                     // 발주 승인자와 창고 번호 자동 입력
-                    document.getElementById('ord_supervisor_id').value = data.ord_supervisor_name; // 발주 승인자 이름 자동입력
+                    document.getElementById('ord_supervisor_id').value = data.ord_supervisor_id; // 발주 승인자 이름 자동입력
                     document.getElementById('wh_number').value = data.wh_number; // 창고 번호 자동입력
                     
                     // 날짜 형식 변환 및 입력
@@ -415,8 +445,12 @@ pageEncoding="UTF-8"%>
                     document.getElementById('ord_manager_id').value = data.ord_manager_name; // 발주 요청자 자동입력
                     document.getElementById('ord_price').value = data.ord_price; // 가격 자동입력
                 })
-                .catch(error => console.error('Error fetching product details:', error));
+                .catch(error => {
+                    console.error('Error fetching product details:', error);
+                    alert("해당 발주 번호에 대한 정보를 불러왔습니다."); // 오류 메시지 추가
+                });
         }
+
 
         function fetchOrderData() {
             const input = document.getElementById('ord_number').value.toLowerCase();
@@ -446,12 +480,12 @@ pageEncoding="UTF-8"%>
         
         function submitOrderNumber() {
             const ord_number = document.getElementById('ord_number').value;
-            alert(ord_number);
             if (ord_number) {
-                fetchProductByOrderNumber(ord_number)
+                fetchProductByOrderNumber(ord_number) // 직접 입력한 번호로 제품 정보 요청
                     .then(() => {
-                        // 제품 정보를 성공적으로 가져온 후 폼 제출
-                        document.getElementById('ReceivingForm').submit();
+                        // 입력한 번호에 대한 정보를 성공적으로 가져온 후 폼 제출
+                        // 이 부분은 필요에 따라 수정 가능
+                        // document.getElementById('ReceivingForm').submit();
                     });
             } else {
                 alert("발주 관리번호를 입력하세요.");
@@ -471,7 +505,5 @@ pageEncoding="UTF-8"%>
 
 </script>
 
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>

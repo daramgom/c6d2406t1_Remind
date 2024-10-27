@@ -1,13 +1,17 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+
+import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.CordersVO;
 import com.itwillbs.domain.OrdersVO;
+import com.itwillbs.domain.ProdVO;
 import com.itwillbs.domain.ShippingVO;
 
 @Repository
@@ -24,12 +28,12 @@ public class ShippingDAOImpl implements ShippingDAO {
         int result = sqlSession.insert(NAMESPACE + ".insertShippingRequest", shippingVO);
         logger.debug("출고 요청 정보 디비 등록 결과: {}", result);
     }
-
+    
     @Override
-    public OrdersVO getShippingInfoByOrderNumber(String order_number) {
-        OrdersVO orders = sqlSession.selectOne(NAMESPACE + ".getShippingInfoByOrderNumber", order_number);
-        logger.debug("Fetched OrdersVO: {}", orders);
-        return orders;
+    public CordersVO getShippingInfoByCorderNumber(String cord_number) {
+        CordersVO corders = sqlSession.selectOne(NAMESPACE + ".getShippingInfoByCorderNumber", cord_number);
+        logger.debug("Fetched OrdersVO: {}", corders);
+        return corders;
     }
     
     @Override
@@ -95,4 +99,37 @@ public class ShippingDAOImpl implements ShippingDAO {
 		OrdersVO result = sqlSession.selectOne(NAMESPACE+".getOrdersName",ord_number);
 		return result;
 	}
+	
+	
+	//거래처 발주 목록 전체 가져오기!
+	@Override
+	public List<CordersVO> getAllCordersRequests() {
+	    List<CordersVO> cordersList = sqlSession.selectList(NAMESPACE + ".getAllCordersRequests");
+	    logger.info("거래처 발주 목록 조회 완료! 총 개수: {}", cordersList.size());
+	    return cordersList; // cordersList를 반환
+	}
+
+	
+	//거래처 발주 상태로 검색
+	@Override
+	public List<CordersVO> getCordersByStatus(String cord_status) {
+		 List<CordersVO> cordersList2 = sqlSession.selectList(NAMESPACE + ".getCordersByStatus", cord_status);
+	     logger.debug("Fetched corders by status {}: {}", cord_status, cordersList2);
+		return cordersList2;
+	}
+
+	@Override
+	public List<OrdersVO> getShpSupervisorInfo() {
+		List<OrdersVO> result =  sqlSession.selectList(NAMESPACE + ".getShpSupervisorInfo");
+		return result;
+	}
+
+	@Override
+	public List<ProdVO> getwhNumberFromStock(String prodId) {
+		List<ProdVO> result = sqlSession.selectList(NAMESPACE +".getwhNumberFromStock",prodId);
+		return result;
+	}
+	
+
+
 }

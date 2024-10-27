@@ -2,6 +2,7 @@ package com.itwillbs.persistence;
 
 import java.util.List;
 
+import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.OrdersVO;
 import com.itwillbs.domain.ReceivingVO;
 
@@ -28,7 +29,9 @@ public interface ReceivingDAO {
     
     public OrdersVO getOrdersName(String ord_number);
     
+    public List<OrdersVO> getOrders(); // 전체 발주목록
     
+    public List<OrdersVO>getRcvSupervisorInfo();
     
     
     

@@ -35,7 +35,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.CordersVO;
 import com.itwillbs.domain.OrdersVO;
+import com.itwillbs.domain.ProdVO;
+import com.itwillbs.domain.ReceivingVO;
 import com.itwillbs.domain.ShippingVO;
 import com.itwillbs.persistence.ShippingDAO;
 
@@ -46,11 +49,15 @@ public class ShpController {
 
     @Autowired
     private ShippingDAO shippingDAO;
+    
+    
 
     // http://localhost:8088/shpRQ
     // 출고 요청 페이지
     @GetMapping("/shpRQ")
-    public String requestShipping() {
+    public String requestShipping(Model model) {
+        List<OrdersVO> SsList = shippingDAO.getShpSupervisorInfo();
+        model.addAttribute("SsList", SsList);
         logger.debug("requestShipping() 페이지 로드");
         return "shpRQ"; // JSP 페이지 이동
     }
@@ -61,14 +68,16 @@ public class ShpController {
         logger.debug("출고 요청 완료");
         shippingVO.setShp_manager_id((String)session.getAttribute("id"));
         shippingDAO.insertShippingRequest(shippingVO);
+
     }
 
-    // 발주 관리번호로 제품 정보 가져오기
-    @GetMapping("/getShippingProductByOrderNumber")
+    
+    //거래처 발주 관리번호로 제품 정보 가져오기
+    @GetMapping("/getShippingProductByCorderNumber")
     @ResponseBody
-    public OrdersVO getShippingProductByOrderNumber(@RequestParam("ord_number") String ord_number) {
-        logger.debug("getShippingProductByOrderNumber() 호출, ord_number: {}", ord_number);
-        OrdersVO result = shippingDAO.getShippingInfoByOrderNumber(ord_number);
+    public CordersVO getShippingProductByCorderNumber(@RequestParam("cord_number") String cord_number) {
+        logger.debug("getShippingProductByCorderNumber() 호출, cord_number: {}", cord_number);
+        CordersVO result = shippingDAO.getShippingInfoByCorderNumber(cord_number);
         if (result != null) {
             logger.debug("제품 정보: {}", result);
         } else {
@@ -76,17 +85,35 @@ public class ShpController {
         }
         return result;
     }
+    
+    
+    @GetMapping("/getwhNumberFromStock")
+    @ResponseBody
+    public List<ProdVO> getWhNumberFromStock(@RequestParam("prodId") String prodId) {
+        logger.debug("getWhNumberFromStock() 호출 prodId:{}", prodId);
+        List<ProdVO> result = shippingDAO.getwhNumberFromStock(prodId);
+        return result;
+    }
+
     // http://localhost:8088/shpList2
-    // 출고 목록 조회
+    // 출고 목록 조회+검색기능!
     @GetMapping("/shpList2")
-    public String shippingList(Model model,Model model2) {
+    public String shippingList(@RequestParam(required = false) String shp_status, Model model ) {
   
-        List<ShippingVO> shippingList = shippingDAO.getAllShippingRequests();
-        model.addAttribute("shippingList", shippingList);
+        List<ShippingVO> shippingList;
+
         
-        List<OrdersVO> ordersList = shippingDAO.getAllOrderRequests();
-        model2.addAttribute("ordersList", ordersList); // 각 모델에 데이터 추가
- 
+        if(shp_status == null || shp_status.isEmpty()) {
+        	shippingList = shippingDAO.getAllShippingRequests();
+          
+        } else {
+        	
+        	shippingList = shippingDAO.getShippingByStatus(shp_status);
+        }
+        
+        model.addAttribute("shippingList", shippingList);
+        logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+shippingList);
+       
 
         return "shpList2"; // 수정된 JSP 파일 이름
     }
@@ -162,23 +189,6 @@ public class ShpController {
         }
     }
 
-    // 출고 검색
-    @GetMapping("/searchShipping")
-    public String searchShipping(@RequestParam(required = false) String shp_status, Model model) {
-        List<ShippingVO> shippingList;
-        
-        List<OrdersVO> ordersList = shippingDAO.getAllOrderRequests();
-        model.addAttribute("ordersList", ordersList); // 각 모델에 데이터 추가
-
-        if (shp_status != null && !shp_status.isEmpty()) {
-            shippingList = shippingDAO.getShippingByStatus(shp_status);
-        } else {
-            shippingList = shippingDAO.getAllShippingRequests();
-        }
-
-        model.addAttribute("shippingList", shippingList);
-        return "shpList2"; // 수정된 JSP 파일 이름
-    }
  
     @GetMapping("/downloadExcel2")
     public void downloadExcel2(
@@ -282,6 +292,41 @@ public class ShpController {
 
         workbook.close();
     }
+    
+    //거래처 요청 목록 페이지 로드!
+    // http://localhost:8088/cordList2
+    @GetMapping("/cordList2")
+    public String requestCord(Model model) {
+    	  List<CordersVO> cordersList = shippingDAO.getAllCordersRequests();
+          model.addAttribute("cordersList",cordersList);
+        logger.debug(" requestCord() 페이지 로드");
+        logger.debug("cordersList"+cordersList);
+        return "cordList2"; // JSP 페이지 이동
+        
+    }
+    
+    
+    
+    // 거래처 발주 목록 검색
+    @GetMapping("/searchCorders")
+    public String searchCorders(@RequestParam(required = false) String cord_status, Model model) {
+        
+        List<CordersVO> cordersList = shippingDAO.getAllCordersRequests();
+        model.addAttribute("ordersList", cordersList); 
+
+        if (cord_status != null && !cord_status.isEmpty()) {
+        	cordersList = shippingDAO.getCordersByStatus(cord_status);
+        } else {
+        	cordersList = shippingDAO.getAllCordersRequests();
+        }
+
+        model.addAttribute("cordersList", cordersList);
+        return "cordList2"; // 수정된 JSP 파일 이름
+    }
+    
+    
+    
+    
 
 }
     

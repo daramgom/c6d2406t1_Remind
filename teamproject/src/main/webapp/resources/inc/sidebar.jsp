@@ -93,11 +93,15 @@
 				</a>
 					<div class="collapse" id="shpMenu">
 						<ul class="nav nav-collapse">
-							<li><a class="subMenu" id="a10" href="/shpRQ"> <span
-									class="sub-item">출고 요청</span>
+						
+							<li><a class="subMenu" id="a10" href="/cordList2"> <span
+									class="sub-item">출고 요청 목록</span>
+							</a></li>						
+							<li><a class="subMenu" id="a11" href="/shpRQ"> <span
+									class="sub-item">출고 처리</span>
 							</a></li>
-							<li><a class="subMenu" id="a11" href="/shpList2"> <span
-									class="sub-item">출고 목록</span>
+							<li><a class="subMenu" id="a12" href="/shpList2"> <span
+									class="sub-item">출고처리 대기 목록</span>
 							</a></li>
 						</ul>
 					</div></li>
@@ -108,10 +112,10 @@
 					<div class="collapse" id="wareMenu">
 						<ul class="nav nav-collapse">
 
-							<li><a class="subMenu" id="a12" href="/warehouse/wareHouseList">
+							<li><a class="subMenu" id="a13" href="/warehouse/wareHouseList">
 									<span class="sub-item">창고 목록</span>
 							</a></li>
-							<li><a class="subMenu" id="a13" href="/warehouse/wareHouseMap">
+							<li><a class="subMenu" id="a14" href="/warehouse/wareHouseMap">
 									<span class="sub-item">창고 지도</span>
 							</a></li>
 						</ul>
@@ -123,7 +127,7 @@
 					<div class="collapse" id="coMenu">
 						<ul class="nav nav-collapse">
 
-							<li><a class="subMenu" id="a14" href="/company/companyList">
+							<li><a class="subMenu" id="a15" href="/company/companyList">
 									<span class="sub-item">거래처 목록</span>
 							</a></li>
 						</ul>
@@ -135,7 +139,7 @@
 					<div class="collapse" id="noticeMenu">
 						<ul class="nav nav-collapse">
 
-							<li><a class="subMenu" id="a15" href="/notice/noticeList">
+							<li><a class="subMenu" id="a16" href="/notice/noticeList">
 									<span class="sub-item">공지사항 목록</span>
 							</a></li>
 						</ul>
@@ -146,7 +150,7 @@
 				</a>
 					<div class="collapse" id="adminMenu">
 						<ul class="nav nav-collapse">
-							<li><a class="subMenu" id="a16" href="/admin/signReq"> <span
+							<li><a class="subMenu" id="a17" href="/admin/signReq"> <span
 									class="sub-item">회원 가입 신청 목록</span>
 							</a></li>
 							<li><a class="subMenu" id="a17" href="/admin/adminMemberList">

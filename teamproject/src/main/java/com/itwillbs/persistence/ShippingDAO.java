@@ -2,7 +2,9 @@ package com.itwillbs.persistence;
 
 import java.util.List;
 
+import com.itwillbs.domain.CordersVO;
 import com.itwillbs.domain.OrdersVO;
+import com.itwillbs.domain.ProdVO;
 import com.itwillbs.domain.ReceivingVO;
 import com.itwillbs.domain.ShippingVO;
 
@@ -11,7 +13,7 @@ public interface ShippingDAO {
     void insertShippingRequest(ShippingVO shippingVO);
     
     // 발주 관리번호로 제품 정보 가져오기
-    OrdersVO getShippingInfoByOrderNumber(String order_number);
+    CordersVO getShippingInfoByCorderNumber(String cord_number);
 
     // 모든 출고 요청 내역 조회
     List<ShippingVO> getAllShippingRequests();
@@ -37,6 +39,17 @@ public interface ShippingDAO {
     List<ShippingVO> getShippingByStatus(String shp_status);
     
     public OrdersVO getOrdersName(String ord_number);
+    
+    //거래처 발주 조회
+    public List<CordersVO> getAllCordersRequests();
+    
+    // 거래처 발주 상태로 검색
+    List<CordersVO> getCordersByStatus(String cord_status);
+    
+    public List<OrdersVO> getShpSupervisorInfo();
+    
+    //창고 번호 + 수량
+    public List<ProdVO> getwhNumberFromStock(String prodId);
     
     
     

@@ -8,32 +8,34 @@
         INSERT INTO shipping_info (
             shp_manager_id,  -- 출고 요청자 ID
             shp_supervisor_id,  -- 출고 승인자 ID
-            ord_number, 
+            cord_number, 
             prod_id, 
             prod_category, 
             prod_name, 
             company_code, 
             shp_quantity, 
             shp_price, 
-            ord_date, 
+            cord_date, 
             shp_date, 
             shp_remarks,
+            wh_number,
             shp_number,
             shp_status,  -- shp_status를 추가
             shp_count     -- shp_count를 마지막에 위치
         ) VALUES (
             #{shp_manager_id}, 
             #{shp_supervisor_id}, 
-            #{ord_number}, 
+            #{cord_number}, 
             #{prod_id}, 
             #{prod_category}, 
             #{prod_name}, 
             #{company_code}, 
             #{shp_quantity}, 
             #{shp_price}, 
-            #{ord_date}, 
+            #{cord_date}, 
             #{shp_date}, 
             #{shp_remarks},
+            #{wh_number},            
             (SELECT CONCAT('SHP-', YEAR(CURRENT_DATE), '-', LPAD(IFNULL(MAX(SUBSTRING(shp_number, -4)), 0) + 1, 4, '0'))
              FROM (SELECT shp_number FROM shipping_info WHERE shp_number LIKE CONCAT('SHP-', YEAR(CURRENT_DATE), '%')) AS temp),
             '01',  -- shp_status에 '01' 값 추가
@@ -42,28 +44,20 @@
     </insert>
 
     <!-- 발주 관리번호로 다른 정보들 가져오기 -->
-    <select id="getShippingInfoByOrderNumber" parameterType="string" resultType="com.itwillbs.domain.OrdersVO">
-        SELECT 
-            o.*, 
-            p.prod_name, 
-            p.prod_category, 
-            o.ord_price AS shp_price,
-            m_supervisor.member_name AS ord_supervisor_name, 
-            m_manager.member_name AS ord_manager_name,
-            o.wh_number,  -- 창고 번호 추가
-            w.wh_name     -- 창고 이름 추가
-        FROM 
-            orders o
-        JOIN 
-            prod p ON o.prod_id = p.prod_id
-        LEFT JOIN 
-            member m_supervisor ON o.ord_supervisor_id = m_supervisor.member_id
-        LEFT JOIN 
-            member m_manager ON o.ord_manager_id = m_manager.member_id
-        LEFT JOIN 
-            warehouse w ON o.wh_number = w.wh_number  -- 창고 테이블 조인
-        WHERE 
-            o.ord_number = #{ord_number}
+    <select id="getShippingInfoByCorderNumber" parameterType="string" resultType="com.itwillbs.domain.CordersVO">
+		SELECT 
+		    c.cprod_id, 
+		    c.ccompany_code, 
+		    c.cord_price, 
+		    c.cord_date,
+		    p.prod_name AS cprod_name,  -- pord 테이블의 pord_name
+		    p.prod_category AS cprod_category  -- pord 테이블의 prod_category
+		FROM 
+		    corders c
+		JOIN 
+		    prod p ON c.cprod_id = p.prod_id  -- pord 테이블과 조인
+		WHERE 
+		    c.cord_number =  #{cord_number};  -- 발주 관리번호로 필터링
     </select>
 
     <!-- 출고 정보 가져오기 -->
@@ -73,7 +67,7 @@
                m_supervisor.member_name AS shp_supervisor_name  -- 출고 승인자 이름
         FROM shipping_info s
         LEFT JOIN member m_requester ON s.shp_manager_id = m_requester.member_id  -- 출고 요청자 조인
-        LEFT JOIN member m_supervisor ON s.shp_supervisor_id = m_supervisor.member_id  -- 출고 승인자 조인
+        LEFT JOIN member m_supervisor ON s.shp_supervisor_id = m_supervisor.member_name  -- 출고 승인자 조인
     </select>
 
     <!-- 발주 정보 가져오기 -->
@@ -113,7 +107,7 @@
             wh_number = #{wh_number},
             company_code = #{company_code},
             shp_date = #{shp_date},
-            ord_date = #{ord_date},
+            cord_date = #{cord_date},
             shp_remarks = #{shp_remarks},
             shp_status = '02'  <!-- shp_status를 '02'로 설정 -->
         WHERE shp_number = #{shp_number}; <!-- 수정할 레코드를 식별하는 조건 -->
@@ -144,7 +138,7 @@
         SET 
             shp_manager_id = #{shp_manager_id},
             shp_supervisor_id = #{shp_supervisor_id},
-            ord_number = #{ord_number},
+            cord_number = #{cord_number},
             prod_category = #{prod_category},
             prod_id = #{prod_id},
             prod_name = #{prod_name},
@@ -152,7 +146,7 @@
             shp_price = #{shp_price},
             wh_number = #{wh_number},
             company_code = #{company_code},
-            ord_date = #{ord_date},
+            cord_date = #{cord_date},
             shp_date = #{shp_date},
             shp_remarks = #{shp_remarks}
         WHERE shp_number = #{shp_number}; <!-- 수정할 레코드를 식별하는 조건 -->
@@ -167,7 +161,53 @@
 
     <!-- 상태에 따라 출고 정보 검색하는 구문 -->
     <select id="getShippingByStatus" parameterType="string" resultType="com.itwillbs.domain.ShippingVO">
-        SELECT * FROM shipping_info WHERE shp_status = #{shp_status}
+        SELECT s.*,
+	    m_manager.member_name AS shp_manager_name,  -- 입고 요청자 이름(홍길동)
+        m_supervisor.member_name AS shp_supervisor_name  -- 입고 승인자 이름
+        FROM shipping_info s
+        LEFT JOIN member m_manager ON s.shp_manager_id = m_manager.member_id  -- 입고 요청자 조인
+        LEFT JOIN member m_supervisor ON s.shp_supervisor_id = m_supervisor.member_id  -- 입고 승인자 조인
+	    WHERE shp_status = #{shp_status};
     </select>
 
+	<!-- 거래처 발주 목록 전체 출력 구문 -->
+	<select id= "getAllCordersRequests" resultType="com.itwillbs.domain.CordersVO"> 
+  	SELECT * FROM corders;
+	</select>
+	
+     <!-- 상태에 따라 거래처발주 정보 검색하는 구문 -->
+    <select id="getCordersByStatus" parameterType="string" resultType="com.itwillbs.domain.CordersVO">
+        SELECT * FROM corders WHERE cord_status = #{cord_status}
+    </select>
+	
+			
+	 <!-- 발주 승인자 목록 조회 -->
+	<select id="getShpSupervisorInfo" resultType="com.itwillbs.domain.OrdersVO">
+	
+ 	select m.member_id, m.member_name, d.department_name, c.common_status, m.member_tel 
+	from departments d, member m, common c 
+	where d.department_id = m.department_id 
+	and m.employee_rank = c.common_value 
+	and common_work = 'emp_rank' 
+	and m.permission_id = '02' 
+	and m.member_state = '01' 
+	and m.approval_status = '02'
+
+	</select>
+	
+	
+	
+<select id="getwhNumberFromStock" parameterType="String" resultType="com.itwillbs.domain.ProdVO">
+    SELECT wh_number, prod_qty 
+    FROM stock 
+    WHERE prod_id = #{prodId}
+</select>
+
+
+	
+	
+	
+	
+	
+	
 </mapper>

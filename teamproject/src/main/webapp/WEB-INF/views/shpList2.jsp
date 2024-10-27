@@ -392,6 +392,15 @@ button:hover {
 <link rel="stylesheet" href="./resources/css/demo.css" />
 </head>
 <body>
+
+  	  <c:if test="${empty sessionScope.id}">
+	  <c:redirect url="/login"/>
+	  </c:if>
+
+	 <c:if test="${sessionScope.member_code != '1'}">
+	 <c:redirect url="/cmain"/>
+	 </c:if>
+	
 	<div class="wrapper">
 		<!-- Header -->
 		<jsp:include page="/resources/inc/header.jsp" />
@@ -406,7 +415,7 @@ button:hover {
 <!-- 출고 요청 목록 -->
 <h1>출고 요청 목록</h1>
 <div class="form-container1">
-    <form action="/searchShipping" method="GET" class="search-form">
+    <form action="/shpList2" method="GET" class="search-form">
         <label for="status">출고 상태:</label>
         <select id="status" name="shp_status">
             <option value="">모두</option>
@@ -432,9 +441,9 @@ button:hover {
     </tr>
 
     <c:forEach var="item" items="${shippingList}" varStatus="idx">
-        <tr onclick="showShippingDetails('${item.shp_manager_id}', '${item.shp_supervisor_id}','${ordersList[idx.index].ord_manager_name}', '${ordersList[idx.index].ord_supervisor_name}', '${item.ord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}')">
+        <tr onclick="showShippingDetails('${item.shp_manager_name}', '${item.shp_supervisor_id}', '${item.cord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}','${item.shp_manager_id}')">
             <td>${item.shp_count}</td>
-            <td>${item.shp_manager_id}</td>
+            <td>${item.shp_manager_name}</td>
             <td>${item.shp_number}</td>
             <td>${item.prod_id}</td>
             <td>${item.prod_name}</td>
@@ -446,10 +455,11 @@ button:hover {
     </c:forEach>
 </table>
 
+
 <!-- 출고 요청 슬라이드 패널 -->
 <div id="slidePanel" class="slide-container">
     <span class="close-btn" onclick="closePanel()">&times;</span>
-    <h2>출고 요청</h2>
+    <h2>출고 처리</h2>
     <form id="ShippingForm" onsubmit="return confirmSubmission()">
         <div class="form-container">
             <div class="form-group">
@@ -457,7 +467,7 @@ button:hover {
 		    src="${pageContext.request.contextPath}/resources/img/회원.png"
 			alt="사람 아이콘"
 			style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고
-			요청자
+			처리자
 			</label>
 			<div class="underline-container">
 			<input type="text" id="shpManagerId"
@@ -477,31 +487,12 @@ button:hover {
 		        <div class="custom-underline"></div>
 		    </div>
 		   </div>
-
-			<div class="form-group">
-			    <label for="ordManagerId">
-			        <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘" style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">
-			        발주 요청자
-			    </label>
-			    <div class="underline-container">
-			        <input type="text" id="ordManagerId" class="underline-input" placeholder="홍길동" required name="ordManagerId">
-			        <div class="custom-underline"></div>
-			    </div>
-			</div>
-			
-			<div class="form-group">
-			    <label for="ordSupervisorId">
-			        <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘" style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">
-			        발주 승인자
-			    </label>
-			    <div class="underline-container">
-			        <input type="text" id="ordSupervisorId" class="underline-input" placeholder="홍길동" required name="ordSupervisorId">
-			        <div class="custom-underline"></div>
-			    </div>
-			</div>
+		   
+<input type="hidden" id="shpManagerId2">		   
+		   
             <div class="form-group">
-                <label for="ordNumber">발주 관리번호</label>
-                <input type="text" id="ordNumber" required name="ordNumber">
+                <label for="cordNumber">거래처 발주 관리번호</label>
+                <input type="text" id="cordNumber" required name="cordNumber">
             </div>
             <div class="form-group">
                 <label for="shpNumber">출고 관리번호</label>
@@ -535,6 +526,7 @@ button:hover {
                 <label for="shpPrice">가격(단가)</label>
                 <input type="text" id="shpPrice" required name="shpPrice">
             </div>
+            
             <div class="form-group">
                 <label for="shpDate">출고 날짜</label>
                 <input type="date" id="shpDate" required name="shpDate">
@@ -545,15 +537,15 @@ button:hover {
             </div>
             <div class="button-group">
             
-              	<c:if test="${sessionScope.id == 'super1'}">
+              	<c:if test="${sessionScope.permission_id != '01'}">
                 <button type="button" onclick="saveShippingDetails()">출고 승인</button>
                 <button type="button" onclick="rejectShipping()">출고 반려</button>
                 </c:if>
                 
-                 <c:if test="${sessionScope.id == 'user1'}">
+                 
                 <button type="button" onclick="editShippingDetails()">출고 수정</button>
                 <button type="button" onclick="deleteShipping()">출고 삭제</button>
-                </c:if>
+                
             </div>
         </div>
     </form>
@@ -650,13 +642,11 @@ button:hover {
 /**
  * 출고 세부 정보를 표시하는 함수
  */
-function showShippingDetails(shpManagerName, shpSupervisorName, ordManagerName, ordSupervisorName, ordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks) {
+function showShippingDetails(shpManagerName, shpSupervisorName, cordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks,shp_manager_id) {
     document.getElementById('slidePanel').classList.add('open');
     document.getElementById('shpManagerId').value = shpManagerName;
     document.getElementById('shpSupervisorId').value = shpSupervisorName;
-    document.getElementById('ordManagerId').value = ordManagerName;
-    document.getElementById('ordSupervisorId').value = ordSupervisorName;
-    document.getElementById('ordNumber').value = ordNumber;
+    document.getElementById('cordNumber').value = cordNumber;
     document.getElementById('shpNumber').value = shpNumber;
 /*     document.getElementById('prodCategory').value = prodCategory; */
     document.getElementById('prodId').value = prodId;
@@ -668,6 +658,9 @@ function showShippingDetails(shpManagerName, shpSupervisorName, ordManagerName, 
 /*     document.getElementById('ordDate').value = ordDate; */
     document.getElementById('shpDate').value = shpDate;
     document.getElementById('shpRemarks').value = shpRemarks;
+    document.getElementById('shpManagerId2').value = shp_manager_id;
+    console.log(shp_manager_id);
+    
 }
 
 /**
@@ -689,11 +682,10 @@ function confirmSubmission() {
  */
 function saveShippingDetails() {
     const updatedData = {
-        shp_manager_id: document.getElementById('shpManagerId').value,
+    		
+        shp_manager_id: document.getElementById('shpManagerId2').value,
         shp_supervisor_id: document.getElementById('shpSupervisorId').value,
-        ord_manager_id: document.getElementById('ordManagerId').value,
-        ord_supervisor_id: document.getElementById('ordSupervisorId').value,
-        ord_number: document.getElementById('ordNumber').value,
+        cord_number: document.getElementById('cordNumber').value,
         shp_number: document.getElementById('shpNumber').value,
         prod_id: document.getElementById('prodId').value,
         prod_name: document.getElementById('prodName').value,
@@ -704,8 +696,6 @@ function saveShippingDetails() {
         shp_date: document.getElementById('shpDate').value,
         shp_remarks: document.getElementById('shpRemarks').value
     };
-
-    alert("저장중...");
     const url = '/updateShipping';
 
     fetch(url, {
@@ -721,6 +711,7 @@ function saveShippingDetails() {
                 openModal();
             }
             closePanel();
+            
         } else {
             throw new Error('업데이트 실패');
         }
@@ -798,23 +789,24 @@ function rejectShipping() {
  */
 function editShippingDetails() {
     const updatedData = {
-        shp_manager_id: document.getElementById('shpManagerId').value,
+        shp_manager_id: document.getElementById('shpManagerId2').value,
         shp_supervisor_id: document.getElementById('shpSupervisorId').value,
-        ord_manager_id: document.getElementById('ordManagerId').value,
-        ord_supervisor_id: document.getElementById('ordSupervisorId').value,
-        ord_number: document.getElementById('ordNumber').value,
+        cord_number: document.getElementById('cordNumber').value,
         shp_number: document.getElementById('shpNumber').value,
         prod_id: document.getElementById('prodId').value,
         prod_name: document.getElementById('prodName').value,
-        shp_quantity: document.getElementById('shpQuantity').value,
-        shp_price: document.getElementById('shpPrice').value,
-        wh_number: document.getElementById('whNumber').value,
         company_code: document.getElementById('companyCode').value,
+        shp_quantity: document.getElementById('shpQuantity').value,
+        wh_number: document.getElementById('whNumber').value,
+        shp_price: document.getElementById('shpPrice').value,
         shp_date: document.getElementById('shpDate').value,
         shp_remarks: document.getElementById('shpRemarks').value
+        
+
+
     };
 
-    alert("수정중...");
+    
     fetch('/editShipping', {
         method: 'POST',
         headers: {
@@ -825,7 +817,7 @@ function editShippingDetails() {
     .then(response => {
         if (response.ok) {
             alert('출고 정보가 수정되었습니다!');
-            closePanel();
+            location.reload();
         } else {
             throw new Error('수정 실패');
         }

@@ -61,7 +61,7 @@ public interface MemberDAO {
 	public Map<String, Object> getMemberDetails(String member_id);
 	
 	// admin(전용) 사용자 정보 목록 조회
-	public List<MemberVO> getMemberList(String member_id);
+	public List<MemberVO> getMemberList(String member_id, Criteria cri);
 	
 	// admin(전용) 회원가입 신청 정보 목록 조회
 	public List<MemberVO> getSignupRequestList(Criteria cri);

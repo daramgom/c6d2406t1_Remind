@@ -151,10 +151,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 	// admin 전용 특정 사용자 조회
 	@Override
-	public List<MemberVO> memberList(String id) {
+	public List<MemberVO> memberList(String id, Criteria cri) {
 		logger.debug("memberList() 실행 ");	
 		
-		return mdao.getMemberList(id);
+		return mdao.getMemberList(id,cri);
 	}
 	
 	// admin 전용 회원가입 신청 멤버 목록

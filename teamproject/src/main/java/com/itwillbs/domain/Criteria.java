@@ -8,6 +8,8 @@ public class Criteria {
 	private int page;		// 페이지정보
 	private int pageSize;	// 페이지크기
 	
+	private int totalCount;   // 총 회원 수
+	
 	// private int startPage // 디비에서 limit 조회시 사용되는 변수
 	
 	public Criteria() { // 기본값 1페이지에 10개씩 출력
@@ -55,6 +57,13 @@ public class Criteria {
 	public String toString() {
 		return super.toString();
 	}
+	 // 총 회원 수의 세터와 게터
+    public int getTotalCount() {
+        return totalCount;
+    }
 	
+	  public void setTotalCount(int totalCount) {
+	        this.totalCount = totalCount;
+	    }
 	
 }

@@ -43,14 +43,32 @@ public class AdminController {
 	Map<String, String> response = new HashMap<>();;
 
 	@RequestMapping(value = "adminMemberList", method = RequestMethod.GET)
-	public void adminMemberListGET(Model model, HttpSession session) {
+	public void adminMemberListGET(Model model, HttpSession session, Criteria cri) {
 		
-		String member_id = (String)session.getAttribute("id");
-		logger.debug("adminMemberListGET");
 
-		List<MemberVO> memberList = mService.memberList(member_id);
+		 String member_id = (String) session.getAttribute("id");
+		    logger.debug("adminMemberListGET");
+		    logger.debug("adminMemberListGET");
 
-		model.addAttribute("memberList", memberList);
+		    // 페이지 크기 설정 (5명)
+		    cri.setPageSize(5);  // Criteria에 페이지 크기 설정
+
+		    List<MemberVO> memberList = mService.memberList(member_id, cri);
+
+		    model.addAttribute("memberList", memberList);
+		    
+		    // 페이지 크기를 모델에 추가
+		    model.addAttribute("pageSize", cri.getPageSize());
+
+		    // 페이지 수 계산 (totalCount를 사용하여 계산)
+		    int totalCount = cri.getTotalCount();
+		    logger.debug("adminMemberListGET totalCount : "+ totalCount);
+		    int pageCount = (int) Math.ceil((double) totalCount / cri.getPageSize());
+		    model.addAttribute("pageCount", pageCount); // 페이지 수 모델에 추가
+		    logger.debug("adminMemberListGET pageCount : "+ pageCount);
+		    // 현재 페이지 모델에 추가
+		    model.addAttribute("currentPage", cri.getPage()); // 현재 페이지 추가
+
 	}
 
 	@RequestMapping(value = "/getMemberInfo", method = RequestMethod.POST)
@@ -157,29 +175,7 @@ public class AdminController {
 					.body("{\"result\": false, \"message\": \"업데이트 중 오류가 발생했습니다.\"}");
 		}
 	}
-	
-	@RequestMapping(value = "/companySignUpModal", method = RequestMethod.GET)
-	public void companyList(Model model) {
-		 List<CompanyVO> result = cService.getCompanyList();
-		 model.addAttribute("companyList", result );
-	}
-	
-	
 
-	@RequestMapping(value = "/companySignUpModal", method = RequestMethod.POST)
-	public ResponseEntity<CompanyVO> companySignUpGET(@RequestBody CompanyVO company_code) {
-	    if (company_code == null || company_code.getCompany_code() == null) {
-	        return ResponseEntity.badRequest().body(null); // 400 Bad Request
-	    }
-
-	    CompanyVO result = cService.getCompany(company_code.getCompany_code()); 
-	    
-	    if (result == null) {
-	        return ResponseEntity.notFound().build(); // 404 Not Found
-	    }
-
-	    return ResponseEntity.ok(result); // 200 OK
-	}
 
 	@RequestMapping(value = "/checkUserEamil", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, String>>  checkUserEmail(@RequestBody MemberVO email) {
@@ -263,49 +259,48 @@ public class AdminController {
 
 	
 	 @PostMapping("/updatePermission")
-	    public ResponseEntity<String> updatePermission(@RequestBody MemberVO vo) {
-		 
-		 	logger.debug("vo : " + vo.getPermission_id());
-		 
-		 
-	    	int result = mService.memberPermissionUpdate(vo);
-	    	
-	    	
-	    	
-	    	if(result == 0) {
-	    		return ResponseEntity.ok("{\"success\": false }");
-	    	}
-	    	
-	    	return ResponseEntity.ok("{\"success\": true }");
-	    	
-	    }
+     public ResponseEntity<String> updatePermission(@RequestBody MemberVO vo) {
+	 
+	 	logger.debug("vo : " + vo.getPermission_id());
+	 
+	 
+    	int result = mService.memberPermissionUpdate(vo);
+    	
+    	
+    	
+    	if(result == 0) {
+    		return ResponseEntity.ok("{\"success\": false }");
+    	}
+    	
+    	return ResponseEntity.ok("{\"success\": true }");
+    	
+     }
 	 
 	 @RequestMapping(value = "/companyMemberCheck", method = RequestMethod.POST)
-		public ResponseEntity<Map<String, String>>  companyMemberCheck(@RequestBody CompanyVO vo) {
-			response.clear();
+	 public ResponseEntity<Map<String, String>>  companyMemberCheck(@RequestBody CompanyVO vo) {
+	 	 response.clear();
 
-		    try {
-		        MemberVO result = mService.memberCodeCheck(vo);
-
-		        if (result != null) {
-		            // 중복된 이메일이 있을 경우
-		        	response.put("message", "이미 회원가입한 거래처 입니다.");
-		        	response.put("result", "false");
-		            return ResponseEntity.ok(response);
-		        } else {
-		            // 사용 가능한 이메일인 경우
-		        	response.put("result", "true");
-		        	response.put("message", "회원가입이 가능한 거래처 입니다!");
-		        	return ResponseEntity.ok(response);
-		        }
-		    } catch (Exception e) {
-		        // 예외 처리
+	     try {
+	         MemberVO result = mService.memberCodeCheck(vo);
+	         if (result != null) {
+	            // 중복된 이메일이 있을 경우
+	        	response.put("message", "이미 회원가입한 거래처 입니다.");
+	        	response.put("result", "false");
+	            return ResponseEntity.ok(response);
+	         } else {
+	            // 사용 가능한 이메일인 경우
+	        	response.put("result", "true");
+	        	response.put("message", "회원가입이 가능한 거래처 입니다!");
+	        	return ResponseEntity.ok(response);
+	         }
+	        } catch (Exception e) {
+	        // 예외 처리
 		        response.put("message", "업데이트 중 오류가 발생했습니다.");
 		        response.put("result", "false");
 		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-		                .body(response);
-		    }
-		}
+	                .body(response);
+	    }
+	 }
 	 
 	 
 	 @RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
@@ -313,9 +308,8 @@ public class AdminController {
 		 response.clear();
 		 
 		 try {
-			 
 			 MemberVO result = mService.memberCodeCheck(vo);
-			int resultInt = eService.sendIdPwCode(result); 
+			 int resultInt = eService.sendIdPwCode(result); 
 			 
 			 if (resultInt == 0) {
 				 // 중복된 이메일이 있을 경우
@@ -326,8 +320,8 @@ public class AdminController {
 				 response.put("result", "true");
 				 response.put("message", "변경된 비밀번호를 전송하였습니다.!");
 			 }
-			 return ResponseEntity.ok(response);
-		 } catch (Exception e) {
+			   return ResponseEntity.ok(response);
+		 }   catch (Exception e) {
 			 // 예외 처리
 			 response.put("message", "업데이트 중 오류가 발생했습니다.");
 			 response.put("result", "false");

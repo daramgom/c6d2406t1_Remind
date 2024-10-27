@@ -37,7 +37,7 @@ public interface MemberService {
 	public MemberVO memberInfoTel(String tel);
 	
 	// admin 회원정보 목록 d
-	public List<MemberVO> memberList(String id);
+	public List<MemberVO> memberList(String id,Criteria cri);
 	
 	// admin 회원정보 목록 d
 	public List<MemberVO> signupRequestList(Criteria cri);

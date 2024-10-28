@@ -226,14 +226,13 @@ pageEncoding="UTF-8"%>
     <div class="container">
 		<div class="page-inner">
 			<div class="page-header">
-				<h3 class="fw-bold mb-3">발주관리</h3>
+				<h3 class="fw-bold mb-3">발주 관리</h3>
 				<ul class="breadcrumbs mb-3">
-					<li class="nav-home"><a href="#"> <i class="icon-home"></i>
-					</a></li>
+					<li class="nav-home"> <i class="icon-home"></i>
+					</li>
+					
 					<li class="separator"><i class="icon-arrow-right"></i></li>
-					<li class="nav-item"><a href="#">발주관리</a></li>
-					<li class="separator"><i class="icon-arrow-right"></i></li>
-					<li class="nav-item"><a href="#">발주목록</a></li>
+					<li class="nav-item">출고 수락</li>
 				</ul>
 			</div>
 			
@@ -504,6 +503,7 @@ $(document).ready(function() {
             	<label>발주 상태 : </label>
             	<input type="text" id="modalCommonStatus" name="common_status" disabled="disabled" readonly="readonly" class="form-control" style="width:200px;" /><br>
             	<input type="hidden" id="modalOrdStatus" name="ord_status" readonly="readonly" class="form-control" style="width:200px;" /><br>
+            	<!-- prod_id 없어요 null 값 들어감. -->
         	</div>
            
            <div style="display: flex; gap: 10px;">
@@ -529,17 +529,22 @@ $(document).ready(function() {
           </div>
           
           <div style="display: flex; gap: 10px;">
-           <label>제품식별코드 / 제품 이름 / 제품 카테고리 / 제품 브랜드 / 거래처코드 / 거래처 이름 / 거래처 전화번호</label>
+           <label>제품식별코드 / 제품 이름 / 제품 카테고리 / 제품 브랜드 </label>
           </div>
           <div style="display: flex; gap: 10px;">
            <!-- <input type="text" id="modalProdId" name="prod_id" class="form-control" style="width:200px;" /><br>
            <input type="text" id="modalCompanyCode" name="company_code" class="form-control" style="width:200px;" /><br> -->
-           <select id="prod_id" name="prod_id" class="form-select form-control" required="required" style="width:600px;">
-			<!-- <option value="" >목록에서 값을 확인 후 선택하세요</option> -->
-			<c:forEach var="p" items="${pListVO }">
-				<option id="modalProdId" value="${p.prod_id }">${p.prod_id} / ${p.prod_name } / ${p.prod_category } / ${p.prod_brand } / ${p.company_code } / ${p.company_name } / ${p.company_tel }</option>
-			</c:forEach>
-		</select>
+           <input type="text" id="prod_id" name="prod_id" readonly="readonly" class="form-control" style="width:200px;" /><br>
+           <input type="text" id="prod_name" name="prod_name" readonly="readonly" class="form-control" style="width:200px;" />
+           <input type="text" id="prod_category" name="prod_category" readonly="readonly" class="form-control" style="width:200px;" />
+           <input type="text" id="prod_brand" name="prod_brand" readonly="readonly" class="form-control" style="width:200px;" />
+<!--            <select name="prod_id" id="prod_id" class="form-select form-control" required="required" style="width:600px;"> -->
+<!-- 			<!-- <option value="" >목록에서 값을 확인 후 선택하세요</option> -->
+<%-- 			<c:forEach var="p" items="${pListVO }"> --%>
+<%-- 				<option id="modalProdId" value="${p.prod_id }">${p.prod_id} / ${p.prod_name } / ${p.prod_category } / ${p.prod_brand } / ${p.company_code } / ${p.company_name } / ${p.company_tel }</option> --%>
+<%-- 			</c:forEach> --%>
+<!-- 		</select> -->
+		<%-- <input type="hidden" value="${p.prod_id} " name="prod_id" /> --%>
           </div>
           
           <div style="display: flex; gap: 10px;">
@@ -566,13 +571,22 @@ $(document).ready(function() {
            <input type="text" id="modalWhAdmin" name="wh_admin" readonly="readonly" class="form-control" style="width:200px;" />
            <input type="text" id="modalWhMemberName" name="wh_member_name" readonly="readonly" class="form-control" style="width:200px;" />
            <input type="text" id="modalWhMemberTel" name="wh_member_tel" readonly="readonly" class="form-control" style="width:200px;" /><br> -->
+           <input type="text" id="wh_number" name="wh_number" readonly="readonly" class="form-control" style="width:200px;" />
+           <input type="text" id="wh_name" name="wh_name" readonly="readonly" class="form-control" style="width:200px;" />
+           <input type="text" id="wh_location" name="wh_location" readonly="readonly" class="form-control" style="width:200px;" />
+           </div>
+           <div style="display: flex; gap: 10px;">
+           <input type="text" id="wh_admin" name="wh_admin" readonly="readonly" class="form-control" style="width:200px;" />
+           <input type="text" id="wh_member_name" name="wh_member_name" readonly="readonly" class="form-control" style="width:200px;" />
+           <input type="text" id="wh_member_tel" name="wh_member_tel" readonly="readonly" class="form-control" style="width:200px;" />
            
-           <select id="wh_number" name="wh_number" class="form-select form-control" required="required" style="width:500px;">
-			<!-- <option value="" >목록에서 값을 확인 후 선택하세요</option> -->
-			<c:forEach var="w" items="${wListVO }">
-				<option id="modalWhNumber" value="${w.wh_number }">${w.wh_number } / ${w.wh_name } / ${w.wh_location } / ${w.wh_admin } / ${w.member_name } / ${w.member_tel }</option>
-			</c:forEach>
-		</select>
+           
+<!--            <select id="wh_number" name="wh_number" class="form-select form-control" required="required" style="width:500px;"> -->
+<!-- 			<!-- <option value="" >목록에서 값을 확인 후 선택하세요</option> -->
+<%-- 			<c:forEach var="w" items="${wListVO }"> --%>
+<%-- 				<option id="modalWhNumber" value="${w.wh_number }">${w.wh_number } / ${w.wh_name } / ${w.wh_location } / ${w.wh_admin } / ${w.member_name } / ${w.member_tel }</option> --%>
+<%-- 			</c:forEach> --%>
+<!-- 		</select> -->
        </div>    
            
           <label>비고:</label>
@@ -622,16 +636,24 @@ function openModal(ord_count, ord_number, common_status, ord_status,
 	    document.getElementById('modalSupervisorMemberTel').value = supervisor_member_tel;
 	    
 	    document.getElementById('prod_id').value = prod_id;
+	    document.getElementById('prod_name').value = prod_name;
+	    document.getElementById('prod_category').value = prod_category;
+	    document.getElementById('prod_brand').value = prod_brand;
 // 	    document.getElementById('modalProdId').value = prod_id; // <-- 원인. + id값은 고유한 값인데 반복문에 들어가면 의미없음 삭제요청
 	    
 	    document.getElementById('modalOrdPrice').value = ord_price;
 	    document.getElementById('modalOrdQuantity').value = ord_quantity;
 	    document.getElementById('modalOrdDate').value = ord_date;
 	    document.getElementById('modalOrdDateChange').value = ord_date_change;
-	    /* document.getElementById('modalCompanyCode').value = company_code; */
+// 	    document.getElementById('modalCompanyCode').value = company_code;
 	    document.getElementById('modalOrdText').value = ord_text;
 	    
 	    document.getElementById('wh_number').value = wh_number;
+	    document.getElementById('wh_name').value = wh_name;
+	    document.getElementById('wh_location').value = wh_location;
+	    document.getElementById('wh_admin').value = wh_admin;
+	    document.getElementById('wh_member_name').value = wh_member_name;
+	    document.getElementById('wh_member_tel').value = wh_member_tel;
 // 	    document.getElementById('modalWhNumber').value = wh_number; // <-- 원인. 삭제요청
         
 //         document.getElementById('modalWhName').value = wh_name;
@@ -732,10 +754,10 @@ function renderButtons(ord_status) {
        		buttonContainer.innerHTML += '<button id="updateBtn04" class="btn btn-danger">거래처 반려</button>'
         }
         // input태그 select 태그 비활성화
-        prod_id.disabled = true;
+        prod_id.disabled = false;
         modalOrdPrice.readOnly = true;
         modalOrdQuantity.readOnly = true;
-        wh_number.disabled = true;
+        wh_number.disabled = false;
         
     } // else if (ord_status === '03')
     

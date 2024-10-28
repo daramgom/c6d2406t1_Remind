@@ -309,13 +309,13 @@ public class ShpController {
     
     //cmain 거래처 요청 목록 페이지 로드!
     // GET 요청 처리
-    @GetMapping("/cmain")
+    /*@GetMapping("/cmain")
     public String cmain(Model model) {
     	 List<CordersVO> cordersList = shippingDAO.getAllCordersRequests();
          model.addAttribute("cordersList",cordersList);
         logger.debug(" cmain() 페이지 로드");
         return "cmain"; // JSP 페이지 이동
-    }
+    }*/
 
     
     

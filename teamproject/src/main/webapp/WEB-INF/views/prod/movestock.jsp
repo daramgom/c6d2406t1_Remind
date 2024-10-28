@@ -123,7 +123,7 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <h3 class="card-title">제품이동이력</h3>
+                    <h3 class="card-title">재고이동내역</h3>
                   </div>
                   <div class="card-body">
                     <div class="table-responsive" style="overflow-x: auto; -webkit-overflow-scrolling: touch;">

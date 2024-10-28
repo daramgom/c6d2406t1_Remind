@@ -336,25 +336,8 @@ $(document).ready(function() {
 								}
 							}
 						},
-						datalabels: {
-							anchor: 'end',
-							align: 'end',
-							font: {
-								size: 16,
-								weight: 'bold'
-							},
-							formatter: (value) => {
-								return new Intl.NumberFormat('ko-KR').format(value);
-							},
-							backgroundColor: 'rgba(104, 97, 206, 0.1)',
-							borderColor: 'rgba(104, 97, 206, 1)',
-							borderWidth: 1.5,
-							borderRadius: 7,
-							padding: 3
-						}
 					}
 				},
-				plugins: [ChartDataLabels] 
 			});
 		},
 		error: function(error) {

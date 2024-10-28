@@ -42,7 +42,6 @@
 	<!-- Chart JS -->
 	<script src="/resources/js/plugin/chart.js/chart.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
 	<!-- jQuery Sparkline -->
 	<script	src="${pageContext.request.contextPath }/resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>

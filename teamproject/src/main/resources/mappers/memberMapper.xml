@@ -159,11 +159,12 @@
     WHERE approval_status = '01' and member_code = '1'
 </select>
 
-<select id="getMemberListCount" resultType="int">
+ <select id="getMemberListCount" resultType="int">
     SELECT COUNT(*) FROM member
     WHERE approval_status = '02' 
       AND member_code = '1' 
       AND member_id != #{member_id}
+      AND member_state != '03'
       <if test="keyword != null and keyword != ''">
           AND member_name LIKE CONCAT('%', #{keyword}, '%')
       </if>

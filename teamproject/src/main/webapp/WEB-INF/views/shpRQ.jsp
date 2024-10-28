@@ -36,27 +36,16 @@ pageEncoding="UTF-8"%>
         },
       });
     </script>
-        <link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
+    
 <style>
-
-	shpButton {
-	
-
-		color: #6861ce;
-
-	} 
-	
-	
-	}
-
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #e9ecef;
         margin: 0;
-        padding: 20px;
+       
     }
     header {
-        background: #001f3f; /* 남색 */
+        background: #6861ce; /* 남색 */
         padding: 10px;
         display: flex;
         justify-content: space-between;
@@ -75,9 +64,9 @@ pageEncoding="UTF-8"%>
         margin-right: auto; /* 가운데 정렬 */
     }
     h2 {
-        border-bottom: 2px solid #001f3f; /* 남색 */
+        border-bottom: 2px solid #CCCCCC; /* 남색 */
         padding-bottom: 10px;
-        color: #001f3f; /* 남색 */
+        color: #CCCCCC; /* 남색 */
         font-size: 24px; /* 제목 크기 조정 */
     }
     .form-container {
@@ -109,7 +98,7 @@ pageEncoding="UTF-8"%>
         grid-column: span 2; /* 버튼을 두 열에 걸치게 함 */
         margin-top: 20px;
         padding: 10px;
-        background: #001f3f; /* 남색 */
+        background: #6861ce; /* 남색 */
         color: white;
         border: none;
         border-radius: 4px;
@@ -139,7 +128,7 @@ pageEncoding="UTF-8"%>
         bottom: 0; /* 아래에 위치 */
         left: 0; /* 왼쪽에 위치 */
         height: 2px; /* 두께 설정 */
-        background-color: navy; /* 남색 */
+        background-color: #CCCCCC; /* 남색 */
         width: calc(5ch); /* 3글자 길이만큼 설정 */
     }
 </style>
@@ -214,22 +203,25 @@ pageEncoding="UTF-8"%>
     
     </style>
     
+    
     <!-- 발주관리번호 -->
        <style>
-        .dropdown {
+        .dropdown1 {
             display: none;
             border: 1px solid #ccc;
             max-height: 150px;
             overflow-y: auto;
-            position: absolute;
-            background: white;
+           position: relative;
+		    background: white;
+		    top: 0px;
+		    width: 240px;
             z-index: 1000;
         }
-        .dropdown div {
+        .dropdown1 div {
             padding: 8px;
             cursor: pointer;
         }
-        .dropdown div:hover {
+        .dropdown1 div:hover {
             background-color: #f0f0f0;
         }
     </style>
@@ -255,6 +247,30 @@ pageEncoding="UTF-8"%>
 		
         <div class="container">
           <div class="page-inner">
+          
+          
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">출고관리</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <i class="icon-home"></i>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                 출고관리
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                 출고요청
+                </li>
+              </ul>
+            </div>
+          
+          
 
 <main>
 
@@ -278,13 +294,12 @@ pageEncoding="UTF-8"%>
                      style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 승인자
             </label>
             <div class="underline-container">
-                <select id="shp_supervisor_id" name="shp_supervisor_id" required="required">
+                <select id="shp_supervisor_id" name="shp_supervisor_id" required="required" style= "height:30px;" >
                     <option value="">선택하세요</option>
                     <c:forEach var="r" items="${SsList }">
                         <option value="${r.member_id}"> ${r.member_name} / ${r.department_name} / ${r.common_status} / ${r.member_tel }</option>
                     </c:forEach>
                 </select>
-                <div class="custom-underline"></div>
             </div>
         </div>
 
@@ -294,7 +309,19 @@ pageEncoding="UTF-8"%>
                 <input type="text" id="cord_number" placeholder="발주 관리 번호 입력" required onfocus="showCorderList()" oninput="fetchCorderData()" name="cord_number">
                 <button type="button" onclick="submitCorderNumber()">조회</button>
             </div>
-            <div class="dropdown" id="corderDropdown"></div>
+            <div class="dropdown1" id="corderDropdown"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="wh_number">창고 번호</label>
+            <select id="wh_number" name="wh_number" required="required" max="prod_qty" style= "height:42px;" >
+                <option value="">창고를 선택하세요</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="shp_quantity">출고 수량</label>
+            <input type="number" id="shp_quantity" required name="shp_quantity" >
         </div>
 
         <div class="form-group">
@@ -318,11 +345,6 @@ pageEncoding="UTF-8"%>
         </div>
 
         <div class="form-group">
-            <label for="shp_quantity">출고 수량</label>
-            <input type="number" id="shp_quantity" required name="shp_quantity" >
-        </div>
-
-        <div class="form-group">
             <label for="shp_price">가격(단가)</label>
             <input type="text" id="shp_price" required name="shp_price">
         </div>
@@ -338,23 +360,23 @@ pageEncoding="UTF-8"%>
         </div>
 
         <div class="form-group">
-            <label for="wh_number">창고 번호</label>
-            <select id="wh_number" name="wh_number" required="required" max="prod_qty" >
-                <option value="">창고를 선택하세요</option>
-            </select>
-        </div>
-
-        <div class="form-group">
             <label for="shp_remarks">비고</label>
             <textarea id="shp_remarks" placeholder="전달할 내용..." required name="shp_remarks"></textarea>
         </div>
 
-            <button class="shpButton" type="submit">출고 요청</button>
+            <button class="button" type="submit">출고 요청</button>
 
     </div>
 </form>
 
+</main>
+</div>
+
 <jsp:include page="/resources/inc/footer.jsp" />
+</div>
+
+
+</div>
 
     
     

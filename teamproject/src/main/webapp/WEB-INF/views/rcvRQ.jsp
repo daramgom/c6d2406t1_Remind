@@ -267,21 +267,19 @@ pageEncoding="UTF-8"%>
               <h3 class="fw-bold mb-3">입고관리</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                  <a href="#">
                     <i class="icon-home"></i>
-                  </a>
                 </li>
                 <li class="separator">
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">입고관리</a>
+                 입고관리
                 </li>
                 <li class="separator">
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">입고요청</a>
+                 입고요청
                 </li>
               </ul>
             </div>
@@ -309,13 +307,13 @@ pageEncoding="UTF-8"%>
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고 승인자
                 </label>
                 
-                   <select id="rcv_supervisor_id" name="rcv_supervisor_id" required="required">
+                   <select id="rcv_supervisor_id" name="rcv_supervisor_id" required="required" style="height:30px;">
 			<option value="" >선택하세요</option>
 			<c:forEach var="r" items="${RsList }">
 				<option value="${r.member_id}"> ${r.member_name} / ${r.department_name} / ${r.common_status} / ${r.member_tel }</option>
 			</c:forEach>
 		   </select>
-                    <div class="custom-underline"></div>
+                 
                
             </div>
             
@@ -353,6 +351,11 @@ pageEncoding="UTF-8"%>
 			</div>
 
             <div class="form-group">
+                <label for="RCV_QUANTITY">입고 수량</label>
+                <input type="number" id="rcv_quantity" required name="rcv_quantity">
+            </div>
+
+            <div class="form-group">
                 <label for="PROD_ID">제품 식별코드</label>
                 <input type="text" id="prod_id" placeholder="제품식별코드를 입력" required name="prod_id">
             </div>
@@ -370,11 +373,6 @@ pageEncoding="UTF-8"%>
             <div class="form-group">
                 <label for="COMPANY_CODE">거래처</label>
                 <input type="text" id="company_code" required name="company_code">
-            </div>
-
-            <div class="form-group">
-                <label for="RCV_QUANTITY">입고 수량</label>
-                <input type="number" id="rcv_quantity" required name="rcv_quantity">
             </div>
             
             <div class="form-group">

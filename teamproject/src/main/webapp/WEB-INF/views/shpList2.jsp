@@ -419,6 +419,37 @@ button:hover {
 
 			<div class="container">
 				<div class="page-inner">
+				
+				
+				          
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">출고관리</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                    <i class="icon-home"></i>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                 출고관리
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                 출고 처리 대기 목록
+                </li>
+              </ul>
+            </div>
+				
+
+				
+				
+				
+				
+				
+				
 
 <!-- 출고 요청 목록 -->
 <!-- 출고 요청 목록 -->
@@ -579,6 +610,10 @@ button:hover {
         </div>
     </form>
 </div>
+</tbody>
+</div>
+</div>
+
 
 
 	<!-- Footer -->

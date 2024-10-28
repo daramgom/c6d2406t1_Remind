@@ -325,9 +325,7 @@ public class ShpController {
         return "cordList2"; // 수정된 JSP 파일 이름
     }
     
-    
-    
-    
+
 
 }
     

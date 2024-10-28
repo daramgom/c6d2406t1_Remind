@@ -158,10 +158,10 @@ WebFont.load({
     <div class="wrapper">
     
     	<!-- Header -->
-		<jsp:include page="/resources/inc/header.jsp" />
+		<jsp:include page="/resources/inc/companyHeader.jsp" />
 	
 		<!-- Sidebar -->
-		<jsp:include page="/resources/inc/sidebar.jsp" />
+		<jsp:include page="/resources/inc/companySidebar.jsp" />
     
     	<div class="container">
         	<div class="page-inner">
@@ -237,7 +237,7 @@ WebFont.load({
 		<textarea class="form-control" id="cord_text" name="cord_text"></textarea>
 	</div>
 </div>
-        <button type="submit" onclick="submitForm();" class="btn btn-success">발주 요청</button>
+        <button type="submit" onclick="submitForm();" class="btn btn-secondary">발주 요청</button>
         <button type="reset" class="btn btn-danger">리셋</button>
         </form>
         
@@ -246,7 +246,7 @@ WebFont.load({
 	    </div>
 	    
     <!-- Footer -->
-	<jsp:include page="/resources/inc/footer.jsp" />
+	<jsp:include page="/resources/inc/companyFooter.jsp" />
 	
 </div>
 

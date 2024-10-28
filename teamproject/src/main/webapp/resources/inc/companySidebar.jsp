@@ -6,7 +6,7 @@
 	<div class="sidebar-logo">
 		<!-- Logo Header -->
 		<div class="logo-header" data-background-color="light">
-			<a href="#" class="logo"> <img
+			<a href="/cmain" class="logo"> <img
 				src="/resources/img/kaiadmin/logo_light.png" alt="navbar brand"
 				class="navbar-brand" height="30"
 				style="width: 200px;" />
@@ -28,7 +28,7 @@
 	<div class="sidebar-wrapper scrollbar scrollbar-inner">
 		<div class="sidebar-content">
 			<ul class="nav nav-secondary">
-				<li class="nav-item active"><a href="#" aria-expanded="false">
+				<li class="nav-item active"><a href="/cmain" aria-expanded="false">
 				<i class="fas fa-home"></i>
 						<p>환영합니다 ${sessionScope.name }님!</p>
 				</a>
@@ -37,17 +37,17 @@
 						<i class="fa fa-ellipsis-h"></i>
 				</span>
 					<h4 class="text-section">재고 관리 시스템 메뉴</h4></li>
-				<li class="nav-item"><a href="#" id="comOrdMenu"> 
+				<li class="nav-item"><a href="/order-insert02" id="comOrdMenu"> 
 						<i class="fas fa-shipping-fast"></i>
 						<p>발주 요청</p>
 				</a>
 				</li>
-				<li class="nav-item"><a href="#" id="comOrdMenu2">
+				<li class="nav-item"><a href="/order-list03" id="comOrdMenu2">
 						<i class="fas fa-clipboard-list"></i>
 						<p>발주 요청 목록</p>
 				</a>
 				</li>
-				<li class="nav-item"><a href="#" id="comShpMenu">
+				<li class="nav-item"><a href="/order-list02" id="comShpMenu">
 						<i class="fas fa-clipboard-check"></i>
 						<p>출고 수락</p>
 				</a>

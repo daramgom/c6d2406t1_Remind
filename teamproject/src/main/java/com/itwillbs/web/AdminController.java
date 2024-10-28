@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -401,6 +402,33 @@ public class AdminController {
 		}
 	 
 	 
+	 	@RequestMapping(value ="/deleteCompanyMember" , method=RequestMethod.POST)
+	 	public ResponseEntity<Map<String, String>> deleteCompanyMember(@RequestBody MemberVO vo){
+	 		response.clear();
+			 
+			 try {
+				 
+				 int result = mService.deleteCompanyMember(vo);
+				 
+				 if (result == 0) {
+					 // 중복된 이메일이 있을 경우
+					 response.put("message", "삭제중 오류가 발생했습니다.");
+					 response.put("result", "false");
+				 } else {
+					 // 사용 가능한 이메일인 경우
+					 response.put("result", "true");
+					 response.put("message", "거래처 아이디 삭제를 했습니다.!");
+				 }
+				 return ResponseEntity.ok(response);
+			 } catch (Exception e) {
+				 // 예외 처리
+				 response.put("message", "업데이트 중 오류가 발생했습니다.");
+				 response.put("result", "false");
+				 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+						 .body(response);
+			 }
+	 	}
+	 	
 	 
 	 
 	 

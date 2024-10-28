@@ -86,5 +86,7 @@ public interface MemberDAO {
 	
 	public int UpdatePwMember(MemberVO vo); 
 	
+	public int deleteCompanyMember(MemberVO vo); 
+	
 	
 }

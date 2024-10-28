@@ -459,7 +459,7 @@ button:hover {
         <label for="status">출고 상태:</label>
         <select id="status" name="shp_status">
             <option value="">모두</option>
-            <option value="01" selected="selected">출고 요청</option>
+            <option value="01">출고 요청</option>
             <option value="02">출고 완료</option>
             <option value="03">출고 반려</option>
             <option value="04">출고 삭제</option>
@@ -532,7 +532,7 @@ button:hover {
 			<div class="underline-container">
 			<input type="text" id="shpManagerId"
 			class="underline-input" placeholder="홍길동" required
-			name="shpManagerId">
+			name="shpManagerId" readonly="readonly">
 			<div class="custom-underline"></div>
 			</div>
             </div>
@@ -543,7 +543,7 @@ button:hover {
 		        출고 승인자
 		    </label>
 		    <div class="underline-container">
-		        <input type="text" id="shpSupervisorId" class="underline-input" placeholder="홍길동" required name="shpSupervisorId">
+		        <input type="text" id="shpSupervisorId" class="underline-input" placeholder="홍길동" required name="shpSupervisorId" readonly="readonly">
 		        <div class="custom-underline"></div>
 		    </div>
 		   </div>
@@ -552,34 +552,34 @@ button:hover {
 		   
             <div class="form-group">
                 <label for="cordNumber">거래처 발주 관리번호</label>
-                <input type="text" id="cordNumber" required name="cordNumber">
+                <input type="text" id="cordNumber" required name="cordNumber" readonly="readonly">
             </div>
             <div class="form-group">
                 <label for="shpNumber">출고 관리번호</label>
-                <input type="text" id="shpNumber" required name="shpNumber">
+                <input type="text" id="shpNumber" required name="shpNumber" readonly="readonly">
             </div>
             <div class="form-group">
                 <label for="prodId">제품 식별코드</label>
-                <input type="text" id="prodId" required name="prodId">
+                <input type="text" id="prodId" required name="prodId" readonly="readonly">
             </div>
             <div class="form-group">
                 <label for="prodName">제품명</label>
-                <input type="text" id="prodName" required name="prodName">
+                <input type="text" id="prodName" required name="prodName" readonly="readonly">
             </div>
             
 			<div class="form-group">
 				<label for="companyCode">거래처</label> <input type="text"
-				id="companyCode" required name="companyCode">
+				id="companyCode" required name="companyCode" readonly="readonly">
 			</div>
             
             <div class="form-group">
                 <label for="shpQuantity">출고 수량</label>
-                <input type="number" id="shpQuantity" required name="shpQuantity">
+                <input type="number" id="shpQuantity" required name="shpQuantity" min="0">
             </div>
             
             <div class="form-group">
 			<label for="whNumber">창고 번호</label>
-			 <input type="number" id="whNumber" required name="whNumber">
+			 <input type="number" id="whNumber" required name="whNumber" readonly="readonly">
 			</div>
             
             <div class="form-group">
@@ -597,10 +597,10 @@ button:hover {
             </div>
             <div class="button-group">
             
-              	<c:if test="${sessionScope.permission_id != '01'}">
+              	
                 <button type="button" onclick="saveShippingDetails()">출고 승인</button>
                 <button type="button" onclick="rejectShipping()">출고 반려</button>
-                </c:if>
+                
                 
                  
                 <button type="button" onclick="editShippingDetails()">출고 수정</button>

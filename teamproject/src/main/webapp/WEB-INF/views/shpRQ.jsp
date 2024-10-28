@@ -326,32 +326,33 @@ pageEncoding="UTF-8"%>
 
         <div class="form-group">
             <label for="prod_id">제품 식별코드</label>
-            <input type="text" id="prod_id" placeholder="제품 식별 코드를 입력" required name="prod_id">
+            <input type="text" id="prod_id" placeholder="제품 식별 코드를 입력" required name="prod_id" readonly="readonly">
         </div>
 
         <div class="form-group">
             <label for="prod_category">카테고리</label>
-            <input type="text" id="prod_category" required name="prod_category">
+            <input type="text" id="prod_category" required name="prod_category" readonly="readonly">
         </div>
 
         <div class="form-group">
             <label for="prod_name">품목명</label>
-            <input type="text" id="prod_name" required name="prod_name">
+            <input type="text" id="prod_name" required name="prod_name" readonly="readonly">
         </div>
 
         <div class="form-group">
             <label for="company_code">거래처</label>
-            <input type="text" id="company_code" required name="company_code">
+            <input type="text" id="company_code" required name="company_code" readonly="readonly">
         </div>
+	
+		  <div class="form-group">
+		    <label for="shp_price">가격(단가)</label>
+		    <input type="number" id="shp_price" required name="shp_price" min="0">
+		</div>
 
-        <div class="form-group">
-            <label for="shp_price">가격(단가)</label>
-            <input type="text" id="shp_price" required name="shp_price">
-        </div>
 
         <div class="form-group">
             <label for="cord_date">발주 날짜</label>
-            <input type="date" id="cord_date" required name="cord_date">
+            <input type="date" id="cord_date" required name="cord_date" readonly="readonly">
         </div>
 
         <div class="form-group">

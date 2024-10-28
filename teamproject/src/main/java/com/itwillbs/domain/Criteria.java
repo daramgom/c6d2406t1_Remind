@@ -8,6 +8,10 @@ public class Criteria {
 	private int page;		// 페이지정보
 	private int pageSize;	// 페이지크기
 	
+    // 검색 조건
+    private String searchType; // 검색 타입 (예: 이름, 이메일 등)
+    private String keyword;     // 검색 키워드
+	
 	private int totalCount;   // 총 회원 수
 	
 	// private int startPage // 디비에서 limit 조회시 사용되는 변수
@@ -62,8 +66,27 @@ public class Criteria {
         return totalCount;
     }
 	
-	  public void setTotalCount(int totalCount) {
-	        this.totalCount = totalCount;
-	    }
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
+    
+    public String getSearchType() {
+    	return searchType;
+    }
+    public String getKeyword() {
+    	return keyword;
+    }
+    
+    public void setSearchType(String searchType) {
+        this.searchType = searchType;
+    }
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+    
+    
+    
+    
+    
 	
 }

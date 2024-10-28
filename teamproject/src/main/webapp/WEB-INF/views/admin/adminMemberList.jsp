@@ -11,7 +11,7 @@
 	name="viewport" />
 <link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
 	type="image/x-icon" />
-
+<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
 
 <style>
 .btn-confirm {
@@ -91,7 +91,7 @@
 </head>
 <body>
 	<c:if
-		test="${sessionScope.id == null || sessionScope.permission_id != '03' || sessionScope.member_code != '01'}">
+		test="${sessionScope.id == null || sessionScope.permission_id != '03' || sessionScope.member_code != '1'}">
 		<c:redirect url="/main" />
 	</c:if>
 	
@@ -115,8 +115,11 @@
 				<div class="row">
 					<div class="col-md-12">
 						<div class="card w-100">
-							<div class="card-header">
+							<div class="card-header" style="display: flex; justify-content: space-between;align-items: center;">
 								<div class="card-title">회원목록</div>
+								<form action="adminMemberList" method="get"  id="searchForm">
+								    <input type="text" name="keyword" class="form-control form-control-sm" placeholder="이름 검색">
+								</form>
 							</div>
 
 							<div class="card-body d-flex flex-column">
@@ -175,29 +178,30 @@
 									</div>
 									<!-- 페이지 네비게이션 -->
 								</div>
-								<div style="display: flex;margin-right: 12px;justify-content: end;">
-									<!-- 페이지 네비게이션 -->
+								<div style="display: flex; margin-right: 12px; justify-content: end;">
+								    <!-- 페이지 네비게이션 -->
 								    <c:if test="${pageCount > 1}">
 								        <div class="pagination">
 								            <!-- 이전 페이지 링크 -->
 								            <c:if test="${currentPage > 1}">
-								                <a href="?page=${currentPage - 1}" style="padding: 0 10px; color:black; font-size: 18px; border-color: #ddd; background-color: var(--bs-pagination-disabled-bg); border-radius: 100px;">Previous</a>
-								            </c:if> 
+								                <a href="?page=${currentPage - 1}&keyword=${keyword}" style="padding: 0 10px; color:black; font-size: 18px; border-color: #ddd; background-color: var(--bs-pagination-disabled-bg); border-radius: 100px;">Previous</a>
+								            </c:if>
 								
 								            <!-- 페이지 번호 링크 -->
 								            <c:forEach var="i" begin="1" end="${pageCount}">
-								                <a href="?page=${i}" style="padding: 0 10px; color:black; font-size: 20px;">
+								                <a href="?page=${i}&keyword=${keyword}" style="padding: 0 10px; color:black; font-size: 20px;">
 								                    <span class="${currentPage == i ? 'currentpage' : ''}">${i}</span>
 								                </a>
 								            </c:forEach>
 								
 								            <!-- 다음 페이지 링크 -->
 								            <c:if test="${currentPage < pageCount}">
-								                <a href="?page=${currentPage + 1}" style="padding: 0 10px; color:black; font-size: 18px; border-color: #ddd; background-color: var(--bs-pagination-disabled-bg); border-radius: 100px;">Next</a>
+								                <a href="?page=${currentPage + 1}&keyword=${keyword}" style="padding: 0 10px; color:black; font-size: 18px; border-color: #ddd; background-color: var(--bs-pagination-disabled-bg); border-radius: 100px;">Next</a>
 								            </c:if>
 								        </div>
 								    </c:if>
 								</div>
+
 							</div>
 						</div>
 					</div>
@@ -268,42 +272,6 @@
 	</div>
 
 	<!--   Core JS Files   -->
-	<script src="/resources/js/core/jquery-3.7.1.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-		crossorigin="anonymous"></script>
-
-	<!-- jQuery Scrollbar -->
-	<script
-		src="/resources/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-
-	<!-- Chart JS -->
-	<script src="/resources/js/plugin/chart.js/chart.min.js"></script>
-
-	<!-- jQuery Sparkline -->
-	<script
-		src="/resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-
-	<!-- Chart Circle -->
-	<script src="/resources/js/plugin/chart-circle/circles.min.js"></script>
-
-	<!-- Datatables -->
-	<script src="/resources/js/plugin/datatables/datatables.min.js"></script>
-
-	<!-- Bootstrap Notify -->
-	<script
-		src="/resources/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-	<!-- jQuery Vector Maps -->
-	<script src="/resources/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-	<script src="/resources/js/plugin/jsvectormap/world.js"></script>
-
-	<!-- Sweet Alert -->
-	<script src="/resources/js/plugin/sweetalert/sweetalert.min.js"></script>
-
-	<!-- Kaiadmin JS -->
-	<script src="/resources/js/kaiadmin.min.js"></script>
 	<script>
       let GlobalRank;
       let GlobalDept;
@@ -632,6 +600,12 @@
           $("#detailsModal").css("display", "none");
           $("#editButton").css("display", "none");
           $("#deleteButton").css("display", "none");
+        });
+        $('input[name="keyword"]').on('keypress', function(event) {
+            if (event.which === 13) { // Enter 키 코드
+                event.preventDefault(); // 기본 동작 방지
+                $('#searchForm').submit(); // 폼 제출
+            }
         });
       });
     </script>

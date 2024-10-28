@@ -216,6 +216,7 @@ public class MemberDAOImpl implements MemberDAO {
 	    // 총 회원 수를 계산하기 위한 매개변수 준비
 	    Map<String, Object> countParams = new HashMap<>();
 	    countParams.put("member_id", member_id);
+	    countParams.put("keyword", cri.getKeyword()); // 검색 키워드 추가
 	    int totalCount = sqlSession.selectOne(NAMESPACE + ".getMemberListCount", countParams);
 	    
 	    // 총 회원 수를 Criteria에 설정 (페이지 수 계산을 위해)
@@ -226,7 +227,7 @@ public class MemberDAOImpl implements MemberDAO {
 	    params.put("member_id", member_id);
 	    params.put("startPage", cri.getStartPage());
 	    params.put("pageSize", cri.getPageSize());
-
+	    params.put("keyword", cri.getKeyword()); // 검색 키워드 추가
 	    return sqlSession.selectList(NAMESPACE + ".getMemberList", params);
 	}
 

@@ -155,7 +155,7 @@
 							<li><a class="subMenu" id="a17" href="/admin/signReq"> <span
 									class="sub-item">회원 가입 신청 목록</span>
 							</a></li>
-							<li><a class="subMenu" id="a17" href="/admin/adminMemberList">
+							<li><a class="subMenu" id="a18" href="/admin/adminMemberList">
 									<span class="sub-item">회원 목록</span>
 							</a></li>
 						</ul>

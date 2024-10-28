@@ -11,7 +11,7 @@
 	name="viewport" />
 <link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
 	type="image/x-icon" />
-
+<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
 <style>
 .btn-confirm {
 	padding: 0.65rem 1.4rem;
@@ -49,7 +49,6 @@ tr {
 	;
 
 * {
-	font-family: 'NanumSquare', sans-serif;
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -77,15 +76,11 @@ tr {
 <body>
 
 <c:if
-		test="${sessionScope.id == null || sessionScope.permission_id != '03'}">
+		test="${sessionScope.id == null || sessionScope.permission_id != '03' || sessionScope.member_code != '1'}">
 		<c:redirect url="/main" />
 	</c:if>
 	
 	
-	<c:if
-		test="${sessionScope.member_code != '01'}">
-		<c:redirect url="/main" />
-	</c:if>
 	
 	<div class="wrapper">
 		<!-- Header -->
@@ -111,7 +106,7 @@ tr {
 							<div class="card-header"
 								style="display: flex; justify-content: space-between;">
 								<div class="card-title">목록</div>
-								<c:if test="${ WaitingList != null}">
+								<c:if test="${pageCount > 1}">
 									<div style="margin-right: 1rem;">
 										<button id="approveBtn"
 											style="margin-right: 1rem; padding: 0.7rem 2rem; background: #5f41e4 ! IMPORTANT; border: none;"
@@ -138,7 +133,7 @@ tr {
 													<th class="col-md-2">가입일자</th>
 												</tr>
 
-												<c:if test="${ WaitingList != null}">
+												<c:if test="${ pageCount > 1}">
 													<c:forEach items="${WaitingList}" var="member">
 														<tr>
 															<td><input class="form-check-input"
@@ -192,9 +187,9 @@ tr {
 </c:if> </div>
 									</div>
 								</div>
-								<c:if test="${WaitingList == null}">
+								<c:if test="${pageCount < 1}">
 									<div style="margin: 20px auto;">
-										<h3>현재 승인 대기 중인 회원가입 요청이 없습니다.</h3>
+										<h3>승인 대기 중인 목록이 없습니다.</h3>
 									</div>
 								</c:if>
 							</div>
@@ -209,46 +204,7 @@ tr {
 		<!-- Footer -->
 			<jsp:include page="${pageContext.request.contextPath}/resources/inc/footer.jsp" />
 	</div>
-	<!--   Core JS Files   -->
-	<script src="/resources/js/core/jquery-3.7.1.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-		crossorigin="anonymous"></script>
-
-	<!-- jQuery Scrollbar -->
-	<script
-		src="/resources/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-
-	<!-- Chart JS -->
-	<script src="/resources/js/plugin/chart.js/chart.min.js"></script>
-
-	<!-- jQuery Sparkline -->
-	<script
-		src="/resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
-
-	<!-- Chart Circle -->
-	<script src="/resources/js/plugin/chart-circle/circles.min.js"></script>
-
-	<!-- Datatables -->
-	<script src="/resources/js/plugin/datatables/datatables.min.js"></script>
-
-	<!-- Bootstrap Notify -->
-	<script
-		src="/resources/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
-
-	<!-- jQuery Vector Maps -->
-	<script src="/resources/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-	<script src="/resources/js/plugin/jsvectormap/world.js"></script>
-
-	<!-- Sweet Alert -->
-	<script src="/resources/js/plugin/sweetalert/sweetalert.min.js"></script>
-
-	<!-- Kaiadmin JS -->
-	<script src="/resources/js/kaiadmin.min.js"></script>
 	<script>
-	
-      
 
       function showConfirmationAlert(message) {
         return new Promise((resolve, reject) => {

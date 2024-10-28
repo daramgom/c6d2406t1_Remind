@@ -34,31 +34,18 @@
 	color: #000; /* 취소 버튼 텍스트 색상 */
 }
 
-.userPermission {
-	position: absolute;
-    right: 17.1rem;
-    width: 70px;
-    height: 30px;
-    top: 0.7rem;
-}
-
 .edit-permission {
-	height: 24px;
+	
 	border: none;
 	background: transparent;
 	width: 31px;
 	font-size: 14px;
-	position: absolute;
-	right: 14.5rem;
-	top: 1rem;
+	position: relative;
 }
-
 .submit-Permission-btn {
 	display: none;
 	background: #6861ce;
-	position: absolute;
-	right: 9.6rem;
-	top: 0.7rem;
+	position: relative;
 	padding: .35rem 1.4rem;
 	border: #31ce36;
 	font-size: 1rem;
@@ -66,7 +53,15 @@
 	opacity: 1;
 	border-radius: 3px;
 	color: white;
+} 
+
+ .userPermission {
+	position: relative;
+    width: 70px;
+    height: 30px;
 }
+
+
 
 .submit-Permission-btn:hover, .submit-Permission-btn:focus {
 	opacity: .8;
@@ -126,7 +121,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<table class="col-md-12 table">
-											<tr>
+											<tr style="height: 30px;">
 												<th class="col-md-2">이름</th>
 												<th class="col-md-2">직급</th>
 												<th class="col-md-2">전화번호</th>
@@ -136,7 +131,7 @@
 												<th class="col-md-1"></th>
 											</tr>
 											<c:forEach items="${memberList}" var="member">
-												<tr style="position: relative;">
+												<tr style="position: relative;height: 63.9px; ">
 													<td>${member.member_name}</td>
 													<td>${member.employee_rank_value}</td>
 													<td>${member.member_tel}</td>

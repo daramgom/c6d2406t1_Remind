@@ -613,7 +613,7 @@ function renderButtons(cord_status) {
         buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">발주 완료</button>';
         // 세션 로그인 아이디 == 발주자만 가능
         if('${userId}' === cOrdManagerId){
-	        buttonContainer.innerHTML += '<button id="updateBtnC" class="btn btn-success">수정</button>';
+	        buttonContainer.innerHTML += '<button id="updateBtnC" class="btn btn-secondary">수정</button>';
 	        buttonContainer.innerHTML += '<button id="deleteBtnC" class="btn btn-danger">삭제</button>';
         }
         

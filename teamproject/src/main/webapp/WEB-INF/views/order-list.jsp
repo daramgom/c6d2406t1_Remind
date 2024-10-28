@@ -706,7 +706,7 @@ function renderButtons(ord_status) {
         }
         // 승인자만 가능
         if('${userId}' === ordSupervisorId){
-	        buttonContainer.innerHTML += '<button id="updateBtn03" class="btn btn-success">발주 처리</button>';
+	        buttonContainer.innerHTML += '<button id="updateBtn03" class="btn btn-secondary">발주 처리</button>';
 	        buttonContainer.innerHTML += '<button id="updateBtn02" class="btn btn-danger">발주 반려</button>';
         }
      	// input태그 select 태그 활성화
@@ -724,7 +724,7 @@ function renderButtons(ord_status) {
         buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">반려</button>';
      	// 세션 로그인 아이디 == 발주자만 가능
         if('${userId}' === ordManagerId){
-	        buttonContainer.innerHTML += '<button id="updateBtn01" class="btn btn-success">재요청</button>';
+	        buttonContainer.innerHTML += '<button id="updateBtn01" class="btn btn-secondary">재요청</button>';
 	        buttonContainer.innerHTML += '<button id="deleteBtn01" class="btn btn-danger">삭제</button>';
         }
      	// input태그 select 태그 활성화
@@ -740,7 +740,7 @@ function renderButtons(ord_status) {
     	// 발주 상태 안내
         buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">결재</button>';
         if('${userMemberCode}' !== '1'){
-        	buttonContainer.innerHTML += '<button id="updateBtn05" class="btn btn-success">거래처 처리</button>'
+        	buttonContainer.innerHTML += '<button id="updateBtn05" class="btn btn-secondary">거래처 처리</button>'
        		buttonContainer.innerHTML += '<button id="updateBtn04" class="btn btn-danger">거래처 반려</button>'
         }
         // input태그 select 태그 비활성화
@@ -769,7 +769,7 @@ function renderButtons(ord_status) {
     	// 발주 상태 안내
         buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">완료</button>';
         // 발주관리번호를 가지고 입고요청으로 이동
-        buttonContainer.innerHTML += `<button id="toRcvRq" class="btn btn-success">입고요청으로</button>`;
+        buttonContainer.innerHTML += `<button id="toRcvRq" class="btn btn-secondary">입고요청으로</button>`;
      	// input태그 select 태그 비활성화
         prod_id.disabled = true;
         modalOrdPrice.readOnly = true;

@@ -282,7 +282,7 @@ pageEncoding="UTF-8"%>
 		<textarea class="form-control" id="ord_text" name="ord_text"></textarea>
 	</div>
 </div>
-        <button type="submit" onclick="" class="btn btn-success">발주 요청</button>
+        <button type="submit" onclick="" class="btn btn-secondary">발주 요청</button>
         <button type="reset" class="btn btn-danger">리셋</button>
         </form>
         

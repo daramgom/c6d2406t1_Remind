@@ -407,41 +407,12 @@ $(document).ready(function () {
 	
 	// select 요소 클릭 시 데이터 가져오기
 	    	
-	    	
-	// swal 처리
-	if ("${trans_message}" != "") {
-		swal({
-			title: "성공!",
-			text: "${trans_message}",
-			icon: "success",
-			buttons: {
-				confirm: {
-					text: "확인",
-					className: "btn btn-secondary",
-				}
-			}
-		});
-	} else if ("${trans_error}" != "") {
-		swal({
-			title: "오류!",
-			text: "${trans_error}",
-			icon: "error",
-			buttons: {
-				confirm: {
-					text: "확인",
-					className: "btn btn-secondary",
-				}
-			}
-		});
-	}
-	// swal 처리
-	
 	
 	// 제출
-	$('#transferbutton').on('click',function(e){
+	$('#transferbutton').on('click', function(e) {
 		e.preventDefault();
 		$('#transferbutton').prop('disabled', true);
-		
+	
 		swal({
 			title: "알림!",
 			text: "재고 이동 신청하시겠습니까?",
@@ -458,12 +429,52 @@ $(document).ready(function () {
 				},
 			},
 		}).then(function(confirm) {
-			if(confirm) {
+			if (confirm) {
+				// 여기에서 폼을 제출하기 전에 비동기 작업을 수행할 수 있습니다.
+				$('#transferbutton').prop('disabled', true);
+				
+				// 예시: AJAX 요청을 통해 서버와 통신
+				$.ajax({
+					url: '/prod/transfer',
+					type: 'POST',
+					data: $('#transferForm').serialize(),
+					success: function(response) {
+						swal({
+							title: "성공!",
+							text: "재고 이동 신청이 완료되었습니다.",
+							icon: "success",
+							buttons: {
+								confirm: {
+									text: "확인",
+									className: "btn btn-secondary",
+								}
+							}
+						}).then(function(confirm){
+							$('#transferForm').off('submit');
+							$('#transferbutton').prop('disabled', false);
+							location.reload();
+						});
+						
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						// 오류 처리
+						swal({
+							title: "오류!",
+							text: "재고 이동 신청에 실패했습니다. 다시 시도해 주세요.",
+							icon: "error",
+							buttons: {
+								confirm: {
+									text: "확인",
+									className: "btn btn-secondary",
+								}
+							}
+						});
+						$('#transferbutton').prop('disabled', false);
+					}
+				});
+			} else {
 				$('#transferbutton').prop('disabled', false);
-				$('#transferForm').submit();
-			}	
-				$('#transferForm').off('submit');
-				$('#transferbutton').prop('disabled', false);
+			}
 		});
 	});
 	// 제출

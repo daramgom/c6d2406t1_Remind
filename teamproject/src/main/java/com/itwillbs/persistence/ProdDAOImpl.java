@@ -111,8 +111,13 @@ public class ProdDAOImpl implements ProdDAO {
 		return sqlSession.selectList(NAMESPACE + ".transferSelect3");
 	}
 	
-	
-	
+	// 재고이동 검증
+	@Override
+	public int transferVerify(ProdVO vo) {
+		logger.debug("( •̀ ω •́ )✧ DAO : transferVerify(ProdVO vo) 실행");
+		return sqlSession.selectOne(NAMESPACE + ".transferVerify", vo);
+	}
+
 	// 재고이동내역리스트
 	@Override
 	public List<ProdVO> moveStockList(ProdVO vo) {

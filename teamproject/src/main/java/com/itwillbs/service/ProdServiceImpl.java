@@ -100,12 +100,26 @@ public class ProdServiceImpl implements ProdService {
 	@Override
 	public int transferProd(ProdVO vo) {
 		logger.debug("( •̀ ω •́ )✧ Service : transferProd(ProdVO vo) 실행 ");
-		if(vo.getProd_qty() == vo.getCurrent_qty() && vo.getCurrent_qty() >= vo.getStock_qty()) {
-			if(vo.getStock_qty() >= 0) {
-				logger.debug("( •̀ ω •́ )✧ Service : 수량 == 현재수량 && 수량 >= && 이동수량 >= 0");
-				return pdao.transferProd(vo);
-			} return 0;
-		} return 0;
+		if (vo.getCurrent_qty() < 0 || vo.getStock_qty() < 0) {
+			logger.debug("수량이 유효하지 않습니다.");
+			return 0;
+		}
+
+		if (vo.getProd_qty() != vo.getCurrent_qty()) {
+			logger.debug("제품 수량이 현재 수량과 일치하지 않습니다.");
+			return 0;
+		}
+
+		if (vo.getCurrent_qty() < vo.getStock_qty()) {
+			logger.debug("현재 수량이 재고 수량보다 적습니다.");
+			return 0;
+		}
+
+		if (vo.getStock_qty() <= pdao.transferVerify(vo)) {
+			return pdao.transferProd(vo);
+		}
+
+		return 0; // 조건을 만족하지 않음
 	}
 
 	// 재고이동선택

@@ -39,10 +39,16 @@ public interface ProdDAO {
 	public List<ProdVO> transferSelect();
 	public List<ProdVO> transferSelect2(ProdVO vo);
 	public List<ProdVO> transferSelect3();
+	
+	// 재고이동 검증
+	public int transferVerify(ProdVO vo);
+	
 	public List<ProdVO> moveStockList(ProdVO vo);
 	public int moveStock(List<ProdVO> moveList);
 	public int moveStockCancel(List<ProdVO> moveList);
 	public List<ProdVO> moveStockAlert();
+	
+	
 	
 	// 재고알람설정
 	public int setStock(ProdVO vo);

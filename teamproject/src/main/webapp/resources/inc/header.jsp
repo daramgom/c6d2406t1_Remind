@@ -66,7 +66,7 @@
 						</span>
 					</a>
 						<ul id="userInfo" class="dropdown-menu dropdown-user animated fadeIn"
-							style="width: 300px">
+							style="width: 360px">
 							<div class="dropdown-user-scroll scrollbar-outer">
 								<li>
 									<div class="user-box">

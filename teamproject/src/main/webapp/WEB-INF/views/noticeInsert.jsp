@@ -66,7 +66,7 @@
                                                 <textarea class="form-control" id="content" name="content" rows="5" placeholder="공지사항 내용" required></textarea>
                                             </div>
                                             <div class="form-group">
-										    <label for="pinned">고정하기:</label>
+										    <label for="pinned">중요공지:</label>
 										    <input type="checkbox" id="pinned" name="pinned">
 											</div>
                                             

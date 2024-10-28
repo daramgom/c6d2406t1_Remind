@@ -38,8 +38,6 @@
 		overflow-x: hidden;
 	}
     
-	
-	
 	.modal-footer i {
 		font-size: 1.2rem;
 		line-height: 2;
@@ -114,77 +112,25 @@
                                                 <th>제목</th>
                                                 <th>작성일자</th>
                                                 <th>작성자</th>
+                                                <th style="display:none;">Pinned</th>
                                             </tr>
                                         </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <th>번호</th>
-                                                <th>제목</th>
-                                                <th>작성일자</th>
-                                                <th>작성자</th>
-                                            </tr>
-                                        </tfoot>
                                         <tbody>
-                                            <c:choose>
-                                                <c:when test="${not empty noticeList}">
-                                                    <c:forEach var="n" items="${noticeList}">
-                                                        <c:choose>
-                                                            <c:when test="${n.pinned}">
-                                                                <tr class="pinned">
-                                                                    <td>${n.no}</td>
-                                                                    <td>
-                                                                        <a href="${pageContext.request.contextPath}/notice/view?no=${n.no}">
-                                                                            ${n.title}
-                                                                        </a>
-                                                                    </td>
-                                                                    <td>
-                                                                        <c:choose>
-                                                                            <c:when test="${not empty n.regdate}">
-                                                                                <fmt:formatDate value="${n.regdate}" pattern="yyyy.MM.dd" />
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                -
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </td>
-                                                                    <td>${n.writer}</td>
-                                                                </tr>
-                                                            </c:when>
-                                                        </c:choose>
-                                                    </c:forEach>
-
-                                                    <c:forEach var="n" items="${noticeList}">
-                                                        <c:choose> 
-                                                            <c:when test="${!n.pinned}">
-                                                                <tr>
-                                                                    <td>${n.no}</td>
-                                                                    <td>
-                                                                        <a href="${pageContext.request.contextPath}/notice/view?no=${n.no}">
-                                                                            ${n.title}
-                                                                        </a>
-                                                                    </td>
-                                                                    <td>
-                                                                        <c:choose>
-                                                                            <c:when test="${not empty n.regdate}">
-                                                                                <fmt:formatDate value="${n.regdate}" pattern="yyyy.MM.dd" />
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                -
-                                                                            </c:otherwise>
-                                                                        </c:choose>
-                                                                    </td>
-                                                                    <td>${n.writer}</td> 
-                                                                </tr>
-                                                            </c:when>
-                                                        </c:choose>
-                                                    </c:forEach>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <tr>
-                                                        <td colspan="4" class="text-center">등록된 공지사항이 없습니다.</td>
-                                                    </tr>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <c:forEach var="n" items="${noticeList}">
+                                                <tr class="${n.pinned ? 'pinned' : ''}">
+                                                    <td>${n.no}</td>
+                                                    <td>
+                                                        <a href="${pageContext.request.contextPath}/notice/view?no=${n.no}">
+                                                            ${n.title}
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <fmt:formatDate value="${n.regdate}" pattern="yyyy.MM.dd" />
+                                                    </td>
+                                                    <td>${n.writer}</td>
+                                                    <td style="display:none;">${n.pinned ? 0 : 1}</td>
+                                                </tr>
+                                            </c:forEach>
                                         </tbody>
                                     </table>
                                 </div>
@@ -199,22 +145,20 @@
         <jsp:include page="/resources/inc/footer.jsp" />
     </div>
 
-   
-
     <script>
         $(document).ready(function() {
-            // 데이터테이블 초기화
             $("#multi-filter-select").DataTable({
-                pageLength: 10, // 기본 페이지 길이
-                lengthMenu: [3, 10, 20, 50, 100, 500], // 페이지 길이 옵션
-                searching: true, // 검색 기능 활성화
-                ordering: true, // 정렬 기능 활성화
-                order: [], // 기본 정렬 초기화
+                pageLength: 10,
+                lengthMenu: [3, 10, 20, 50, 100, 500],
+                searching: true,
+                ordering: true,
+                order: [[4, 'asc'], [0, 'desc']], // Pinned 열을 먼저 오름차순 정렬, 그 다음 번호 열을 내림차순 정렬
                 columns: [
                     { data: 'no' },
                     { data: 'title' },
                     { data: 'regdate' },
-                    { data: 'writer' }
+                    { data: 'writer' },
+                    { data: 'pinned', visible: false }
                 ],
                 language: {
                     emptyTable: "등록된 공지사항이 없습니다."

@@ -186,6 +186,29 @@ public class AdminController {
 	}
 
 
+	@RequestMapping(value = "/companySignUpModal", method = RequestMethod.GET)
+	public void companyList(Model model) {
+		 List<CompanyVO> result = cService.getCompanyList();
+		 model.addAttribute("companyList", result );
+	}
+	
+	
+
+	@RequestMapping(value = "/companySignUpModal", method = RequestMethod.POST)
+	public ResponseEntity<CompanyVO> companySignUpGET(@RequestBody CompanyVO company_code) {
+	    if (company_code == null || company_code.getCompany_code() == null) {
+	        return ResponseEntity.badRequest().body(null); // 400 Bad Request
+	    }
+
+	    CompanyVO result = cService.getCompany(company_code.getCompany_code()); 
+	    
+	    if (result == null) {
+	        return ResponseEntity.notFound().build(); // 404 Not Found
+	    }
+
+	    return ResponseEntity.ok(result); // 200 OK
+	}
+
 	@RequestMapping(value = "/checkUserEamil", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, String>>  checkUserEmail(@RequestBody MemberVO email) {
 		response.clear();
@@ -268,48 +291,49 @@ public class AdminController {
 
 	
 	 @PostMapping("/updatePermission")
-     public ResponseEntity<String> updatePermission(@RequestBody MemberVO vo) {
-	 
-	 	logger.debug("vo : " + vo.getPermission_id());
-	 
-	 
-    	int result = mService.memberPermissionUpdate(vo);
-    	
-    	
-    	
-    	if(result == 0) {
-    		return ResponseEntity.ok("{\"success\": false }");
-    	}
-    	
-    	return ResponseEntity.ok("{\"success\": true }");
-    	
-     }
+	    public ResponseEntity<String> updatePermission(@RequestBody MemberVO vo) {
+		 
+		 	logger.debug("vo : " + vo.getPermission_id());
+		 
+		 
+	    	int result = mService.memberPermissionUpdate(vo);
+	    	
+	    	
+	    	
+	    	if(result == 0) {
+	    		return ResponseEntity.ok("{\"success\": false }");
+	    	}
+	    	
+	    	return ResponseEntity.ok("{\"success\": true }");
+	    	
+	    }
 	 
 	 @RequestMapping(value = "/companyMemberCheck", method = RequestMethod.POST)
-	 public ResponseEntity<Map<String, String>>  companyMemberCheck(@RequestBody CompanyVO vo) {
-	 	 response.clear();
+		public ResponseEntity<Map<String, String>>  companyMemberCheck(@RequestBody CompanyVO vo) {
+			response.clear();
 
-	     try {
-	         MemberVO result = mService.memberCodeCheck(vo);
-	         if (result != null) {
-	            // 중복된 이메일이 있을 경우
-	        	response.put("message", "이미 회원가입한 거래처 입니다.");
-	        	response.put("result", "false");
-	            return ResponseEntity.ok(response);
-	         } else {
-	            // 사용 가능한 이메일인 경우
-	        	response.put("result", "true");
-	        	response.put("message", "회원가입이 가능한 거래처 입니다!");
-	        	return ResponseEntity.ok(response);
-	         }
-	        } catch (Exception e) {
-	        // 예외 처리
+		    try {
+		        MemberVO result = mService.memberCodeCheck(vo);
+
+		        if (result != null) {
+		            // 중복된 이메일이 있을 경우
+		        	response.put("message", "이미 회원가입한 거래처 입니다.");
+		        	response.put("result", "false");
+		            return ResponseEntity.ok(response);
+		        } else {
+		            // 사용 가능한 이메일인 경우
+		        	response.put("result", "true");
+		        	response.put("message", "회원가입이 가능한 거래처 입니다!");
+		        	return ResponseEntity.ok(response);
+		        }
+		    } catch (Exception e) {
+		        // 예외 처리
 		        response.put("message", "업데이트 중 오류가 발생했습니다.");
 		        response.put("result", "false");
 		        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-	                .body(response);
-	    }
-	 }
+		                .body(response);
+		    }
+		}
 	 
 	 
 	 @RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
@@ -317,8 +341,9 @@ public class AdminController {
 		 response.clear();
 		 
 		 try {
+			 
 			 MemberVO result = mService.memberCodeCheck(vo);
-			 int resultInt = eService.sendIdPwCode(result); 
+			int resultInt = eService.sendIdPwCode(result); 
 			 
 			 if (resultInt == 0) {
 				 // 중복된 이메일이 있을 경우
@@ -329,8 +354,8 @@ public class AdminController {
 				 response.put("result", "true");
 				 response.put("message", "변경된 비밀번호를 전송하였습니다.!");
 			 }
-			   return ResponseEntity.ok(response);
-		 }   catch (Exception e) {
+			 return ResponseEntity.ok(response);
+		 } catch (Exception e) {
 			 // 예외 처리
 			 response.put("message", "업데이트 중 오류가 발생했습니다.");
 			 response.put("result", "false");

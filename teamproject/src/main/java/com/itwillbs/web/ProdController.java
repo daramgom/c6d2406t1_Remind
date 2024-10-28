@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -152,16 +153,22 @@ public class ProdController {
 	
 	// 재고 이동 신청(post)
 	@PostMapping(value = "/transfer")
-	public String transferProdPost(ProdVO vo, RedirectAttributes rttr, HttpServletRequest req) {
+	@ResponseBody
+	public ResponseEntity<Map<String, String>> transferProdPost(ProdVO vo, HttpServletRequest req) {
 		logger.debug("( •̀ ω •́ )✧ ProdController : transferProdPost(ProdVO vo, HttpServletRequest req) 실행 ");
-		vo.setProd_reguser((String)req.getSession().getAttribute("id"));
+		vo.setProd_reguser((String) req.getSession().getAttribute("id"));
 		int result = pService.transferProd(vo);
-		if(result > 0) {
-			rttr.addFlashAttribute("trans_message", "제품 이동 신청되었습니다.");
+
+		Map<String, String> response = new HashMap<>();
+		if (result > 0) {
+			response.put("status", "success");
+			response.put("message", "제품 이동 신청되었습니다.");
+			return ResponseEntity.ok(response);
 		} else {
-			rttr.addFlashAttribute("trans_error", "제품 이동 신청이 실패했습니다!");
+			response.put("status", "error");
+			response.put("message", "제품 이동 신청이 실패했습니다!");
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 		}
-		return "redirect:/prod/transfer";
 	}
 	
 	// 재고 이동 선택(post)

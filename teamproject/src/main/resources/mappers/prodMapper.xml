@@ -89,6 +89,13 @@
 	insert into move_stock (prod_id, move_fromwh, move_fromwh_qty, move_towh, move_towh_qty, move_qty, move_reguser, move_reason) 
 	 values (#{prod_id}, #{wh_number}, #{current_qty}, #{stock_wh}, #{current_qty2}, #{stock_qty}, #{prod_reguser}, #{move_reason})
 </insert>
+
+<select id="transferVerify">
+	select prod_qty 
+	 from stock 
+	  where prod_id = #{prod_id} and wh_number = #{wh_number}
+</select>
+
 <update id="moveStock">
 	update stock  
 	 set prod_qty = prod_qty - #{stock_qty}  

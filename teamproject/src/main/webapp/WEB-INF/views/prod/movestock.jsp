@@ -408,7 +408,7 @@ $(document).ready(function () {
 							confirm:{
 								text: "확인",
 								className: 'btn btn-secondary'
-								}
+							}
 						}
 					});
 				}

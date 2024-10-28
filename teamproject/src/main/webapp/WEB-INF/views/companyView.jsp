@@ -655,14 +655,6 @@
          const phone = $("#phone").val().trim();
          const code = $("#companyCode").val().trim();
          
-         console.log("userid:", userid);
-         console.log("name:", name);
-         console.log("password:", password);
-         console.log("email:", email);
-         console.log("phone:", phone);
-         console.log("code:", code);
-         console.log("isUseridAvailable:", isUseridAvailable);
-         console.log("isUseridAvailable:", isUseridAvailable);
 
 
          // 모든 입력값이 비어있지 않고, 아이디 및 이메일 중복 검사를 통과한 경우에만 회원가입 버튼 활성화
@@ -694,7 +686,6 @@
          const email = $("#email").val().trim();
          const phone = $("#phone").val().trim();
          const code = $("#companyCode").val().trim();
-         const company_status = $("#company_status").val().trim();
 
        // 회원가입 데이터 객체 생성
        const signupData = {
@@ -704,7 +695,6 @@
          member_email: email,
          member_tel: phone,
          member_code : code,
-         company_status : company_status,
        };
 
        // AJAX 요청으로 회원가입 처리

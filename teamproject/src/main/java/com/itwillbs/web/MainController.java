@@ -19,12 +19,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.CordersVO;
 import com.itwillbs.domain.MainVO;
+import com.itwillbs.domain.ProdVO;
 import com.itwillbs.service.MainService;
+import com.itwillbs.service.ProdService;
 
 @Controller
 @RequestMapping(value = "/*")
 public class MainController {
 	private MainService mService;
+	
+	@Inject
+	private ProdService pService;
 	
 	public MainController(MainService mService) {
 		this.mService = mService;
@@ -54,8 +59,9 @@ public class MainController {
     @GetMapping("/cmain")
     public String cmainGET(Model model) {
     	logger.debug("( •̀ ω •́ )✧ MainController : /cmain -> cmainGET(Model model)실행");
-    	
-    	
+    	List<ProdVO> cmainListProd = pService.cmainListProd();
+    	logger.debug("( •̀ ω •́ )✧ MainController : cmainListProd : "+cmainListProd.size());
+    	model.addAttribute("cmainListProd",cmainListProd);
     	
         return "cmain";
     }

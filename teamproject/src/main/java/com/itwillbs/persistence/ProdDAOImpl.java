@@ -170,4 +170,12 @@ public class ProdDAOImpl implements ProdDAO {
 	}
 	
 	
+	// 거래처 메인 페이지 제품목록
+	@Override
+	public List<ProdVO> cmainListProd() {
+		logger.debug("( •̀ ω •́ )✧ DAO : cmainListProd() 실행");
+		return sqlSession.selectList(NAMESPACE + ".cmainListProd");
+	}
+	
+	
 }//class

@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="/resources/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/resources/css/plugins.min.css" />
 <link rel="stylesheet" href="/resources/css/kaiadmin.min.css" />
+
 <style>
 .card-category {
 	font-size: 1.5rem;

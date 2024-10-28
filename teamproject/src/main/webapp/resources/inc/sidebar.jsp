@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Sidebar -->
 <div class="sidebar" data-background-color="light">
 	<div class="sidebar-logo">
@@ -66,7 +67,7 @@
 									class="sub-item">재고 이동</span>
 							</a></li>
 							<li><a class="subMenu" id="a6" href="/prod/movestock"> <span
-									class="sub-item">재고 이동 이력</span>
+									class="sub-item">재고 이동 내역</span>
 							</a></li>
 							<li><a class="subMenu" id="a7" href="/prod/stockalert"> <span
 									class="sub-item">재고 알람 설정</span>
@@ -144,6 +145,7 @@
 							</a></li>
 						</ul>
 					</div></li>
+				<c:if test="${sessionScope.permission_id == '03' }">
 				<li class="nav-item"><a data-bs-toggle="collapse"
 					href="#adminMenu"> <i class="fas fa-users-cog"></i>
 						<p>관리자 페이지</p> <span class="caret"></span>
@@ -158,6 +160,7 @@
 							</a></li>
 						</ul>
 					</div></li>
+				</c:if>
 			</ul>
 		</div>
 	</div>

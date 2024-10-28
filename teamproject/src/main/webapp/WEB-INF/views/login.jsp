@@ -64,7 +64,11 @@ pageEncoding="UTF-8"%>
                     }
                     
                     showSuccessAlert("로그인 성공", response.message).then(() => {
-                        location.href = "/main"; // 관리자 페이지로 이동
+						localStorage.removeItem('colShow');
+      					localStorage.removeItem('colActive');
+      					localStorage.removeItem('alertShown');
+      					localStorage.removeItem('alertShown2');
+                    	location.href = "/main"; // 관리자 페이지로 이동
                     });
                 } else {
                     switch (response.code) {

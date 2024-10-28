@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>창고 상세 정보</title>
+    <title>REMIND</title>
 
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
@@ -30,20 +30,20 @@
         <div class="container">
             <div class="page-inner">
                 <div class="page-header">
-                    <h3 class="fw-bold mb-3">창고 관리</h3>
+                    <h3 class="fw-bold mb-3">창고관리</h3>
                     <ul class="breadcrumbs mb-3">
-                        <li class="nav-home"><a href="#"><i class="icon-home"></i></a></li>
+                        <li class="nav-home"><i class="icon-home"></i></li>
                         <li class="separator"><i class="icon-arrow-right"></i></li>
-                        <li class="nav-item"><a href="#">창고 관리</a></li>
+                        <li class="nav-item">창고관리</li>
                         <li class="separator"><i class="icon-arrow-right"></i></li>
-                        <li class="nav-item"><a href="#">창고 상세 정보</a></li>
+                        <li class="nav-item">창고상세정보</li>
                     </ul>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">창고 상세 정보</div>
+                                <div class="card-title">창고상세정보</div>
                             </div>
 
                             <div class="card-body">
@@ -56,11 +56,11 @@
                                 <!-- 버튼을 오른쪽 하단으로 이동 -->
                                 <div class="d-flex justify-content-end mt-4" style="position: relative;">
                                     <!-- permission_id가 03일 때만 수정 버튼 표시 -->
+                                    <a href="${pageContext.request.contextPath}/warehouse/products?wh_number=${warehouse.wh_number}" class="btn btn-secondary ms-2">창고 제품 목록 보기</a> <!-- 추가된 버튼 -->
                                     <c:if test="${sessionScope.permission_id == '03'}">
-                                        <a href="${pageContext.request.contextPath}/warehouse/wareHouseEdit?wh_number=${warehouse.wh_number}" class="btn btn-warning me-2">수정하기</a>
+                                        <a href="${pageContext.request.contextPath}/warehouse/wareHouseEdit?wh_number=${warehouse.wh_number}" class="btn btn-warning ms-2">수정하기</a>
                                     </c:if>
-                                    <a href="${pageContext.request.contextPath}/warehouse/wareHouseList" class="btn btn-secondary">목록으로 돌아가기</a>
-                                    <a href="${pageContext.request.contextPath}/warehouse/products?wh_number=${warehouse.wh_number}" class="btn btn-info ms-2">제품 목록 보기</a> <!-- 추가된 버튼 -->
+                                    <a href="${pageContext.request.contextPath}/warehouse/wareHouseList" class="btn btn-black ms-2">목록으로 돌아가기</a>
                                 </div>
                             </div>
                         </div>

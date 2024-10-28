@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>거래처 수정</title>
+    <title>REMIND</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
@@ -30,14 +30,21 @@
         <div class="container">
             <div class="page-inner">
                 <div class="page-header">
-                    <h3 class="fw-bold mb-3">거래처 수정</h3>
+                    <h3 class="fw-bold mb-3">거래처수정</h3>
+                    <ul class="breadcrumbs mb-3">
+						<li class="nav-home"><i class="icon-home"></i></li>
+						<li class="separator"><i class="icon-arrow-right"></i></li>
+						<li class="nav-item">거래처관리</li>
+						<li class="separator"><i class="icon-arrow-right"></i></li>
+						<li class="nav-item">거래처수정</li>
+					</ul>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <div class="card-title">거래처 수정</div>
-                                <button type="submit" form="companyEditForm" class="btn btn-success">수정</button>
+                                <div class="card-title">거래처수정</div>
+                                <button type="submit" form="companyEditForm" class="btn btn-secondary">수정</button>
                             </div>
 
                             <div class="card-body">
@@ -71,7 +78,7 @@
                                     </div>
                                     <div class="d-flex justify-content-end mt-3">
                                         <button type="button" class="btn btn-danger me-2" onclick="deleteCompany('${company.company_code}')">삭제</button>
-                                        <a href="${pageContext.request.contextPath}/company/companyList" class="btn btn-secondary">목록으로</a>
+                                        <a href="${pageContext.request.contextPath}/company/companyList" class="btn btn-black">목록으로</a>
                                     </div>
                                 </form>
                             </div>

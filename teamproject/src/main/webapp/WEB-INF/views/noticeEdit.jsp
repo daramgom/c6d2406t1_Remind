@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>공지사항 수정</title>
+    <title>REMIND</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
@@ -30,14 +30,21 @@
         <div class="container">
             <div class="page-inner">
                 <div class="page-header">
-                    <h3 class="fw-bold mb-3">공지사항 수정</h3>
+                    <h3 class="fw-bold mb-3">공지사항</h3>
+                    <ul class="breadcrumbs mb-3">
+						<li class="nav-home"><i class="icon-home"></i></li>
+						<li class="separator"><i class="icon-arrow-right"></i></li>
+						<li class="nav-item">공지사항</li>
+						<li class="separator"><i class="icon-arrow-right"></i></li>
+						<li class="nav-item">공지사항수정</li>
+					</ul>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <div class="card-title">공지사항 수정</div>
-                                <button type="button" class="btn btn-success" onclick="document.getElementById('noticeEditForm').submit();">공지사항 수정</button>
+                                <div class="card-title">공지사항수정</div>
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('noticeEditForm').submit();">공지사항 수정</button>
                             </div>
 
                             <div class="card-body">
@@ -63,7 +70,7 @@
                                         <!-- 삭제 버튼 -->
                                         <input type="hidden" name="no" value="${notice.no}" />
                                         <button type="button" class="btn btn-danger me-2" onclick="if(confirm('정말로 삭제하시겠습니까?')) { document.getElementById('noticeEditForm').action='${pageContext.request.contextPath}/notice/delete'; document.getElementById('noticeEditForm').submit(); }">삭제</button>
-                                        <a href="${pageContext.request.contextPath}/notice/list" class="btn btn-secondary">목록으로</a>
+                                        <a href="${pageContext.request.contextPath}/notice/list" class="btn btn-black">목록으로</a>
                                     </div>
                                 </form>
                             </div>

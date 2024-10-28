@@ -136,7 +136,7 @@
 									</div>
 									<div class="col col-stats ms-3">
 										<div>
-											<p class="card-category text-warning fw-bold">발주요청 목록</p>
+											<p class="card-category text-warning fw-bold">발주 요청 목록</p>
 										</div>
 									</div>
 								</div>

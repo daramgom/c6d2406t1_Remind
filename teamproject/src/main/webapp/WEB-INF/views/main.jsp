@@ -435,6 +435,13 @@ $('#exportImage').on('click', function() {
 // 그래프 이미지 저장
 
 
+// 엔터키 전송버튼
+	$('#msg').on('keydown', function(e) {
+		if (e.key === 'Enter') {
+			$('#button-send').click();
+		}
+	});
+// 엔터키 전송버튼
 
 
 });//DOM준비

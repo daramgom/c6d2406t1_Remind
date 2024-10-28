@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>창고 등록</title>
+    <title>REMIND</title>
 
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
@@ -33,20 +33,20 @@
         <div class="container">
             <div class="page-inner">
                 <div class="page-header">
-                    <h3 class="fw-bold mb-3">창고 관리</h3>
+                    <h3 class="fw-bold mb-3">창고관리</h3>
                     <ul class="breadcrumbs mb-3">
-                        <li class="nav-home"><a href="#"><i class="icon-home"></i></a></li>
+                        <li class="nav-home"><i class="icon-home"></i></li>
                         <li class="separator"><i class="icon-arrow-right"></i></li>
-                        <li class="nav-item"><a href="#">창고 관리</a></li>
+                        <li class="nav-item">창고관리</li>
                         <li class="separator"><i class="icon-arrow-right"></i></li>
-                        <li class="nav-item"><a href="#">창고 등록</a></li>
+                        <li class="nav-item">창고등록</li>
                     </ul>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">창고 등록</div>
+                                <div class="card-title">창고등록</div>
                             </div>
 
                             <div class="card-body d-flex flex-column align-items-center">
@@ -84,7 +84,7 @@
                                                 <input type="text" class="form-control" id="wh_admin" name="wh_admin" placeholder="담당자" required />
                                             </div>
                                             <div style="display: flex; justify-content: center; margin-bottom: 20px; gap: 20px;">
-                                                <button type="submit" class="btn btn-success">창고 등록</button>
+                                                <button type="submit" class="btn btn-secondary">창고 등록</button>
                                                 <button type="button" class="btn btn-danger" id="alert_demo_7">입력 초기화</button>
                                             </div>
                                         </form>

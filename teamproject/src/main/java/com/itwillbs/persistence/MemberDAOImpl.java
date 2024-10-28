@@ -230,6 +230,29 @@ public class MemberDAOImpl implements MemberDAO {
 	    params.put("keyword", cri.getKeyword()); // 검색 키워드 추가
 	    return sqlSession.selectList(NAMESPACE + ".getMemberList", params);
 	}
+	
+	@Override
+	public List<MemberVO> getCompanyMemberList(String member_id, Criteria cri) {
+		System.out.println(" DAO : getMemberList() ");
+	    
+	    // 총 회원 수를 계산하기 위한 매개변수 준비
+	    Map<String, Object> countParams = new HashMap<>();
+	    countParams.put("member_id", member_id);
+	    countParams.put("keyword", cri.getKeyword()); // 검색 키워드 추가
+	    int totalCount = sqlSession.selectOne(NAMESPACE + ".getCompanyMemberListCount", countParams);
+	    
+	    // 총 회원 수를 Criteria에 설정 (페이지 수 계산을 위해)
+	    cri.setTotalCount(totalCount);
+
+	    // 회원 목록 조회를 위한 매개변수 준비
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("member_id", member_id);
+	    params.put("startPage", cri.getStartPage());
+	    params.put("pageSize", cri.getPageSize());
+	    params.put("keyword", cri.getKeyword()); // 검색 키워드 추가
+	    return sqlSession.selectList(NAMESPACE + ".getMemberList", params);
+	}
+	
 
 	
 	@Override

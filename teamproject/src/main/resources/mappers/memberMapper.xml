@@ -170,6 +170,15 @@
       </if>
 </select>
 
+ <select id="getCompanyMemberListCount" resultType="int">
+    SELECT COUNT(*) FROM member
+    where member_code  != '1'
+    AND member_state != '03'
+    <if test="keyword != null and keyword != ''">
+          AND member_name LIKE CONCAT('%', #{keyword}, '%')
+      </if>
+</select>
+
 	<!-- 특정 회원정보 -->
 	<select id="getMemberById" resultType="MemberVO">
 		SELECT

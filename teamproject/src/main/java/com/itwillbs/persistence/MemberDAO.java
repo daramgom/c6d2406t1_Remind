@@ -63,6 +63,9 @@ public interface MemberDAO {
 	// admin(전용) 사용자 정보 목록 조회
 	public List<MemberVO> getMemberList(String member_id, Criteria cri);
 	
+	public List<MemberVO> getCompanyMemberList(String member_id, Criteria cri);
+	
+	
 	// admin(전용) 회원가입 신청 정보 목록 조회
 	public List<MemberVO> getSignupRequestList(Criteria cri);
 	

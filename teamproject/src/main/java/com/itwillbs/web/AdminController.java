@@ -363,4 +363,45 @@ public class AdminController {
 					 .body(response);
 		 }
 	 }
+	 
+	 @RequestMapping(value = "/CompanyMemberList", method = RequestMethod.GET)
+		public void ConpanyMemberListGET(Model model, HttpSession session, Criteria cri) {
+			
+
+			 String member_id = (String) session.getAttribute("id");
+			    logger.debug("ConpanyMemberListGET");
+			    logger.debug("ConpanyMemberListGET");
+
+			    // 페이지 크기 설정 (5명)
+			    cri.setPageSize(5);  // Criteria에 페이지 크기 설정
+			    
+			    // 검색 키워드 처리
+			    String keyword = cri.getKeyword(); // Criteria에서 검색 키워드 가져오기
+			    logger.debug("Search Keyword: " + keyword);
+
+			    List<MemberVO> memberList = mService.getCompanymemberList(member_id, cri);
+
+			    model.addAttribute("memberList", memberList);
+			    
+			    // 페이지 크기를 모델에 추가
+			    model.addAttribute("pageSize", cri.getPageSize());
+
+			    // 페이지 수 계산 (totalCount를 사용하여 계산)
+			    int totalCount = cri.getTotalCount();
+			    logger.debug("adminMemberListGET totalCount : "+ totalCount);
+			    int pageCount = (int) Math.ceil((double) totalCount / cri.getPageSize());
+			    model.addAttribute("pageCount", pageCount); // 페이지 수 모델에 추가
+			    logger.debug("adminMemberListGET pageCount : "+ pageCount);
+			    // 현재 페이지 모델에 추가
+			    model.addAttribute("currentPage", cri.getPage()); // 현재 페이지 추가
+			    
+			 // 검색 조건 모델에 추가
+			    model.addAttribute("keyword", keyword); // 검색 키워드 추가
+
+		}
+	 
+	 
+	 
+	 
+	 
 }

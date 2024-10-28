@@ -39,6 +39,8 @@ public interface MemberService {
 	// admin 회원정보 목록 d
 	public List<MemberVO> memberList(String id,Criteria cri);
 	
+	public List<MemberVO> getCompanymemberList(String id,Criteria cri);
+	
 	// admin 회원정보 목록 d
 	public List<MemberVO> signupRequestList(Criteria cri);
 
@@ -66,5 +68,8 @@ public interface MemberService {
 	public MemberVO memberUpdateInfo(String id,String span,String newValue);
 	
 	public int memberUpdatePw(MemberVO vo);
+	
+	
+	
 	
 }

@@ -156,6 +156,15 @@ public class MemberServiceImpl implements MemberService{
 		
 		return mdao.getMemberList(id,cri);
 	}
+	@Override
+	public List<MemberVO> getCompanymemberList(String id, Criteria cri) {
+		logger.debug("getCompanymemberList() 실행 ");	
+	
+		
+		return mdao.getCompanyMemberList(id,cri);
+	}
+	
+	
 	
 	// admin 전용 회원가입 신청 멤버 목록
 	@Override

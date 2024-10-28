@@ -164,12 +164,12 @@ pageEncoding="UTF-8"%>
         		<div class="page-header">
 					<h3 class="fw-bold mb-3">발주관리</h3>
 					<ul class="breadcrumbs mb-3">
-						<li class="nav-home"><a href="#"> <i class="icon-home"></i>
-						</a></li>
+						<li class="nav-home"> <i class="icon-home"></i>
+						</li>
 						<li class="separator"><i class="icon-arrow-right"></i></li>
-						<li class="nav-item"><a href="#">발주관리</a></li>
+						<li class="nav-item">발주관리</li>
 						<li class="separator"><i class="icon-arrow-right"></i></li>
-						<li class="nav-item"><a href="#">발주요청</a></li>
+						<li class="nav-item">발주요청</li>
 					</ul>
 				</div>
 

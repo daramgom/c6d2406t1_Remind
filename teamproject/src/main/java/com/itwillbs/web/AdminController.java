@@ -42,7 +42,7 @@ public class AdminController {
 
 	Map<String, String> response = new HashMap<>();;
 
-	@RequestMapping(value = "MemberList", method = RequestMethod.GET)
+	@RequestMapping(value = "/MemberList", method = RequestMethod.GET)
 	public void adminMemberListGET(Model model, HttpSession session, Criteria cri) {
 		
 

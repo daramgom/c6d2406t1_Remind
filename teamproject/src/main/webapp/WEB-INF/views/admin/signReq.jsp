@@ -95,7 +95,7 @@ tr {
 				<div class="page-header">
 					<h3 class="fw-bold mb-3">회원 가입 신청 목록</h3>
 					<ul class="breadcrumbs mb-3">
-						<li class="nav-home"><a href="#"> <i class="icon-home"></i>
+						<li class="nav-home"><a href="/main"> <i class="icon-home"></i>
 						</a>
 						</li>
 					</ul>

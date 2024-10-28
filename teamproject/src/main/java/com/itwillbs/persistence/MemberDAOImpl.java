@@ -241,16 +241,19 @@ public class MemberDAOImpl implements MemberDAO {
 	    countParams.put("keyword", cri.getKeyword()); // 검색 키워드 추가
 	    int totalCount = sqlSession.selectOne(NAMESPACE + ".getCompanyMemberListCount", countParams);
 	    
+	    System.out.println(" DAO : totalCount() 거래처 회사 카운트 "+ totalCount);
 	    // 총 회원 수를 Criteria에 설정 (페이지 수 계산을 위해)
 	    cri.setTotalCount(totalCount);
+	    
 
 	    // 회원 목록 조회를 위한 매개변수 준비
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("member_id", member_id);
+	    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ : "+ cri.getStartPage());
 	    params.put("startPage", cri.getStartPage());
 	    params.put("pageSize", cri.getPageSize());
 	    params.put("keyword", cri.getKeyword()); // 검색 키워드 추가
-	    return sqlSession.selectList(NAMESPACE + ".getMemberList", params);
+	    return sqlSession.selectList(NAMESPACE + ".getCompanyMemberList", params);
 	}
 	
 
@@ -383,6 +386,12 @@ public class MemberDAOImpl implements MemberDAO {
 		@Override
 		public MemberVO getMemberNameEmailSearch(MemberVO vo) {
 			MemberVO result = sqlSession.selectOne(NAMESPACE+".getMemberNameEmailSearch" , vo);
+			return result;
+		}
+		
+		@Override
+		public int deleteCompanyMember(MemberVO vo) {
+			int result = sqlSession.delete(NAMESPACE+".deleteMembers" , vo);
 			return result;
 		}
 		

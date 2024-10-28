@@ -42,7 +42,7 @@ public class MemberVO {
 	private Timestamp update_date; // 회원정보 수정일
 	private String permission_id; // 사용자 권한. user admin
 	
-	private String member_state; // 근무 , 휴직 , 퇴사 , 거래처  
+	private String member_state; // 근무 , 휴직 , 퇴사 
 	private String approval_status; // 회원가입 미승인 , 승인.
 	
 	private String company_code; // 회사 코드 
@@ -51,7 +51,11 @@ public class MemberVO {
 	
 	private String company_status; // 본사, 입고처, 출고처 
 	
-	private String member_code;
+	private String member_code; // 거래처 코드
+	
+	// 새로운 필드 추가
+    private String company_manager;  // 거래처 실무자
+    private String company_address; // 거래처 주소
 	
 	
 }

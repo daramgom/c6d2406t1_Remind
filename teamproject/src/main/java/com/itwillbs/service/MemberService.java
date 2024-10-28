@@ -69,6 +69,7 @@ public interface MemberService {
 	
 	public int memberUpdatePw(MemberVO vo);
 	
+	public int deleteCompanyMember(MemberVO vo);
 	
 	
 	

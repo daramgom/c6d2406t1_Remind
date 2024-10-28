@@ -222,5 +222,10 @@ public class MemberServiceImpl implements MemberService{
 		return mdao.getMemberNameEmailSearch(vo);
 	}
 	
+	@Override
+	public int deleteCompanyMember(MemberVO vo) {
+		return mdao.deleteCompanyMember(vo);
+	}
+	
 	
 }

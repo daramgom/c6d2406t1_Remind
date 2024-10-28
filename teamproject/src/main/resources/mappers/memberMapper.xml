@@ -143,22 +143,6 @@
     LIMIT #{startPage}, #{pageSize}
 </select>
 
-
-	<!-- 회원가입 대기자 목록 -->
-	<select id="getWaitingMember" resultType="MemberVO">
-		<![CDATA[
-  	 select * from member
-  	  where approval_status = "01" 
-  	   ORDER BY create_date desc 
-  	    limit #{startPage},#{pageSize}
-  	]]>
-	</select>
-	<!-- 회원가입 총 대기자 목록 -->
-	<select id="getWaitingMemberCount" resultType="int">
-    SELECT COUNT(*) FROM member
-    WHERE approval_status = '01' and member_code = '1'
-</select>
-
  <select id="getMemberListCount" resultType="int">
     SELECT COUNT(*) FROM member
     WHERE approval_status = '02' 
@@ -170,6 +154,24 @@
       </if>
 </select>
 
+
+	<!-- 회원가입 대기자 목록 -->
+	<select id="getWaitingMember" resultType="MemberVO">
+		<![CDATA[
+  	 select * from member
+  	  where approval_status = "01" 
+  	   ORDER BY create_date desc 
+  	    limit #{startPage},#{pageSize}
+  	]]>
+	</select>
+	
+	<!-- 회원가입 총 대기자 목록 카운트 -->
+<select id="getWaitingMemberCount" resultType="int">
+    SELECT COUNT(*) FROM member
+    WHERE approval_status = '01' and member_code = '1'
+</select>
+
+
  <select id="getCompanyMemberListCount" resultType="int">
     SELECT COUNT(*) FROM member
     where member_code  != '1'
@@ -178,6 +180,33 @@
           AND member_name LIKE CONCAT('%', #{keyword}, '%')
       </if>
 </select>
+
+<!-- admin 거래처 전체 목록(list) -->
+<select id="getCompanyMemberList" resultType="MemberVO">
+    SELECT
+        m.*,
+        c.company_manager,
+        c.company_address
+    FROM
+        member m
+    LEFT JOIN
+        company c ON m.member_code = c.company_code  
+    WHERE
+        m.member_state != (
+            SELECT common_value
+            FROM common
+            WHERE common_status = '퇴사' AND common_work = 'member_state'
+        )
+        AND m.member_code != '1'
+        <if test="keyword != null and keyword != ''">
+            AND c.company_manager LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    ORDER BY m.create_date DESC
+    LIMIT #{startPage}, #{pageSize}
+</select>
+
+
+
 
 	<!-- 특정 회원정보 -->
 	<select id="getMemberById" resultType="MemberVO">
@@ -242,6 +271,8 @@
 	<select id="getMemberNameEmailSearch" resultType="MemberVO">
 		select * from member where member_name = #{member_name} AND member_email = #{member_email}
 	</select>
+	
+	
 
 
 

@@ -352,9 +352,10 @@ $("#button-send").on("click", function(e) {
 	sendMessage();
 	$('#msg').val('');
 });
-
+const protocol = window.location.protocol;
+const host = window.location.host;
 var userName = '${sessionScope.name}';
-var sock = new SockJS('http://localhost:8088/chatting?userName='+encodeURIComponent(userName));
+var sock = new SockJS(protocol+'//'+host+'/chatting?userName='+encodeURIComponent(userName));
 sock.onmessage = onMessage;
 sock.onclose = onClose;
 sock.onopen = onOpen;

@@ -467,7 +467,7 @@ button:hover {
 									<label for="status">입고 상태:</label> <select id="status"
 										name="rcv_status">
 										<option value="">모두</option>
-										<option value="01" selected="selected">입고 요청</option>
+										<option value="01">입고 요청</option>
 										<option value="02">입고 완료</option>
 										<option value="03">입고 반려</option>
 										<option value="04">입고 삭제</option>
@@ -541,7 +541,7 @@ button:hover {
 												<div class="underline-container">
 													<input type="text" id="rcvManagerId"
 														class="underline-input" placeholder="홍길동" required
-														name="rcvManagerId">
+														name="rcvManagerId" readonly="readonly">
 													<div class="custom-underline"></div>
 												</div>
 											</div>
@@ -558,7 +558,7 @@ button:hover {
 												<div class="underline-container">
 													<input type="text" id="rcvSupervisorId"
 														class="underline-input" placeholder="홍길동" required
-														name="rcvSupervisorId">
+														name="rcvSupervisorId" readonly="readonly">
 													<div class="custom-underline"></div>
 												</div>
 											</div>
@@ -573,7 +573,7 @@ button:hover {
 												<div class="underline-container">
 													<input type="text" id="ordManagerId"
 														class="underline-input" placeholder="홍길동" required
-														name="ordManagerId">
+														name="ordManagerId" readonly="readonly">
 													<div class="custom-underline"></div>
 												</div>
 											</div>
@@ -588,7 +588,7 @@ button:hover {
 												<div class="underline-container">
 													<input type="text" id="ordSupervisorId"
 														class="underline-input" placeholder="홍길동" required
-														name="ordSupervisorId">
+														name="ordSupervisorId" readonly="readonly">
 													<div class="custom-underline"></div>
 												</div>
 											</div>
@@ -597,7 +597,7 @@ button:hover {
 												<label for="ordNumber">발주 관리번호</label>
 												<div style="display: flex; align-items: center;">
 													<input type="text" id="ordNumber" placeholder="발주관리번호입력"
-														required name="ordNumber">
+														required name="ordNumber" readonly="readonly">
 													<button type="button" onclick="submitOrderNumber()">조회</button>
 												</div>
 												<div class="dropdown" id="orderDropdown"></div>
@@ -607,7 +607,7 @@ button:hover {
 												<label for="rcvNumber">입고 관리번호</label>
 												<div style="display: flex; align-items: center;">
 													<input type="text" id="rcvNumber" placeholder="입고관리번호입력"
-														required name="rcvNumber">
+														required name="rcvNumber" readonly="readonly">
 													<button type="button" onclick="submitOrderNumber()">조회</button>
 												</div>
 												<div class="dropdown" id="orderDropdown"></div>
@@ -615,22 +615,22 @@ button:hover {
 
 											<div class="form-group">
 												<label for="prodId">제품 식별코드</label> <input type="text"
-													id="prodId" placeholder="제품식별코드를 입력" required name="prodId">
+													id="prodId" placeholder="제품식별코드를 입력" required name="prodId" readonly="readonly">
 											</div>
 
 											<div class="form-group">
 												<label for="prodCategory">카테고리</label> <input type="text"
-													id="prodCategory" required name="prodCategory">
+													id="prodCategory" required name="prodCategory" readonly="readonly">
 											</div>
 
 											<div class="form-group">
 												<label for="prodName">품목명</label> <input type="text"
-													id="prodName" required name="prodName">
+													id="prodName" required name="prodName" readonly="readonly">
 											</div>
 
 											<div class="form-group">
 												<label for="companyCode">거래처</label> <input type="text"
-													id="companyCode" required name="companyCode">
+													id="companyCode" required name="companyCode" readonly="readonly">
 											</div>
 
 											<div class="form-group">
@@ -640,7 +640,7 @@ button:hover {
 
 											<div class="form-group">
 												<label for="whNumber">창고 번호</label> <input type="number"
-													id="whNumber" required name="whNumber">
+													id="whNumber" required name="whNumber" readonly="readonly">
 											</div>
 
 											<div class="form-group">
@@ -650,7 +650,7 @@ button:hover {
 
 											<div class="form-group">
 												<label for="ordDate">발주 날짜</label> <input type="date"
-													id="ordDate" required name="ordDate">
+													id="ordDate" required name="ordDate" readonly="readonly">
 											</div>
 
 											<div class="form-group">
@@ -665,18 +665,12 @@ button:hover {
 											</div>
 
 											<div class="button-group">
+																								
 											
+													    <button type="button" onclick="saveDetails()">입고 승인</button>
+													    <button type="button" onclick="rejectReceiving()">입고 반려</button>
 											
-											        <c:if test="${sessionScope.permission_id != '01'}">
-											        <button type="button" onclick="saveDetails()">입고 승인</button>
-											        <button type="button" onclick="rejectReceiving()">입고 반려</button>
-											        </c:if>
-											  
-											
-											       	  <c:if test="${sessionScope.permission_id != ''}"></c:if>
-											     
-									
-											     
+
 												<button type="button" onclick="editDetails()">입고 수정</button>
 												<button type="button" onclick="deleteReceiving()">입고 삭제</button>
 																			

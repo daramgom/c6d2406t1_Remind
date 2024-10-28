@@ -53,7 +53,7 @@ pageEncoding="UTF-8"%>
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #e9ecef;
         margin: 0;
-        padding: 20px;
+        padding: 0px;
     }
     header {
         background: #001f3f; /* 남색 */
@@ -226,7 +226,7 @@ pageEncoding="UTF-8"%>
     <div class="container">
 		<div class="page-inner">
 			<div class="page-header">
-				<h3 class="fw-bold mb-3">발주 관리</h3>
+				<h3 class="fw-bold mb-3">발주 관리 (거래처)</h3>
 				<ul class="breadcrumbs mb-3">
 					<li class="nav-home"> <i class="icon-home"></i>
 					</li>
@@ -243,7 +243,7 @@ pageEncoding="UTF-8"%>
 			<div class="container">
  				<div class="table-responsive">
 	 				<div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-	        		<h1>발주 목록</h1>
+	        		<h1>출고 수락</h1>
 	        		<hr>
 	        
 	        <div class="row mb-3">

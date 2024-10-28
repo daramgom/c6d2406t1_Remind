@@ -45,7 +45,7 @@ pageEncoding="UTF-8"%>
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #e9ecef;
         margin: 0;
-        padding: 20px;
+        padding: 0px;
     }
     header {
         background: #001f3f; /* 남색 */

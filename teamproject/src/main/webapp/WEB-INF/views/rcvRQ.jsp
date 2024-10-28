@@ -344,55 +344,56 @@ pageEncoding="UTF-8"%>
 			<div class="form-group">
 			    <label for="ord_number">발주 관리번호</label>
 			    <div style="display: flex; align-items: center;">
-			        <input type="text" id="ord_number" placeholder="발주관리번호입력" required onfocus="showOrderList()" oninput="fetchOrderData()" name="ord_number">
+			        <input type="text" id="ord_number" placeholder="발주관리번호입력" required onfocus="showOrderList()" oninput="fetchOrderData()" name="ord_number" readonly="readonly">
 			        <button type="button" onclick="submitOrderNumber()">조회</button> <!-- 추가된 버튼 -->
 			    </div>
 			    <div class="dropdown1" id="orderDropdown"></div>
 			</div>
 
-            <div class="form-group">
-                <label for="RCV_QUANTITY">입고 수량</label>
-                <input type="number" id="rcv_quantity" required name="rcv_quantity">
-            </div>
+			<div class="form-group">
+			    <label for="RCV_QUANTITY">입고 수량</label>
+			    <input type="number" id="rcv_quantity" required name="rcv_quantity" min="0">
+			</div>
+
 
             <div class="form-group">
                 <label for="PROD_ID">제품 식별코드</label>
-                <input type="text" id="prod_id" placeholder="제품식별코드를 입력" required name="prod_id">
+                <input type="text" id="prod_id" placeholder="제품식별코드를 입력" required name="prod_id" readonly="readonly">
             </div>
 
             <div class="form-group">
                 <label for="prod_category">카테고리</label>
-                <input type="text" id="prod_category" required name="prod_category">
+                <input type="text" id="prod_category" required name="prod_category" readonly="readonly">
             </div>
 
             <div class="form-group">
                 <label for="prod_name">품목명</label>
-                <input type="text" id="prod_name" required name="prod_name">
+                <input type="text" id="prod_name" required name="prod_name" readonly="readonly">
             </div>
 
             <div class="form-group">
                 <label for="COMPANY_CODE">거래처</label>
-                <input type="text" id="company_code" required name="company_code">
+                <input type="text" id="company_code" required name="company_code" readonly="readonly">
             </div>
             
             <div class="form-group">
                 <label for="WH_NUMBER">창고 번호</label>
-                <input type="number" id="wh_number" required name="wh_number">
+                <input type="number" id="wh_number" required name="wh_number" readonly="readonly">
             </div>
-
-            <div class="form-group">
-                <label for="RCV_PRICE">가격(단가)</label>
-                <input type="text" id="rcv_price" required name="rcv_price">
-            </div>
+            
+			<div class="form-group">
+			    <label for="RCV_PRICE">가격(단가)</label>
+			    <input type="number" id="rcv_price" required name="rcv_price" min="0">
+			</div>
 
             <div class="form-group">
                 <label for="ORD_DATE">발주 날짜</label>
-                <input type="date" id="ord_date" required name="ord_date">
+                <input type="date" id="ord_date" required name="ord_date" readonly="readonly">
             </div> 
 
             <div class="form-group">
                 <label for="RCV_DATE">입고 날짜</label>
-                <input type="date" id="rcv_date" required name="rcv_date">
+                <input type="date" id="rcv_date" required name="rcv_date" >
             </div>
 
             <div class="form-group">
@@ -456,7 +457,7 @@ pageEncoding="UTF-8"%>
                     document.getElementById('rcv_price').value = data.ord_price; // 가격(단가) 자동입력
                     
                     // 발주 승인자와 창고 번호 자동 입력
-                    document.getElementById('ord_supervisor_id').value = data.ord_supervisor_id; // 발주 승인자 이름 자동입력
+                    document.getElementById('ord_supervisor_id').value = data.ord_supervisor_name; // 발주 승인자 이름 자동입력
                     document.getElementById('wh_number').value = data.wh_number; // 창고 번호 자동입력
                     
                     // 날짜 형식 변환 및 입력

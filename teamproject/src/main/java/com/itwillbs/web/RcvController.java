@@ -183,7 +183,7 @@ public class RcvController {
         }
     }
 
-    //엑셀 파일 다운로드
+  //엑셀 파일 다운로드
     @GetMapping("/downloadExcel")
     public void downloadExcel(
             @RequestParam("rcv_manager_id") String rcvManagerId,
@@ -197,111 +197,142 @@ public class RcvController {
             @RequestParam("rcv_date") String rcvDate,
             @RequestParam("rcv_remarks") String rcvRemarks,
             HttpServletResponse response,HttpServletRequest request) throws IOException {
-    	
-    	        String filePath = request.getServletContext().getRealPath("/WEB-INF/OrdExcel.xlsx");
+       
+         logger.debug("rcv_manager_id: {}", rcvManagerId);
+           logger.debug("prod_id: {}", prodId);
+           logger.debug("prod_category: {}", prodCategory);
+           logger.debug("rcv_number: {}", rcvNumber);
+           logger.debug("prod_name: {}", prodName);
+           logger.debug("company_code: {}", companyCode);
+           logger.debug("rcv_quantity: {}", rcvQuantity);
+           logger.debug("rcv_price: {}", rcvPrice);
+           logger.debug("rcv_date: {}", rcvDate);
+           logger.debug("rcv_remarks: {}", rcvRemarks);
+           
+           String filePath = request.getServletContext().getRealPath("/WEB-INF/OrdExcel.xlsx");
 
-    	        // 파일 경로 출력
-    	        System.out.println("File path: " + filePath);
+        // 파일 경로 출력
+        System.out.println("File path: " + filePath);
 
-    	        // 파일 존재 여부 확인
-    	        File file = new File(filePath);
-    	        if (!file.exists()) {
-    	            throw new FileNotFoundException("파일이 존재하지 않습니다: " + filePath);
-    	        }
+        // 파일 존재 여부 확인
+        File file = new File(filePath);
+        if (!file.exists()) {
+            throw new FileNotFoundException("파일이 존재하지 않습니다: " + filePath);
+        }
 
-    	        try (FileInputStream fis = new FileInputStream(filePath);
-    	                XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
+        try (FileInputStream fis = new FileInputStream(filePath);
+                XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
 
-    	               // 시트 가져오기
-    	               Sheet sheet = workbook.getSheet("물품 입고서");
-    	               if (sheet == null) {
-    	                   throw new IllegalArgumentException("시트가 존재하지 않습니다: 물품 입고서");
-    	               }
+            // 시트 가져오기
+            Sheet sheet = workbook.getSheet("물품 입고서");
+            if (sheet == null) {
+                throw new IllegalArgumentException("시트가 존재하지 않습니다: 물품 입고서");
+            }
 
-    	               // E5에 "입고 담당자" 데이터 삽입
-    	               int rowIndex = 4; // 5번째 행 (0부터 시작)
-    	               int colIndex = 4; // E열 (0부터 시작)
+            // E5에 rcvDate 데이터 삽입
+            Row row5 = sheet.getRow(4); // 5번째 행 (0부터 시작)
+            if (row5 == null) {
+                row5 = sheet.createRow(4); // 행이 없으면 생성
+            }
+            for (int i = 4; i <= 6; i++) { // E(4)부터 G(6)까지
+                Cell cellEtoG = row5.createCell(i);
+                cellEtoG.setCellValue(rcvDate); // 값 설정
+            }
 
-    	               Row row = sheet.getRow(rowIndex); // 5번째 행 가져오기
-    	               if (row == null) {
-    	                   row = sheet.createRow(rowIndex); // 행이 없으면 생성
-    	               }
+            // L5:W5에 rcvNumber 삽입
+            Row row5Header = sheet.getRow(4); // 5번째 행
+            if (row5Header == null) {
+                row5Header = sheet.createRow(4); // 행이 없으면 생성
+            }
+            for (int i = 11; i <= 22; i++) { // L(11)부터 W(22)까지
+                Cell orderCell = row5Header.createCell(i);
+                orderCell.setCellValue(rcvNumber);
+            }
 
-    	               Cell cell = row.createCell(colIndex); // E5 셀 생성
-    	               cell.setCellValue(rcvDate); // 값 설정
-    	               
-    	               // L5:W5에 "ORD-2024-0001" 삽입
-    	               Row headerRow = sheet.getRow(rowIndex); // 5번째 행
-    	               if (headerRow == null) {
-    	                   headerRow = sheet.createRow(rowIndex); // 행이 없으면 생성
-    	               }
-    	               
-    	               // L5부터 W5까지 "ORD-2024-0001" 삽입
-    	               for (int i = 11; i <= 22; i++) { // L(11)부터 W(22)까지
-    	                   Cell orderCell = headerRow.createCell(i);
-    	                   orderCell.setCellValue(rcvNumber);
-    	               }
+            // L6:O6에 rcvManagerId 삽입
+            Row row6 = sheet.getRow(5); // 6번째 행 (0부터 시작)
+            if (row6 == null) {
+                row6 = sheet.createRow(5); // 행이 없으면 생성
+            }
+            for (int i = 11; i <= 14; i++) { // L(11)부터 O(14)까지
+                Cell cellLtoO = row6.createCell(i);
+                cellLtoO.setCellValue(rcvManagerId); // rcv_manager_id
+            }
 
-    	               // C14:E14, F14:G14, J14:L14, M14:N14, O14:R14에 값 삽입
-    	               Row dataRow = sheet.getRow(13); // 14번째 행 (0부터 시작)
-    	               if (dataRow == null) {
-    	                   dataRow = sheet.createRow(13); // 행이 없으면 생성
-    	               }
+            // L7:O7에 companyCode 삽입
+            Row row7 = sheet.getRow(6); // 7번째 행 (0부터 시작)
+            if (row7 == null) {
+                row7 = sheet.createRow(6); // 행이 없으면 생성
+            }
+            for (int i = 11; i <= 14; i++) { // L(11)부터 O(14)까지
+                Cell cellLtoO = row7.createCell(i);
+                cellLtoO.setCellValue(companyCode); // companyCode
+            }
 
-    	               // C14:E14 -> "P-4I4CD2-1004"
-    	               for (int i = 2; i <= 4; i++) { // C(2)부터 E(4)까지
-    	                   Cell cellCtoE = dataRow.createCell(i);
-    	                   cellCtoE.setCellValue(prodId); //제품 식별코드
-    	               }
+            // C14:E14에 prodId 삽입
+            Row dataRow = sheet.getRow(13); // 14번째 행 (0부터 시작)
+            if (dataRow == null) {
+                dataRow = sheet.createRow(13); // 행이 없으면 생성
+            }
+            for (int i = 2; i <= 4; i++) { // C(2)부터 E(4)까지
+                Cell cellCtoE = dataRow.createCell(i);
+                cellCtoE.setCellValue(prodId); // 제품 식별코드
+            }
 
-    	               // F14:G14 -> "갤럭시북"
-    	               for (int i = 5; i <= 6; i++) { // F(5)부터 G(6)까지
-    	                   Cell cellFtoG = dataRow.createCell(i);
-    	                   cellFtoG.setCellValue("갤럭시북"); //품목명
-    	               }
+            // F14:G14에 prodName 삽입
+            for (int i = 5; i <= 6; i++) { // F(5)부터 G(6)까지
+                Cell cellFtoG = dataRow.createCell(i);
+                cellFtoG.setCellValue(prodName); // 품목명
+            }
 
-    	               // J14:L14 -> "23"
-    	               for (int i = 9; i <= 11; i++) { // J(9)부터 L(11)까지
-    	                   Cell cellJtoL = dataRow.createCell(i);
-    	                   cellJtoL.setCellValue(23); // 입고 수량
-    	               }
+            // H14:L14에 prodCategory 삽입
+            for (int i = 7; i <= 11; i++) { // H(7)부터 L(11)까지
+                Cell cellHtoL = dataRow.createCell(i);
+                cellHtoL.setCellValue(prodCategory); // 제품 카테고리
+            }
 
-    	               // M14:N14 -> "500"
-    	               for (int i = 12; i <= 13; i++) { // M(12)부터 N(13)까지
-    	                   Cell cellMtoN = dataRow.createCell(i);
-    	                   cellMtoN.setCellValue(500); // 가격(단가)
-    	               }
+            // M14:N14에 rcvQuantity 삽입
+            for (int i = 12; i <= 13; i++) { // M(12)부터 N(13)까지
+                Cell cellMtoN = dataRow.createCell(i);
+                cellMtoN.setCellValue(rcvQuantity); // 입고 수량
+            }
 
-    	               // O14:R14 -> "23"
-    	               for (int i = 14; i <= 17; i++) { // O(14)부터 R(17)까지
-    	                   Cell cellOtoR = dataRow.createCell(i);
-    	                   cellOtoR.setCellValue(23); //비고
-    	               }
+            // O14:R14에 rcvPrice 삽입
+            for (int i = 14; i <= 17; i++) { // O(14)부터 R(17)까지
+                Cell cellOtoR = dataRow.createCell(i);
+                cellOtoR.setCellValue(rcvPrice); // 가격(단가)
+            }
 
-    	               // 인쇄 영역 설정: A1:W31
-    	               int sheetIndex = workbook.getSheetIndex(sheet);
-    	               workbook.setPrintArea(sheetIndex, 0, 22, 0, 30); // A1부터 W31까지 (열: 0~22, 행: 0~30)
+            // S14:U14에 rcvRemarks 삽입
+            for (int i = 18; i <= 20; i++) { // S(18)부터 U(20)까지
+                Cell cellStoU = dataRow.createCell(i);
+                cellStoU.setCellValue(rcvRemarks); // 비고
+            }
 
-    	               // 엑셀 파일 저장
-    	               try (FileOutputStream fos = new FileOutputStream(filePath)) {
-    	                   workbook.write(fos);
-    	               }
+            // 인쇄 영역 설정: A1:W31
+            int sheetIndex = workbook.getSheetIndex(sheet);
+            workbook.setPrintArea(sheetIndex, 0, 22, 0, 30); // A1부터 W31까지 (열: 0~22, 행: 0~30)
 
-    	               // 응답 설정
-    	               response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    	               String encodedFileName = URLEncoder.encode("입고명세서.xlsx", "UTF-8").replaceAll("\\+", "%20");
-    	               response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+            // 엑셀 파일 저장
+            try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                workbook.write(fos);
+            }
 
-    	               // 파일 다운로드
-    	               try (OutputStream out = response.getOutputStream()) {
-    	                   workbook.write(out);
-    	               }
-    	           } catch (IOException e) {
-    	               e.printStackTrace();
-    	               // 예외 처리
-    	           }
-    	       }
-    
+            // 응답 설정
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            String encodedFileName = URLEncoder.encode("입고명세서.xlsx", "UTF-8").replaceAll("\\+", "%20");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+
+            // 파일 다운로드
+            try (OutputStream out = response.getOutputStream()) {
+                workbook.write(out);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 예외 처리
+        }  
+
+    }
     
 }
 

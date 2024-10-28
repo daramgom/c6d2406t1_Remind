@@ -6,7 +6,7 @@ pageEncoding="UTF-8"%>
 <html lang="kr">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>출고요청</title>
+    <title>아이티윌 팀프로젝트</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
@@ -36,16 +36,27 @@ pageEncoding="UTF-8"%>
         },
       });
     </script>
-    
+        <link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
 <style>
+
+	shpButton {
+	
+
+		color: #6861ce;
+
+	} 
+	
+	
+	}
+
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         background-color: #e9ecef;
         margin: 0;
-        /* padding: 20px; */
+        padding: 20px;
     }
     header {
-        background: #001f3f; 
+        background: #001f3f; /* 남색 */
         padding: 10px;
         display: flex;
         justify-content: space-between;
@@ -205,22 +216,20 @@ pageEncoding="UTF-8"%>
     
     <!-- 발주관리번호 -->
        <style>
-        .dropdown1 {
+        .dropdown {
             display: none;
             border: 1px solid #ccc;
             max-height: 150px;
             overflow-y: auto;
-           position: relative;
-		    background: white;
-		    top: 0px;
-		    width: 240px;
+            position: absolute;
+            background: white;
             z-index: 1000;
         }
-        .dropdown1 div {
+        .dropdown div {
             padding: 8px;
             cursor: pointer;
         }
-        .dropdown1 div:hover {
+        .dropdown div:hover {
             background-color: #f0f0f0;
         }
     </style>
@@ -237,15 +246,6 @@ pageEncoding="UTF-8"%>
     <link rel="stylesheet" href="./resources/css/demo.css" />
   </head>
   <body>
-      <c:if test="${empty sessionScope.id}">
-	  <c:redirect url="/login"/>
-	  </c:if>
-
-	 <c:if test="${sessionScope.member_code != '1'}">
-	 <c:redirect url="/cmain"/>
-	 </c:if>
-	
-  
     <div class="wrapper">
 		<!-- Header -->
 		<jsp:include page="/resources/inc/header.jsp" />
@@ -255,223 +255,269 @@ pageEncoding="UTF-8"%>
 		
         <div class="container">
           <div class="page-inner">
-          
-        
 
 <main>
-    <h2>출고 요청</h2>
-    <form action="/shpRQ" id="ShippingForm" method="post" onsubmit="return confirmSubmission()">
-        <div class="form-container">     
-                        <div class="form-group">
-                <label for="shp_manager_id">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
-                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 요청자
-                </label>
-                <div class="underline-container">
-                    <input type="text" id="shp_manager_id" class="underline-input" placeholder="홍길동" required name="shp_manager_id" value="${sessionScope.name }" readonly="readonly">
-                    <div class="custom-underline"></div>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <label for="shp_supervisor_id">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
-                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 승인자
-                </label>
-                <div class="underline-container">
-                    <input type="text" id="shp_supervisor_id" class="underline-input" placeholder="홍길동" required name="shp_supervisor_id" value="승인자"  readonly="readonly">
-                    <div class="custom-underline"></div>
-                </div>
+<h2>출고 처리</h2>
+<form action="/shpRQ" id="ShippingForm" method="post" onsubmit="return confirmSubmission()">
+    <div class="form-container">
+        <div class="form-group">
+            <label for="shp_manager_id">
+                <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                     style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 처리자
+            </label>
+            <div class="underline-container">
+                <input type="text" id="shp_manager_id" class="underline-input" placeholder="홍길동" required name="shp_manager_id" value="${sessionScope.name }" readonly="readonly">
+                <div class="custom-underline"></div>
             </div>
-            
-                        <div class="form-group">
-                <label for="ord_manager_id">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
-                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 요청자
-                </label>
-                <div class="underline-container">
-                    <input type="text" id="ord_manager_id" class="underline-input" placeholder="홍길동" required name="ord_manager_id" readonly="readonly">
-                    <div class="custom-underline"></div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="ord_supervisor_id">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
-                         style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 승인자
-                </label>
-                <div class="underline-container">
-                    <input type="text" id="ord_supervisor_id" class="underline-input" placeholder="홍길동" required name="ord_supervisor_id" readonly="readonly">
-                    <div class="custom-underline"></div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="ord_number">발주 관리 번호</label>
-                <div style="display: flex; align-items: center; position:relative;">
-                    <input type="text" id="ord_number" placeholder="발주 관리 번호 입력" required onfocus="showOrderList()" oninput="fetchOrderData()" name="ord_number">
-                    <button type="button" onclick="submitOrderNumber()">조회</button>
-                </div>
-                <div class="dropdown1" id="orderDropdown1"></div>
-            </div>
-
-            <div class="form-group">
-                <label for="prod_id">제품 식별코드</label>
-                <input type="text" id="prod_id" placeholder="제품 식별 코드를 입력" required name="prod_id">
-            </div>
-
-            <div class="form-group">
-                <label for="prod_category">카테고리</label>
-                <input type="text" id="prod_category" required name="prod_category">
-            </div>
-
-            <div class="form-group">
-                <label for="prod_name">품목명</label>
-                <input type="text" id="prod_name" required name="prod_name">
-            </div>
-
-            <div class="form-group">
-                <label for="company_code">거래처</label>
-                <input type="text" id="company_code" required name="company_code">
-            </div>
-
-            <div class="form-group">
-                <label for="shp_quantity">출고 수량</label>
-                <input type="number" id="shp_quantity" required name="shp_quantity">
-            </div>
-
-            <div class="form-group">
-                <label for="shp_price">가격(단가)</label>
-                <input type="text" id="shp_price" required name="shp_price">
-            </div>
-
-            <div class="form-group">
-                <label for="shp_date">출고 날짜</label>
-                <input type="date" id="shp_date" required name="shp_date">
-            </div>
-
-            <!-- 창고 번호 및 이름 입력 필드 -->
-            <div class="form-group">
-                <label for="wh_number">창고 번호</label>
-                <input type="text" id="wh_number" placeholder="창고 번호 입력" required name="wh_number">
-            </div>
-
-            <div class="form-group">
-                <label for="wh_name">창고 이름</label>
-                <input type="text" id="wh_name" placeholder="창고 이름 입력" required name="wh_name">
-            </div>
-
-            <!-- 비고 필드, 마지막으로 이동 -->
-            <div class="form-group">
-                <label for="shp_remarks">비고</label>
-                <textarea id="shp_remarks" placeholder="전달할 내용..." required name="shp_remarks"></textarea>
-            </div>
- <c:if test="${sessionScope.id == 'user1'}">
-            <button class="btn btn-primary" type="submit">출고 요청</button>
- </c:if>
         </div>
-    </form>
+
+        <div class="form-group">
+            <label for="SHP_SUPERVISOR_ID">
+                <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                     style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 승인자
+            </label>
+            <div class="underline-container">
+                <select id="shp_supervisor_id" name="shp_supervisor_id" required="required">
+                    <option value="">선택하세요</option>
+                    <c:forEach var="r" items="${SsList }">
+                        <option value="${r.member_id}"> ${r.member_name} / ${r.department_name} / ${r.common_status} / ${r.member_tel }</option>
+                    </c:forEach>
+                </select>
+                <div class="custom-underline"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="cord_number">거래처 발주 관리 번호</label>
+            <div style="display: flex; align-items: center;">
+                <input type="text" id="cord_number" placeholder="발주 관리 번호 입력" required onfocus="showCorderList()" oninput="fetchCorderData()" name="cord_number">
+                <button type="button" onclick="submitCorderNumber()">조회</button>
+            </div>
+            <div class="dropdown" id="corderDropdown"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="prod_id">제품 식별코드</label>
+            <input type="text" id="prod_id" placeholder="제품 식별 코드를 입력" required name="prod_id">
+        </div>
+
+        <div class="form-group">
+            <label for="prod_category">카테고리</label>
+            <input type="text" id="prod_category" required name="prod_category">
+        </div>
+
+        <div class="form-group">
+            <label for="prod_name">품목명</label>
+            <input type="text" id="prod_name" required name="prod_name">
+        </div>
+
+        <div class="form-group">
+            <label for="company_code">거래처</label>
+            <input type="text" id="company_code" required name="company_code">
+        </div>
+
+        <div class="form-group">
+            <label for="shp_quantity">출고 수량</label>
+            <input type="number" id="shp_quantity" required name="shp_quantity" >
+        </div>
+
+        <div class="form-group">
+            <label for="shp_price">가격(단가)</label>
+            <input type="text" id="shp_price" required name="shp_price">
+        </div>
+
+        <div class="form-group">
+            <label for="cord_date">발주 날짜</label>
+            <input type="date" id="cord_date" required name="cord_date">
+        </div>
+
+        <div class="form-group">
+            <label for="shp_date">출고 날짜</label>
+            <input type="date" id="shp_date" required name="shp_date">
+        </div>
+
+        <div class="form-group">
+            <label for="wh_number">창고 번호</label>
+            <select id="wh_number" name="wh_number" required="required" max="prod_qty" >
+                <option value="">창고를 선택하세요</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="shp_remarks">비고</label>
+            <textarea id="shp_remarks" placeholder="전달할 내용..." required name="shp_remarks"></textarea>
+        </div>
+
+            <button class="shpButton" type="submit">출고 요청</button>
+
+    </div>
+</form>
+
+<jsp:include page="/resources/inc/footer.jsp" />
+
     
-       
-   </div>
-	<!-- Footer -->
-	<jsp:include page="/resources/inc/footer.jsp" />
-	</div>
     
+    <!-- 거래처 발주관리번호 셀렉트박스,자동채우기 -->
+    
+   <script>
+    var prodId;
+    var prodQty;
 
-</main>
-    <script>
-        const orderNumbers = ['ORD-2024-0001', 'ORD-2024-0005', 'ORD-2024-0006', 'ORD004']; // 예시 발주 번호 목록
+    const corderNumbers = ['CORD-2024-0001', 'CORD-2024-0002', 'CORD-2024-0003', 'CORD-2024-0004'];
 
-        function showOrderList() {
-            const dropdown = document.getElementById('orderDropdown1');
-            dropdown.innerHTML = ''; // 기존 목록 초기화
-            dropdown.style.display = 'block'; // 드롭다운 표시
-            
-            orderNumbers.forEach(order => {
-                const div = document.createElement('div');
-                div.textContent = order;
-                div.onclick = () => selectOrder(order); // 클릭 시 발주 번호 선택
-                dropdown.appendChild(div);
-            });
-        }
+    function showCorderList() {
+        const dropdown = document.getElementById('corderDropdown');
+        dropdown.innerHTML = '';
+        dropdown.style.display = 'block';
 
-        function selectOrder(order) {
-            document.getElementById('ord_number').value = order; // 입력란에 선택한 발주 번호 넣기
-            document.getElementById('orderDropdown1').style.display = 'none'; // 드롭다운 숨기기
-            fetchProductByOrderNumber(order); // 발주번호에 대한 제품 정보 요청
-        }
-
-        function fetchProductByOrderNumber(orderNumber) {
-            return fetch(`/getShippingProductByOrderNumber?ord_number=` + orderNumber)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('prod_id').value = data.prod_id; // 제품 식별 코드 자동 입력
-                    document.getElementById('prod_category').value = data.prod_category; // 제품 카테고리 자동 입력
-                    document.getElementById('company_code').value = data.company_code; // 거래처 자동 입력
-                    document.getElementById('prod_name').value = data.prod_name; // 품목명 자동 입력
-                    document.getElementById('shp_price').value = data.ord_price; // 가격(단가) 자동 입력
-                    
-                    // 발주 승인자 및 요청자 이름 자동 입력
-                    document.getElementById('ord_supervisor_id').value = data.ord_supervisor_name; // 발주 승인자 이름 자동 입력
-                    document.getElementById('ord_manager_id').value = data.ord_manager_name; // 발주 요청자 이름 자동 입력
-                    
-                    // 창고 번호 및 이름 자동 입력
-                    document.getElementById('wh_number').value = data.wh_number; // 창고 번호 자동 입력
-                    document.getElementById('wh_name').value = data.wh_name; // 창고 이름 자동 입력
-                    
-                    // 오늘 날짜 자동 입력
-                    document.getElementById('shp_date').value = new Date().toISOString().split('T')[0]; // 오늘 날짜 자동입력
-                })
-                .catch(error => console.error('Error fetching product details:', error));
-        }
-
-        function fetchOrderData() {
-            const input = document.getElementById('ord_number').value.toLowerCase();
-            const dropdown = document.getElementById('orderDropdown1');
-            dropdown.innerHTML = ''; // 기존 목록 초기화
-            
-            const filteredOrders = orderNumbers.filter(order => order.toLowerCase().includes(input));
-            filteredOrders.forEach(order => {
-                const div = document.createElement('div');
-                div.textContent = order;
-                div.onclick = () => selectOrder(order);
-                dropdown.appendChild(div);
-            });
-
-            // 필터링된 결과가 없으면 드롭다운 숨김
-            dropdown.style.display = filteredOrders.length > 0 ? 'block' : 'none';
-        }
-
-        // 클릭 시 드롭다운 숨기기 (입력 외부 클릭 시)
-        document.addEventListener('click', (event) => {
-            const dropdown = document.getElementById('orderDropdown1');
-            const input = document.getElementById('ord_number');
-            if (!input.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.style.display = 'none';
-            }
+        corderNumbers.forEach(corder => {
+            const div = document.createElement('div');
+            div.textContent = corder;
+            div.onclick = () => selectOrder(corder);
+            dropdown.appendChild(div);
         });
-        
-        function submitOrderNumber() {
-            const ord_number = document.getElementById('ord_number').value;
-            if (ord_number) {
-                fetchProductByOrderNumber(ord_number)
-                    .then(() => {
-                        // 제품 정보를 성공적으로 가져온 후 폼 제출
-                        document.getElementById('ShippingForm').submit();
-                    });
-            } else {
-                alert("발주 관리번호를 입력하세요.");
-            }
+    }
+
+    function selectOrder(corder) {
+        document.getElementById('cord_number').value = corder;
+        document.getElementById('corderDropdown').style.display = 'none';
+        fetchProductByCorderNumber(corder);
+    }
+
+    function fetchProductByCorderNumber(corderNumber) {
+        return fetch(`/getShippingProductByCorderNumber?cord_number=` + corderNumber)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('prod_id').value = data.cprod_id;
+                prodId = data.cprod_id;
+                document.getElementById('prod_category').value = data.cprod_category;
+                document.getElementById('company_code').value = data.ccompany_code;
+                document.getElementById('prod_name').value = data.cprod_name;
+                document.getElementById('shp_price').value = data.cord_price;
+
+                document.getElementById('wh_number').value = data.wh_number;
+
+                const cordDate = new Date(data.cord_date);
+                const formattedCordDate = cordDate.toISOString().split('T')[0];
+                document.getElementById('cord_date').value = formattedCordDate;
+
+                document.getElementById('shp_date').value = new Date().toISOString().split('T')[0];
+                
+               test(prodId);
+            })
+            .catch(error => {
+                console.error('Error fetching product details:', error);
+                alert("해당 발주 번호에 대한 정보를 불러왔습니다.");
+            });
+    }
+
+    function fetchCorderData() {
+        const input = document.getElementById('cord_number').value.toLowerCase();
+        const dropdown = document.getElementById('corderDropdown');
+        dropdown.innerHTML = '';
+
+        const filteredCorders = corderNumbers.filter(corder => corder.toLowerCase().includes(input));
+        filteredCorders.forEach(corder => {
+            const div = document.createElement('div');
+            div.textContent = corder;
+            div.onclick = () => selectOrder(corder);
+            dropdown.appendChild(div);
+        });
+
+        dropdown.style.display = filteredCorders.length > 0 ? 'block' : 'none';
+    }
+
+    document.addEventListener('click', (event) => {
+        const dropdown = document.getElementById('corderDropdown');
+        const input = document.getElementById('cord_number');
+        if (!input.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.style.display = 'none';
         }
-    </script>
+    });
+
+    function submitCorderNumber() {
+        const cord_number = document.getElementById('cord_number').value;
+        if (cord_number) {
+            fetchProductByCorderNumber(cord_number);
+        } else {
+            alert("발주 관리번호를 입력하세요.");
+        }
+    }
+
+    function confirmSubmission() {
+        const confirmation = confirm("확인을 누르면 출고 요청이 완료됩니다.");
+        return confirmation;
+    }
+
+    function test(prodId) {
+        return fetch(`/getwhNumberFromStock?prodId=` + prodId)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                
+                var whNumberSelect = document.getElementById("wh_number");
+                whNumberSelect.innerHTML = '';
+
+                var defaultOption = document.createElement("option");
+                defaultOption.value = "";
+                defaultOption.selected = true;
+                defaultOption.textContent = "창고를 선택하세요";
+                whNumberSelect.appendChild(defaultOption);
+                
+                // data가 배열일 경우
+                data.forEach(function(item) {
+                    // option 요소 생성
+                    var option = document.createElement("option");
+                    option.value = item.wh_number; // wh_number 값 사용
+                    option.textContent = item.wh_number + ' / ' + item.prod_qty; // prod_qty 값 사용
+                    
+                    // select 박스에 추가
+                    whNumberSelect.appendChild(option);
+                });
+
+                // change 이벤트 추가
+                whNumberSelect.addEventListener('change', function() {
+                    var selectedValue = this.value; // 선택된 값
+                    var selectedItem = data.find(item => item.wh_number == selectedValue);
+                    if (selectedItem) {
+                        test2(selectedItem.prod_qty); // 원하는 함수 호출
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
     
-    <script type="text/javascript">
-        function confirmSubmission() {
-            const confirmation = confirm("확인을 누르면 출고 요청이 완료됩니다.");
-            return confirmation; // 확인하면 true, 아니면 false
+    
+    
+    function test2(prod_qty) {
+        console.log("선택된 수량:", prod_qty);
+        
+        // 출고 수량 입력 요소
+        var quantityInput = document.getElementById("shp_quantity");
+        
+        if (quantityInput) {
+            quantityInput.max = prod_qty; // max 속성에 선택된 수량 설정
+            quantityInput.value = ""; // 기존 입력값 초기화 (선택된 수량이 변경되면 초기화)
         }
-    </script>
+    }
+
+    
+</script>
+
+
 
 
 </body>

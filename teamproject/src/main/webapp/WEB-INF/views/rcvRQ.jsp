@@ -19,6 +19,7 @@ pageEncoding="UTF-8"%>
 
     <!-- Fonts and icons -->
     <script src="./resources/js/plugin/webfont/webfont.min.js"></script>
+    
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -36,6 +37,7 @@ pageEncoding="UTF-8"%>
         },
       });
     </script>
+    <link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
     
 <style>
     body {
@@ -45,7 +47,7 @@ pageEncoding="UTF-8"%>
        /*  padding: 20px; */
     }
     header {
-        background: #001f3f; /* 남색 */
+        background: #6861ce; /* 남색 */
         padding: 10px;
         display: flex;
         justify-content: space-between;
@@ -64,9 +66,9 @@ pageEncoding="UTF-8"%>
         margin-right: auto; /* 가운데 정렬 */
     }
     h2 {
-        border-bottom: 2px solid #001f3f; /* 남색 */
+        border-bottom: 2px solid #CCCCCC; /* 남색 */
         padding-bottom: 10px;
-        color: #001f3f; /* 남색 */
+        color: #CCCCCC; /* 남색 */
         font-size: 24px; /* 제목 크기 조정 */
     }
     .form-container {
@@ -98,7 +100,7 @@ pageEncoding="UTF-8"%>
         grid-column: span 2; /* 버튼을 두 열에 걸치게 함 */
         margin-top: 20px;
         padding: 10px;
-        background: #001f3f; /* 남색 */
+        background: #6861ce; /* 남색 */
         color: white;
         border: none;
         border-radius: 4px;
@@ -128,7 +130,7 @@ pageEncoding="UTF-8"%>
         bottom: 0; /* 아래에 위치 */
         left: 0; /* 왼쪽에 위치 */
         height: 2px; /* 두께 설정 */
-        background-color: navy; /* 남색 */
+        background-color: #CCCCCC; /* 남색 */
         width: calc(5ch); /* 3글자 길이만큼 설정 */
     }
 </style>
@@ -261,6 +263,29 @@ pageEncoding="UTF-8"%>
         <div class="container">
           <div class="page-inner">
           
+            <div class="page-header">
+              <h3 class="fw-bold mb-3">입고관리</h3>
+              <ul class="breadcrumbs mb-3">
+                <li class="nav-home">
+                  <a href="#">
+                    <i class="icon-home"></i>
+                  </a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">입고관리</a>
+                </li>
+                <li class="separator">
+                  <i class="icon-arrow-right"></i>
+                </li>
+                <li class="nav-item">
+                  <a href="#">입고요청</a>
+                </li>
+              </ul>
+            </div>
+          
           
           
 <main>
@@ -283,7 +308,7 @@ pageEncoding="UTF-8"%>
                     <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고 승인자
                 </label>
-                <div class="underline-container">
+                
                    <select id="rcv_supervisor_id" name="rcv_supervisor_id" required="required">
 			<option value="" >선택하세요</option>
 			<c:forEach var="r" items="${RsList }">
@@ -291,7 +316,7 @@ pageEncoding="UTF-8"%>
 			</c:forEach>
 		   </select>
                     <div class="custom-underline"></div>
-                </div>
+               
             </div>
             
             <div class="form-group">
@@ -377,9 +402,9 @@ pageEncoding="UTF-8"%>
                 <textarea id="rcv_remarks" placeholder="전달 할 '내용' ..." required name="rcv_remarks"></textarea>
             </div>
             
- <c:if test="${ sessionScope.permission_id == '01'}">
-            <button class="btn btn-primary" type="submit">입고 요청</button>
- </c:if>
+
+            <button class="button" type="submit">입고 요청</button>
+
         </div>
     </form>
     

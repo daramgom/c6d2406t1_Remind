@@ -226,14 +226,13 @@ pageEncoding="UTF-8"%>
     <div class="container">
 		<div class="page-inner">
 			<div class="page-header">
-				<h3 class="fw-bold mb-3">발주관리</h3>
+				<h3 class="fw-bold mb-3">발주 관리</h3>
 				<ul class="breadcrumbs mb-3">
-					<li class="nav-home"><a href="#"> <i class="icon-home"></i>
-					</a></li>
+					<li class="nav-home"> <i class="icon-home"></i>
+					</li>
+					
 					<li class="separator"><i class="icon-arrow-right"></i></li>
-					<li class="nav-item"><a href="#">발주관리</a></li>
-					<li class="separator"><i class="icon-arrow-right"></i></li>
-					<li class="nav-item"><a href="#">발주목록</a></li>
+					<li class="nav-item">발주 요청 목록</li>
 				</ul>
 			</div>
 			
@@ -493,7 +492,7 @@ $(document).ready(function() {
           
           
           <div style="display: flex; gap: 10px;">
-           <label>제품식별코드 / 제품 이름 / 제품 카테고리 / 제품 브랜드 / 거래처코드 / 거래처 이름 / 거래처 전화번호</label>
+           <label>제품식별코드 / 제품 이름 / 제품 카테고리 / 제품 브랜드 </label>
           </div>
           <div style="display: flex; gap: 10px;">
            <!-- <input type="text" id="modalProdId" name="prod_id" class="form-control" style="width:200px;" /><br>

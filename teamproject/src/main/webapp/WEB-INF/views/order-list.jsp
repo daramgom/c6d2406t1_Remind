@@ -40,7 +40,7 @@ pageEncoding="UTF-8"%>
           "Font Awesome 5 Brands",
           "simple-line-icons",
         ],
-        urls: ["./resources/css/fonts.min.css"],
+        urls: ["/resources/css/fonts.min.css"],
       },
       active: function () {
         sessionStorage.fonts = true;
@@ -228,12 +228,12 @@ pageEncoding="UTF-8"%>
 			<div class="page-header">
 				<h3 class="fw-bold mb-3">발주관리</h3>
 				<ul class="breadcrumbs mb-3">
-					<li class="nav-home"><a href="#"> <i class="icon-home"></i>
-					</a></li>
+					<li class="nav-home"> <i class="icon-home"></i>
+					</li>
 					<li class="separator"><i class="icon-arrow-right"></i></li>
-					<li class="nav-item"><a href="#">발주관리</a></li>
+					<li class="nav-item">발주관리</li>
 					<li class="separator"><i class="icon-arrow-right"></i></li>
-					<li class="nav-item"><a href="#">발주목록</a></li>
+					<li class="nav-item">발주목록</li>
 				</ul>
 			</div>
 			
@@ -242,7 +242,10 @@ pageEncoding="UTF-8"%>
 			    margin-right: 20px;
 			    width:100%;">
 			<div class="container">
+			
  				<div class="table-responsive">
+ 				
+ 				
 	 				<div id="basic-datatables_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
 	        		<h1>발주 목록</h1>
 	        		<hr>
@@ -403,7 +406,11 @@ pageEncoding="UTF-8"%>
 				
 			</div>
 		</div>
+		
+		
+		
 	</div>
+	
 </div>
 
 
@@ -535,12 +542,13 @@ $(document).ready(function() {
           <div style="display: flex; gap: 10px;">
            <!-- <input type="text" id="modalProdId" name="prod_id" class="form-control" style="width:200px;" /><br>
            <input type="text" id="modalCompanyCode" name="company_code" class="form-control" style="width:200px;" /><br> -->
-           <select id="prod_id" name="prod_id" class="form-select form-control" required="required" style="width:600px;">
+           <select id="prod_id" name="prod_id"  class="form-select form-control" required="required" style="width:600px;">
 			<!-- <option value="" >목록에서 값을 확인 후 선택하세요</option> -->
 			<c:forEach var="p" items="${pListVO }">
 				<option id="modalProdId" value="${p.prod_id }">${p.prod_id} / ${p.prod_name } / ${p.prod_category } / ${p.prod_brand } / ${p.company_code } / ${p.company_name } / ${p.company_tel }</option>
 			</c:forEach>
 		</select>
+			<%-- <input id="selectedProdId" type="text" value="${p.prod_id} " name="prod_id" /> --%>
           </div>
           
           <div style="display: flex; gap: 10px;">
@@ -661,7 +669,9 @@ function openModal(ord_count, ord_number, common_status, ord_status,
         var selectedValue = this.value;
         // console.log으로 출력
         console.log('선택된 값:', selectedValue);
+        document.getElementById('selectedProdId').value = selectedValue; // input에 값 설정
     	});
+    
         document.getElementById('wh_number').addEventListener('change', function() {
             // 선택된 옵션의 value를 가져옴
             var selectedValue2 = this.value;

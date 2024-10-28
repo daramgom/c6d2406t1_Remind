@@ -200,6 +200,21 @@ public class OrderController {
     	return "/order-list";
     }
     
+    @PostMapping(value = "/updateOrder05")
+    public String updateOrder05(OrdersVO ordersVO) {
+    	logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ordersVO"+ordersVO);
+    	orderService.updateOrder05(ordersVO);
+    	
+    	return "/order-list02";
+    }
+    
+    @PostMapping(value = "/updateOrder04")
+    public String updateOrder04(OrdersVO ordersVO) {
+    	orderService.updateOrder04(ordersVO);
+    	
+    	return "/order-list02";
+    }
+    
     // 입고요청으로
     @GetMapping("/processRcvRQ")
     public String processRcvRQ(@RequestParam("ord_number") String ord_number, Model model) {

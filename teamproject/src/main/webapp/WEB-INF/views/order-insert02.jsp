@@ -166,14 +166,13 @@ WebFont.load({
     	<div class="container">
         	<div class="page-inner">
         		<div class="page-header">
-					<h3 class="fw-bold mb-3">발주관리</h3>
+					<h3 class="fw-bold mb-3">발주 요청</h3>
 					<ul class="breadcrumbs mb-3">
-						<li class="nav-home"><a href="#"> <i class="icon-home"></i>
-						</a></li>
+						<li class="nav-home"> <i class="icon-home"></i>
+						</li>
+						
 						<li class="separator"><i class="icon-arrow-right"></i></li>
-						<li class="nav-item"><a href="#">발주관리</a></li>
-						<li class="separator"><i class="icon-arrow-right"></i></li>
-						<li class="nav-item"><a href="#">발주요청</a></li>
+						<li class="nav-item">발주 요청</li>
 					</ul>
 				</div>
 

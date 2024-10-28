@@ -701,7 +701,7 @@ function renderButtons(ord_status) {
         buttonContainer.innerHTML += '<button type="button" disabled="disabled" class="btn btn-default">요청</button>';
         // 세션 로그인 아이디 == 발주자만 가능
         if('${userId}' === ordManagerId){
-	        buttonContainer.innerHTML += '<button id="updateBtn" class="btn btn-success">수정</button>';
+	        buttonContainer.innerHTML += '<button id="updateBtn" class="btn btn-secondary">수정</button>';
 	        buttonContainer.innerHTML += '<button id="deleteBtn" class="btn btn-danger">삭제</button>';
         }
         // 승인자만 가능

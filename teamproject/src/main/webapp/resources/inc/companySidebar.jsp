@@ -36,7 +36,7 @@
 				<li class="nav-section"><span class="sidebar-mini-icon">
 						<i class="fa fa-ellipsis-h"></i>
 				</span>
-					<h4 class="text-section">재고 관리 시스템 메뉴</h4></li>
+					<h4 class="text-section">발주 관리 (거래처)</h4></li>
 				<li class="nav-item"><a href="/order-insert02" id="comOrdMenu"> 
 						<i class="fas fa-shipping-fast"></i>
 						<p>발주 요청</p>

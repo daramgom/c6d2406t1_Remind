@@ -46,7 +46,7 @@ WebFont.load({
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #e9ecef;
       margin: 0;
-      padding: 20px;
+      padding: 0px;
   }
   header {
       background: #001f3f; /* 남색 */
@@ -166,7 +166,7 @@ WebFont.load({
     	<div class="container">
         	<div class="page-inner">
         		<div class="page-header">
-					<h3 class="fw-bold mb-3">발주 요청</h3>
+					<h3 class="fw-bold mb-3">발주 관리 (거래처)</h3>
 					<ul class="breadcrumbs mb-3">
 						<li class="nav-home"> <i class="icon-home"></i>
 						</li>

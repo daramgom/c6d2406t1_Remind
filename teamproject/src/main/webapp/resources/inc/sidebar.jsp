@@ -38,7 +38,7 @@
 					<h4 class="text-section">재고 관리 시스템 메뉴</h4></li>
 				<li class="nav-item"><a data-bs-toggle="collapse" href="#orderMenu">
 						<i class="fas fa-clipboard-list"></i>
-						<p>발주관리</p> <span class="caret"></span>
+						<p>발주 관리</p> <span class="caret"></span>
 				</a>
 					<div class="collapse" id="orderMenu">
 						<ul class="nav nav-collapse">

@@ -112,7 +112,7 @@
 						<div class="card w-100">
 							<div class="card-header" style="display: flex; justify-content: space-between;align-items: center;">
 								<div class="card-title">회원목록</div>
-								<form action="adminMemberList" method="get"  id="searchForm">
+								<form action="/admin/MemberList" method="get"  id="searchForm">
 								    <input type="text" name="keyword" class="form-control form-control-sm" placeholder="이름 검색">
 								</form>
 							</div>

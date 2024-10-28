@@ -6,7 +6,7 @@
 <html lang="kr">
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>아이티윌 팀프로젝트</title>
+<title>출고 요청 목록</title>
 <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
 	name="viewport" />
 <link rel="icon" href="./resources/img/kaiadmin/favicon.ico"
@@ -48,9 +48,18 @@
         }
     </script> -->
 
-
+    <link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
 <!-- 모달 -->
 <style>
+
+
+	#tableCORD thead th {
+		background-color: #6861ce !important;
+		color: white;
+	} 
+	
+
+
 .modal-content {
 	background-color: #fefefe;
 	margin: 5% auto;
@@ -403,7 +412,7 @@ button:hover {
 				<div class="page-inner">
 
 
-<h1>거래처 요청 목록</h1>
+<h1>출고 요청 목록</h1>
 
 <div class="form-container1">
     <form action="/searchCorders" method="GET" class="search-form">
@@ -417,7 +426,8 @@ button:hover {
     </form>
 </div>
 
-<table>
+<table id = "tableCORD">
+<thead>
     <tr>
         <th>번호</th>
         <th>발주 요청자</th>
@@ -428,7 +438,24 @@ button:hover {
         <th>발주 날짜</th>
         <th>비고</th>
     </tr>
+  <thead>
 
+
+
+<tfoot>
+    <tr>
+        <th>번호</th>
+        <th>발주 요청자</th>
+        <th>거래처 발주 관리 번호</th>
+        <th>제품 ID</th>
+        <th>발주 수량</th>
+        <th>가격</th>
+        <th>발주 날짜</th>
+        <th>비고</th>
+    </tr>
+</tfoot>
+						
+ <tbody>
     <c:forEach var="item" items="${cordersList}" >
         <tr onclick="showCordersDetails('${item.cord_count}','${item.cord_manager_id}','${item.cord_number}','${item.cprod_id}',''${item.cord_quantity}','${item.cord_price}','${item.cord_date}','${item.cord_text}')">
             <td>${item.cord_count}</td>
@@ -442,7 +469,7 @@ button:hover {
         </tr>
     </c:forEach>
 </table>
-
+ </tbody>
 
 
 	<!-- Footer -->
@@ -450,6 +477,57 @@ button:hover {
 	</div>
 
 	
+	
+	
+	
+	<script>
+	
+	
+	
+	$(document).ready(function () {
+		
+		// 데이터테이블
+        $("#tableCORD").DataTable({
+        	pageLength: 10, // 기본 페이지 길이
+        	lengthMenu: [10, 20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
+        	initComplete: function () {
+        		var table = this.api();
+
+                // 필터를 적용할 열 인덱스 배열 (예: 두 번째 열과 세 번째 열)
+                var columnsToFilter = [0,1,2,3,4,5,6,7,8,9];
+
+                // 각 열에 대해 필터 추가
+                columnsToFilter.forEach(function (index) {
+                    var column = table.column(index); // 특정 열 선택
+	                var select = $(
+	                  '<select class="form-select"><option value=""></option></select>'
+                	)
+                	.appendTo($(column.footer()).empty())
+                	.on("change", function () {
+                    	var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                    column
+                    .search(val ? "^" + val + "$" : "", true, false)
+                    .draw();
+                	});
+
+                	column
+	                .data()
+	                .unique()
+	                .sort()
+	                .each(function (d, j){
+                		select.append(
+                    		'<option value="' + d + '">' + d + "</option>"
+                    	);
+                	});
+                  });
+                }
+            });
+     	// 데이터테이블
+	});
+	
+	
+	</script>
 
 
 

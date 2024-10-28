@@ -67,7 +67,7 @@
                m_supervisor.member_name AS shp_supervisor_name  -- 출고 승인자 이름
         FROM shipping_info s
         LEFT JOIN member m_requester ON s.shp_manager_id = m_requester.member_id  -- 출고 요청자 조인
-        LEFT JOIN member m_supervisor ON s.shp_supervisor_id = m_supervisor.member_name  -- 출고 승인자 조인
+        LEFT JOIN member m_supervisor ON s.shp_supervisor_id = m_supervisor.member_id  -- 출고 승인자 조인
     </select>
 
     <!-- 발주 정보 가져오기 -->
@@ -94,22 +94,26 @@
 
     <!-- 출고 요청 최종 수정(업데이트)하는 구문(출고 승인버튼) -->
     <update id="updateShipping" parameterType="com.itwillbs.domain.ShippingVO">
-        UPDATE shipping_info
+        UPDATE shipping_info s
+        INNER JOIN corders c ON c.cord_number = s.cord_number
         SET 
-            shp_manager_id = #{shp_manager_id},
-            shp_supervisor_id = #{shp_supervisor_id},
-            shp_number = #{shp_number},
-            prod_id = #{prod_id},
-            prod_name = #{prod_name},
-            prod_category = #{prod_category},
-            shp_quantity = #{shp_quantity},
-            shp_price = #{shp_price},
-            wh_number = #{wh_number},
-            company_code = #{company_code},
-            shp_date = #{shp_date},
-            cord_date = #{cord_date},
-            shp_remarks = #{shp_remarks},
-            shp_status = '02'  <!-- shp_status를 '02'로 설정 -->
+            s.shp_manager_id = #{shp_manager_id},
+            s.shp_supervisor_id = #{shp_supervisor_id},
+            s.shp_number = #{shp_number},
+            s.prod_id = #{prod_id},
+            s.prod_name = #{prod_name},
+            s.prod_category = #{prod_category},
+            s.shp_quantity = #{shp_quantity},
+            s.shp_price = #{shp_price},
+            s.wh_number = #{wh_number},
+            s.company_code = #{company_code},
+            s.shp_date = #{shp_date},
+            s.cord_date = #{cord_date},
+            s.shp_remarks = #{shp_remarks},
+            s.shp_status = '02',  <!-- shp_status를 '02'로 설정 -->
+            c.cord_status = '02',
+            c.cord_date_change = now() 
+            
         WHERE shp_number = #{shp_number}; <!-- 수정할 레코드를 식별하는 조건 -->
     </update>
     

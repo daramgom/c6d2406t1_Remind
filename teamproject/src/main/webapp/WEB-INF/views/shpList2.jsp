@@ -6,7 +6,7 @@
 <html lang="kr">
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<title>아이티윌 팀프로젝트</title>
+<title>출고처리 대기 목록</title>
 <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
 	name="viewport" />
 <link rel="icon" href="./resources/img/kaiadmin/favicon.ico"
@@ -31,6 +31,7 @@
         },
       });
     </script>
+        <link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
 
 <!-- <script>
         function fetchOrderDate() {
@@ -51,6 +52,14 @@
 
 <!-- 모달 -->
 <style>
+
+
+
+	#tableSHP thead th {
+		background-color: #6861ce !important;
+		color: white;
+	} 
+	
 .modal-content {
 	background-color: #fefefe;
 	margin: 5% auto;
@@ -145,7 +154,7 @@ body {
 /* 제목 스타일 */
 h2 {
 	color: #001f3f;
-	border-bottom: 2px solid #001f3f;
+	border-bottom: 2px solid #CCCCCC;
 	padding-bottom: 10px;
 }
 
@@ -196,13 +205,13 @@ td:first-child {
 
 /* 슬라이드 패널 스타일 */
 #slidePanel {
-	display: none;
+display: none;
 	position: fixed;
-	z-index: 1000;
+	z-index: 8000;
 	right: 0;
-	top: 95px;
+	top: 0px;
 	width: 740px;
-	height: calc(100% - 60px);
+	height: calc(100% - 0px);
 	background-color: #fff;
 	box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
 	transition: transform 0.3s ease;
@@ -259,7 +268,7 @@ input:focus, textarea:focus {
 /* 버튼 스타일 */
 button {
 	padding: 8px; /* 패딩 줄이기 */
-	background: #001f3f;
+	background: #6861ce;
 	color: white;
 	border: none;
 	border-radius: 4px;
@@ -292,7 +301,7 @@ button:hover {
 	bottom: 0;
 	left: 0;
 	height: 2px;
-	background-color: navy;
+	background-color: #CCCCCC;
 	width: calc(5ch);
 }
 
@@ -382,7 +391,7 @@ button:hover {
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>입고 대기 목록</title>
+<title>출고 처리 대기 목록</title>
 <!-- CSS Files -->
 <link rel="stylesheet" href="./resources/css/bootstrap.min.css" />
 <link rel="stylesheet" href="./resources/css/plugins.min.css" />
@@ -413,7 +422,7 @@ button:hover {
 
 <!-- 출고 요청 목록 -->
 <!-- 출고 요청 목록 -->
-<h1>출고 요청 목록</h1>
+<h1>출고 처리 대기 목록</h1>
 <div class="form-container1">
     <form action="/shpList2" method="GET" class="search-form">
         <label for="status">출고 상태:</label>
@@ -427,7 +436,8 @@ button:hover {
         <input type="submit" value="검색" class="search-button">
     </form>
 </div>
-<table>
+<table id = "tableSHP">
+<thead>
     <tr>
         <th>번호</th>
         <th>출고 요청자</th>
@@ -439,9 +449,27 @@ button:hover {
         <th>출고 날짜</th>
         <th>비고</th>
     </tr>
-
-    <c:forEach var="item" items="${shippingList}" varStatus="idx">
-        <tr onclick="showShippingDetails('${item.shp_manager_name}', '${item.shp_supervisor_id}', '${item.cord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}','${item.shp_manager_id}')">
+  </thead>
+  
+  
+  <tfoot>
+  
+      <tr>
+        <th>번호</th>
+        <th>출고 요청자</th>
+        <th>출고 관리 번호</th>
+        <th>제품 ID</th>
+        <th>품목명</th>
+        <th>출고 수량</th>
+        <th>출고 가격</th>
+        <th>출고 날짜</th>
+        <th>비고</th>
+    </tr>
+    
+	</tfoot>
+			<tbody>
+   <c:forEach var="item" items="${shippingList}" varStatus="idx">
+        <tr onclick="showShippingDetails('${item.shp_manager_name}', '${item.shp_supervisor_id}', '${item.cord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}','${item.shp_manager_id}','${item.shp_supervisor_name}')">
             <td>${item.shp_count}</td>
             <td>${item.shp_manager_name}</td>
             <td>${item.shp_number}</td>
@@ -454,6 +482,7 @@ button:hover {
         </tr>
     </c:forEach>
 </table>
+		<tbody>
 
 
 <!-- 출고 요청 슬라이드 패널 -->
@@ -639,13 +668,68 @@ button:hover {
 
 
 <script>
+
+$(document).ready(function () {
+	
+	// 데이터테이블
+    $("#tableSHP").DataTable({
+    	pageLength: 10, // 기본 페이지 길이
+    	lengthMenu: [10, 20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
+    	initComplete: function () {
+    		var table = this.api();
+
+            // 필터를 적용할 열 인덱스 배열 (예: 두 번째 열과 세 번째 열)
+            var columnsToFilter = [0,1,2,3,4,5,6,7,8,9];
+
+            // 각 열에 대해 필터 추가
+            columnsToFilter.forEach(function (index) {
+                var column = table.column(index); // 특정 열 선택
+                var select = $(
+                  '<select class="form-select"><option value=""></option></select>'
+            	)
+            	.appendTo($(column.footer()).empty())
+            	.on("change", function () {
+                	var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                column
+                .search(val ? "^" + val + "$" : "", true, false)
+                .draw();
+            	});
+
+            	column
+                .data()
+                .unique()
+                .sort()
+                .each(function (d, j){
+            		select.append(
+                		'<option value="' + d + '">' + d + "</option>"
+                	);
+            	});
+              });
+            }
+        });
+ 	// 데이터테이블
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * 출고 세부 정보를 표시하는 함수
  */
-function showShippingDetails(shpManagerName, shpSupervisorName, cordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks,shp_manager_id) {
+function showShippingDetails(shpManagerName, shpSupervisorName, cordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks,shp_manager_id, shp_supervisor_name) {
     document.getElementById('slidePanel').classList.add('open');
     document.getElementById('shpManagerId').value = shpManagerName;
-    document.getElementById('shpSupervisorId').value = shpSupervisorName;
+    document.getElementById('shpSupervisorId').value = shp_supervisor_name;
     document.getElementById('cordNumber').value = cordNumber;
     document.getElementById('shpNumber').value = shpNumber;
 /*     document.getElementById('prodCategory').value = prodCategory; */

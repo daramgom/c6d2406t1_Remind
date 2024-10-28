@@ -218,10 +218,10 @@ pageEncoding="UTF-8"%>
     
     <div class="wrapper">
     <!-- Header -->
-	<jsp:include page="/resources/inc/header.jsp" />
+	<jsp:include page="/resources/inc/companyHeader.jsp" />
 
 	<!-- Sidebar -->
-	<jsp:include page="/resources/inc/sidebar.jsp" />
+	<jsp:include page="/resources/inc/companySidebar.jsp" />
 
     <div class="container">
 		<div class="page-inner">
@@ -446,7 +446,7 @@ $(document).ready(function() {
     </div>
     </div>
     <!-- Footer -->
-	<jsp:include page="/resources/inc/footer.jsp" />
+	<jsp:include page="/resources/inc/companyFooter.jsp" />
     
 </div>
 

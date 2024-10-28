@@ -40,6 +40,8 @@ public class CorderController {
 		
 		List<CordersVO> pListVO02 = corderService.listProd02();
 		
+		logger.debug("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+pListVO02);
+		
 		model.addAttribute("pListVO02", pListVO02);
 		
 		return "/order-insert02";

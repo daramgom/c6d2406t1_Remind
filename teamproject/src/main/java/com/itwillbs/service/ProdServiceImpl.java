@@ -173,10 +173,15 @@ public class ProdServiceImpl implements ProdService {
 		return pdao.setStockList();
 	}
 	
+
+	@Override
+	public List<ProdVO> cmainListProd() {
+		logger.debug("( •̀ ω •́ )✧ Service : cmainListProd() 실행 ");
+		return pdao.cmainListProd();
+	}
 	
 	
 	// ***** 메서드 목록 *****
-
 	// 제품식별코드 생성
 	public void genProdID(ProdVO vo) {
 	    String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

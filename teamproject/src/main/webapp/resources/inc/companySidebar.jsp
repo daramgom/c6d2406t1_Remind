@@ -33,28 +33,25 @@
 						<p>환영합니다 ${sessionScope.name }님!</p>
 				</a>
 				</li>
-				<c:choose>
-				<c:when test="true">
 				<li class="nav-section"><span class="sidebar-mini-icon">
 						<i class="fa fa-ellipsis-h"></i>
 				</span>
 					<h4 class="text-section">재고 관리 시스템 메뉴</h4></li>
-				<li class="nav-item"><a data-bs-toggle="collapse" href="#" id="comOrdMenu">
-						<i class="fas fa-clipboard-check"></i>
-						<p>발주 수락</p>
-				</a>
-				</li>
-				<li class="nav-item"><a	data-bs-toggle="collapse" href="#" id="comShpMenu"> 
+				<li class="nav-item"><a href="#" id="comOrdMenu"> 
 						<i class="fas fa-shipping-fast"></i>
-						<p>출고 요청</p>
+						<p>발주 요청</p>
 				</a>
 				</li>
-				
-				
-				</c:when>
-				<c:otherwise>
-				</c:otherwise>
-				</c:choose>
+				<li class="nav-item"><a href="#" id="comOrdMenu2">
+						<i class="fas fa-clipboard-list"></i>
+						<p>발주 요청 목록</p>
+				</a>
+				</li>
+				<li class="nav-item"><a href="#" id="comShpMenu">
+						<i class="fas fa-clipboard-check"></i>
+						<p>출고 수락</p>
+				</a>
+				</li>
 			</ul>
 		</div>
 	</div>

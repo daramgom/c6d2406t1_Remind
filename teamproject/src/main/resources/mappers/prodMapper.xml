@@ -185,5 +185,15 @@
 <!-- 재고 알람 설정 -->
 
 
+<!-- 거래처 메인 페이지 제품목록 -->
+<select id="cmainListProd" resultType="ProdVO">
+	select p.prod_id, p.prod_name, p.prod_category, p.prod_brand, p.prod_image
+	   from prod p 
+	    join stock s on p.prod_id = s.prod_id
+	     where p.prod_status != '02'
+	      group by p.prod_id
+</select>
+<!-- 거래처 메인 페이지 제품목록 -->
+
 
 </mapper>

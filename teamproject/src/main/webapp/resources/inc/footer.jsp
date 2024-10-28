@@ -68,7 +68,10 @@
 	
 	<!-- sock JS -->
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-
+	
+	<!-- html2canvas  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+	
 <script>
 $(document).ready(function(){
 	

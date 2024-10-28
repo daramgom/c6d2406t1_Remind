@@ -48,4 +48,7 @@ public interface ProdDAO {
 	public int setStock(ProdVO vo);
 	public List<ProdVO> setStockList();
 	
+	// 거래처 메인 페이지 제품목록
+	public List<ProdVO> cmainListProd();
+	
 }

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
     <style>
 @import
 	url("https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css")
@@ -326,9 +327,6 @@
         <jsp:include page="/resources/inc/footer.jsp" />
     </div>
 
-    <!-- Core JS Files -->
-    <script src="${pageContext.request.contextPath}/resources/js/core/jquery-3.7.1.min.js?ver=1.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     
     
 	<!-- jQuery Scrollbar -->

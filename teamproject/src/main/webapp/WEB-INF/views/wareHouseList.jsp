@@ -9,21 +9,53 @@
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
     <style>
-        /* 테이블 헤더 배경색 */
-        #multi-filter-select thead th {
-            background-color: #0d6efd;
-            color: white;
-        }
+       #multi-filter-select thead th {
+		background-color: #6861ce !important;
+		color: white;
+	}
+    
+	.table td {
+		font-size: 1.2rem !important;
+		text-align: center;
+		white-space: nowrap;
+	}
+    
+	.table th {
+		font-size: 1.25rem !important;
+		text-align: center;
+		white-space: nowrap;
+	}
+
+	.modal-dialog {
+		--bs-modal-width: 1200px;
+	}
+
+	.modal-content {
+		height: 90vh;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	.modal-footer i {
+		font-size: 1.2rem;
+		line-height: 2;
+	}
+	
+	.modal-footer button {
+		font-size: 1.2rem;
+		line-height: 2;
+		margin-bottom: 10px;
+		font-weight: bold;
+	}
+
     </style>
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
-
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"/>
-
+	<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
+    
 </head>
 <body>
     <c:if test="${empty sessionScope.id}">
@@ -93,12 +125,7 @@
         <jsp:include page="/resources/inc/footer.jsp" />
     </div>
 
-    <!-- Core JS Files -->
-    <script src="/resources/js/core/jquery-3.7.1.min.js?ver=1.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    
 
     <script>
         $(document).ready(function() {

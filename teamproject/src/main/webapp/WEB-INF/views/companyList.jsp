@@ -11,12 +11,51 @@
 <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
 <style>
-    /* 테이블 헤더 배경색 */
-    #multi-filter-select thead th {
-        background-color: #0d6efd; /* 원하는 색상으로 변경 */
-        color: white;
-    }
+	
+	#multi-filter-select thead th {
+		background-color: #6861ce !important;
+		color: white;
+	}
+    
+	.table td {
+		font-size: 1.2rem !important;
+		text-align: center;
+		white-space: nowrap;
+	}
+    
+	.table th {
+		font-size: 1.25rem !important;
+		text-align: center;
+		white-space: nowrap;
+	}
+
+	.modal-dialog {
+		--bs-modal-width: 1200px;
+	}
+
+	.modal-content {
+		height: 90vh;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+    
+	
+	
+	.modal-footer i {
+		font-size: 1.2rem;
+		line-height: 2;
+	}
+	
+	.modal-footer button {
+		font-size: 1.2rem;
+		line-height: 2;
+		margin-bottom: 10px;
+		font-weight: bold;
+	}
+
 </style>
+
+
 
 <!-- Fonts and icons -->
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
@@ -39,6 +78,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
+<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
 </head>
 <body>
 	<div class="wrapper">
@@ -128,12 +168,28 @@
 		<!-- Footer -->
 		<jsp:include page="/resources/inc/footer.jsp" />
 	</div>
-
-	<!-- Core JS Files -->
-	<script src="/resources/js/core/jquery-3.7.1.min.js?ver=1.0"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-	<!-- jQuery Scrollbar -->
-	<script src="/resources/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+	<script>
+        $(document).ready(function() {
+            // 데이터테이블 초기화
+            $("#multi-filter-select").DataTable({
+                pageLength: 10, // 기본 페이지 길이
+                lengthMenu: [3, 10, 20, 50, 100, 500], // 페이지 길이 옵션
+                searching: true, // 검색 기능 활성화
+                ordering: true, // 정렬 기능 활성화
+                order: [], // 기본 정렬 초기화
+                columns: [
+                    { data: 'company_code' },
+                    { data: 'company_name' },
+                    { data: 'company_manager' },
+                    { data: 'company_tel' },
+                    { data: 'company_email' },
+                    { data: 'company_address' }
+                ],
+                language: {
+                    emptyTable: "등록된 공지사항이 없습니다."
+                }
+            });
+        });
+    </script>
 </body>
 </html>

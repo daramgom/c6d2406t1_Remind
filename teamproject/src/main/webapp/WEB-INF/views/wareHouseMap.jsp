@@ -9,7 +9,6 @@
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
     <style>
-        /* 테이블 헤더 배경색 */
         #map {
             width: 100%;
             height: 500px;
@@ -20,8 +19,28 @@
         }
         .button-container {
             display: flex;
-            justify-content: flex-end; /* 오른쪽 정렬 */
-            margin-top: 1rem; /* 위쪽 여백 */
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        .search-container {
+            width: 300px;
+            max-width: 100%;
+            margin-left: auto;
+        }
+        .input-group {
+            width: 100%;
+        }
+        #searchInput {
+            width: 70%;
+        }
+        #searchButton {
+            width: 30%;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        #searchInput {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
         }
     </style>
 
@@ -29,11 +48,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
+    <link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
 </head>
 <body>
-	<c:if test="${empty sessionScope.id}">
-	<c:redirect url="/login"/>
-	</c:if>
+    <c:if test="${empty sessionScope.id}">
+    <c:redirect url="/login"/>
+    </c:if>
     <div class="wrapper">
 
         <!-- Header -->
@@ -52,6 +72,12 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
+                                <div class="search-container mb-3">
+                                    <div class="input-group">
+                                        <input type="text" id="searchInput" class="form-control" placeholder="창고 이름 검색">
+                                        <button id="searchButton" class="btn btn-primary">검색</button>
+                                    </div>
+                                </div>
                                 <div id="map"></div>
                                 <!-- 창고 목록으로 가는 버튼 추가 -->
                                 <div class="button-container">
@@ -68,22 +94,19 @@
         <jsp:include page="/resources/inc/footer.jsp" />
     </div>
 
-    <!-- Core JS Files -->
-    <script src="/resources/js/core/jquery-3.7.1.min.js?ver=1.0"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 카카오 앱 키  -->
     <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=7dc432479314390de8962dfc3739f2f5"></script>
 
     <script>
-        // 지도 초기화
         var mapContainer = document.getElementById('map');
         var mapOption = {
-            center: new kakao.maps.LatLng(37.5665, 126.978), // 초기 중심 좌표
-            level: 5 // 확대 레벨
+            center: new kakao.maps.LatLng(37.5665, 126.978),
+            level: 5
         };
 
         var map = new kakao.maps.Map(mapContainer, mapOption);
+        var markers = []; // 모든 마커를 저장할 배열
 
-        // 창고 데이터 가져오기
         fetch('${pageContext.request.contextPath}/warehouse/getAllWarehouses')
             .then(response => {
                 if (!response.ok) {
@@ -92,8 +115,6 @@
                 return response.json();
             })
             .then(data => {
-                // 초기 마커를 추가하지 않음
-                // 데이터가 있을 경우에만 마커를 추가
                 if (data.length > 0) {
                     data.forEach(function(warehouse) {
                         var position = new kakao.maps.LatLng(warehouse.latitude, warehouse.longitude);
@@ -101,9 +122,14 @@
                             position: position,
                             title: warehouse.wh_name
                         });
-                        marker.setMap(map); // 마커를 지도에 추가
+                        marker.setMap(map);
 
-                        // 클릭 이벤트 추가
+                        // 마커 정보를 저장
+                        markers.push({
+                            marker: marker,
+                            name: warehouse.wh_name
+                        });
+
                         kakao.maps.event.addListener(marker, 'click', function() {
                             alert('창고 이름: ' + warehouse.wh_name);
                         });
@@ -111,6 +137,26 @@
                 }
             })
             .catch(error => console.error('Error:', error));
+
+        // 검색 기능 구현
+        document.getElementById('searchButton').addEventListener('click', function() {
+            var searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            var found = false;
+
+            markers.forEach(function(markerInfo) {
+                if (markerInfo.name.toLowerCase().includes(searchTerm)) {
+                    // 검색어와 일치하는 마커를 찾으면 해당 위치로 지도 이동
+                    map.setCenter(markerInfo.marker.getPosition());
+                    map.setLevel(3); // 줌 레벨 설정
+                    found = true;
+                    alert('찾은 창고: ' + markerInfo.name);
+                }
+            });
+
+            if (!found) {
+                alert('검색 결과가 없습니다.');
+            }
+        });
     </script>
 </body>
 </html>

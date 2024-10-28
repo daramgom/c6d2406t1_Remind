@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/plugins.min.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/kaiadmin.min.css" />
+	<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
 </head>
 <body>
 	<!--퍼미션 아이디 03일때만 접속가능 다른 아이디면 메인페이지로 -->
@@ -76,8 +77,6 @@
         <jsp:include page="/resources/inc/footer.jsp" />
     </div>
 
-    <!-- Core JS Files -->
-    <script src="${pageContext.request.contextPath}/resources/js/core/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
 </body>
 </html>

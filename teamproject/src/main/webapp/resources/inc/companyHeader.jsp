@@ -87,12 +87,6 @@
 											<p class="text-muted">
 												이메일 : <span id="userEmail">${sessionScope.email}</span>
 											</p>
-											<p class="text-muted">
-												직급 : <span id="userInfoEmp">${sessionScope.emp}</span>
-											</p>
-											<p class="text-muted">
-												부서 : <span id="userInfoDept">${sessionScope.dept}</span>
-											</p>
 										</div>
 									</div>
 								</li>

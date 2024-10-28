@@ -52,6 +52,10 @@ public class AdminController {
 
 		    // 페이지 크기 설정 (5명)
 		    cri.setPageSize(5);  // Criteria에 페이지 크기 설정
+		    
+		    // 검색 키워드 처리
+		    String keyword = cri.getKeyword(); // Criteria에서 검색 키워드 가져오기
+		    logger.debug("Search Keyword: " + keyword);
 
 		    List<MemberVO> memberList = mService.memberList(member_id, cri);
 
@@ -68,6 +72,9 @@ public class AdminController {
 		    logger.debug("adminMemberListGET pageCount : "+ pageCount);
 		    // 현재 페이지 모델에 추가
 		    model.addAttribute("currentPage", cri.getPage()); // 현재 페이지 추가
+		    
+		 // 검색 조건 모델에 추가
+		    model.addAttribute("keyword", keyword); // 검색 키워드 추가
 
 	}
 
@@ -137,8 +144,10 @@ public class AdminController {
 	    model.addAttribute("pageCount", pageCount); // 페이지 수 모델에 추가
 	 // 현재 페이지 모델에 추가
 	    model.addAttribute("currentPage", cri.getPage()); // 현재 페이지 추가
-
+	    logger.debug("adminMemberListGET pageCount : "+ pageCount);
 	}
+	
+	
 
 	@PostMapping("/signReq")
 	public ResponseEntity<String> SignRequestUpdate(@RequestBody List<MemberVO> selectedMembers) {

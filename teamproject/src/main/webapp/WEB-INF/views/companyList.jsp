@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>거래처 목록</title>
+<title>REMIND</title>
 
 <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
 <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
@@ -93,28 +93,22 @@
 		<div class="container">
           <div class="page-inner">
             <div class="page-header">
-              <h3 class="fw-bold mb-3">거래처 목록</h3>
+              <h3 class="fw-bold mb-3">거래처관리</h3>
               <ul class="breadcrumbs mb-3">
-                <li class="nav-home">
-                  <a href="#">
-                    <i class="icon-home"></i>
-                  </a>
-                </li>
-                <li class="separator">
-                  <i class="icon-arrow-right"></i>
-                </li>
-                <li class="nav-item">
-                  <a href="#">거래처 목록</a>
-                </li>
-              </ul>
+					<li class="nav-home"><i class="icon-home"></i></li>
+					<li class="separator"><i class="icon-arrow-right"></i></li>
+					<li class="nav-item">거래처관리</li>
+					<li class="separator"><i class="icon-arrow-right"></i></li>
+					<li class="nav-item">거래처목록</li>
+				</ul>
             </div>
             <div class="row">
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4 class="card-title">거래처 목록</h4>
+                    <h4 class="card-title">거래처목록</h4>
                     <c:if test="${sessionScope.permission_id == '03'}">
-                        <a href="${pageContext.request.contextPath}/company/companyInsert" class="btn btn-primary">거래처 등록</a>
+                        <a href="${pageContext.request.contextPath}/company/companyInsert" class="btn btn-secondary">거래처 등록</a>
                     </c:if>
                   </div>
                   <div class="card-body">
@@ -130,16 +124,6 @@
                             <th>주소</th>
                           </tr>
                         </thead>
-                        <tfoot>
-                         <tr>
-                            <th>거래처 코드</th>
-                            <th>거래처 이름</th>
-                            <th>실무자</th>
-                            <th>전화번호</th>
-                            <th>이메일</th>
-                            <th>주소</th>
-                          </tr>
-                        </tfoot>
                         <tbody>
                           <c:forEach var="company" items="${companyList}">
                             <tr>

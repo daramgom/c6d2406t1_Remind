@@ -101,21 +101,19 @@
               <h3 class="fw-bold mb-3">제품관리</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
-                  <a href="#">
                     <i class="icon-home"></i>
-                  </a>
                 </li>
                 <li class="separator">
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">제품관리</a>
+                  제품관리
                 </li>
                 <li class="separator">
                   <i class="icon-arrow-right"></i>
                 </li>
                 <li class="nav-item">
-                  <a href="#">제품이동내역</a>
+                  재고이동내역
                 </li>
               </ul>
             </div>

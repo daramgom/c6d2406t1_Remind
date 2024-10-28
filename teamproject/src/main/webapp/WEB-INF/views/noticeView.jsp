@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>${notice.title}</title>
+    <title>REMIND</title>
 
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
@@ -31,18 +31,22 @@
         <div class="container">
             <div class="page-inner">
                 <div class="page-header">
-                    <h3 class="fw-bold mb-3">공지사항 상세보기</h3>
+                    <h3 class="fw-bold mb-3">공지사항</h3>
                     <ul class="breadcrumbs mb-3">
                         <li class="nav-home">
-                            <a href="#">
                                 <i class="icon-home"></i>
-                            </a>
                         </li>
                         <li class="separator">
                             <i class="icon-arrow-right"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="#">공지사항 상세보기</a>
+                            공지사항
+                        </li>
+                        <li class="separator">
+                            <i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            공지사항 상세보기
                         </li>
                     </ul>
                 </div>
@@ -60,12 +64,12 @@
                                 <div>${notice.content}</div> <!-- 본문 내용 출력 -->
                                 <hr>
                                 <div class="d-flex justify-content-end">
-                                    <a href="${pageContext.request.contextPath}/notice/noticeList" class="btn btn-secondary me-2">목록으로 돌아가기</a>
                                     <!-- permission_id가 03일 때만 수정 버튼 표시 -->
                                     <c:if test="${sessionScope.permission_id == '03'}">
                                         <a href="${pageContext.request.contextPath}/notice/noticeEdit?no=${notice.no}" class="btn btn-warning me-2">수정</a>
                                     </c:if>
                                     <!-- 삭제 버튼 제거 -->
+                                    <a href="${pageContext.request.contextPath}/notice/noticeList" class="btn btn-black ms-2">목록으로 돌아가기</a>
                                 </div>
                             </div>
                         </div>

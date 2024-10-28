@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>공지사항 목록</title>
+    <title>REMIND</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
@@ -79,18 +79,22 @@
         <div class="container">
             <div class="page-inner">
                 <div class="page-header">
-                    <h3 class="fw-bold mb-3">공지사항 목록</h3>
+                    <h3 class="fw-bold mb-3">공지사항</h3>
                     <ul class="breadcrumbs mb-3">
                         <li class="nav-home">
-                            <a href="#">
                                 <i class="icon-home"></i>
-                            </a>
+                        </li>
+                        <li class="separator">
+                        	<i class="icon-arrow-right"></i>
+                        </li>
+                        <li class="nav-item">
+                            공지사항
                         </li>
                         <li class="separator">
                             <i class="icon-arrow-right"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="#">공지사항 목록</a>
+                            공지사항목록
                         </li>
                     </ul>
                 </div>
@@ -100,7 +104,7 @@
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h4 class="card-title">공지목록</h4>
                                 <c:if test="${sessionScope.permission_id == '03'}">
-                                    <a href="${pageContext.request.contextPath}/notice/noticeInsert" class="btn btn-primary">글쓰기</a>
+                                    <a href="${pageContext.request.contextPath}/notice/noticeInsert" class="btn btn-secondary">글쓰기</a>
                                 </c:if>
                             </div>
                             <div class="card-body">

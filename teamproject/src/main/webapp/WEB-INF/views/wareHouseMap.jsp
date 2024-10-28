@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>창고 지도</title>
+    <title>REMIND</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico" type="image/x-icon" />
 
@@ -66,22 +66,32 @@
         <div class="container">
             <div class="page-inner">
                 <div class="page-header">
-                    <h3 class="fw-bold mb-3">창고 지도</h3>
+                    <h3 class="fw-bold mb-3">창고관리</h3>
+                    <ul class="breadcrumbs mb-3">
+						<li class="nav-home"><i class="icon-home"></i></li>
+						<li class="separator"><i class="icon-arrow-right"></i></li>
+						<li class="nav-item">창고관리</li>
+						<li class="separator"><i class="icon-arrow-right"></i></li>
+						<li class="nav-item">창고지도</li>
+					</ul>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
+                        	<div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="card-title">창고지도</div>
+                            </div>
                             <div class="card-body">
                                 <div class="search-container mb-3">
                                     <div class="input-group">
                                         <input type="text" id="searchInput" class="form-control" placeholder="창고 이름 검색">
-                                        <button id="searchButton" class="btn btn-primary">검색</button>
+                                        <button id="searchButton" class="btn btn-secondary">검색</button>
                                     </div>
                                 </div>
                                 <div id="map"></div>
                                 <!-- 창고 목록으로 가는 버튼 추가 -->
                                 <div class="button-container">
-                                    <a href="${pageContext.request.contextPath}/warehouse/wareHouseList" class="btn btn-primary">창고 목록으로 가기</a>
+                                    <a href="${pageContext.request.contextPath}/warehouse/wareHouseList" class="btn btn-secondary">창고 목록으로 가기</a>
                                 </div>
                             </div>
                         </div>

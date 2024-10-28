@@ -278,19 +278,13 @@
             <div class="page-inner">
                 <div class="page-header">
                     <h3 class="fw-bold mb-3">거래처 상세보기</h3>
-                    <ul class="breadcrumbs mb-3">
-                        <li class="nav-home">
-                            <a href="#">
-                                <i class="icon-home"></i>
-                            </a>
-                        </li>
-                        <li class="separator">
-                            <i class="icon-arrow-right"></i>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#">거래처 상세보기</a>
-                        </li>
-                    </ul>
+                   <ul class="breadcrumbs mb-3">
+						<li class="nav-home"><i class="icon-home"></i></li>
+						<li class="separator"><i class="icon-arrow-right"></i></li>
+						<li class="nav-item">거래처관리</li>
+						<li class="separator"><i class="icon-arrow-right"></i></li>
+						<li class="nav-item">거래처 상세보기</li>
+					</ul>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -306,7 +300,6 @@
                                 <p><strong>주소:</strong> ${company.company_address}</p>
                                 <hr>	
                                 <div class="d-flex justify-content-end">
-                                    <a href="${pageContext.request.contextPath}/company/companyList" class="btn btn-secondary me-2">목록으로 돌아가기</a>
                                     <!-- permission_id가 03일 때만 회원가입 버튼 표시 -->
                                     <c:if test="${sessionScope.permission_id == '03'}">
 										<button id="SignShowModal"  data-code="${company.company_code}" class="btn btn-secondary" style="margin-right: 7px;">거래처 회원가입</button>
@@ -315,6 +308,7 @@
                                     <c:if test="${sessionScope.permission_id == '03'}">
                                         <a href="${pageContext.request.contextPath}/company/edit/${company.company_code}" class="btn btn-warning me-2">수정</a>
                                     </c:if>
+                                    <a href="${pageContext.request.contextPath}/company/companyList" class="btn btn-black me-2">목록으로 돌아가기</a>
                                 </div>
                             </div>
                         </div>
@@ -393,7 +387,7 @@
             icon: "success",
             buttons: {
               confirm: {
-                className: "btn btn-success",
+                className: "btn btn-secondary",
               },
             },
           }).then(() => {
@@ -483,7 +477,7 @@
                              confirm: {
                                  text: "예",
                                  value: true,
-                                 className: "btn btn-success"
+                                 className: "btn btn-secondary"
                              },
                              cancel: "아니요"
                          },

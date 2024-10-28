@@ -29,20 +29,20 @@
         <div class="container">
             <div class="page-inner">
                 <div class="page-header">
-                    <h3 class="fw-bold mb-3">제품 목록</h3>
+                    <h3 class="fw-bold mb-3">창고별제품목록</h3>
                     <ul class="breadcrumbs mb-3">
-                        <li class="nav-home"><a href="#"><i class="icon-home"></i></a></li>
+                        <li class="nav-home"><i class="icon-home"></i></li>
                         <li class="separator"><i class="icon-arrow-right"></i></li>
-                        <li class="nav-item"><a href="#">창고 관리</a></li>
+                        <li class="nav-item">창고관리</li>
                         <li class="separator"><i class="icon-arrow-right"></i></li>
-                        <li class="nav-item"><a href="#">제품 목록</a></li>
+                        <li class="nav-item">창고별제품목록</li>
                     </ul>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="card-title">창고별 제품 목록</div>
+                                <div class="card-title">창고별제품목록</div>
                             </div>
 
                             <div class="card-body">
@@ -81,7 +81,7 @@
 
                                 <!-- 버튼을 오른쪽 하단으로 이동 -->
                                 <div class="d-flex justify-content-end mt-4" style="position: relative;">
-                                    <a href="${pageContext.request.contextPath}/warehouse/wareHouseList" class="btn btn-secondary">목록으로 돌아가기</a>
+                                    <a href="${pageContext.request.contextPath}/warehouse/wareHouseList" class="btn btn-black">목록으로 돌아가기</a>
                                 </div>
                             </div>
                         </div>

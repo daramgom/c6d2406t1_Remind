@@ -158,6 +158,9 @@
 							<li><a class="subMenu" id="a18" href="/admin/MemberList">
 									<span class="sub-item">회원 목록</span>
 							</a></li>
+							<li><a class="subMenu" id="a19" href="/admin/CompanyMemberList">
+									<span class="sub-item">거래처 회원 목록</span>
+							</a></li>
 						</ul>
 					</div></li>
 				</c:if>

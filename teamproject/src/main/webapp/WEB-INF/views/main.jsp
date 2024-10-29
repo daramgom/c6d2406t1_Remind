@@ -271,7 +271,7 @@ $(document).ready(function() {
 							backgroundColor: 'rgba(253, 175, 75, 0.6)',
 							fill: true,
 							lineTension: 0.4,
-							pointStyle: 'circle',
+							pointStyle: 'line',
 							borderWidth: 3
 						},
 						{
@@ -282,7 +282,7 @@ $(document).ready(function() {
 							backgroundColor: 'rgba(49, 206, 54, 0.6)',
 							fill: true,
 							lineTension: 0.4,
-							pointStyle: 'circle',
+							pointStyle: 'line',
 							borderWidth: 3
 						},
 						{
@@ -293,7 +293,7 @@ $(document).ready(function() {
 							backgroundColor: 'rgba(243, 84, 93, 0.6)',
 							fill: true,
 							lineTension: 0.4,
-							pointStyle: 'circle',
+							pointStyle: 'line',
 							borderWidth: 3
 						},
 					]
@@ -301,7 +301,7 @@ $(document).ready(function() {
 				options: {
 					elements: {
 						point: {
-							radius: 1
+							radius: 0
 						}
 					},
 					responsive: true,
@@ -355,15 +355,37 @@ $(document).ready(function() {
 	
 	
 // chatting
-	//전송 버튼 누르는 이벤트
+
+
 $("#button-send").on("click", function(e) {
 	sendMessage();
 	$('#msg').val('');
 });
+
 const protocol = window.location.protocol;
 const host = window.location.host;
 var userName = '${sessionScope.name}';
 var sock = new SockJS(protocol+'//'+host+'/chatting?userName='+encodeURIComponent(userName));
+
+window.addEventListener('keydown', (event) => {
+	if (event.key === 'F5' || event.ctrlKey && event.key === 'r') {
+		event.preventDefault();
+		localStorage.setItem('refreshON',true);
+		location.reload();
+	}
+});
+
+window.addEventListener('beforeunload', (event) => {
+	if(localStorage.getItem('refreshON')) {
+		localStorage.setItem('refreshON',false);
+		location.reload();
+	} else {
+		sock.close();
+		location.reload();
+	}
+});
+
+
 sock.onmessage = onMessage;
 sock.onclose = onClose;
 sock.onopen = onOpen;
@@ -372,7 +394,6 @@ function sendMessage() {
 	sock.send($("#msg").val());
 }
 
-//서버에서 메시지를 받았을 때
 function onMessage(msg) {
 	var data = msg.data;
 	var sessionId = null;
@@ -405,11 +426,9 @@ function onMessage(msg) {
 	}
 }
 
-//채팅창에서 나갔을 때
 function onClose(evt) {
 }
 
-//채팅창에 들어왔을 때
 function onOpen(evt) {
 }
 // chatting

@@ -479,6 +479,7 @@ button:hover {
 							<thead>
 								<tr>
 									<th>번호</th>
+									<th>상태</th>
 									<th>입고 요청자</th>
 									<th>발주 관리 번호</th>
 									<th>입고 관리 번호</th>
@@ -493,6 +494,7 @@ button:hover {
 						<tfoot>
 								<tr>
 									<th>번호</th>
+									<th>상태</th>
 									<th>입고 요청자</th>
 									<th>발주 관리 번호</th>
 									<th>입고 관리 번호</th>
@@ -504,33 +506,43 @@ button:hover {
 									<th>비고</th>
 								</tr>
 						</tfoot>
-						<tbody>
-								<c:forEach var="item1" items="${receivingList}" varStatus="idx">
-									<tr
-										onclick="showDetails('${item1.rcv_manager_name}','${item1.rcv_supervisor_name}','${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.ord_date}','${item1.rcv_date}', '${item1.rcv_remarks}', '${item1.rcv_manager_id}','${item1.rcv_supervisor_id}')">
-										<%-- onclick="showDetails('${item1.rcv_manager_id}', '${item1.rcv_supervisor_id}', '${ordersList[idx.index].ord_manager_name}', '${ordersList[idx.index].ord_supervisor_name}', '${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.rcv_date}', '${item1.ord_date}', '${item1.rcv_remarks}')"> --%>
-										
-										<td>${item1.rcv_count}</td>
-										<td>${item1.rcv_manager_name}</td>
-										<td>${item1.ord_number}</td>
-										<td>${item1.rcv_number}</td>
-										<td>${item1.prod_id}</td>
-										<td>${item1.prod_name}</td>
-										<td>${item1.rcv_quantity}</td>
-										<td>${item1.rcv_price}</td>
-										<td>${item1.rcv_date}</td>
-										<td>${item1.rcv_remarks}</td>
-									</tr>
-								</c:forEach>
-								
-								
-			           </tbody>
+							<tbody>
+							    <c:forEach var="item1" items="${receivingList}" varStatus="idx">
+							        <tr
+							            onclick="showDetails('${item1.rcv_status_name}','${item1.rcv_manager_name}', '${item1.rcv_supervisor_name}', '${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.ord_date}', '${item1.rcv_date}', '${item1.rcv_remarks}', '${item1.rcv_manager_id}', '${item1.rcv_supervisor_id}')">
+							
+							            <td>${item1.rcv_count}</td>
+										<td>
+										    ${item1.rcv_status_name} <!-- 상태 값을 텍스트로 출력 -->
+										    <input type="hidden" class="rcv-status" value="${item1.rcv_status}"> <!-- 상태 값을 숨김 -->
+										</td>
+							            <td>${item1.rcv_manager_name}</td>
+							            <td>${item1.ord_number}</td>
+							            <td>${item1.rcv_number}</td>
+							            <td>${item1.prod_id}</td>
+							            <td>${item1.prod_name}</td>
+							            <td>${item1.rcv_quantity}</td>
+							            <td>${item1.rcv_price}</td>
+							            <td>${item1.rcv_date}</td>
+							            <td>${item1.rcv_remarks}</td>
+							        </tr>
+							    </c:forEach>
+							</tbody>
+
 								<!-- 슬라이드 패널 -->
 								<div id="slidePanel" class="slide-container">
 									<span class="close-btn" onclick="closePanel()">&times;</span>
 									<h2>입고 요청</h2>
 									<form id="ReceivingForm" onsubmit="return confirmSubmission()">
 										<div class="form-container">
+										
+										
+											<div class="form-group" style="display: none;"> <!-- 전체를 숨김 -->
+												   <label for="rcvStatus">입고 상태</label>
+												   <input type="text" id="rcvStatus" name="rcvStatus" readonly="readonly">
+											</div>
+
+
 											<div class="form-group">
 												<label for="rcvManagerId"> <img
 													src="${pageContext.request.contextPath}/resources/img/회원.png"
@@ -664,18 +676,15 @@ button:hover {
 													required name="rcvRemarks"></textarea>
 											</div>
 
-											<div class="button-group">
-																								
-											
-													    <button type="button" onclick="saveDetails()">입고 승인</button>
-													    <button type="button" onclick="rejectReceiving()">입고 반려</button>
-											
+<div class="button-group">
+    <c:if test="${item1.rcv_status_name != '입고 완료'}">
+        <button type="button" onclick="saveDetails()">입고 승인</button>
+        <button type="button" onclick="rejectReceiving()">입고 반려</button>
+        <button type="button" onclick="editDetails()">입고 수정</button>
+        <button type="button" onclick="deleteReceiving()">입고 삭제</button>
+    </c:if>
+</div>
 
-												<button type="button" onclick="editDetails()">입고 수정</button>
-												<button type="button" onclick="deleteReceiving()">입고 삭제</button>
-																			
-											</div>
-										</div>
 									</form>
 								</div>
 							</table>
@@ -836,12 +845,12 @@ button:hover {
 	});
 	
 	
-	
-	
+
+
 	
 	
 function showDetails(
-		rcvManagerName,rcv_supervisor_name, ordNumber, rcvNumber, 
+		rcvStatus,rcvManagerName,rcv_supervisor_name, ordNumber, rcvNumber, 
 		prodCategory,prodId,prodName,rcvQuantity,rcvPrice,whNumber,companyCode
 				,ordDate,rcvDate,rcvRemarks,rcv_manager_id,rcv_supervisor_id) {
 	 const url = '/receiveOname';
@@ -870,7 +879,19 @@ function showDetails(
 	    
 	    ordersSupervisorName = data.ord_supervisor_name;
 	    
+	    
+	    
+	    
 	document.getElementById('slidePanel').classList.add('open');  // 슬라이드 열기
+	document.getElementById('rcvStatus').value = rcvStatus; //입고 요청자 이름
+	
+	// 상태에 따라 버튼 활성화/비활성화
+    if (rcvStatus === '입고 완료') {
+        document.querySelector('.button-group').style.display = 'none'; // 버튼 숨김
+    } else {
+        document.querySelector('.button-group').style.display = 'block'; // 버튼 보임
+    }
+
 	document.getElementById('rcvManagerId').value = rcvManagerName; //입고 요청자 이름
     document.getElementById('rcvSupervisorId').value = rcv_supervisor_name; // 입고 승인자 이름
     document.getElementById('ordManagerId').value = data.ord_manager_name;  // 발주 요청자 이름

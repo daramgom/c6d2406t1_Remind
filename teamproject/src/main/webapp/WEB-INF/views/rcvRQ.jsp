@@ -317,6 +317,7 @@ pageEncoding="UTF-8"%>
                
             </div>
             
+           
             <div class="form-group">
                 <label for="ORD_MANAGER_ID">
                     <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
@@ -339,17 +340,17 @@ pageEncoding="UTF-8"%>
                     <div class="custom-underline"></div>
                 </div>
             </div>
-           
 
 			<div class="form-group">
 			    <label for="ord_number">발주 관리번호</label>
 			    <div style="display: flex; align-items: center;">
-			        <input type="text" id="ord_number" placeholder="발주관리번호입력" required onfocus="showOrderList()" oninput="fetchOrderData()" name="ord_number" readonly="readonly">
+			        <input type="text" id="ord_number" placeholder="발주관리번호입력" required onfocus="showOrderList()" oninput="fetchOrderData()" name="ord_number">
 			        <button type="button" onclick="submitOrderNumber()">조회</button> <!-- 추가된 버튼 -->
 			    </div>
 			    <div class="dropdown1" id="orderDropdown"></div>
 			</div>
 
+            
 			<div class="form-group">
 			    <label for="RCV_QUANTITY">입고 수량</label>
 			    <input type="number" id="rcv_quantity" required name="rcv_quantity" min="0">

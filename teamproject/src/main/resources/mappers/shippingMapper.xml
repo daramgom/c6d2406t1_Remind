@@ -60,15 +60,22 @@
 		    c.cord_number =  #{cord_number};  -- 발주 관리번호로 필터링
     </select>
 
-    <!-- 출고 정보 가져오기 -->
-    <select id="getAllShippingRequests" resultType="com.itwillbs.domain.ShippingVO">
-        SELECT s.*, 
-               m_requester.member_name AS shp_manager_name,  -- 출고 요청자 이름
-               m_supervisor.member_name AS shp_supervisor_name  -- 출고 승인자 이름
-        FROM shipping_info s
-        LEFT JOIN member m_requester ON s.shp_manager_id = m_requester.member_id  -- 출고 요청자 조인
-        LEFT JOIN member m_supervisor ON s.shp_supervisor_id = m_supervisor.member_id  -- 출고 승인자 조인
-    </select>
+    
+<!-- 출고 정보 가져오기 -->
+<select id="getAllShippingRequests" resultType="com.itwillbs.domain.ShippingVO">
+    SELECT s.*, 
+           m_requester.member_name AS shp_manager_name,  <!-- 출고 요청자 이름 -->
+           m_supervisor.member_name AS shp_supervisor_name,  <!-- 출고 승인자 이름 -->
+           c.common_status AS shp_status_name  <!-- 출고 상태 이름 -->
+    FROM shipping_info s
+    LEFT JOIN member m_requester ON s.shp_manager_id = m_requester.member_id  <!-- 출고 요청자 조인 -->
+    LEFT JOIN member m_supervisor ON s.shp_supervisor_id = m_supervisor.member_id  <!-- 출고 승인자 조인 -->
+    LEFT JOIN common c ON s.shp_status = c.common_value 
+                       AND c.common_work = 'shp_status';  <!-- 출고 상태 이름 가져오기 -->
+</select>
+
+    
+    
 
     <!-- 발주 정보 가져오기 -->
     <select id="getAllOrderRequests" resultType="com.itwillbs.domain.OrdersVO"> 

@@ -471,6 +471,7 @@ button:hover {
 <thead>
     <tr>
         <th>번호</th>
+        <th>상태</th>
         <th>출고 요청자</th>
         <th>출고 관리 번호</th>
         <th>제품 ID</th>
@@ -487,6 +488,7 @@ button:hover {
   
       <tr>
         <th>번호</th>
+        <th>상태</th>
         <th>출고 요청자</th>
         <th>출고 관리 번호</th>
         <th>제품 ID</th>
@@ -500,8 +502,9 @@ button:hover {
 	</tfoot>
 			<tbody>
    <c:forEach var="item" items="${shippingList}" varStatus="idx">
-        <tr onclick="showShippingDetails('${item.shp_manager_name}', '${item.shp_supervisor_id}', '${item.cord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}','${item.shp_manager_id}','${item.shp_supervisor_name}')">
+        <tr onclick="showShippingDetails('${item1.shp_status_name}', '${item.shp_manager_name}', '${item.shp_supervisor_id}', '${item.cord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}','${item.shp_manager_id}','${item.shp_supervisor_name}')">
             <td>${item.shp_count}</td>
+            <td>${item.shp_status_name}</td>
             <td>${item.shp_manager_name}</td>
             <td>${item.shp_number}</td>
             <td>${item.prod_id}</td>
@@ -522,6 +525,16 @@ button:hover {
     <h2>출고 처리</h2>
     <form id="ShippingForm" onsubmit="return confirmSubmission()">
         <div class="form-container">
+        
+        
+        										
+											<div class="form-group" style="display: none;"> <!-- 전체를 숨김 -->
+												   <label for="shpStatus">출고 상태</label>
+												   <input type="text" id="shpStatus" name="shpStatus" readonly="readonly">
+											</div>
+        
+        
+        
             <div class="form-group">
            <label for="shpManagerId"> <img
 		    src="${pageContext.request.contextPath}/resources/img/회원.png"

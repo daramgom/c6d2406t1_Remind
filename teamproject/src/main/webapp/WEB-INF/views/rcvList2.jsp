@@ -463,17 +463,19 @@ button:hover {
 							<h1 style="margin-left: 5px;">입고 요청 목록</h1>
 
 							<div class="form-container1">
-								<form action="/rcvList2" method="GET" class="search-form">
-									<label for="status">입고 상태:</label> <select id="status"
-										name="rcv_status">
-										<option value="">모두</option>
-										<option value="01">입고 요청</option>
-										<option value="02">입고 완료</option>
-										<option value="03">입고 반려</option>
-										<option value="04">입고 삭제</option>
-									</select> <input type="submit" value="검색" class="search-button">
-								</form>
-							</div>
+						    <form id="searchForm" class="search-form">
+						        <label for="status">입고 상태:</label>
+						        <select id="status" name="rcv_status">
+						            <option value="">모두</option>
+						            <option value="01">입고 요청</option>
+						            <option value="02">입고 완료</option>
+						            <option value="03">입고 반려</option>
+						            <option value="04">입고 삭제</option>
+						        </select>
+						        <input type="button" value="검색" class="search-button">
+						    </form>
+						</div>
+
 							
 							<table id = "tableRCV">
 							<thead>
@@ -545,7 +547,7 @@ button:hover {
 
 											<div class="form-group">
 												<label for="rcvManagerId"> <img
-													src="${pageContext.request.contextPath}/resources/img/회원.png"
+													src="${pageContext.request.contextPath}/resources/img/member.png"
 													alt="사람 아이콘"
 													style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고
 													요청자
@@ -562,7 +564,7 @@ button:hover {
 <input type="hidden" id="rcv_supervisor_id2">
 											<div class="form-group">
 												<label for="rcvSupervisorId"> <img
-													src="${pageContext.request.contextPath}/resources/img/회원.png"
+													src="${pageContext.request.contextPath}/resources/img/member.png"
 													alt="사람 아이콘"
 													style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고
 													승인자
@@ -577,7 +579,7 @@ button:hover {
 
 											<div class="form-group">
 												<label for="ordManagerId"> <img
-													src="${pageContext.request.contextPath}/resources/img/회원.png"
+													src="${pageContext.request.contextPath}/resources/img/member.png"
 													alt="사람 아이콘"
 													style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주
 													요청자
@@ -592,7 +594,7 @@ button:hover {
 
 											<div class="form-group">
 												<label for="ordSupervisorId"> <img
-													src="${pageContext.request.contextPath}/resources/img/회원.png"
+													src="${pageContext.request.contextPath}/resources/img/member.png"
 													alt="사람 아이콘"
 													style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주
 													승인자
@@ -678,8 +680,10 @@ button:hover {
 
 <div class="button-group">
     <c:if test="${item1.rcv_status_name != '입고 완료'}">
+    <c:if test="${sessionScope.permission_id == '02' || sessionScope.permission_id == '03'}">
         <button type="button" onclick="saveDetails()">입고 승인</button>
         <button type="button" onclick="rejectReceiving()">입고 반려</button>
+    </c:if>
         <button type="button" onclick="editDetails()">입고 수정</button>
         <button type="button" onclick="deleteReceiving()">입고 삭제</button>
     </c:if>
@@ -1124,6 +1128,42 @@ function showDetails(
         }
     }
     
+    
+    document.querySelector('.search-button').addEventListener('click', function(event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+
+        const status = document.getElementById('status').value;
+        const url = '/rcvList2'; // 요청할 URL
+
+        fetch(`${url}?rcv_status=${status}`)
+            .then(response => response.json()) // JSON 응답을 받음
+            .then(data => {
+                // 테이블 내용을 업데이트하는 코드
+                const tbody = document.querySelector('#tableRCV tbody');
+                tbody.innerHTML = ''; // 기존 내용 지우기
+
+                data.forEach(item => {
+                    const row = `<tr>
+                        <td>${item.rcv_count}</td>
+                        <td>${item.rcv_status_name}</td>
+                        <td>${item.rcv_manager_name}</td>
+                        <td>${item.ord_number}</td>
+                        <td>${item.rcv_number}</td>
+                        <td>${item.prod_id}</td>
+                        <td>${item.prod_name}</td>
+                        <td>${item.rcv_quantity}</td>
+                        <td>${item.rcv_price}</td>
+                        <td>${item.rcv_date}</td>
+                        <td>${item.rcv_remarks}</td>
+                    </tr>`;
+                    tbody.insertAdjacentHTML('beforeend', row);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+
 </script>
 </body>
 </html>

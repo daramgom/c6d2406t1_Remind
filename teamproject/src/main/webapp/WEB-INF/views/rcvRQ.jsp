@@ -292,7 +292,7 @@ pageEncoding="UTF-8"%>
         <div class="form-container">
             <div class="form-group">
                 <label for="RCV_MANAGER_ID">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                    <img src="${pageContext.request.contextPath}/resources/img/member.png" alt="사람 아이콘"
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고 요청자
                 </label>
                 <div class="underline-container">
@@ -303,7 +303,7 @@ pageEncoding="UTF-8"%>
             
              <div class="form-group">
                 <label for="RCV_SUPERVISOR_ID">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                    <img src="${pageContext.request.contextPath}/resources/img/member.png" alt="사람 아이콘"
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">입고 승인자
                 </label>
                 
@@ -320,7 +320,7 @@ pageEncoding="UTF-8"%>
            
             <div class="form-group">
                 <label for="ORD_MANAGER_ID">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                    <img src="${pageContext.request.contextPath}/resources/img/member.png" alt="사람 아이콘"
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 요청자
                 </label>
                 <div class="underline-container">
@@ -332,7 +332,7 @@ pageEncoding="UTF-8"%>
             
            <div class="form-group">
                 <label for="ORD_SUPERVISOR_ID">
-                    <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                    <img src="${pageContext.request.contextPath}/resources/img/member.png" alt="사람 아이콘"
                          style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">발주 승인자
                 </label>
                 <div class="underline-container">

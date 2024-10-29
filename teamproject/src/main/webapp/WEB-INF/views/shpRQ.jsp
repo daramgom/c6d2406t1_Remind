@@ -281,7 +281,7 @@ pageEncoding="UTF-8"%>
     <div class="form-container">
         <div class="form-group">
             <label for="shp_manager_id">
-                <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                <img src="${pageContext.request.contextPath}/resources/img/member.png" alt="사람 아이콘"
                      style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 처리자
             </label>
             <div class="underline-container">
@@ -292,7 +292,7 @@ pageEncoding="UTF-8"%>
 
         <div class="form-group">
             <label for="SHP_SUPERVISOR_ID">
-                <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘"
+                <img src="${pageContext.request.contextPath}/resources/img/member.png" alt="사람 아이콘"
                      style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고 승인자
             </label>
             <div class="underline-container">

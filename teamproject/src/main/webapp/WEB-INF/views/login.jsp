@@ -73,7 +73,6 @@ pageEncoding="UTF-8"%>
       					localStorage.removeItem('alertShown');
       					localStorage.removeItem('alertShown2');
       					
-      					alert(response.sessionCheckKey);
       					handleLoginSuccess(response.sessionCheckKey); // 로그인 성공 처리
                     });
                 } else {

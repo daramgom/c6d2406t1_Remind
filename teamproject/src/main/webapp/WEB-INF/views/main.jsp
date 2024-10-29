@@ -356,7 +356,6 @@ $(document).ready(function() {
 	
 // chatting
 
-
 $("#button-send").on("click", function(e) {
 	sendMessage();
 	$('#msg').val('');
@@ -366,26 +365,6 @@ const protocol = window.location.protocol;
 const host = window.location.host;
 var userName = '${sessionScope.name}';
 var sock = new SockJS(protocol+'//'+host+'/chatting?userName='+encodeURIComponent(userName));
-
-window.addEventListener('keydown', (event) => {
-	if (event.key === 'F5' || event.ctrlKey && event.key === 'r') {
-		event.preventDefault();
-		localStorage.setItem('refreshON',true);
-		location.reload();
-	}
-});
-
-window.addEventListener('beforeunload', (event) => {
-	if(localStorage.getItem('refreshON')) {
-		localStorage.setItem('refreshON',false);
-		location.reload();
-	} else {
-		sock.close();
-		location.reload();
-	}
-});
-
-
 sock.onmessage = onMessage;
 sock.onclose = onClose;
 sock.onopen = onOpen;

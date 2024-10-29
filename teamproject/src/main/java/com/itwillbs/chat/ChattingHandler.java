@@ -25,17 +25,14 @@ public class ChattingHandler extends TextWebSocketHandler{
 		if (encodedUserName != null) {
 			String userName = URLDecoder.decode(encodedUserName, "UTF-8");
 			wsSession.getAttributes().put("userName", userName);
-			boolean isUserAlreadyPresent = sessionList.stream().anyMatch(s -> s.getAttributes().get("userName").equals(userName));
+			sessionList.add(wsSession);
 			
-			if (!isUserAlreadyPresent) {
-				String welcomeMessage = userName + "님이 입장하셨습니다. : )";
-				sessionList.add(wsSession);
+			/* String welcomeMessage = userName + "님이 입장하셨습니다. : )";
 				for (WebSocketSession s : sessionList) {
 					if (s != wsSession) {
 						s.sendMessage(new TextMessage(welcomeMessage));
 					}
-				}
-			}
+				} */
 		} else {
 			logger.debug("사용자 ID가 제공되지 않았습니다.");
 		}
@@ -52,31 +49,24 @@ public class ChattingHandler extends TextWebSocketHandler{
 		for(WebSocketSession s : sessionList) {
 			logger.debug("( •̀ ω •́ )✧ message.getPayload() : "+ message.getPayload());
 			s.sendMessage(new TextMessage(userName + ":" + message.getPayload()));
-			
 		}
 	}
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession wsSession, CloseStatus status) throws Exception {
 		String userName = (String) wsSession.getAttributes().get("userName");
-		
-		if (status.equals(CloseStatus.NORMAL)) {
-			sessionList.remove(wsSession);
-			if (userName != null) {
-				String welcomeMessage = userName + "님이 퇴장하셨습니다. : )";
-				for (WebSocketSession s : sessionList) {
-					if (s != wsSession) {
-						s.sendMessage(new TextMessage(welcomeMessage));
-					}
+		sessionList.remove(wsSession);
+		if (userName != null) {
+			/* String welcomeMessage = userName + "님이 퇴장하셨습니다. : )";
+			for (WebSocketSession s : sessionList) {
+				if (s != wsSession) {
+					s.sendMessage(new TextMessage(welcomeMessage));
 				}
-			}
-			else {
-				logger.warn("사용자 ID가 제공되지 않았습니다.");
-			}
-		} else {
-			
+			}*/
 		}
-		
-		
+		else {
+			logger.debug("사용자 ID가 제공되지 않았습니다.");
+		}
 	}
-}
+		
+}//class

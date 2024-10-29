@@ -35,6 +35,7 @@ public class ReceivingVO {
 	private String ord_supervisor_name;
 	private String rcv_supervisor_name;
 	private String member_name;
+	private String rcv_status_name;
 
 	
 }

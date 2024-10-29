@@ -62,12 +62,15 @@
     
 <!-- 입고 정보 가져오기 -->
 <select id="getAllReceivingRequests" resultType="com.itwillbs.domain.ReceivingVO">
-    SELECT r.*, 
-           m_manager.member_name AS rcv_manager_name,  -- 입고 요청자 이름(홍길동)
-           m_supervisor.member_name AS rcv_supervisor_name  -- 입고 승인자 이름
-    FROM receiving_info r
-    LEFT JOIN member m_manager ON r.rcv_manager_id = m_manager.member_id  -- 입고 요청자 조인
-    LEFT JOIN member m_supervisor ON r.rcv_supervisor_id = m_supervisor.member_id  -- 입고 승인자 조인
+			SELECT r.*, 
+			       m_manager.member_name AS rcv_manager_name,  -- 입고 요청자 이름
+			       m_supervisor.member_name AS rcv_supervisor_name,  -- 입고 승인자 이름
+			       c.common_status AS rcv_status_name  -- 입고 상태 이름
+			FROM receiving_info r
+			LEFT JOIN member m_manager ON r.rcv_manager_id = m_manager.member_id  -- 입고 요청자 조인
+			LEFT JOIN member m_supervisor ON r.rcv_supervisor_id = m_supervisor.member_id  -- 입고 승인자 조인
+			LEFT JOIN common c ON r.rcv_status = c.common_value 
+			                   AND c.common_work = 'rcv_status' ; -- 입고 상태 이름 가져오기
 </select>
 
 	<!-- 발주 정보 가져오기 -->

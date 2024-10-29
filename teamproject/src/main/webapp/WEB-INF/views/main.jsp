@@ -249,47 +249,50 @@ $(document).ready(function() {
 
 			// 데이터 집계
 			mainList.forEach(item => {
-			    dateLabels.push(item.date);
-				dayOrdData.push(item.day_ord);
-				dayRcvData.push(item.day_rcv);
-				dayShpData.push(item.day_shp);
+			    dateLabels.push(item.month);
+				dayOrdData.push(item.total_ord);
+				dayRcvData.push(item.total_rcv);
+				dayShpData.push(item.total_shp);
 			});
 
 			// Chart.js 그래프 생성
 			const ctx = $('#statisticsChart')[0].getContext('2d');
 			Chart.defaults.borderColor = '#eee';
 			const myChart = new Chart(ctx, {
-				type: 'line',
+				type: 'mixed',
 				data: {
 					labels: dateLabels,
 					datasets: [
 						{
 							label: '발주',
 							data: dayOrdData,
+							type: 'line',
 							borderColor: '#fdaf4b',
 							backgroundColor: 'rgba(253, 175, 75, 0.6)',
 							fill: true,
-							lineTension: 0.3,
+							lineTension: 0.4,
 							pointStyle: 'circle',
 							borderWidth: 3
 						},
 						{
 							label: '입고',
 							data: dayRcvData,
+							type: 'line',
 							borderColor: '#31ce36',
-							backgroundColor: 'rgba(49, 206, 54, 0.52)',
+							backgroundColor: 'rgba(49, 206, 54, 0.6)',
 							fill: true,
-							lineTension: 0.3,
+							lineTension: 0.4,
 							pointStyle: 'circle',
 							borderWidth: 3
 						},
 						{
 							label: '출고',
 							data: dayShpData,
+							type: 'line',
 							borderColor: '#f3545d',
-							backgroundColor: 'rgba(243, 84, 93, 0.52)',
+							backgroundColor: 'rgba(243, 84, 93, 0.6)',
 							fill: true,
-							lineTension: 0.3,
+							lineTension: 0.4,
 							pointStyle: 'circle',
 							borderWidth: 3
 						},
@@ -312,6 +315,7 @@ $(document).ready(function() {
 							beginAtZero: true,
 						},
 						y: {
+							stacked: true,
 							ticks: {
 								autoSkip: false,
 								maxTicksLimit: 5,
@@ -336,6 +340,10 @@ $(document).ready(function() {
 								}
 							}
 						},
+					},
+					interaction: {
+						mode: 'nearest',
+						intersect: false
 					}
 				},
 			});

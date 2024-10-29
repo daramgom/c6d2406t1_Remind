@@ -145,9 +145,9 @@ public class ProdDAOImpl implements ProdDAO {
 		logger.debug("( •̀ ω •́ )✧ DAO : moveStockCancel(List<ProdVO> moveList) 실행");
 		int result = 0;
 		for(ProdVO vo: moveList) {
+			result += sqlSession.update(NAMESPACE+".moveStock3", vo);
 			result += sqlSession.update(NAMESPACE+".moveStockCancel", vo);
 			result += sqlSession.update(NAMESPACE+".moveStockCancel2", vo);
-			result += sqlSession.update(NAMESPACE+".moveStock3", vo);
 		}
 		logger.debug("( •̀ ω •́ )✧ DAO : result : "+result);
 		return result;

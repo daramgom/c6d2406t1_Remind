@@ -196,11 +196,11 @@ public class MemberController {
  	@RequestMapping(value = "/login", method = RequestMethod.GET)
  	public String snsLogin(Model model) {
  		logger.debug(" Login page ");
- 		/*
- 		 * SNSLogin snsLogin = new SNSLogin(naverSns);
- 		 * 
- 		 * model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
- 		 */
+ 		
+ 		  SNSLogin snsLogin = new SNSLogin(naverSns);
+ 		  
+ 		  model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
+ 		 
  		
  		return "login";
  	}
@@ -215,6 +215,16 @@ public class MemberController {
  		}else {
  			response.put("result", "false");
  		}
+ 		
+ 		// result_code가 세션에 존재하는지 확인하고 제거
+ 	    if (session.getAttribute("result_code") != null) {
+ 	        session.removeAttribute("result_code");
+ 	    } 		// result_code가 세션에 존재하는지 확인하고 제거
+ 	    if (session.getAttribute("sessionCheckKey") != null) {
+ 	        session.removeAttribute("sessionCheckKey");
+ 	    }
+ 		
+
  		
  		return ResponseEntity.ok(response);
  		
@@ -263,7 +273,7 @@ public class MemberController {
  	
  	// SNS 로그인
  	@RequestMapping(value = "/auth/naver/callback", method = {RequestMethod.GET, RequestMethod.POST})
- 	public String loginCallback(@RequestParam String code, HttpSession session, RedirectAttributes rttr) throws Exception {
+ 	public String loginCallback(@RequestParam String code, HttpSession session, RedirectAttributes rttr, Model model) throws Exception {
  	    SNSLogin snsLogin = new SNSLogin(naverSns);
  	    UserVO snsUser = snsLogin.getUserProfile(code);
  	    
@@ -278,10 +288,24 @@ public class MemberController {
  	    	session.setAttribute("userInfo", snsUser); // 세션에 UserVO 객체 저장 
  	        return "redirect:/notify"; // notify 페이지로 리다이렉트
  	    } 
+ 	    else if(result.getApproval_status().equals("01")) {
+			   
+ 	    	session.setAttribute("result_code", "REGISTRATION_PENDING"); // 세션에 저장
+ 		} else {
+ 			String sessionCheckKey = UUID.randomUUID().toString(); // 랜덤 키 생성
+ 			
+ 			mySessionListener.addSession(result.getMember_id(),sessionCheckKey);
+ 			logger.debug("sessionCheckKey : " + sessionCheckKey);
+ 			
+ 	        // 세션 리스너에 사용자 ID와 세션 체크 키 추가
+ 			sessionAdd(session, result);
+
+ 		    // 로그인 성공
+ 			session.setAttribute("sessionCheckKey", sessionCheckKey); // 세션에 저장
+ 	        session.setAttribute("result_code", "SUCCESS"); // 세션에 저장
+ 		}
  	    
- 	    // 비교해서 member 있으면 -> 해당하는 member 정보로 로그인 -> 메인 페이지
- 	    sessionAdd(session, result);
- 	    return "redirect:/main"; // 메인 페이지로 리다이렉트
+ 	    return "/login"; // 메인 페이지로 리다이렉트
  	};
  	
  	
@@ -291,12 +315,22 @@ public class MemberController {
  	public void notifyGET(Model model, HttpSession session) {
  		// 세션에서 UserVO 객체 가져오기
  	    UserVO userInfo = (UserVO) session.getAttribute("userInfo");
+ 	   session.removeAttribute("result_code");
  	    
  	    // userInfo를 사용할 수 있습니다.
  	    if (userInfo != null) {
  	        model.addAttribute("userInfo", userInfo); // 뷰에서 사용하기 위해 다시 모델에 추가
  	    }
  	};
+ 	
+ 	// http://localhost:8088/notify
+  	// sns로그인 -> 회원정보와 없으면  실행되는 중간다리 페이지.
+  	@RequestMapping(value = "/pending", method = RequestMethod.GET)
+  	public void pendingGET(Model model, HttpSession session) {
+  		// 세션에서 UserVO 객체 가져오기
+  	    model.addAttribute("snsCode" , "REGISTRATION_PENDING");
+  	    session.removeAttribute("result_code");
+  	};
  	
  	// 비밀번호 찾기 페이지
  	@RequestMapping(value = "pwInquiry" , method = RequestMethod.GET)

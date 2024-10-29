@@ -2,12 +2,15 @@ package com.itwillbs.web;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,7 @@ import com.itwillbs.domain.UserVO;
 import com.itwillbs.login.SNSLogin;
 import com.itwillbs.login.SnsValue;
 import com.itwillbs.service.MemberService;
+import com.itwillbs.service.MySessionListener;
 import com.itwillbs.service.UserService;
 
 @Controller
@@ -42,6 +46,10 @@ public class MemberController {
 	@Inject
 	private UserService uService;
 	
+
+ 	@Autowired
+ 	private MySessionListener mySessionListener;
+	
 	// session 중복 코드
 	private void sessionAdd (HttpSession session, MemberVO result) {
 		// 비교해서 member 있으면 -> 해당하는 member 정보로 로그인 -> 메인 페이지
@@ -54,6 +62,7 @@ public class MemberController {
 		session.setAttribute("department_id", result.getDepartment_id());
 		session.setAttribute("member_state", result.getMember_state());
 		session.setAttribute("member_code", result.getMember_code());
+		
 		// 밑에 있는걸로 변경할거임/
 		/* session.setAttribute("resultMemberVO",result); */
 		
@@ -196,16 +205,31 @@ public class MemberController {
  		return "login";
  	}
  	
+ 	@RequestMapping( value ="/getSessionCheck" , method = RequestMethod.POST)
+ 	public ResponseEntity<Map<String, String>> getSessionCheck(@RequestBody Map<String, String> request, HttpSession session) {
+ 		String userId = (String) session.getAttribute("id");
+ 		 String sessionCheckKey = request.get("sessionCheckKey");
+ 		logger.debug(" @@@@@@@ userID + " + userId+ " key" + sessionCheckKey );
+ 		if(mySessionListener.validateSessionKey(userId, sessionCheckKey)) {
+ 			response.put("result", "true");
+ 		}else {
+ 			response.put("result", "false");
+ 		}
+ 		
+ 		return ResponseEntity.ok(response);
+ 		
+ 		
+ 	}
+ 	
+ 	
  	// 로그인 
- 	@RequestMapping( value = "login" , method= RequestMethod.POST )
+ 	@RequestMapping( value = "/login" , method= RequestMethod.POST )
  	public ResponseEntity<Map<String, String>> login(@RequestBody MemberVO vo, HttpSession session) {
  		response.clear(); // 메서드 시작 시 초기화
  		logger.debug("로그인  VO :  " + vo );
  		
  		MemberVO result = mService.memberLoginCheck(vo);
  		logger.debug("result :  " + result );
- 		
- 		
  	
  		if (result == null) {
  		    // 아이디가 존재하지 않음
@@ -219,17 +243,18 @@ public class MemberController {
  		   response.put("code", "REGISTRATION_PENDING"); // "회원가입 승인 대기 중"
  		    response.put("message", "회원가입 승인이 대기 중입니다.");
  		} else {
+ 			String sessionCheckKey = UUID.randomUUID().toString(); // 랜덤 키 생성
+ 			
+ 			mySessionListener.addSession(result.getMember_id(),sessionCheckKey);
+ 			logger.debug("sessionCheckKey : " + sessionCheckKey);
+ 			
+ 	        // 세션 리스너에 사용자 ID와 세션 체크 키 추가
+ 			sessionAdd(session, result);
+
  		    // 로그인 성공
+ 			response.put("sessionCheckKey", sessionCheckKey); // 키 넘김
  			response.put("code", "SUCCESS");
  		    response.put("message", "로그인 성공");
- 		    
- 		   // 중복 로그인 체크
- 	        if (mService.login(result.getMember_id(), session)) {
- 	            sessionAdd(session, result); // 추가 로직 (예: 사용자 정보 저장)
- 	        } else {
- 	            response.put("code", "ALREADY_LOGGED_IN");
- 	            response.put("message", "이미 로그인한 사용자입니다.");
- 	        }
  		}
 
  		return ResponseEntity.ok(response);

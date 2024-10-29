@@ -27,12 +27,12 @@ public class ChattingHandler extends TextWebSocketHandler{
 			wsSession.getAttributes().put("userName", userName);
 			sessionList.add(wsSession);
 			
-			/* String welcomeMessage = userName + "님이 입장하셨습니다. : )";
+			String welcomeMessage = userName + "님이 입장하셨습니다. : )";
 				for (WebSocketSession s : sessionList) {
 					if (s != wsSession) {
 						s.sendMessage(new TextMessage(welcomeMessage));
 					}
-				} */
+				}
 		} else {
 			logger.debug("사용자 ID가 제공되지 않았습니다.");
 		}

@@ -13,9 +13,9 @@
 	<insert id="insertMember">
 		insert into member
 		(member_id,member_pw,member_name,member_email,member_tel,employee_rank,create_date,update_date,permission_id,member_code,
-		member_state,approval_status,department_id, company_status)
+		member_state,approval_status,department_id, )
 		values(#{member_id},#{member_pw},#{member_name},#{member_email},#{member_tel},'01',
-		now(),now(),'01',1,'01','01',0, '01');
+		now(),now(),'01',1,'01','01',0);
 	</insert>
 	<!-- userid 컬럼명. -->
 	
@@ -23,9 +23,9 @@
 	<insert id="insertCompanyMember">
 		insert into member
 		(member_id,member_pw,member_name,member_email,member_tel,employee_rank,create_date,update_date,permission_id,member_code,
-		member_state,approval_status,department_id, company_status)
+		member_state,approval_status,department_id)
 		values(#{member_id},#{member_pw},#{member_name},#{member_email},#{member_tel},'00',
-		now(),now(),'01',#{member_code},'01','02',0, #{company_status});
+		now(),now(),'01',#{member_code},'01','02',0);
 	</insert>
 
 	<!-- 로그인 체크 -->
@@ -169,6 +169,8 @@
 <select id="getWaitingMemberCount" resultType="int">
     SELECT COUNT(*) FROM member
     WHERE approval_status = '01' and member_code = '1'
+     ORDER BY create_date desc 
+  	    limit #{startPage},#{pageSize}
 </select>
 
 

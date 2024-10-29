@@ -20,27 +20,13 @@
         },
       });
     </script>
-       <script>
-       let isNavigatingAway = false;
 
-       window.addEventListener('beforeunload', function (event) {
-           if (isNavigatingAway) {
-               navigator.sendBeacon('/logout'); // 비콘 API를 사용하여 로그아웃 요청
-           }
-       });
 
-       // 링크 클릭 시 isNavigatingAway를 true로 설정
-       document.querySelectorAll('a').forEach(link => {
-           link.addEventListener('click', function (event) {
-               isNavigatingAway = true;
-           });
-       });
 
-       // 새로 고침이나 다른 이벤트에 대해 isNavigatingAway를 false로 유지
-       window.addEventListener('load', function () {
-           isNavigatingAway = false;
-       });
-</script>
+
+
+
+
 
 <div class="main-panel">
 	<div class="main-header">

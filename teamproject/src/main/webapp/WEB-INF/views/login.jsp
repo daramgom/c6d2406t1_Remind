@@ -33,6 +33,10 @@ pageEncoding="UTF-8"%>
             performLogin(); // 로그인 함수 호출
           }
         });
+        function handleLoginSuccess() {
+            localStorage.setItem('sessionActive', 'true'); // 로그인 성공 시 세션 상태 업데이트
+            window.location.href = '/main'; // 메인 페이지로 리디렉션
+        }
 
         function performLogin() {
           var member_id = $("#member_id").val();
@@ -68,7 +72,7 @@ pageEncoding="UTF-8"%>
       					localStorage.removeItem('colActive');
       					localStorage.removeItem('alertShown');
       					localStorage.removeItem('alertShown2');
-                    	location.href = "/main"; // 관리자 페이지로 이동
+      					handleLoginSuccess(); // 로그인 성공 처리
                     });
                 } else {
                 	 // 로그인 실패 시 응답 처리

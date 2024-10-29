@@ -106,7 +106,7 @@ tr {
 							<div class="card-header"
 								style="display: flex; justify-content: space-between;">
 								<div class="card-title">목록</div>
-								<c:if test="${pageCount > 1}">
+								<c:if test="${pageCount >= 1}">
 									<div style="margin-right: 1rem;">
 										<button id="approveBtn"
 											style="margin-right: 1rem; padding: 0.7rem 2rem; background: #5f41e4 ! IMPORTANT; border: none;"
@@ -133,7 +133,7 @@ tr {
 													<th class="col-md-2">가입일자</th>
 												</tr>
 
-												<c:if test="${ pageCount > 1}">
+												<c:if test="${ pageCount >= 1}">
 													<c:forEach items="${WaitingList}" var="member">
 														<tr>
 															<td><input class="form-check-input"
@@ -165,10 +165,10 @@ tr {
 										</form>
 										<div style="    float: right;
     margin-right: 30px;"><!-- 페이지 네비게이션 -->
-<c:if test="${pageCount > 1}">
+<c:if test="${pageCount >= 1}">
     <div class="pagination">
         <!-- 이전 페이지 링크 -->
-        <c:if test="${currentPage > 1}">
+        <c:if test="${currentPage >= 1}">
             <a href="?page=${currentPage - 1}" style="padding: 0 10px; color:black; font-size : 18px;     border-color: #ddd; background-color: var(--bs-pagination-disabled-bg);     border-radius: 100px;">Previous</a>
         </c:if> 
 

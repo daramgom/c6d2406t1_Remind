@@ -241,7 +241,7 @@ public class MemberDAOImpl implements MemberDAO {
 		List resultList = new ArrayList();
 		/* Criteria cri */
 			// 합쳐진 List결과를 리턴
-			int totalCount = sqlSession.selectOne(NAMESPACE + ".getWaitingMemberCount");
+			int totalCount = sqlSession.selectOne(NAMESPACE + ".getWaitingMemberCount", cri);
 			List resultWaitingMember = sqlSession.selectList(NAMESPACE + ".getWaitingMember", cri);
 			// 대기 회원이 없을 경우 빈 결과 반환
 		    if (resultWaitingMember.isEmpty()) {

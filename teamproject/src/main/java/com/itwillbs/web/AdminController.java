@@ -135,6 +135,7 @@ public class AdminController {
 	        model.addAttribute("DeptList", result.get(2));    // 부서 목록
 	        model.addAttribute("totalCount", result.get(3));  // 전체 대기 회원 수
 	    }
+	    logger.debug("adminMemberList@@@@@@@@@@@@@@@@@@@@@@ : "+ result.get(0));
 
 	    // 페이지 크기를 모델에 추가
 	    model.addAttribute("pageSize", cri.getPageSize());

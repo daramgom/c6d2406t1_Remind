@@ -83,5 +83,9 @@
 	</servlet>
 	<!-- websocket -->
 	
+	 <listener>
+        <listener-class>com.itwillbs.service.MySessionListener</listener-class>
+    </listener>
+	
 
 </web-app>

@@ -35,22 +35,28 @@ public class MemberServiceImpl implements MemberService{
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
 	
-	private final Map<String, HttpSession> activeSessions = new ConcurrentHashMap<>();
 	
-	@Override
-	public boolean login(String userId, HttpSession session) {
-        if (activeSessions.containsKey(userId)) {
-            return false; // 이미 로그인한 사용자
-        } else {
-            activeSessions.put(userId, session);
-            return true; // 로그인 성공
-        }
-    }
-	
-	@Override
-	public void logout(String userId) {
-        activeSessions.remove(userId); // 세션 종료 시 사용자 ID 제거
-	}
+	// 활성 세션을 저장하는 맵
+		private final Map<String, HttpSession> activeSessions = new ConcurrentHashMap<>();
+
+		@Override
+		public boolean login(String userId, HttpSession session) {
+	        // 이미 로그인된 사용자인지 체크
+	        if (activeSessions.containsKey(userId)) {
+	            return false; // 이미 로그인한 사용자
+	        } else {
+	            activeSessions.put(userId, session); // 세션 추가
+	            session.setAttribute("userId", userId); // 세션에 사용자 ID 저장
+	            return true; // 로그인 성공
+	        }
+	    }
+		
+		@Override
+		public void logout(String userId) {
+	        // 활성 세션에서 사용자 제거
+	        activeSessions.remove(userId);
+	        // 추가적으로 세션 무효화
+	    }
 
 	@Override
 	public String memberJoin(MemberVO vo) {
@@ -89,9 +95,7 @@ public class MemberServiceImpl implements MemberService{
 	    // 아이디가 존재하는 경우 storeMember가 있음.
 	    
 	    // 비밀번호 확인 -> 비밀번호가 맞으면
-	    logger.debug("이거 실행되니? ");
 	    if (BCrypt.checkpw(vo.getMember_pw(), storedMember.getMember_pw())) {
-	    	logger.debug("이거 실행되니? ");
 	    	// 로그인 성공
 	    	return storedMember; // 비밀번호 일치
 	    }

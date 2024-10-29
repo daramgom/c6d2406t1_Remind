@@ -20,6 +20,67 @@
         },
       });
     </script>
+    
+<script type="text/javascript">
+function getSessionCheck() {
+    const url = "/getSessionCheck";
+    const sessionCheckKey = localStorage.getItem('sessionCheckKey'); // 로컬스토리지에서 세션 체크 키 가져오기
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ sessionCheckKey }) // 세션 체크 키를 요청 본문에 포함
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('네트워크 응답이 좋지 않습니다: ' + response.statusText);
+        }
+        return response.json(); // 응답을 JSON으로 변환
+    })
+    .then(data => {
+        if (data.result == "true") {
+            // 동일 사용자일 경우 아무것도 하지 않음
+        } else {
+            // false일 경우 로그아웃 요청 보내고 로그인 페이지로 이동
+            logoutAndRedirect();
+        }
+    })
+    .catch(error => {
+        console.error('문제가 발생했습니다:', error);
+    });
+}
+
+// 로그아웃 요청을 보내고 로그인 페이지로 이동하는 함수
+function logoutAndRedirect() {
+    const logoutUrl = "/logout"; // 로그아웃 요청을 보낼 URL
+
+    fetch(logoutUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // 로그아웃 성공 시 로그인 페이지로 이동
+            window.location.href = "/login"; // 로그인 페이지로 이동
+        } else {
+            throw new Error('로그아웃 요청에 실패했습니다: ' + response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('로그아웃 중 문제가 발생했습니다:', error);
+    });
+}
+
+// 함수 정의 후 즉시 호출
+getSessionCheck();
+</script>
+    
+    
+    
 
 
 

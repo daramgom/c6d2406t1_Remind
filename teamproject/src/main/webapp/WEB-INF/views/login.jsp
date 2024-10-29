@@ -33,8 +33,8 @@ pageEncoding="UTF-8"%>
             performLogin(); // 로그인 함수 호출
           }
         });
-        function handleLoginSuccess() {
-            localStorage.setItem('sessionActive', 'true'); // 로그인 성공 시 세션 상태 업데이트
+        function handleLoginSuccess(val) {
+            localStorage.setItem('sessionCheckKey',val ); // 로그인 성공 시 세션 상태 업데이트
             window.location.href = '/main'; // 메인 페이지로 리디렉션
         }
 
@@ -72,7 +72,9 @@ pageEncoding="UTF-8"%>
       					localStorage.removeItem('colActive');
       					localStorage.removeItem('alertShown');
       					localStorage.removeItem('alertShown2');
-      					handleLoginSuccess(); // 로그인 성공 처리
+      					
+      					alert(response.sessionCheckKey);
+      					handleLoginSuccess(response.sessionCheckKey); // 로그인 성공 처리
                     });
                 } else {
                 	 // 로그인 실패 시 응답 처리
@@ -86,9 +88,6 @@ pageEncoding="UTF-8"%>
                         case "REGISTRATION_PENDING":
                             showWarningAlert(response.message);
                             break;
-                        case "ALREADY_LOGGED_IN":
-                            showWarningAlert(response.message);
-                            break; // "PENDING_APPROVAL" 대신 "ALREADY_LOGGED_IN" 사용
                         default:
                             showErrorAlert("알 수 없는 오류가 발생했습니다.");
                     }

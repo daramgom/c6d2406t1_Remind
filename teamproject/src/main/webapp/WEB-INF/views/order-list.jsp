@@ -22,6 +22,7 @@ pageEncoding="UTF-8"%>
     
     <!-- Fonts and icons -->
     <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
+    <link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
@@ -659,26 +660,7 @@ function openModal(ord_count, ord_number, common_status, ord_status,
         
     } // openModal
         
-    $(document).on('click',function(e){
-    	// console.log(e.target); //    <- 삭제요청
-    });
     
-    // test <-- 삭제요청
-        document.getElementById('prod_id').addEventListener('change', function() {
-        // 선택된 옵션의 value를 가져옴
-        var selectedValue = this.value;
-        // console.log으로 출력
-        console.log('선택된 값:', selectedValue);
-        document.getElementById('selectedProdId').value = selectedValue; // input에 값 설정
-    	});
-    
-        document.getElementById('wh_number').addEventListener('change', function() {
-            // 선택된 옵션의 value를 가져옴
-            var selectedValue2 = this.value;
-            // console.log으로 출력
-            console.log('선택된 값:', selectedValue2);
-        	});
-    // test <-- 삭제요청
     
 function renderButtons(ord_status) {
     var buttonContainer = document.getElementById('buttonContainer');
@@ -810,9 +792,6 @@ function addButtonEventListeners() {
             return response.text();
         })
         .then(data => {
-        	/* alert(formData);
-        	console.log(formData);
-        	alert('12345'); */
             alert("발주 정보가 수정 되었습니다.");
             location.reload();
         })

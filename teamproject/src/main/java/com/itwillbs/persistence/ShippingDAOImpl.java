@@ -39,7 +39,7 @@ public class ShippingDAOImpl implements ShippingDAO {
     @Override
     public List<OrdersVO> getAllOrderRequests() {
     	List<OrdersVO> ordersList = sqlSession.selectList(NAMESPACE + ".getAllOrderRequests");
-        logger.info("발주 목록 조회 완료! 총 개수: {}", ordersList.size());
+        logger.debug("발주 목록 조회 완료! 총 개수: {}", ordersList.size());
         return ordersList;
     }
 
@@ -90,7 +90,7 @@ public class ShippingDAOImpl implements ShippingDAO {
 	@Override
 	public void updateStockForShipping(ShippingVO shipping) {
         int result = sqlSession.update(NAMESPACE + ".updateStockForShipping", shipping);
-        logger.info("재고 정보 추가 완료! 결과: {}", result);
+        logger.debug("재고 정보 추가 완료! 결과: {}", result);
 		
 	}
 
@@ -105,7 +105,7 @@ public class ShippingDAOImpl implements ShippingDAO {
 	@Override
 	public List<CordersVO> getAllCordersRequests() {
 	    List<CordersVO> cordersList = sqlSession.selectList(NAMESPACE + ".getAllCordersRequests");
-	    logger.info("거래처 발주 목록 조회 완료! 총 개수: {}", cordersList.size());
+	    logger.debug("거래처 발주 목록 조회 완료! 총 개수: {}", cordersList.size());
 	    return cordersList; // cordersList를 반환
 	}
 

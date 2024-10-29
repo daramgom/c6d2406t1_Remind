@@ -25,7 +25,6 @@ public class MybatisTest {
 	// @Test
 	// @Before // @ Test 동작 이전에 실행
 	public void getBean() {
-		System.out.println("🐼🐼🐼🐼🐼🐼🐼🐼🐼🐼🐼🐼  factory : "+ factory);
 		
 	}
 	
@@ -34,8 +33,6 @@ public class MybatisTest {
 		// 디비 연결
 		SqlSession sqlSession = factory.openSession();
 		
-		System.out.println(" 디비 연결 성공! ");
-		System.out.println(" sqlSession " + sqlSession);
 		
 		
 		// SQL 실행

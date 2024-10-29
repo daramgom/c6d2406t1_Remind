@@ -372,12 +372,7 @@ function onMessage(msg) {
 
 	var arr = data.split(":");
 
-	for(var i=0; i<arr.length; i++) {
-		console.log('arr[' + i + ']: ' + arr[i]);
-	}
-
 	var cur_session = userName;
-	console.log("cur_session : " + cur_session);
 
 	sessionId = arr[0];
 	message = arr[1];

@@ -779,7 +779,6 @@ button:hover {
             "&rcv_date=" + rcvDate +
             "&rcv_remarks=" + rcvRemarks;
 
-        console.log(url); // URL 로그
         window.location.href = url;
         }
     </script>
@@ -863,8 +862,6 @@ function showDetails(
 	    }
 	})
 	.then(data => {
-	    console.log(data.ord_manager_name); // 서버에서 받은 데이터 처리
-	    console.log(data.ord_supervisor_name); // 서버에서 받은 데이터 처리
 	
 	    ordersManagerName = data.ord_manger_name;
 	    
@@ -968,18 +965,6 @@ function showDetails(
 		    const rcvDate = document.getElementById('rcvDate').value;
 		    const rcvRemarks = document.getElementById('rcvRemarks').value;
 
-		    // 로그 추가
-		    console.log("입고 담당자: " + rcvManagerId);
-		    console.log("입고 관리번호: " + rcvNumber);
-		    console.log("제품 식별코드: " + prodId);
-		    console.log("카테고리: " + prodCategory);
-		    console.log("품목명: " + prodName);
-		    console.log("거래처: " + companyCode);
-		    console.log("입고 수량: " + rcvQuantity);
-		    console.log("가격(단가): " + rcvPrice);
-		    console.log("입고 날짜: " + rcvDate);
-		    console.log("비고: " + rcvRemarks);
-    	
     	
     	
     	

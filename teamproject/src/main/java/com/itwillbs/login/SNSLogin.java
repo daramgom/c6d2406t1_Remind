@@ -42,7 +42,6 @@ public class SNSLogin {
 	}
 	
 	public UserVO parseJson(String body) throws Exception {
-		System.out.println(body);
 		
 		UserVO user = new UserVO();
 		

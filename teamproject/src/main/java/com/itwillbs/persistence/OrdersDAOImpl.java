@@ -29,7 +29,6 @@ public class OrdersDAOImpl implements OrdersDAO{
 	public int insert(OrdersVO ordersVO) {
 		int result = sqlSession.insert(NAMESPACE+".insert", ordersVO);
 		
-		System.out.println("result = "+result);
 		
 		return result;
 	}

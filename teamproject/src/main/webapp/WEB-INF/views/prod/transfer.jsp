@@ -385,17 +385,14 @@ $(document).ready(function () {
 			var cellValue = $(this).find('td').eq(1).text().split('-')[0].trim();
 			if (cellValue == selectedSWh) {
 				index = i;
-				console.log('i : '+i);
 				return false;
 			}
 		});
 	
 		if (index !== -1) {
 			var currentQty = $('#stockListBody tr').eq(index).find('td').eq(2).text();
-			console.log('currentQty : '+currentQty);
 			$('#current_qty2').val(currentQty);
 		} else {
-			console.log(index);
 			$('#current_qty2').val(0);
 		}
 		

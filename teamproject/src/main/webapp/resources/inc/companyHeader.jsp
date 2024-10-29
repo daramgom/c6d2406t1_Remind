@@ -190,7 +190,6 @@
 		        displayValue = displayValue.replace(/-/g, ''); // 하이픈 제거
 		    }
 
-		    console.log("span : " + field);
 		    let action = "";
 
 		    if (field == "userName") {
@@ -261,7 +260,6 @@
 	            } else {
 	                alert("중복된 값입니다."); // field 값 중복 시 경고 메시지
 	            }
-	            console.log('정보가 성공적으로 업데이트되었습니다: ' + JSON.stringify(data));
 	        })
 	        .catch(error => {
 	            console.error('업데이트 중 오류가 발생했습니다: ' + error);

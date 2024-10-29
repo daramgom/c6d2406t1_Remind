@@ -123,7 +123,7 @@ public class ShpController {
     //슬라이드 패널(발주 요청자,승인자)
     @PostMapping("/receiveOnameS")
     public ResponseEntity<OrdersVO> ordersname(@RequestBody OrdersVO vo){
-    logger.info("1444"+vo);
+    logger.debug("1444"+vo);
     OrdersVO OnameList =  shippingDAO.getOrdersName(vo.getOrd_number());
     	 return ResponseEntity.ok(OnameList);
     }

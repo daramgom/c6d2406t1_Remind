@@ -96,10 +96,6 @@
 
 //                 var formData = new FormData(this); // FormData 객체 생성
 
-//                 // FormData 내용 출력 (디버깅용)
-//                 for (var pair of formData.entries()) {
-//                     console.log(pair[0] + ': ' + pair[1]); // 각 필드의 이름과 값을 출력
-//                 }
 
 //                 $.ajax({
 //                     url: '/notice/add', // 서버의 처리 URL

@@ -26,8 +26,6 @@ public class ReceivingDAOImpl implements ReceivingDAO {
     public void insertRcv(ReceivingVO VO) {
         int result = sqlSession.insert(NAMESPACE + ".insertRcv", VO);
         
-        System.out.println("Dao: " + result);
-        System.out.println("Dao: 입고 요청 정보 디비 등록!");
     }
     
     @Override
@@ -41,33 +39,33 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 
     public List<ReceivingVO> getAllReceivingRequests() {
         List<ReceivingVO> receivingList = sqlSession.selectList(NAMESPACE + ".getAllReceivingRequests");
-        logger.info("입고 목록 조회 완료! 총 개수: {}", receivingList.size());
+        logger.debug("입고 목록 조회 완료! 총 개수: {}", receivingList.size());
         return receivingList;
 }
     
     @Override
     public List<OrdersVO> getAllOrderRequests() {
     	List<OrdersVO> ordersList = sqlSession.selectList(NAMESPACE + ".getAllOrderRequests");
-        logger.info("발주 목록 조회 완료! 총 개수: {}", ordersList.size());
+        logger.debug("발주 목록 조회 완료! 총 개수: {}", ordersList.size());
         return ordersList;
     }
 
     @Override
     public void updateReceiving(ReceivingVO receiving) {
         int result = sqlSession.update(NAMESPACE + ".updateReceiving", receiving);
-        logger.info("입고 요청 정보 업데이트 완료! 결과: {}", result);
+        logger.debug("입고 요청 정보 업데이트 완료! 결과: {}", result);
     }
     
     @Override
     public void rejectReceiving(String rcv_count) {
         int result = sqlSession.update(NAMESPACE + ".rejectReceiving", rcv_count);
-        logger.info("입고 요청이 반려되었습니다! rcv_count: {}, 결과: {}", rcv_count, result);
+        logger.debug("입고 요청이 반려되었습니다! rcv_count: {}, 결과: {}", rcv_count, result);
     }
 
     @Override
     public void insertIntoStock(ReceivingVO receiving) {
         int result = sqlSession.insert(NAMESPACE + ".insertIntoStock", receiving);
-        logger.info("재고 정보 추가 완료! 결과: {}", result);
+        logger.debug("재고 정보 추가 완료! 결과: {}", result);
     }
 
 	@Override
@@ -78,13 +76,13 @@ public class ReceivingDAOImpl implements ReceivingDAO {
 	@Override
 	public void editReceiving(ReceivingVO receiving) {
 	    int result = sqlSession.update(NAMESPACE + ".editReceiving", receiving);
-	    logger.info("입고 정보 수정 완료! 결과: {}", result);
+	    logger.debug("입고 정보 수정 완료! 결과: {}", result);
 	}
 
 	@Override
     public void deleteReceiving(String rcv_number) {
         int result = sqlSession.update(NAMESPACE + ".deleteReceiving", rcv_number);
-        logger.info("입고 정보 삭제 완료! rcv_number: {}, 결과: {}", rcv_number, result);
+        logger.debug("입고 정보 삭제 완료! rcv_number: {}, 결과: {}", rcv_number, result);
     }
 
 	@Override

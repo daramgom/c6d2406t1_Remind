@@ -21,7 +21,6 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public MemberVO getBySns(String tel) {
-		System.out.println(" DAO : getBySns(String tel) " + tel);
 		
 	
 	

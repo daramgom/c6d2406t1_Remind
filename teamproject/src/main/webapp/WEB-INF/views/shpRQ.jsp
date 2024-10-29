@@ -37,6 +37,8 @@ pageEncoding="UTF-8"%>
       });
     </script>
     
+	<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
+
 <style>
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -487,7 +489,6 @@ pageEncoding="UTF-8"%>
                 return response.json();
             })
             .then(data => {
-                console.log(data);
                 
                 var whNumberSelect = document.getElementById("wh_number");
                 whNumberSelect.innerHTML = '';
@@ -526,7 +527,6 @@ pageEncoding="UTF-8"%>
     
     
     function test2(prod_qty) {
-        console.log("선택된 수량:", prod_qty);
         
         // 출고 수량 입력 요소
         var quantityInput = document.getElementById("shp_quantity");

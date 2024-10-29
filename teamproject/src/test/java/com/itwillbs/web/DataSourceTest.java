@@ -36,15 +36,12 @@ public class DataSourceTest {
 	
 	@Test
 	public void testDataSource() {
-		System.out.println(" ds : " +ds);
 	}
 	
 	@Test
 	public void testConnect() {
 		try {
 			Connection con = ds.getConnection();
-			System.out.println(" 디비 연결 성공!");
-			System.out.println(" con : " + con);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

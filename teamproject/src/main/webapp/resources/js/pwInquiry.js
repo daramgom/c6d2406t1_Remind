@@ -158,7 +158,6 @@ $(document).ready(function () {
 	    var email = $("#email").val();
 	    var code = $("#code").val();
 
-	    console.log(code);
 	    $.ajax({
 	      url: "/verifyCode",
 	      type: "POST",

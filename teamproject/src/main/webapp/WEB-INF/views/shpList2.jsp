@@ -58,7 +58,7 @@
 	#tableSHP thead th {
 		background-color: #6861ce !important;
 		color: white;
-	} 
+	}
 	
 .modal-content {
 	background-color: #fefefe;
@@ -261,8 +261,9 @@ input:focus, textarea:focus {
 .button-group {
 	grid-column: span 2;
 	display: flex;
-	justify-content: space-between;
+	/* justify-content: space-between; */
 	margin-top: 10px; /* 간격 조정 */
+	gap: 4px;
 }
 
 /* 버튼 스타일 */
@@ -455,18 +456,7 @@ button:hover {
 <!-- 출고 요청 목록 -->
 <h1>출고 처리 대기 목록</h1>
 <div class="form-container1">
-    <form action="/shpList2" method="GET" class="search-form">
-        <label for="status">출고 상태:</label>
-        <select id="status" name="shp_status">
-            <option value="">모두</option>
-            <option value="01">출고 요청</option>
-            <option value="02">출고 완료</option>
-            <option value="03">출고 반려</option>
-            <option value="04">출고 삭제</option>
-        </select>
-        <input type="submit" value="검색" class="search-button">
-    </form>
-</div>
+
 <table id = "tableSHP">
 <thead>
     <tr>
@@ -482,10 +472,10 @@ button:hover {
         <th>비고</th>
     </tr>
   </thead>
-  
-  
+ 
+ 
   <tfoot>
-  
+ 
       <tr>
         <th>번호</th>
         <th>상태</th>
@@ -498,17 +488,32 @@ button:hover {
         <th>출고 날짜</th>
         <th>비고</th>
     </tr>
-    
+   
 	</tfoot>
 			<tbody>
    <c:forEach var="item" items="${shippingList}" varStatus="idx">
-        <tr onclick="showShippingDetails('${item.shp_status_name}', '${item.shp_manager_name}', '${item.shp_supervisor_id}', '${item.cord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}','${item.shp_manager_id}','${item.shp_supervisor_name}')">
-            <td>${item.shp_count}</td>
+        <tr onclick="showShippingDetails(
+    `${item.shp_manager_name}`,
+    `${item.shp_supervisor_id}`,
+    `${item.cord_number}`,
+    `${item.shp_number}`,
+    `${item.prod_id}`,
+    `${item.prod_name}`,
+    `${item.company_code}`,
+    `${item.shp_quantity}`,
+    `${item.wh_number}`,
+    `${item.shp_price}`,
+    `${item.shp_date}`,
+    `${item.shp_remarks}`,
+    `${item.shp_manager_id}`,
+    `${item.shp_supervisor_name}`,
+    `${item.shp_status_name}`
+)">            <td>${item.shp_count}</td>
             <td>${item.shp_status_name}</td>
             <td>${item.shp_manager_name}</td>
             <td>${item.shp_number}</td>
-            <td>${item.prod_id}</td>
             <td>${item.prod_name}</td>
+            <td>${item.prod_id}</td>
             <td>${item.shp_quantity}</td>
             <td>${item.shp_price}</td>
             <td>${item.shp_date}</td>
@@ -525,16 +530,12 @@ button:hover {
     <h2>출고 처리</h2>
     <form id="ShippingForm" onsubmit="return confirmSubmission()">
         <div class="form-container">
-        
-        
-        										
-											<div class="form-group" style="display: none;"> <!-- 전체를 숨김 -->
-												   <label for="shpStatus">출고 상태</label>
-												   <input type="text" id="shpStatus" name="shpStatus" readonly="readonly">
-											</div>
-        
-        
-        
+    
+			<div class="form-group" style="display: none;"> 
+						  <label for="shpStatus">출고 상태</label>
+						<input type="text" id="shpStatus" name="shpStatus" readonly="readonly">
+					</div>
+											
             <div class="form-group">
            <label for="shpManagerId"> <img
 		    src="${pageContext.request.contextPath}/resources/img/member.png"
@@ -549,7 +550,7 @@ button:hover {
 			<div class="custom-underline"></div>
 			</div>
             </div>
-            
+           
 		   <div class="form-group">
 		    <label for="shpSupervisorId">
 		        <img src="${pageContext.request.contextPath}/resources/img/member.png" alt="사람 아이콘" style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">
@@ -560,9 +561,9 @@ button:hover {
 		        <div class="custom-underline"></div>
 		    </div>
 		   </div>
-		   
-<input type="hidden" id="shpManagerId2">		   
-		   
+		  
+<input type="hidden" id="shpManagerId2">		  
+		  
             <div class="form-group">
                 <label for="cordNumber">거래처 발주 관리번호</label>
                 <input type="text" id="cordNumber" required name="cordNumber" readonly="readonly">
@@ -579,27 +580,27 @@ button:hover {
                 <label for="prodName">제품명</label>
                 <input type="text" id="prodName" required name="prodName" readonly="readonly">
             </div>
-            
+           
 			<div class="form-group">
 				<label for="companyCode">거래처</label> <input type="text"
 				id="companyCode" required name="companyCode" readonly="readonly">
 			</div>
-            
+           
             <div class="form-group">
                 <label for="shpQuantity">출고 수량</label>
                 <input type="number" id="shpQuantity" required name="shpQuantity" min="0">
             </div>
-            
+           
             <div class="form-group">
 			<label for="whNumber">창고 번호</label>
 			 <input type="number" id="whNumber" required name="whNumber" readonly="readonly">
 			</div>
-            
+           
             <div class="form-group">
                 <label for="shpPrice">가격(단가)</label>
                 <input type="text" id="shpPrice" required name="shpPrice">
             </div>
-            
+           
             <div class="form-group">
                 <label for="shpDate">출고 날짜</label>
                 <input type="date" id="shpDate" required name="shpDate">
@@ -609,19 +610,13 @@ button:hover {
                 <textarea id="shpRemarks" required name="shpRemarks"></textarea>
             </div>
             <div class="button-group">
-            
-                 	
-     <c:if test="${item.shp_status_name != '출고 완료'}">    
-     <c:if test="${sessionScope.permission_id == '02' || sessionScope.permission_id == '03'}">     	
+            <c:if test="${sessionScope.permission_id != '01'}">
                 <button type="button" onclick="saveShippingDetails()">출고 승인</button>
                 <button type="button" onclick="rejectShipping()">출고 반려</button>
-     </c:if>           
-                
-                 
+            </c:if>
                 <button type="button" onclick="editShippingDetails()">출고 수정</button>
                 <button type="button" onclick="deleteShipping()">출고 삭제</button>
-      </c:if>
-                
+               
             </div>
         </div>
     </form>
@@ -777,19 +772,8 @@ $(document).ready(function () {
 /**
  * 출고 세부 정보를 표시하는 함수
  */
-function showShippingDetails(shpStatus,shpManagerName, shpSupervisorName, cordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks,shp_manager_id, shp_supervisor_name) {
+function showShippingDetails(shpManagerName, shpSupervisorName, cordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks,shp_manager_id, shp_supervisor_name, shp_status_name) {
     document.getElementById('slidePanel').classList.add('open');
-    document.getElementById('shpStatus').value = shpStatus;
-    
-    
-	
-	// 상태에 따라 버튼 활성화/비활성화
-    if (shpStatus === '출고 완료') {
-        document.querySelector('.button-group').style.display = 'none'; // 버튼 숨김
-    } else {
-        document.querySelector('.button-group').style.display = 'block'; // 버튼 보임
-    }
-
     document.getElementById('shpManagerId').value = shpManagerName;
     document.getElementById('shpSupervisorId').value = shp_supervisor_name;
     document.getElementById('cordNumber').value = cordNumber;
@@ -797,7 +781,7 @@ function showShippingDetails(shpStatus,shpManagerName, shpSupervisorName, cordNu
 /*     document.getElementById('prodCategory').value = prodCategory; */
     document.getElementById('prodId').value = prodId;
     document.getElementById('prodName').value = prodName;
-    document.getElementById('companyCode').value = companyCode; 
+    document.getElementById('companyCode').value = companyCode;
     document.getElementById('shpQuantity').value = shpQuantity;
     document.getElementById('whNumber').value = whNumber;
     document.getElementById('shpPrice').value = shpPrice;
@@ -806,6 +790,17 @@ function showShippingDetails(shpStatus,shpManagerName, shpSupervisorName, cordNu
     document.getElementById('shpRemarks').value = shpRemarks;
     document.getElementById('shpManagerId2').value = shp_manager_id;
     
+	
+	// 상태에 따라 버튼 활성화/비활성화
+    if (shp_status_name === '출고 완료' ||shp_status_name === '출고 삭제' ) {
+        document.querySelector('.button-group').style.display = 'none'; // 버튼 숨김
+    } else {
+        document.querySelector('.button-group').style.display = 'block'; // 버튼 보임
+    }
+    
+    
+    
+   
 }
 
 /**
@@ -840,7 +835,22 @@ function saveShippingDetails() {
         shp_price: document.getElementById('shpPrice').value,
         shp_date: document.getElementById('shpDate').value,
         shp_remarks: document.getElementById('shpRemarks').value
+        
+    
     };
+ // 콘솔 출력
+    console.log('shp_manager_id:', updatedData.shp_manager_id);
+    console.log('shp_supervisor_id:', updatedData.shp_supervisor_id);
+    console.log('cord_number:', updatedData.cord_number);
+    console.log('shp_number:', updatedData.shp_number);
+    console.log('prod_id:', updatedData.prod_id);
+    console.log('prod_name:', updatedData.prod_name);
+    console.log('company_code:', updatedData.company_code);
+    console.log('shp_quantity:', updatedData.shp_quantity);
+    console.log('wh_number:', updatedData.wh_number);
+    console.log('shp_price:', updatedData.shp_price);
+    console.log('shp_date:', updatedData.shp_date);
+    console.log('shp_remarks:', updatedData.shp_remarks);
     const url = '/updateShipping';
 
     fetch(url, {
@@ -856,7 +866,7 @@ function saveShippingDetails() {
                 openModal();
             }
             closePanel();
-            
+           
         } else {
             throw new Error('업데이트 실패');
         }
@@ -946,12 +956,12 @@ function editShippingDetails() {
         shp_price: document.getElementById('shpPrice').value,
         shp_date: document.getElementById('shpDate').value,
         shp_remarks: document.getElementById('shpRemarks').value
-        
+       
 
 
     };
 
-    
+   
     fetch('/editShipping', {
         method: 'POST',
         headers: {
@@ -1007,5 +1017,3 @@ function deleteShipping() {
 }
 
 </script>
-
-

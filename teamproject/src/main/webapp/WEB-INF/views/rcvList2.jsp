@@ -462,22 +462,10 @@ button:hover {
 						
 							<h1 style="margin-left: 5px;">입고 요청 목록</h1>
 
-							<div class="form-container1">
-						    <form id="searchForm" class="search-form">
-						        <label for="status">입고 상태:</label>
-						        <select id="status" name="rcv_status">
-						            <option value="">모두</option>
-						            <option value="01">입고 요청</option>
-						            <option value="02">입고 완료</option>
-						            <option value="03">입고 반려</option>
-						            <option value="04">입고 삭제</option>
-						        </select>
-						        <input type="button" value="검색" class="search-button">
-						    </form>
-						</div>
+
 
 							
-							<table id = "tableRCV">
+							<table id ="tableRCV">
 							<thead>
 								<tr>
 									<th>번호</th>
@@ -510,14 +498,11 @@ button:hover {
 						</tfoot>
 							<tbody>
 							    <c:forEach var="item1" items="${receivingList}" varStatus="idx">
-							        <tr
-							            onclick="showDetails('${item1.rcv_status_name}','${item1.rcv_manager_name}', '${item1.rcv_supervisor_name}', '${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.ord_date}', '${item1.rcv_date}', '${item1.rcv_remarks}', '${item1.rcv_manager_id}', '${item1.rcv_supervisor_id}')">
+							        <tr onclick="showDetails('${item1.rcv_status_name}','${item1.rcv_manager_name}','${item1.rcv_supervisor_name}', '${item1.ord_number}', '${item1.rcv_number}', '${item1.prod_category}', '${item1.prod_id}', '${item1.prod_name}', ${item1.rcv_quantity}, ${item1.rcv_price}, '${item1.wh_number}', '${item1.company_code}', '${item1.ord_date}', '${item1.rcv_date}', '${item1.rcv_remarks}', '${item1.rcv_manager_id}', '${item1.rcv_supervisor_id}')">
+										    <input type="hidden" class="rcv-status" value="${item1.rcv_status}"> 
 							
 							            <td>${item1.rcv_count}</td>
-										<td>
-										    ${item1.rcv_status_name} <!-- 상태 값을 텍스트로 출력 -->
-										    <input type="hidden" class="rcv-status" value="${item1.rcv_status}"> <!-- 상태 값을 숨김 -->
-										</td>
+										<td>${item1.rcv_status_name}</td>
 							            <td>${item1.rcv_manager_name}</td>
 							            <td>${item1.ord_number}</td>
 							            <td>${item1.rcv_number}</td>
@@ -539,7 +524,7 @@ button:hover {
 										<div class="form-container">
 										
 										
-											<div class="form-group" style="display: none;"> <!-- 전체를 숨김 -->
+											<div class="form-group" style="display: none;"> 
 												   <label for="rcvStatus">입고 상태</label>
 												   <input type="text" id="rcvStatus" name="rcvStatus" readonly="readonly">
 											</div>
@@ -677,17 +662,15 @@ button:hover {
 												<textarea id="rcvRemarks" placeholder="전달 할 '내용' ..."
 													required name="rcvRemarks"></textarea>
 											</div>
-
-<div class="button-group">
-    <c:if test="${item1.rcv_status_name != '입고 완료'}">
-    <c:if test="${sessionScope.permission_id == '02' || sessionScope.permission_id == '03'}">
-        <button type="button" onclick="saveDetails()">입고 승인</button>
-        <button type="button" onclick="rejectReceiving()">입고 반려</button>
-    </c:if>
-        <button type="button" onclick="editDetails()">입고 수정</button>
-        <button type="button" onclick="deleteReceiving()">입고 삭제</button>
-    </c:if>
-</div>
+											
+											<div class="button-group">
+											    <c:if test="${sessionScope.permission_id == '02' || sessionScope.permission_id == '03'}">
+											        <button type="button" onclick="saveDetails()">입고 승인</button>
+											        <button type="button" onclick="rejectReceiving()">입고 반려</button>
+											    </c:if>
+											        <button type="button" onclick="editDetails()">입고 수정</button>
+											        <button type="button" onclick="deleteReceiving()">입고 삭제</button>
+											</div>
 
 									</form>
 								</div>
@@ -803,49 +786,51 @@ button:hover {
 
 	<script>
 	
-	
-	
 	$(document).ready(function () {
 		
 		// 데이터테이블
-        $("#tableRCV").DataTable({
-        	pageLength: 10, // 기본 페이지 길이
-        	lengthMenu: [10, 20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
-        	initComplete: function () {
-        		var table = this.api();
+	    $("#tableRCV").DataTable({
+	    	pageLength: 10, // 기본 페이지 길이
+	    	lengthMenu: [10, 20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
+	    	initComplete: function () {
+	    		var table = this.api();
 
-                // 필터를 적용할 열 인덱스 배열 (예: 두 번째 열과 세 번째 열)
-                var columnsToFilter = [0,1,2,3,4,5,6,7,8,9];
+	            // 필터를 적용할 열 인덱스 배열 (예: 두 번째 열과 세 번째 열)
+	            var columnsToFilter = [0,1,2,3,4,5,6,7,8,9];
 
-                // 각 열에 대해 필터 추가
-                columnsToFilter.forEach(function (index) {
-                    var column = table.column(index); // 특정 열 선택
+	            // 각 열에 대해 필터 추가
+	            columnsToFilter.forEach(function (index) {
+	                var column = table.column(index); // 특정 열 선택
 	                var select = $(
 	                  '<select class="form-select"><option value=""></option></select>'
-                	)
-                	.appendTo($(column.footer()).empty())
-                	.on("change", function () {
-                    	var val = $.fn.dataTable.util.escapeRegex($(this).val());
+	            	)
+	            	.appendTo($(column.footer()).empty())
+	            	.on("change", function () {
+	                	var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
-                    column
-                    .search(val ? "^" + val + "$" : "", true, false)
-                    .draw();
-                	});
+	                column
+	                .search(val ? "^" + val + "$" : "", true, false)
+	                .draw();
+	            	});
 
-                	column
+	            	column
 	                .data()
 	                .unique()
 	                .sort()
 	                .each(function (d, j){
-                		select.append(
-                    		'<option value="' + d + '">' + d + "</option>"
-                    	);
-                	});
-                  });
-                }
-            });
-     	// 데이터테이블
+	            		select.append(
+	                		'<option value="' + d + '">' + d + "</option>"
+	                	);
+	            	});
+	              });
+	            }
+	        });
+	 	// 데이터테이블
 	});
+	
+	
+	
+	
 	
 	
 
@@ -880,11 +865,10 @@ function showDetails(
 	    
 	    ordersSupervisorName = data.ord_supervisor_name;
 	    
-	    
-	    
+	   console.log(ordersSupervisorName+ "입고 승인자 ");
 	    
 	document.getElementById('slidePanel').classList.add('open');  // 슬라이드 열기
-	document.getElementById('rcvStatus').value = rcvStatus; //입고 요청자 이름
+	document.getElementById('rcvStatus').value = rcvStatus; // 입고 상태
 	
 	// 상태에 따라 버튼 활성화/비활성화
     if (rcvStatus === '입고 완료') {
@@ -894,7 +878,7 @@ function showDetails(
     }
 
 	document.getElementById('rcvManagerId').value = rcvManagerName; //입고 요청자 이름
-    document.getElementById('rcvSupervisorId').value = rcv_supervisor_name; // 입고 승인자 이름
+    document.getElementById('rcvSupervisorId').value = ordersSupervisorName; // 입고 승인자 이름
     document.getElementById('ordManagerId').value = data.ord_manager_name;  // 발주 요청자 이름
     document.getElementById('ordSupervisorId').value = data.ord_supervisor_name; // 발주 승인자 이름
     document.getElementById('prodCategory').value = prodCategory; 
@@ -1128,41 +1112,6 @@ function showDetails(
         }
     }
     
-    
-    document.querySelector('.search-button').addEventListener('click', function(event) {
-        event.preventDefault(); // 기본 폼 제출 방지
-
-        const status = document.getElementById('status').value;
-        const url = '/rcvList2'; // 요청할 URL
-
-        fetch(`${url}?rcv_status=${status}`)
-            .then(response => response.json()) // JSON 응답을 받음
-            .then(data => {
-                // 테이블 내용을 업데이트하는 코드
-                const tbody = document.querySelector('#tableRCV tbody');
-                tbody.innerHTML = ''; // 기존 내용 지우기
-
-                data.forEach(item => {
-                    const row = `<tr>
-                        <td>${item.rcv_count}</td>
-                        <td>${item.rcv_status_name}</td>
-                        <td>${item.rcv_manager_name}</td>
-                        <td>${item.ord_number}</td>
-                        <td>${item.rcv_number}</td>
-                        <td>${item.prod_id}</td>
-                        <td>${item.prod_name}</td>
-                        <td>${item.rcv_quantity}</td>
-                        <td>${item.rcv_price}</td>
-                        <td>${item.rcv_date}</td>
-                        <td>${item.rcv_remarks}</td>
-                    </tr>`;
-                    tbody.insertAdjacentHTML('beforeend', row);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    });
 
 </script>
 </body>

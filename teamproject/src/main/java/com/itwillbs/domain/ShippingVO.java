@@ -30,5 +30,6 @@ public class ShippingVO {
     private String shp_manager_name; // 출고 요청자 ID
     private Date cord_date_change;
     private String cord_status;
+    private String shp_status_name;
     
 }

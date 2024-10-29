@@ -502,7 +502,7 @@ button:hover {
 	</tfoot>
 			<tbody>
    <c:forEach var="item" items="${shippingList}" varStatus="idx">
-        <tr onclick="showShippingDetails('${item1.shp_status_name}', '${item.shp_manager_name}', '${item.shp_supervisor_id}', '${item.cord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}','${item.shp_manager_id}','${item.shp_supervisor_name}')">
+        <tr onclick="showShippingDetails('${item.shp_status_name}', '${item.shp_manager_name}', '${item.shp_supervisor_id}', '${item.cord_number}', '${item.shp_number}', '${item.prod_id}', '${item.prod_name}','${item.company_code}', '${item.shp_quantity}', '${item.wh_number}','${item.shp_price}', '${item.shp_date}', '${item.shp_remarks}','${item.shp_manager_id}','${item.shp_supervisor_name}')">
             <td>${item.shp_count}</td>
             <td>${item.shp_status_name}</td>
             <td>${item.shp_manager_name}</td>
@@ -537,7 +537,7 @@ button:hover {
         
             <div class="form-group">
            <label for="shpManagerId"> <img
-		    src="${pageContext.request.contextPath}/resources/img/회원.png"
+		    src="${pageContext.request.contextPath}/resources/img/member.png"
 			alt="사람 아이콘"
 			style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">출고
 			처리자
@@ -552,7 +552,7 @@ button:hover {
             
 		   <div class="form-group">
 		    <label for="shpSupervisorId">
-		        <img src="${pageContext.request.contextPath}/resources/img/회원.png" alt="사람 아이콘" style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">
+		        <img src="${pageContext.request.contextPath}/resources/img/member.png" alt="사람 아이콘" style="width: 20px; height: 20px; margin-right: 5px; vertical-align: middle;">
 		        출고 승인자
 		    </label>
 		    <div class="underline-container">
@@ -610,14 +610,17 @@ button:hover {
             </div>
             <div class="button-group">
             
-              	
+                 	
+     <c:if test="${item.shp_status_name != '출고 완료'}">    
+     <c:if test="${sessionScope.permission_id == '02' || sessionScope.permission_id == '03'}">     	
                 <button type="button" onclick="saveShippingDetails()">출고 승인</button>
                 <button type="button" onclick="rejectShipping()">출고 반려</button>
-                
+     </c:if>           
                 
                  
                 <button type="button" onclick="editShippingDetails()">출고 수정</button>
                 <button type="button" onclick="deleteShipping()">출고 삭제</button>
+      </c:if>
                 
             </div>
         </div>
@@ -774,8 +777,19 @@ $(document).ready(function () {
 /**
  * 출고 세부 정보를 표시하는 함수
  */
-function showShippingDetails(shpManagerName, shpSupervisorName, cordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks,shp_manager_id, shp_supervisor_name) {
+function showShippingDetails(shpStatus,shpManagerName, shpSupervisorName, cordNumber, shpNumber, prodId, prodName, companyCode, shpQuantity, whNumber, shpPrice, shpDate, shpRemarks,shp_manager_id, shp_supervisor_name) {
     document.getElementById('slidePanel').classList.add('open');
+    document.getElementById('shpStatus').value = shpStatus;
+    
+    
+	
+	// 상태에 따라 버튼 활성화/비활성화
+    if (shpStatus === '출고 완료') {
+        document.querySelector('.button-group').style.display = 'none'; // 버튼 숨김
+    } else {
+        document.querySelector('.button-group').style.display = 'block'; // 버튼 보임
+    }
+
     document.getElementById('shpManagerId').value = shpManagerName;
     document.getElementById('shpSupervisorId').value = shp_supervisor_name;
     document.getElementById('cordNumber').value = cordNumber;

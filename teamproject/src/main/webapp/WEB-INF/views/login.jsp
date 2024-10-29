@@ -11,7 +11,23 @@ pageEncoding="UTF-8"%>
     <link rel="stylesheet" href="./resources/css/login.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./resources/js/core/jquery-3.7.1.min.js"></script>
+	
+	<script type="text/javascript">
+	 function showSuccessAlert(title, message) {
+         return Swal.fire({
+           title: title,
+           text: message,
+           icon: "success",
+         });
+       }
+	 function handleLoginSuccess(val) {
+         localStorage.setItem('sessionCheckKey',val ); // 로그인 성공 시 세션 상태 업데이트
+         window.location.href = '/main'; // 메인 페이지로 리디렉션
+     }
 
+	
+	
+	</script>
     <script>
       $(document).ready(function () {
     	// 페이지 로드 시 쿠키에서 아이디를 가져오기
@@ -33,11 +49,7 @@ pageEncoding="UTF-8"%>
             performLogin(); // 로그인 함수 호출
           }
         });
-        function handleLoginSuccess(val) {
-            localStorage.setItem('sessionCheckKey',val ); // 로그인 성공 시 세션 상태 업데이트
-            window.location.href = '/main'; // 메인 페이지로 리디렉션
-        }
-
+       
         function performLogin() {
           var member_id = $("#member_id").val();
           var member_pw = $("#member_pw").val();
@@ -98,13 +110,7 @@ pageEncoding="UTF-8"%>
             },
           });
         }
-        function showSuccessAlert(title, message) {
-          return Swal.fire({
-            title: title,
-            text: message,
-            icon: "success",
-          });
-        }
+       
 
         function showErrorAlert(message) {
           Swal.fire({
@@ -153,10 +159,12 @@ pageEncoding="UTF-8"%>
     </script>
   </head>
   <body>
-  	<c:if test="${!empty sessionScope.id}">
-  		<c:redirect url="/main" />
-  	</c:if> 
   	
+  	<c:if test="${empty sessionScope.sessionCheckKey}">
+    <c:if test="${!empty sessionScope.id}">
+        <c:redirect url="/main" />
+    </c:if>
+</c:if>
     <div class="login-container">
       <h2 class="form-title">로그인</h2>
       <div class="social-login">
@@ -219,5 +227,24 @@ pageEncoding="UTF-8"%>
 
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="./resources/js/setting-demo2.js"></script>
+    <script type="text/javascript">
+    var result_code = '${sessionScope.result_code }';
+	var sns_message = '${message}'
+	var sessionCheckKey = '${sessionCheckKey}'
+	
+ 	
+ 	if(result_code == "REGISTRATION_PENDING"){
+ 		 window.location.href = '/pending';
+ 	}
+ 	if(result_code == "SUCCESS"){
+			localStorage.removeItem('colShow');
+			localStorage.removeItem('colActive');
+			localStorage.removeItem('alertShown');
+			localStorage.removeItem('alertShown2');
+			handleLoginSuccess(sessionCheckKey); // 로그인 성공 처리
+ 	}
+	
+    
+    </script>
   </body>
 </html>

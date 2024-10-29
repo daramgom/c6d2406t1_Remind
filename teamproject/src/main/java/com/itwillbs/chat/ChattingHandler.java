@@ -19,27 +19,31 @@ public class ChattingHandler extends TextWebSocketHandler{
 	private List<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
 	
 	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		UriComponents uriComponents = UriComponentsBuilder.fromUriString(session.getUri().toString()).build();
+	public void afterConnectionEstablished(WebSocketSession wsSession) throws Exception {
+		UriComponents uriComponents = UriComponentsBuilder.fromUriString(wsSession.getUri().toString()).build();
 		String encodedUserName = uriComponents.getQueryParams().getFirst("userName");
 		if (encodedUserName != null) {
 			String userName = URLDecoder.decode(encodedUserName, "UTF-8");
-			session.getAttributes().put("userName", userName);
-			String welcomeMessage = userName + "님이 입장하셨습니다. : )";
-			sessionList.add(session);
-			for (WebSocketSession s : sessionList) {
-				if (s != session) {
-					s.sendMessage(new TextMessage(welcomeMessage));
+			wsSession.getAttributes().put("userName", userName);
+			boolean isUserAlreadyPresent = sessionList.stream().anyMatch(s -> s.getAttributes().get("userName").equals(userName));
+			
+			if (!isUserAlreadyPresent) {
+				String welcomeMessage = userName + "님이 입장하셨습니다. : )";
+				sessionList.add(wsSession);
+				for (WebSocketSession s : sessionList) {
+					if (s != wsSession) {
+						s.sendMessage(new TextMessage(welcomeMessage));
+					}
 				}
 			}
 		} else {
-			logger.warn("사용자 ID가 제공되지 않았습니다.");
+			logger.debug("사용자 ID가 제공되지 않았습니다.");
 		}
 	}
 	
 	@Override
-	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-		String userName = (String) session.getAttributes().get("userName");
+	protected void handleTextMessage(WebSocketSession wsSession, TextMessage message) throws Exception {
+		String userName = (String) wsSession.getAttributes().get("userName");
 		logger.debug("( •̀ ω •́ )✧ userName : "+userName);
 		if (message.getPayload() == null || message.getPayload().trim().isEmpty()) {
 			return;
@@ -53,18 +57,24 @@ public class ChattingHandler extends TextWebSocketHandler{
 	}
 	
 	@Override
-	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		String userName = (String) session.getAttributes().get("userName");
-		sessionList.remove(session);
-		if (userName != null) {
-			String welcomeMessage = userName + "님이 퇴장하셨습니다. : )";
-			for (WebSocketSession s : sessionList) {
-				if (s != session) {
-					s.sendMessage(new TextMessage(welcomeMessage));
+	public void afterConnectionClosed(WebSocketSession wsSession, CloseStatus status) throws Exception {
+		String userName = (String) wsSession.getAttributes().get("userName");
+		
+		if (status.equals(CloseStatus.NORMAL)) {
+			sessionList.remove(wsSession);
+			if (userName != null) {
+				String welcomeMessage = userName + "님이 퇴장하셨습니다. : )";
+				for (WebSocketSession s : sessionList) {
+					if (s != wsSession) {
+						s.sendMessage(new TextMessage(welcomeMessage));
+					}
 				}
 			}
+			else {
+				logger.warn("사용자 ID가 제공되지 않았습니다.");
+			}
 		} else {
-			logger.warn("사용자 ID가 제공되지 않았습니다.");
+			
 		}
 		
 		

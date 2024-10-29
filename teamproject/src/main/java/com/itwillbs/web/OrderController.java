@@ -167,7 +167,6 @@ public class OrderController {
     @PostMapping(value = "/updateOrder")
 	public String updateOrder(OrdersVO ordersVO){
     	
-    	System.out.println("@@@@@@@@@@@"+ordersVO);
     	
     	logger.debug("@@@@@@@@@@@@@@@@@@@@원래는 data였음ordersVO : "+ordersVO);
     	

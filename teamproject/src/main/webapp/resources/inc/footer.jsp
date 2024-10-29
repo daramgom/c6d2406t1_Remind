@@ -217,8 +217,6 @@ $(document).ready(function(){
 	if(value != null && value!= "") {
 		$(value).addClass('show');
 		$(value).closest('.nav-item').addClass('active');
-	} else {
-		console.log('사이드바 메인메뉴 활성화X (footer) : '+value);
 	}
 	
 	$('.subMenu').on('click', function(e) {
@@ -238,8 +236,6 @@ $(document).ready(function(){
 	
 	if(value2 != null && value2 != "") {
 		$("#"+value2).closest('li').addClass('active');
-	} else {
-		console.log('사이드바 보조메뉴 활성화X (footer) :'+value2);
 	}
 	
 	$('#mainPage1,#mainPage2').on('click', function(){

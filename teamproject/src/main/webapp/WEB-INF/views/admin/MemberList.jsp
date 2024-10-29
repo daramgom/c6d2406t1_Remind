@@ -333,7 +333,6 @@
     	        contentType: 'application/json', // 이 부분이 중요합니다.
     	        success: function(response) {
     	        	
-    	        	console.log(response);
     	            alert("변경 사항이 성공적으로 업데이트되었습니다.");
                     location.reload();
     	            
@@ -358,7 +357,6 @@
           contentType: "application/json",
           dataType: "json",
           success: function (response) {
-            console.log(response);
             $("#memberRank").empty();
             $("#memberDepartment").empty();
             $("#memberStatus").empty();
@@ -523,7 +521,7 @@
                 });
               })
               .catch(() => {
-                console.log("수정이 취소되었습니다.");
+                console.error("수정이 취소되었습니다.");
               });
           } else {
             swal("변경사항이 없습니다!", { icon: "info" });
@@ -568,7 +566,7 @@
               });
             })
             .catch(() => {
-              console.log("삭제가 취소되었습니다.");
+              console.error("삭제가 취소되었습니다.");
             });
         });
 

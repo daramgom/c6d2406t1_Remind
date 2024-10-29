@@ -94,8 +94,6 @@ $(document).ready(function(){
 	
 	if(value != null && value!= "") {
 		$(value).closest('.nav-item').addClass('active');
-	} else {
-		console.log('사이드바 메인메뉴 활성화X (footer) : '+value);
 	}
 	
 	$('#mainPage').on('click', function(){

@@ -92,7 +92,6 @@ public class MemberController {
         String newValue = request.get("new_value");
 
         // 여기서 id, field, newValue를 사용하여 데이터베이스를 업데이트하는 로직을 추가합니다.
-        System.out.println("ID: " + member_id + ", field: " + field + ", New Value: " + newValue);
         
         MemberVO result = mService.memberUpdateInfo(member_id , field, newValue);
         logger.debug("result 컨트롤러 : "+result);
@@ -234,7 +233,6 @@ public class MemberController {
  	    
  	    // sns로그인한 사용자의 전화번호를 DB에 있는 member 테이블과 비교함.
  	    MemberVO result = uService.getBySns(snsUser.getTel());
- 	    System.out.println("result : " + snsUser);
  	    
  	    // 비교해서 member 없으면 -> 회원가입 페이지
  	    if (result == null) {

@@ -778,7 +778,6 @@ function showShippingDetails(shpManagerName, shpSupervisorName, cordNumber, shpN
     document.getElementById('shpDate').value = shpDate;
     document.getElementById('shpRemarks').value = shpRemarks;
     document.getElementById('shpManagerId2').value = shp_manager_id;
-    console.log(shp_manager_id);
     
 }
 

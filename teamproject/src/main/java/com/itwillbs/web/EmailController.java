@@ -3,6 +3,8 @@
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,8 @@ public class EmailController {
     @Autowired 
     private MemberService mService;
     
+    private static final Logger logger = LoggerFactory.getLogger(EmailController.class);
+    
     @PostMapping("/sendEmailCode")
     public ResponseEntity<Map<String, String>> sendEmailCode(@RequestBody MemberVO vo) {
     	response.clear(); // 메서드 시작 시 초기화
@@ -47,13 +51,11 @@ public class EmailController {
     public ResponseEntity<Map<String, String>> sendVerificationCode(@RequestBody VerificationRequest request) {
     	response.clear(); // 메서드 시작 시 초기화
     	
-    	System.out.println("eamil : "+ request.getEmail() );
     	
     	
     	MemberVO result = mService.memberEmailSearch(request.getEmail());
     	
     	
-    	System.out.println("result : "+ result );
     	if(result != null) {
     		response.put("message", "이미 등록된 이메일 입니다! 다른 이메을을 입력해주세요.");
     		return	ResponseEntity.ok(response); // 200 응답
@@ -70,13 +72,11 @@ public class EmailController {
     public ResponseEntity<Map<String, String>> findMemberInfo(@RequestBody MemberVO vo) {
     	response.clear(); // 메서드 시작 시 초기화
     	
-    	System.out.println("eamil : "+ vo );
     	
     	
     	MemberVO result = mService.memberIdEmailSearch(vo);
     	
     	
-    	System.out.println("result : "+ result );
     	if(result == null) {
     		response.put("message", "등록된 정보와 다릅니다.");
     		response.put("result", "false");
@@ -95,7 +95,7 @@ public class EmailController {
     @PostMapping("/verifyCode")
     public ResponseEntity<Map<String, String>> verifyCode(@RequestBody VerificationRequest request) {
     	response.clear(); // 메서드 시작 시 초기화
-    	System.out.println("인증코드 : "+ request.getCode() );
+    	logger.debug("인증코드 : "+ request.getCode());
     	
     	boolean isValid = emailService.verifyCode(request.getEmail(), request.getCode());
         

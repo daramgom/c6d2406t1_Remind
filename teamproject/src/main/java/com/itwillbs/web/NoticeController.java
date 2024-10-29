@@ -30,14 +30,14 @@ public class NoticeController {
     public String list(Model model) {
         List<NoticeVO> noticeList = noticeService.getNotices();
         model.addAttribute("noticeList", noticeList);
-        logger.info("공지사항 목록 조회, 총 {} 건", noticeList.size());
+        logger.debug("공지사항 목록 조회, 총 {} 건", noticeList.size());
         return "noticeList"; // JSP 페이지 경로
     }
 
     // 공지사항 추가 폼
     @GetMapping("/noticeInsert")
     public String addForm() {
-        logger.info("공지사항 추가 폼 요청");
+        logger.debug("공지사항 추가 폼 요청");
         return "noticeInsert"; // 공지사항 추가 JSP 페이지 경로
     }
 
@@ -45,7 +45,7 @@ public class NoticeController {
     @PostMapping("/noticeInsert")
     public String addNotice(@ModelAttribute NoticeVO notice) {
         noticeService.addNotice(notice);
-        logger.info("공지사항 추가 완료, 제목: {}", notice.getTitle());
+        logger.debug("공지사항 추가 완료, 제목: {}", notice.getTitle());
         return "redirect:/notice/noticeList"; // 추가 후 목록 페이지로 리다이렉트
     }
 
@@ -55,7 +55,7 @@ public class NoticeController {
     public String viewNotice(@RequestParam("no") int noticeNo, Model model) {
         NoticeVO notice = noticeService.getNotice(noticeNo);
         model.addAttribute("notice", notice);
-        logger.info("공지사항 조회, ID: {}", noticeNo);
+        logger.debug("공지사항 조회, ID: {}", noticeNo);
         return "noticeView"; // 공지사항 상세 JSP 페이지 경로
     }
 
@@ -65,7 +65,7 @@ public class NoticeController {
         // 수정할 공지사항 정보를 조회
         NoticeVO notice = noticeService.getNoticeById(noticeNo);
         model.addAttribute("notice", notice);
-        logger.info("공지사항 수정 폼 요청, ID: {}", noticeNo);
+        logger.debug("공지사항 수정 폼 요청, ID: {}", noticeNo);
         return "noticeEdit"; // 공지사항 수정 JSP 페이지 경로
     }
 
@@ -74,7 +74,7 @@ public class NoticeController {
     public String editNotice(@ModelAttribute NoticeVO notice) {
         // 공지사항 수정 서비스 호출
         noticeService.updateNotice(notice);
-        logger.info("공지사항 수정 완료, ID: {}, 고정 여부: {}", notice.getNo(), notice.isPinned());
+        logger.debug("공지사항 수정 완료, ID: {}, 고정 여부: {}", notice.getNo(), notice.isPinned());
         return "redirect:/notice/noticeList"; // 수정 후 목록 페이지로 리다이렉트
     }
 
@@ -82,7 +82,7 @@ public class NoticeController {
     @PostMapping("/delete")
     public String deleteNotice(@RequestParam("no") int noticeNo) {
         noticeService.deleteNotice(noticeNo);
-        logger.info("공지사항 삭제 요청, ID: {}", noticeNo);
+        logger.debug("공지사항 삭제 요청, ID: {}", noticeNo);
         return "redirect:/notice/noticeList"; // 삭제 후 목록 페이지로 리다이렉트
     }
 }

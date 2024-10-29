@@ -114,7 +114,7 @@ public class RcvController {
     //슬라이드 패널(발주 요청자,승인자)
     @PostMapping("/receiveOname")
     public ResponseEntity<OrdersVO> ordersname(@RequestBody OrdersVO vo){
-    logger.info("1444"+vo);
+    logger.debug("1444"+vo);
     OrdersVO OnameList =  receivingDAO.getOrdersName(vo.getOrd_number());
     	 return ResponseEntity.ok(OnameList);
     }
@@ -212,7 +212,6 @@ public class RcvController {
            String filePath = request.getServletContext().getRealPath("/WEB-INF/OrdExcel.xlsx");
 
         // 파일 경로 출력
-        System.out.println("File path: " + filePath);
 
         // 파일 존재 여부 확인
         File file = new File(filePath);

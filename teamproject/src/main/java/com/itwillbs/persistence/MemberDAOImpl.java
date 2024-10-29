@@ -41,7 +41,6 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public String insertMember(MemberVO vo) {
-		System.out.println(" DAO : 회원가입 동작 실행! ");
 
 		// ID 중복 체크
 		if (getMember(vo.getMember_id()) != null) {
@@ -60,8 +59,6 @@ public class MemberDAOImpl implements MemberDAO {
 
 		// 회원가입 처리
 		int result = sqlSession.insert(NAMESPACE + ".insertMember", vo);
-		System.out.println(" DAO : result : " + result);
-		System.out.println(" DAO : 회원가입 완료! ");
 
 		return "회원가입 완료";
 	}
@@ -70,7 +67,6 @@ public class MemberDAOImpl implements MemberDAO {
 	// 거래처 회원가입
 	@Override
 	public String insertCompanyMember(MemberVO vo) {
-		System.out.println(" DAO : 회원가입 동작 실행! ");
 
 		// ID 중복 체크
 		if (getMember(vo.getMember_id()) != null) {
@@ -89,25 +85,20 @@ public class MemberDAOImpl implements MemberDAO {
 
 		// 회원가입 처리
 		int result = sqlSession.insert(NAMESPACE + ".insertCompanyMember", vo);
-		System.out.println(" DAO : result : " + result);
-		System.out.println(" DAO : 회원가입 완료! ");
 
 		return "회원가입 완료";
 	}
 
 	@Override
 	public MemberVO loginMember(MemberVO vo) {
-		System.out.println(" DAO : loginMember(MemberVO vo) 실행 ");
 
 		// SQL 구문을 mapper에 생성
-		System.out.println(" DAO : mapper SQL 생성완료. ");
 		// SQL 구문 실행.
 		MemberVO resultVO = sqlSession.selectOne(NAMESPACE + ".loginMember", vo);
 		if(resultVO == null ) {
 			return null;
 		}
 
-		System.out.println(" DAO : " + resultVO);
 
 		return resultVO;
 	}
@@ -115,29 +106,24 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public MemberVO getMember(String member_id) {
-		System.out.println(" DAO : getMember(String userid) ");
 
 		return sqlSession.selectOne(NAMESPACE + ".getMemberId", member_id);
 	}
 
 	@Override
 	public MemberVO getMemberEmail(String email) {
-		System.out.println(" DAO : getMemberEmail(String email) ");
 		return sqlSession.selectOne(NAMESPACE + ".getMemberEmail", email);
 	}
 
 	@Override
 	public MemberVO getMemberTel(String tel) {
 		// TODO Auto-generated method stub
-		System.out.println("tel : DAO " + tel);
 		return sqlSession.selectOne(NAMESPACE + ".getMemberTel", tel);
 	}
 	
 
 	@Override
 	public int updateMember(MemberVO uvo) {
-		System.out.println(" DAO : updateMember(MemberVO uvo) ");
-		System.out.println(uvo + "uvo");
 		// mapper - sql 작성
 		// sqlSession - sql 실행 (결과에 따른 정수데이터를 리턴)
 
@@ -181,7 +167,6 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	@Override
 	public int updatePermission(MemberVO vo) {
-		System.out.println("DAO : "+vo);
 		int result = sqlSession.update(NAMESPACE + ".updatePermission", vo);
 		
 		return result;
@@ -190,10 +175,8 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	@Override
 	public MemberVO memberCodeCheck(CompanyVO vo) {
-		System.out.println("DAO : "+ vo);
 		
 		MemberVO result = sqlSession.selectOne(NAMESPACE+ ".memberCodeCheck", vo.getCompany_code());
-		System.out.println(result);
 		
 		return result;
 	}
@@ -204,14 +187,12 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public Integer deleteMember(MemberVO dvo) {
-		System.out.println(" DAO : deleteMember(MemberVO dvo) ");
 		return sqlSession.update(NAMESPACE + ".deleteMember", dvo);
 	}
 
 	// admin 회원 전체 조회.
 	@Override
 	public List<MemberVO> getMemberList(String member_id, Criteria cri) {
-	    System.out.println(" DAO : getMemberList() ");
 	    
 	    // 총 회원 수를 계산하기 위한 매개변수 준비
 	    Map<String, Object> countParams = new HashMap<>();
@@ -233,7 +214,6 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	@Override
 	public List<MemberVO> getCompanyMemberList(String member_id, Criteria cri) {
-		System.out.println(" DAO : getMemberList() ");
 	    
 	    // 총 회원 수를 계산하기 위한 매개변수 준비
 	    Map<String, Object> countParams = new HashMap<>();
@@ -241,7 +221,6 @@ public class MemberDAOImpl implements MemberDAO {
 	    countParams.put("keyword", cri.getKeyword()); // 검색 키워드 추가
 	    int totalCount = sqlSession.selectOne(NAMESPACE + ".getCompanyMemberListCount", countParams);
 	    
-	    System.out.println(" DAO : totalCount() 거래처 회사 카운트 "+ totalCount);
 	    // 총 회원 수를 Criteria에 설정 (페이지 수 계산을 위해)
 	    cri.setTotalCount(totalCount);
 	    
@@ -249,7 +228,6 @@ public class MemberDAOImpl implements MemberDAO {
 	    // 회원 목록 조회를 위한 매개변수 준비
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("member_id", member_id);
-	    System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ : "+ cri.getStartPage());
 	    params.put("startPage", cri.getStartPage());
 	    params.put("pageSize", cri.getPageSize());
 	    params.put("keyword", cri.getKeyword()); // 검색 키워드 추가
@@ -296,7 +274,6 @@ public class MemberDAOImpl implements MemberDAO {
 	@Override
 	public Map<String, Object> getMemberDetails(String member_id) {
 		// 왜 map으로 사용하는지? . List로 쓰면 위의 getMemberList에도 사용할 수 있음.
-		System.out.println(" DAO : getMemberDetails : " + member_id);
 		Map<String, Object> commonStatuses = new HashMap<>();
 
 		MemberVO member = sqlSession.selectOne(NAMESPACE + ".getMemberById", member_id);
@@ -320,7 +297,6 @@ public class MemberDAOImpl implements MemberDAO {
 	// admin 회원가입신청 승인
 	@Override
 	public int updateMembers(List<MemberVO> memberList) {
-		System.out.println("DAO: updateMembers");
 		int totalUpdated = 0; // 업데이트된 총 개수 초기화
 
 		for (MemberVO vo : memberList) {
@@ -367,7 +343,6 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		@Override
 		public MemberVO getMemberIdEmailSearch(MemberVO vo) {
-			System.out.println("DAO : getMemberIdEmailSearch : "+ vo);
 			
 			MemberVO result = sqlSession.selectOne(NAMESPACE+ ".getMemberIdEmailSearch", vo);
 			
@@ -376,7 +351,6 @@ public class MemberDAOImpl implements MemberDAO {
 
 		@Override
 		public int UpdatePwMember(MemberVO vo) {
-			System.out.println("DAO : UpdatePwMember(MemberVO vo) : "+ vo);
 			
 			int result = sqlSession.update(NAMESPACE+ ".updatePw", vo);
 			

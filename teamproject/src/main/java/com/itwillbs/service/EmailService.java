@@ -102,8 +102,6 @@ public class EmailService {
 
         
         
-        System.out.println("map : "+verificationCodes);
-        System.out.println("생성된 인증코드 : "+verificationCode);
 
         String subject = "부산 ITWILL 재고관리 시스템 이메일 인증 코드";
 //       여기서 태그를 꾸밀 수 있음.ㅍ verificationCode
@@ -148,14 +146,8 @@ public class EmailService {
     	VerificationEntry entry = verificationCodes.get(email.trim().toLowerCase());
 
         
-        System.out.println("ㅇ왜 못찾노 :" + verificationCodes);
-        System.out.println("entry : ㅇ왜 못찾노" + entry);
-        System.out.println("email : " + email);
-        System.out.println("code : " + code);
         
-        System.out.println("Current verificationCodes map: " + verificationCodes);
         for (String key : verificationCodes.keySet()) {
-            System.out.println("Key: " + key);
         }
         if (entry != null) {
             // 5분 이내에 입력된 코드인지 확인

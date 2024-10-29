@@ -580,19 +580,7 @@ function openModal(cord_count, cord_number, ccommon_status, cord_status,
         
     } // openModal
         
-    $(document).on('click',function(e){
-    	// console.log(e.target); //    <- 삭제요청
-    });
     
-    // test <-- 삭제요청
-        document.getElementById('cprod_id').addEventListener('change', function() {
-        // 선택된 옵션의 value를 가져옴
-        var selectedValue = this.value;
-        // console.log으로 출력
-        console.log('선택된 값:', selectedValue);
-    	});
-        
-    // test <-- 삭제요청
     
 function renderButtons(cord_status) {
     var buttonContainer = document.getElementById('buttonContainer');
@@ -659,9 +647,6 @@ function addButtonEventListeners() {
             return response.text();
         })
         .then(data => {
-        	/* alert(formData);
-        	console.log(formData);
-        	alert('12345'); */
             alert("발주 정보가 수정 되었습니다.");
             location.reload();
         })

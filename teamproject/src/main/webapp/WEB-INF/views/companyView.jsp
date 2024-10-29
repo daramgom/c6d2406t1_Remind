@@ -458,7 +458,6 @@
                  company_code: company_code
              }),
              success: function (response) {
-            	 console.log(response);
             	 if(response.result == "true") {
             		 showSuccessAlert("요청성공!", response.message).then(() => {
                          $("#company-modal-overlay").css("display", "block");

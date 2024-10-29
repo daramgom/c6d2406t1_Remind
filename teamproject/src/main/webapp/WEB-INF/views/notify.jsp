@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>알림</title>
+    <title>REMIND</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
     <script src="./resources/js/core/jquery-3.7.1.min.js"></script>

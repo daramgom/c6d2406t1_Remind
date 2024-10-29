@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title>비밀번호 찾기</title>
+<title>REMIND</title>
 <link rel="stylesheet" href="./resources/css/pwInquiry.css" />
 <script src="./resources/js/core/jquery-3.7.1.min.js"></script>
 <script src="./resources/js/pwInquiry.js"></script>

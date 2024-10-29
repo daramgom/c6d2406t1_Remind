@@ -7,7 +7,7 @@ pageEncoding="UTF-8"%>
 <html lang="kr">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>아이티윌 팀프로젝트</title>
+    <title>REMIND</title>
     <meta
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
@@ -195,7 +195,7 @@ pageEncoding="UTF-8"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>발주 요청 페이지</title>
+<title>REMIND</title>
 
     <!-- CSS Files -->
     <link rel="stylesheet" href="/resources/css/bootstrap.min.css" />

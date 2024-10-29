@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title>아이디 찾기</title>
+<title>REMIND</title>
 <link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
 	type="image/x-icon" />
 <link rel="stylesheet" href="./resources/css/idInquiry.css" />

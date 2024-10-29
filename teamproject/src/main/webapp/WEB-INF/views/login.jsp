@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>로그인</title>
+    <title>REMIND</title>
     <link rel="icon" href="/resources/img/kaiadmin/favicon.ico"
 	type="image/x-icon" />
     <link rel="stylesheet" href="./resources/css/login.css" />

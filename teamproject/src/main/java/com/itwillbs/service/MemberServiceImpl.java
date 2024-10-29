@@ -1,8 +1,10 @@
 package com.itwillbs.service;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
@@ -32,6 +34,23 @@ public class MemberServiceImpl implements MemberService{
 
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
+	
+	private final Map<String, HttpSession> activeSessions = new ConcurrentHashMap<>();
+	
+	@Override
+	public boolean login(String userId, HttpSession session) {
+        if (activeSessions.containsKey(userId)) {
+            return false; // 이미 로그인한 사용자
+        } else {
+            activeSessions.put(userId, session);
+            return true; // 로그인 성공
+        }
+    }
+	
+	@Override
+	public void logout(String userId) {
+        activeSessions.remove(userId); // 세션 종료 시 사용자 ID 제거
+	}
 
 	@Override
 	public String memberJoin(MemberVO vo) {

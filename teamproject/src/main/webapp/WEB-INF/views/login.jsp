@@ -71,6 +71,7 @@ pageEncoding="UTF-8"%>
                     	location.href = "/main"; // 관리자 페이지로 이동
                     });
                 } else {
+                	 // 로그인 실패 시 응답 처리
                     switch (response.code) {
                         case "NOT_REGISTERED":
                             showErrorAlert(response.message);
@@ -81,9 +82,9 @@ pageEncoding="UTF-8"%>
                         case "REGISTRATION_PENDING":
                             showWarningAlert(response.message);
                             break;
-                        case "PENDING_APPROVAL":
+                        case "ALREADY_LOGGED_IN":
                             showWarningAlert(response.message);
-                            break;
+                            break; // "PENDING_APPROVAL" 대신 "ALREADY_LOGGED_IN" 사용
                         default:
                             showErrorAlert("알 수 없는 오류가 발생했습니다.");
                     }

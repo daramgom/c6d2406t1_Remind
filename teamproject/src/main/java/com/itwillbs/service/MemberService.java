@@ -3,6 +3,8 @@ package com.itwillbs.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.itwillbs.domain.CompanyVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
@@ -11,7 +13,9 @@ public interface MemberService {
 	
 	
 	// 사용자의 처리 로직을 구현
+	public boolean login(String userId, HttpSession session);
 	
+	public void logout(String userId);
 	// 회원가입 동작 d
 	public String memberJoin(MemberVO vo);
 	

@@ -70,19 +70,26 @@ public class MemberController {
         return ResponseEntity.ok(result);
     }
     
-    @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout(HttpSession session) {
-    	response.clear(); // 메서드 시작 시 초기화
-    	logger.debug("로그아웃 실행됨");
-    	// 로그 아웃
-    	session.invalidate();
-    	logger.debug("로그아웃 실행됨");
-    	
-    	
+	@PostMapping("/logout")
+	public ResponseEntity<Map<String, String>> logout(HttpSession session) {
+	    Map<String, String> response = new HashMap<>(); // 응답 초기화
+	    logger.debug("로그아웃 실행됨");
+
+	    // 세션에서 사용자 ID 가져오기
+	    String userId = (String) session.getAttribute("id");
+	    if (userId != null) {
+	        // 사용자 ID를 사용하여 로그아웃 처리
+	        mService.logout(userId); // 세션 종료 시 사용자 ID 제거
+	    }
+
+	    // 세션 무효화
+	    session.invalidate();
+	    logger.debug("세션 무효화됨");
+
 	    response.put("message", "로그아웃이 정상적으로 실행되었습니다.");
-    	    
 	    return ResponseEntity.ok(response); // 200 OK와 함께 JSON 응답
-    }
+	}
+
     
     @PostMapping("/updateMemberInfo")
     public ResponseEntity<String> updateMemberInfo(@RequestBody Map<String, String> request , HttpSession session) {
@@ -215,8 +222,14 @@ public class MemberController {
  		    // 로그인 성공
  			response.put("code", "SUCCESS");
  		    response.put("message", "로그인 성공");
- 		    // 세션 설정 등 추가 로직
- 		    sessionAdd(session, result);
+ 		    
+ 		   // 중복 로그인 체크
+ 	        if (mService.login(result.getMember_id(), session)) {
+ 	            sessionAdd(session, result); // 추가 로직 (예: 사용자 정보 저장)
+ 	        } else {
+ 	            response.put("code", "ALREADY_LOGGED_IN");
+ 	            response.put("message", "이미 로그인한 사용자입니다.");
+ 	        }
  		}
 
  		return ResponseEntity.ok(response);

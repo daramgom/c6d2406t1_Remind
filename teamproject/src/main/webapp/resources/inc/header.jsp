@@ -20,6 +20,12 @@
         },
       });
     </script>
+       <script>
+    window.addEventListener('beforeunload', function (event) {
+        // 로그아웃 요청 보내기
+        navigator.sendBeacon('/logout'); // 비콘 API를 사용하여 로그아웃 요청
+    });
+</script>
 
 <div class="main-panel">
 	<div class="main-header">

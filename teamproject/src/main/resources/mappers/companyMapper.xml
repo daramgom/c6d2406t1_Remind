@@ -41,7 +41,7 @@
 
     <update id="updateCompanyStatus">
         UPDATE company 
-        SET is_deleted = #{status}
+        SET is_deleted = '02' 
         WHERE company_code = #{company_code}
     </update>
 
@@ -49,5 +49,14 @@
     <select id="getCompany" resultMap="company">
         SELECT * FROM company WHERE company_code = #{company_code}
     </select>
+    
+    <select id="getMember" resultType="com.itwillbs.domain.MemberVO">
+    select * from member where member_code = #{company_code};
+    </select>
+    
+    <delete id="deleteMember">
+   	 delete from member where member_code = #{company_code}
+    </delete>
+    
 
 </mapper>

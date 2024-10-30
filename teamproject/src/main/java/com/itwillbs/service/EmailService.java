@@ -95,6 +95,7 @@ public class EmailService {
     
     public void sendVerificationCode(String to) {
         String verificationCode = VerificationCodeGenerator.generateVerificationCode();
+        System.out.println("생성된 이메일 : "+ verificationCode);
         long timestamp = System.currentTimeMillis();// 현재 시간// 인증 코드와 함께 생성 시간을 저장
      // 이메일을 소문자로 변환하여 저장
         verificationCodes.put(to.trim().toLowerCase(), new VerificationEntry(verificationCode, timestamp));

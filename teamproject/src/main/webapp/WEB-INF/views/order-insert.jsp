@@ -228,7 +228,7 @@ pageEncoding="UTF-8"%>
 <!-- 		<input class="form-control input-full" type="text" name="prod_id" required="required"> -->
 		
 		
-		<select id="prod_id" name="prod_id" class="form-select form-control" required="required" onchange="updateInput()">
+		<select id="prod_id" name="prod_id" class="form-select form-control" required="required" onchange="updateInput()" style="width:850px;">
 		    <option value="">선택하세요</option>
 		    <c:forEach var="p" items="${pListVO }">
 		    	<option value="${p.prod_id}" data-company-code="${p.company_code}">${p.prod_id} / ${p.prod_name} / ${p.prod_category} / ${p.prod_brand} / ${p.company_code} / ${p.company_name} / ${p.company_tel}</option>
@@ -266,7 +266,7 @@ pageEncoding="UTF-8"%>
 	<div>
 		<label for="wh_number" class="col-md-3 col-form-label">입고 예정 창고<br>창고 번호 / 창고 이름 / 창고 위치 / 창고 관리자 ID / 관리자 이름 / 관리자 전화번호</label>
 		
-		<select id="wh_number" name="wh_number" class="form-select form-control" required="required">
+		<select id="wh_number" name="wh_number" class="form-select form-control" required="required" style="width:650px;">
 			<option value="" >선택하세요</option>
 			<c:forEach var="w" items="${wListVO }">
 				<option value="${w.wh_number }">${w.wh_number } / ${w.wh_name } / ${w.wh_location } / ${w.wh_admin } / ${w.member_name } / ${w.member_tel }</option>

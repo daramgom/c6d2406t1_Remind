@@ -81,7 +81,6 @@ public class EmailController {
     		response.put("message", "등록된 정보와 다릅니다.");
     		response.put("result", "false");
     		return	ResponseEntity.ok(response); // 200 응답
-    		
     	}
     	
     	emailService.sendVerificationCode(result.getMember_email()); 

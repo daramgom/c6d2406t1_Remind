@@ -159,7 +159,7 @@
 	<select id="getWaitingMember" resultType="MemberVO">
 		<![CDATA[
   	 select * from member
-  	  where approval_status = "01" 
+  	  where approval_status = "01" and member_code = '1'
   	   ORDER BY create_date desc 
   	    limit #{startPage},#{pageSize}
   	]]>
@@ -170,7 +170,6 @@
     SELECT COUNT(*) FROM member
     WHERE approval_status = '01' and member_code = '1'
      ORDER BY create_date desc 
-  	    limit #{startPage},#{pageSize}
 </select>
 
 

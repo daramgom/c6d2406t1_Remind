@@ -9,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.itwillbs.domain.CompanyVO;
+import com.itwillbs.domain.MemberVO;
 
 @Repository
 public class CompanyDAOImpl implements CompanyDAO {
@@ -68,6 +69,12 @@ public class CompanyDAOImpl implements CompanyDAO {
             company.setCompany_code(companyCode);
             company.setIs_deleted(isDeleted);
             int result = sqlSession.update(NAMESPACE + ".updateCompanyStatus", company);
+			
+			  MemberVO member = sqlSession.selectOne(NAMESPACE + ".getMember", company);
+			  if(member == null) {
+			 
+			 }else { sqlSession.selectOne(NAMESPACE + ".deleteMember", company); }
+        
             logger.debug("DAO: Update company status result: {}", result);
         } catch (DataAccessException e) {
             logger.error("Error updating company status: ", e);

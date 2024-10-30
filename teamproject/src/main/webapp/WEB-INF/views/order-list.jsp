@@ -543,7 +543,7 @@ $(document).ready(function() {
           <div style="display: flex; gap: 10px;">
            <!-- <input type="text" id="modalProdId" name="prod_id" class="form-control" style="width:200px;" /><br>
            <input type="text" id="modalCompanyCode" name="company_code" class="form-control" style="width:200px;" /><br> -->
-           <select id="prod_id" name="prod_id"  class="form-select form-control" required="required" style="width:600px;">
+           <select id="prod_id" name="prod_id"  class="form-select form-control" required="required" style="width:850px;">
 			<!-- <option value="" >목록에서 값을 확인 후 선택하세요</option> -->
 			<c:forEach var="p" items="${pListVO }">
 				<option id="modalProdId" value="${p.prod_id }">${p.prod_id} / ${p.prod_name } / ${p.prod_category } / ${p.prod_brand } / ${p.company_code } / ${p.company_name } / ${p.company_tel }</option>
@@ -577,7 +577,7 @@ $(document).ready(function() {
            <input type="text" id="modalWhMemberName" name="wh_member_name" readonly="readonly" class="form-control" style="width:200px;" />
            <input type="text" id="modalWhMemberTel" name="wh_member_tel" readonly="readonly" class="form-control" style="width:200px;" /><br> -->
            
-           <select id="wh_number" name="wh_number" class="form-select form-control" required="required" style="width:500px;">
+           <select id="wh_number" name="wh_number" class="form-select form-control" required="required" style="width:650px;">
 			<!-- <option value="" >목록에서 값을 확인 후 선택하세요</option> -->
 			<c:forEach var="w" items="${wListVO }">
 				<option id="modalWhNumber" value="${w.wh_number }">${w.wh_number } / ${w.wh_name } / ${w.wh_location } / ${w.wh_admin } / ${w.member_name } / ${w.member_tel }</option>

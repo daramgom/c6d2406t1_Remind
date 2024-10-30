@@ -22,7 +22,7 @@ pageEncoding="UTF-8"%>
     
     <!-- Fonts and icons -->
     <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
-    
+    <link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <!-- jQuery Sparkline -->

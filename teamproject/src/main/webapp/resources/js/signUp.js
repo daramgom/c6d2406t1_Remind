@@ -171,6 +171,13 @@ $(document).ready(function () {
   // ID 중복 확인 함수
   $("#userIdBtn").click(function () {
     var member_id = $("#username").val().trim();
+    
+ // "admin"이 포함된 경우 오류 메시지 표시
+    if (member_id.includes("admin")) {
+        showErrorAlert("사용할 수 없는 아이디입니다. 'admin'이 포함되어 있습니다.");
+        return; // 함수 종료
+    }
+    
 
     $.ajax({
       url: "/checkUserId",

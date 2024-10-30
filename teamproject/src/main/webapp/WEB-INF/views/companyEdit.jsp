@@ -49,7 +49,6 @@
 
                             <div class="card-body">
                                 <form id="companyEditForm" action="${pageContext.request.contextPath}/company/edit" method="post">
-                                    <!-- CSRF 토큰 추가 (Spring MVC 사용 시) -->
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     
                                     <div class="form-group">
@@ -95,9 +94,12 @@
 
     <script>
     function deleteCompany(companyCode) {
+    	console.log(companyCode);
         if(confirm('정말로 삭제하시겠습니까?')) {
             $.ajax({
-                url: '${pageContext.request.contextPath}/company/delete/' + companyCode,
+                url: '/company/delete',
+                data: JSON.stringify({ company_code: companyCode }),
+                contentType: "application/json",
                 type: 'POST',
                 success: function(response) {
                     alert('거래처가 삭제되었습니다.');

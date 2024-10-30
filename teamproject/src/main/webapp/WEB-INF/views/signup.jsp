@@ -38,7 +38,7 @@
 					disabled>중복 조회</button>
 			</div>
 			<div class="input-wrapper">
-				<label for="name" class="input-label">이름</label> <input type="text"
+				<label for="name" class="input-label">이름</label><input type="text"
 					id="name" placeholder="홍길동" class="input-field" required
 					name="member_name" value="${member.name}" />
 			</div>

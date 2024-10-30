@@ -19,6 +19,7 @@ pageEncoding="UTF-8"%>
 
 <!-- Fonts and icons -->
 <script src="/resources/js/plugin/webfont/webfont.min.js"></script>
+<link rel="stylesheet" href="/resources/css/css-table/leaderFont.css" />
 <!-- jQuery Sparkline -->
 <script
 	src="/resources/js/plugin/jquery.sparkline/jquery.sparkline.min.js">

@@ -195,11 +195,11 @@
 									<c:when test="${m.move_result == '취소'}">
 										<td style="padding:0 !important;">
 											${m.wh_number}-${m.wh_name}<br>${m.wh_dt_location}<br>
-											${m.current_qty + m.stock_qty}
+											${m.current_qty - m.stock_qty} (- ${m.stock_qty})
 										</td>
 										<td style="padding:0 !important;">
 											${m.stock_wh}-${m.wh_name2}<br>${m.wh_dt_location2}<br>
-											${m.current_qty2 - m.stock_qty}
+											${m.current_qty2 + m.stock_qty} (+ ${m.stock_qty})
 										</td>
 									</c:when>
 									<c:otherwise>

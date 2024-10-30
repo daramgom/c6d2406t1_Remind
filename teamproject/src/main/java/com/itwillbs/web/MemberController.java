@@ -169,7 +169,7 @@ public class MemberController {
  		response.clear();
  		
  		
- 		logger.debug("memberId 중복검사 : "+vo.getMember_id() );
+ 		logger.debug("memberId 중복검사 : "+vo.getMember_id());
  		String member_id = vo.getMember_id();
  		
  		MemberVO result =  mService.memberIdCheck(member_id);

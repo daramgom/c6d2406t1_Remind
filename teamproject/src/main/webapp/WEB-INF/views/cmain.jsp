@@ -109,6 +109,7 @@
 				<div class="row">
 					<div class="col-sm-6 col-md-2 numbers">
 						<div class="card card-stats card-round">
+						<a href="/order-insert02">
 							<div class="card-body">
 								<div class="row">
 									<div class="col-icon">
@@ -123,10 +124,12 @@
 									</div>
 								</div>
 							</div>
+							</a>
 						</div>
 					</div>
 					<div class="col-sm-6 col-md-3 numbers">
 						<div class="card card-stats card-round">
+						<a href="/order-list03">
 							<div class="card-body">
 								<div class="row">
 									<div class="col-icon">
@@ -141,10 +144,12 @@
 									</div>
 								</div>
 							</div>
+							</a>
 						</div>
 					</div>
 					<div class="col-sm-6 col-md-2 numbers">
 						<div class="card card-stats card-round">
+						<a href="/order-list02">
 							<div class="card-body">
 								<div class="row align-items-center">
 									<div class="col-icon">
@@ -159,6 +164,7 @@
 									</div>
 								</div>
 							</div>
+							</a>
 						</div>
 					</div>
 				<div class="row">

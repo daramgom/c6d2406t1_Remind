@@ -31,47 +31,41 @@
 </select>
 
 <select id="dayQty" resultType="MainVO">
-select 
+	select 
 		date_format(date, '%Y-%m') as month, 
 		sum(day_ord) as total_ord, 
 		sum(day_rcv) as total_rcv, 
 		sum(day_shp) as total_shp 
-from ( 
+	from( 
 		select 
 			date_format(ord_date_change, '%Y-%m-%d') as date, 
 			sum(ord_quantity) as day_ord, 
 			0 as day_rcv, 
 			0 as day_shp 
 		from orders 
-		where ord_status = '05' and ord_date_change >= curdate() - interval 1 year 
-		group by date_format(ord_date_change, '%Y-%m-%d') 
-
-		union all 
-
+		 where ord_status = '05' and ord_date_change >= curdate() - interval 1 year 
+		  group by date_format(ord_date_change, '%Y-%m-%d') 
+	union all 
 		select 
 			date_format(rcv_date, '%Y-%m-%d') as date, 
 			0 as day_ord, 
 			sum(rcv_quantity) as day_rcv, 
 			0 as day_shp 
 		from receiving_info 
-		where rcv_status = '02' and rcv_date >= curdate() - interval 1 year 
-		group by date_format(rcv_date, '%Y-%m-%d') 
-
-		union all 
-
+		 where rcv_status = '02' and rcv_date >= curdate() - interval 1 year 
+		  group by date_format(rcv_date, '%Y-%m-%d') 
+	union all 
 		select 
 			date_format(shp_date, '%Y-%m-%d') as date, 
 			0 as day_ord, 
 			0 as day_rcv, 
 			sum(shp_quantity) as day_shp 
 		from shipping_info 
-		where shp_status = '02' and shp_date >= curdate() - interval 1 year 
-		group by date_format(shp_date, '%Y-%m-%d') 
-) as combined
-group by 
-		month
-order by 
-		month;
+		 where shp_status = '02' and shp_date >= curdate() - interval 1 year 
+		  group by date_format(shp_date, '%Y-%m-%d') 
+	) as combined
+	group by month
+	order by month
 </select>
 
 

@@ -12,22 +12,22 @@
 	
 	<!-- Application Loggers -->
 	<logger name="com.itwillbs.web">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 	
 	<!-- Application Loggers -->
 	<logger name="com.itwillbs.persistence">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 	
 	<!-- Application Loggers -->
 	<logger name="com.itwillbs.service">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 	
 	<!-- Application Loggers -->
 	<logger name="com.itwillbs.chat">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->

@@ -792,6 +792,7 @@ button:hover {
 	    $("#tableRCV").DataTable({
 	    	pageLength: 10, // 기본 페이지 길이
 	    	lengthMenu: [10, 20, 50, 100, 500], // 사용자가 선택할 수 있는 페이지 길이 옵션
+	    	order: [[0, 'desc']],
 	    	initComplete: function () {
 	    		var table = this.api();
 

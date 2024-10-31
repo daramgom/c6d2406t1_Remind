@@ -15,12 +15,11 @@ public interface MemberService {
 	// 사용자의 처리 로직을 구현
 	public boolean login(String userId, HttpSession session);
 	
+	// 로그아웃
 	public void logout(String userId);
+	
 	// 회원가입 동작 d
 	public String memberJoin(MemberVO vo);
-	
-	// 회원가입 거래처
-	public String companyMemberJoin(MemberVO vo);
 	
 	// 회원로그인 체크 동작 d 
 	public MemberVO memberLoginCheck(MemberVO vo);
@@ -28,52 +27,30 @@ public interface MemberService {
 	// 회원가입 id 중복 체크 d
 	public MemberVO memberIdCheck(String member_id);
 	
-	// 회원정보 조회  d 
-	public MemberVO memberEmailSearch(String email);
-	
-	// 회원정보 수정 d
-	public int memberUpdate(MemberVO vo);
-
-	// 회원정보 삭제 d
-	public Integer memberDelete(MemberVO vo);
-	
 	// 회원정보 전화번호 조회 d
 	public MemberVO memberInfoTel(String tel);
 	
-	// admin 회원정보 목록 d
-	public List<MemberVO> memberList(String id,Criteria cri);
+	// 회원정보 조회  d 
+	public MemberVO memberEmailSearch(String email);
 	
-	public List<MemberVO> getCompanymemberList(String id,Criteria cri);
-	
-	// admin 회원정보 목록 d
-	public List<MemberVO> signupRequestList(Criteria cri);
-
-	// admin 특정 회원 조회. d
-	public Map<String, Object> memberInfo(String Member_id);
-	
-	// admin 회원가입 신청 목록 승인
-	public int membersUpdate(List<MemberVO> memberList);
-	
-	// admin 회원가입 신청 목록 삭제
-	public Integer membersDelete(List<MemberVO> vo);
-	
-	// admin 거래처 회원가입 존재여부 체크
-	public MemberVO memberCodeCheck(CompanyVO vo);
-	
+	// 회원 id와 email이 같은지 확인하는 메서드
 	public MemberVO memberIdEmailSearch(MemberVO vo);
 	
+	// 회원 Name와 email이 같은지 확인하는 메서드
 	public MemberVO memberNameEmailSearch(MemberVO vo); 
 	
-	
-	public int memberPermissionUpdate(MemberVO vo);
-	
+	// ?
 	public Map<String, Object> getInfo();
 	
+	// 헤더에서 자신 정보 변경.
 	public MemberVO memberUpdateInfo(String id,String span,String newValue);
 	
+	// 비밀번호 찾기에서 사용되는 새로운 비밀번호 설정
 	public int memberUpdatePw(MemberVO vo);
 	
-	public int deleteCompanyMember(MemberVO vo);
+	
+	
+	
 	
 	
 	

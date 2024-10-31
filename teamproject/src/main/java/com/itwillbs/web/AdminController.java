@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.itwillbs.domain.CompanyVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.PageVO;
+import com.itwillbs.service.AdminService;
 import com.itwillbs.service.CompanyService;
 import com.itwillbs.service.EmailService;
 import com.itwillbs.service.MemberService;
@@ -40,48 +42,31 @@ public class AdminController {
 	
 	@Inject
 	private EmailService eService;
+	
+	@Inject
+	private AdminService adminService;
+	
+	
 
 	Map<String, String> response = new HashMap<>();;
 
 	@RequestMapping(value = "/MemberList", method = RequestMethod.GET)
 	public void adminMemberListGET(Model model, HttpSession session, Criteria cri) {
+		String member_id = (String) session.getAttribute("id");
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(adminService.getMemberTotalCount(member_id,cri));
 		
-
-		 String member_id = (String) session.getAttribute("id");
-		    logger.debug("adminMemberListGET");
-		    logger.debug("adminMemberListGET");
-
-		    // 페이지 크기 설정 (5명)
-		    cri.setPageSize(5);  // Criteria에 페이지 크기 설정
-		    
-		    // 검색 키워드 처리
-		    String keyword = cri.getKeyword(); // Criteria에서 검색 키워드 가져오기
-		    logger.debug("Search Keyword: " + keyword);
-
-		    List<MemberVO> memberList = mService.memberList(member_id, cri);
-
-		    model.addAttribute("memberList", memberList);
-		    
-		    // 페이지 크기를 모델에 추가
-		    model.addAttribute("pageSize", cri.getPageSize());
-
-		    // 페이지 수 계산 (totalCount를 사용하여 계산)
-		    int totalCount = cri.getTotalCount();
-		    logger.debug("adminMemberListGET totalCount : "+ totalCount);
-		    int pageCount = (int) Math.ceil((double) totalCount / cri.getPageSize());
-		    model.addAttribute("pageCount", pageCount); // 페이지 수 모델에 추가
-		    logger.debug("adminMemberListGET pageCount : "+ pageCount);
-		    // 현재 페이지 모델에 추가
-		    model.addAttribute("currentPage", cri.getPage()); // 현재 페이지 추가
-		    
-		 // 검색 조건 모델에 추가
-		    model.addAttribute("keyword", keyword); // 검색 키워드 추가
+		List<MemberVO> memberList = adminService.memberList(member_id, cri);
+		
+		model.addAttribute("memberList", memberList);
+	    model.addAttribute("pageVO", pageVO);
 
 	}
 
 	@RequestMapping(value = "/getMemberInfo", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> memberDetails(@RequestBody MemberVO vo) {
-		Map<String, Object> memberInfo = mService.memberInfo(vo.getMember_id());
+		Map<String, Object> memberInfo = adminService.memberInfo(vo.getMember_id());
 
 		// 결과를 ResponseEntity로 반환
 		return ResponseEntity.ok(memberInfo);
@@ -90,10 +75,8 @@ public class AdminController {
 	@RequestMapping(value = "/updateMember", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, String>> updateMember(@RequestBody MemberVO vo) {
 		response.clear();
-		logger.debug("updateMember : " + vo.getMember_id());
-		int result = mService.memberUpdate(vo);
-
-		logger.debug("성공 했을때. result : " + result);
+		
+		int result = adminService.memberUpdate(vo);
 		if (result == 0) {
 			response.put("message", "오류");
 			return ResponseEntity.ok(response);
@@ -106,10 +89,8 @@ public class AdminController {
 	public ResponseEntity<Map<String, String>> deleteMember(@RequestBody MemberVO vo) {
 		response.clear();
 
-		logger.debug("updateMember : " + vo.getMember_id());
-		int result = mService.memberDelete(vo);
+		int result = adminService.memberDelete(vo);
 
-		logger.debug("성공 했을때. result : " + result);
 		if (result == 0) {
 			response.put("message", "오류");
 			return ResponseEntity.ok(response);
@@ -120,50 +101,35 @@ public class AdminController {
 
 	@RequestMapping(value = "/signReq", method = RequestMethod.GET)
 	public void memberRequest(Criteria cri,Model model) {
-		logger.debug("signReq");
-
-	    // 페이지 크기 설정 (5명)
-	    cri.setPageSize(5);  // Criteria에 페이지 크기 설정
-
+		
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(adminService.getWaitingMemberTotalCount(cri));
 	    // 서비스 메서드 호출
-	    List result = mService.signupRequestList(cri);
-	    logger.debug("result +: " + result.isEmpty());
+	    List result = adminService.signupRequestList(cri);
 
 	    if (!result.isEmpty()) {
 	        model.addAttribute("WaitingList", result.get(0)); // 대기 회원 목록
 	        model.addAttribute("EmpList", result.get(1));     // 직원 목록
 	        model.addAttribute("DeptList", result.get(2));    // 부서 목록
-	        model.addAttribute("totalCount", result.get(3));  // 전체 대기 회원 수
+	        model.addAttribute("pageVO", pageVO);
 	    }
-	    logger.debug("adminMemberList@@@@@@@@@@@@@@@@@@@@@@ : "+ result.get(0));
-
-	    // 페이지 크기를 모델에 추가
-	    model.addAttribute("pageSize", cri.getPageSize());
-
-	    // 페이지 수 계산 (totalCount를 사용하여 계산)
-	    int totalCount = (int) result.get(3);
-	    int pageCount = (int) Math.ceil((double) totalCount / cri.getPageSize());
-	    model.addAttribute("pageCount", pageCount); // 페이지 수 모델에 추가
-	 // 현재 페이지 모델에 추가
-	    model.addAttribute("currentPage", cri.getPage()); // 현재 페이지 추가
-	    logger.debug("adminMemberListGET pageCount : "+ pageCount);
+	    
 	}
 	
 	
 
 	@PostMapping("/signReq")
 	public ResponseEntity<String> SignRequestUpdate(@RequestBody List<MemberVO> selectedMembers) {
-		logger.debug("selectMembers: " + selectedMembers);
 
 		try {
 			// 처리 로직 추가 (예: DB에 저장, 승인 처리 등)
-			mService.membersUpdate(selectedMembers);
+			adminService.membersUpdate(selectedMembers);
 
 			// 성공 응답 반환
 			return ResponseEntity.ok("{\"result\": true}");
 		} catch (Exception e) {
 			// 예외 처리
-			logger.error("Error updating members", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body("{\"result\": false, \"message\": \"업데이트 중 오류가 발생했습니다.\"}");
 		}
@@ -171,17 +137,15 @@ public class AdminController {
 
 	@PostMapping("/signReqDelete")
 	public ResponseEntity<String> SignRequestDelete(@RequestBody List<MemberVO> selectedMembers) {
-		logger.debug("selectMembers: " + selectedMembers);
 
 		try {
 			// 처리 로직 추가 (예: DB에 저장, 승인 처리 등)
-			mService.membersDelete(selectedMembers);
+			adminService.membersDelete(selectedMembers);
 
 			// 성공 응답 반환
 			return ResponseEntity.ok("{\"result\": true}");
 		} catch (Exception e) {
 			// 예외 처리
-			logger.error("Error updating members", e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body("{\"result\": false, \"message\": \"업데이트 중 오류가 발생했습니다.\"}");
 		}
@@ -214,7 +178,6 @@ public class AdminController {
 	@RequestMapping(value = "/checkUserEamil", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, String>>  checkUserEmail(@RequestBody MemberVO email) {
 		response.clear();
-		logger.debug("selectMembers: " + email);
 
 	    try {
 	        MemberVO result = mService.memberEmailSearch(email.getMember_email());
@@ -244,7 +207,6 @@ public class AdminController {
 	@RequestMapping(value = "/checkUserId", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, String>>  checkUserId(@RequestBody MemberVO member_id) {
 		response.clear();
-		logger.debug("selectMembers: " + member_id);
 
 	    try {
 	        MemberVO result = mService.memberIdCheck(member_id.getMember_id());
@@ -273,7 +235,7 @@ public class AdminController {
 	public ResponseEntity<Map<String, String>> memberSignUpPost(@RequestBody MemberVO vo) {
 		response.clear();
 
-		String result = mService.companyMemberJoin(vo);
+		String result = adminService.companyMemberJoin(vo);
 
 		// 중복 체크에 대한 메시지를 매핑
 		Map<String, String> messageMap = new HashMap<>();
@@ -295,19 +257,13 @@ public class AdminController {
 	 @PostMapping("/updatePermission")
 	    public ResponseEntity<String> updatePermission(@RequestBody MemberVO vo) {
 		 
-		 	logger.debug("vo : " + vo.getPermission_id());
-		 
-		 
-	    	int result = mService.memberPermissionUpdate(vo);
-	    	
-	    	
+	    	int result = adminService.memberPermissionUpdate(vo);
 	    	
 	    	if(result == 0) {
 	    		return ResponseEntity.ok("{\"success\": false }");
 	    	}
 	    	
 	    	return ResponseEntity.ok("{\"success\": true }");
-	    	
 	    }
 	 
 	 @RequestMapping(value = "/companyMemberCheck", method = RequestMethod.POST)
@@ -315,7 +271,7 @@ public class AdminController {
 			response.clear();
 
 		    try {
-		        MemberVO result = mService.memberCodeCheck(vo);
+		        MemberVO result = adminService.memberCodeCheck(vo);
 
 		        if (result != null) {
 		            // 중복된 이메일이 있을 경우
@@ -344,9 +300,8 @@ public class AdminController {
 		 
 		 try {
 			 
-			 MemberVO result = mService.memberCodeCheck(vo);
+			MemberVO result = adminService.memberCodeCheck(vo);
 			int resultInt = eService.sendIdPwCode(result); 
-			 
 			 if (resultInt == 0) {
 				 // 중복된 이메일이 있을 경우
 				 response.put("message", "비밀번호 변경중 오류가 발생했습니다.");
@@ -369,36 +324,16 @@ public class AdminController {
 	 @RequestMapping(value = "/CompanyMemberList", method = RequestMethod.GET)
 		public void ConpanyMemberListGET(Model model, HttpSession session, Criteria cri) {
 			
-
-			 String member_id = (String) session.getAttribute("id");
-			    logger.debug("ConpanyMemberListGET");
-			    logger.debug("ConpanyMemberListGET");
-
-			    // 페이지 크기 설정 (5명)
-			    cri.setPageSize(5);  // Criteria에 페이지 크기 설정
-			    
-			    // 검색 키워드 처리
-			    String keyword = cri.getKeyword(); // Criteria에서 검색 키워드 가져오기
-			    logger.debug("Search Keyword: " + keyword);
-
-			    List<MemberVO> memberList = mService.getCompanymemberList(member_id, cri);
-
-			    model.addAttribute("memberList", memberList);
-			    
-			    // 페이지 크기를 모델에 추가
-			    model.addAttribute("pageSize", cri.getPageSize());
-
-			    // 페이지 수 계산 (totalCount를 사용하여 계산)
-			    int totalCount = cri.getTotalCount();
-			    logger.debug("adminMemberListGET totalCount : "+ totalCount);
-			    int pageCount = (int) Math.ceil((double) totalCount / cri.getPageSize());
-			    model.addAttribute("pageCount", pageCount); // 페이지 수 모델에 추가
-			    logger.debug("adminMemberListGET pageCount : "+ pageCount);
-			    // 현재 페이지 모델에 추가
-			    model.addAttribute("currentPage", cri.getPage()); // 현재 페이지 추가
-			    
-			 // 검색 조건 모델에 추가
-			    model.addAttribute("keyword", keyword); // 검색 키워드 추가
+		 	String member_id = (String) session.getAttribute("id");
+			PageVO pageVO = new PageVO();
+			pageVO.setCri(cri);
+			pageVO.setTotalCount(adminService.getCompanyMemberTotalCount(member_id,cri));
+			
+			List<MemberVO> memberList = adminService.getCompanymemberList(member_id, cri);
+			
+			model.addAttribute("memberList", memberList);
+		    model.addAttribute("pageVO", pageVO);
+		    
 
 		}
 	 
@@ -409,7 +344,7 @@ public class AdminController {
 			 
 			 try {
 				 
-				 int result = mService.deleteCompanyMember(vo);
+				 int result = adminService.deleteCompanyMember(vo);
 				 
 				 if (result == 0) {
 					 // 중복된 이메일이 있을 경우

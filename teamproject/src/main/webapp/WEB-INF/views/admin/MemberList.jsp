@@ -70,7 +70,7 @@
 
 	font-size: 26px;
 	font-weight: 400;
-	line-height: 30px;
+	line-height: 24px;
 	color : #6861ce;
 	border-color: #ddd; background-color: var(--bs-pagination-disabled-bg);     border-radius: 100px;
 	padding: 0 10px
@@ -175,26 +175,22 @@
 								</div>
 								<div style="display: flex; margin-right: 12px; justify-content: end;">
 								    <!-- 페이지 네비게이션 -->
-								    <c:if test="${pageCount >= 1}">
-										    <div class="pagination">
-										        <!-- 이전 페이지 링크 -->
-										        <c:if test="${currentPage >= 1}">
-										            <a href="?page=${currentPage - 1}" style="padding: 0 10px; color:black; font-size : 18px;     border-color: #ddd; background-color: var(--bs-pagination-disabled-bg);     border-radius: 100px;">Previous</a>
-										        </c:if> 
-										
-										       					<c:forEach var="i" begin="1" end="${(currentPage + 2) > pageCount ? pageCount : (currentPage + 2)}">
-										    <c:if test="${i >= (currentPage - 2) && i > 0}">
-										        <a href="?page=${i}&keyword=${keyword}" style="padding: 0 10px; color:black; font-size: 20px;">
-										            <span class="${currentPage == i ? 'currentpage' : ''}">${i}</span>
-										        </a>
-										    </c:if>
+								    <c:if test="${!empty pageVO.totalCount}">
+									    <div class="pagination">
+								        <!-- 이전 페이지 링크 -->
+								        <c:if test="${pageVO.prev}">
+								            <a href="?page=${pageVO.startPage - 1 }" style="padding: 0 10px; color:black; font-size : 18px;     border-color: #ddd; background-color: var(--bs-pagination-disabled-bg);     border-radius: 100px;">Previous</a>
+								        </c:if> 
+									
+										<c:forEach var="i" begin="${pageVO.startPage}" end="${pageVO.endPage }">
+											<a href="?page=${i}&keyword=${keyword}" style="margin: 0 5px;font-size: 18px;"> <span class="${pageVO.cri.page == i ? 'currentpage' : ''}">${i}</span></a>
 										</c:forEach>
-										
-										        <c:if test="${currentPage < pageCount}">
-										    <a href="?page=${currentPage + 1}&keyword=${keyword}" style="padding: 0 10px; color:black; font-size: 18px; border-color: #ddd; background-color: var(--bs-pagination-disabled-bg); border-radius: 100px;">Next</a>
+									
+								       <c:if test="${pageVO.next}">
+								   			 <a href="?page=${pageVO.endPage + 1 }&keyword=${keyword}" style="padding: 0 10px; color:black; font-size: 18px; border-color: #ddd; background-color: var(--bs-pagination-disabled-bg); border-radius: 100px;">Next</a>
 										</c:if>
-										    </div>
-										</c:if>
+									    </div>
+									</c:if>  
 								</div>
 
 							</div>

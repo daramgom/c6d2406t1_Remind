@@ -26,6 +26,7 @@ import com.itwillbs.domain.MemberVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.login.SNSLogin;
 import com.itwillbs.login.SnsValue;
+import com.itwillbs.service.EmailService;
 import com.itwillbs.service.MemberService;
 import com.itwillbs.service.MySessionListener;
 import com.itwillbs.service.UserService;
@@ -40,317 +41,19 @@ public class MemberController {
 	@Inject
 	private MemberService mService;
 	
-	@Inject
-	private SnsValue naverSns;
+    @Autowired
+    private EmailService emailService;
+
 	
-	@Inject
-	private UserService uService;
-	
-
- 	@Autowired
- 	private MySessionListener mySessionListener;
-	
-	// session 중복 코드
-	private void sessionAdd (HttpSession session, MemberVO result) {
-		// 비교해서 member 있으면 -> 해당하는 member 정보로 로그인 -> 메인 페이지
-	    session.setAttribute("id", result.getMember_id());
-		session.setAttribute("permission_id", result.getPermission_id());
-		session.setAttribute("name", result.getMember_name());
-		session.setAttribute("tel", result.getMember_tel());
-		session.setAttribute("email", result.getMember_email());
-		session.setAttribute("employee_rank", result.getEmployee_rank());
-		session.setAttribute("department_id", result.getDepartment_id());
-		session.setAttribute("member_state", result.getMember_state());
-		session.setAttribute("member_code", result.getMember_code());
-		
-		// 밑에 있는걸로 변경할거임/
-		/* session.setAttribute("resultMemberVO",result); */
-		
-	}
-	
-	
-	
-	@PostMapping("/postInfo")
-    public ResponseEntity<Map<String, Object>> postInfo() {
-    	
-    	Map<String, Object> result	= mService.getInfo();
-    	logger.debug("result : " + result);
-    	
-        return ResponseEntity.ok(result);
-    }
-    
-	@PostMapping("/logout")
-	public ResponseEntity<Map<String, String>> logout(HttpSession session) {
-	    Map<String, String> response = new HashMap<>(); // 응답 초기화
-	    logger.debug("로그아웃 실행됨");
-
-	    // 세션에서 사용자 ID 가져오기
-	    String userId = (String) session.getAttribute("id");
-	    if (userId != null) {
-	        // 사용자 ID를 사용하여 로그아웃 처리
-	        mService.logout(userId); // 세션 종료 시 사용자 ID 제거
-	    }
-
-	    // 세션 무효화
-	    session.invalidate();
-	    logger.debug("세션 무효화됨");
-
-	    response.put("message", "로그아웃이 정상적으로 실행되었습니다.");
-	    return ResponseEntity.ok(response); // 200 OK와 함께 JSON 응답
-	}
-
-    
-    @PostMapping("/updateMemberInfo")
-    public ResponseEntity<String> updateMemberInfo(@RequestBody Map<String, String> request , HttpSession session) {
-        // 요청 본문에서 데이터를 추출
-        String member_id = (String)session.getAttribute("id"); 
-        String field = request.get("field");
-        String newValue = request.get("new_value");
-
-        // 여기서 id, field, newValue를 사용하여 데이터베이스를 업데이트하는 로직을 추가합니다.
-        
-        MemberVO result = mService.memberUpdateInfo(member_id , field, newValue);
-        logger.debug("result 컨트롤러 : "+result);
-        if(result.getMember_id() == null) {
-        	return ResponseEntity.ok("{\"success\": false }");
-        }
-        session.setAttribute("name", result.getMember_name());
-		session.setAttribute("tel", result.getMember_tel());
-
-        // 예시 응답
-        return ResponseEntity.ok("{\"success\": true }");
-    }
-    ///////////////////////////////////////////// 회원가입 ////////////////////////////////////////////// 
-    ///////////////////////////////////////////// 회원가입 ////////////////////////////////////////////// 
- // http://localhost:8088/signup
- 	@RequestMapping(value ="signup" , method=RequestMethod.GET)
- 	public void signupGet(  Model model , UserVO uvo) {
- 		
- 		logger.debug("signupPage get 실행 ");
- 		logger.debug("uvo  : " + uvo);
- 		
- 		model.addAttribute("member" , uvo);
- 	}
- 	
- 	// http://localhost:8088/signup
- 	@RequestMapping(value ="signup" , method=RequestMethod.POST)
- 	public void signupPOST(HttpSession session ,UserVO vo, Model model) {
- 		logger.debug("vo : " + vo);
- 		model.addAttribute("member",vo );
- 		session.removeAttribute("userInfo");
- 	}
- 	
- 	
- 	// http://localhost:8088/membersignup
- 	@RequestMapping(value ="membersignup" , method=RequestMethod.POST)
- 	public ResponseEntity<Map<String, String>> memberSignUpPost(@RequestBody MemberVO vo) {
- 		response.clear();
-
- 		String result = mService.memberJoin(vo);
-
- 		// 중복 체크에 대한 메시지를 매핑
- 		Map<String, String> messageMap = new HashMap<>();
- 		messageMap.put("아이디 중복", "이미 등록된 아이디입니다.");
- 		messageMap.put("이메일 중복", "이미 등록된 이메일입니다.");
- 		messageMap.put("전화번호 중복", "이미 등록된 전화번호입니다.");
-
- 		if (messageMap.containsKey(result)) {
- 		    response.put("message", messageMap.get(result));
- 		    return ResponseEntity.ok(response); // 200 OK 응답
- 		}
-
- 		// 회원가입 실행
- 		response.put("message", "회원가입이 성공적으로 완료되었습니다!");
- 		return ResponseEntity.ok(response); // 200 OK 응답
- 	}
- 	
- 	@RequestMapping(value ="/checkUserId" , method=RequestMethod.POST)
- 	public ResponseEntity<Map<String, String>> memberIdcheck(@RequestBody MemberVO vo) {
- 		response.clear();
- 		
- 		
- 		logger.debug("memberId 중복검사 : "+vo.getMember_id());
- 		String member_id = vo.getMember_id();
- 		
- 		MemberVO result =  mService.memberIdCheck(member_id);
- 		logger.debug("result" + result);
- 		
- 		
- 		if(result == null) {
- 			response.put("message", "사용가능한 아이디 입니다!");
- 			return ResponseEntity.ok(response); // 200 OK 응답  
-     	}
-     	
- 		response.put("message", "이미 등록된 아이디 입니다! 다른 아이디를 입력해주세요.");
- 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);// 400 BAD REQUEST 응답  
-         
- 	}
- 	///////////////////////////////////////////// 회원가입 ////////////////////////////////////////////// 
- 	///////////////////////////////////////////// 회원가입 ////////////////////////////////////////////// 
- 	
- 	
- 	
- 	///////////////////////////////////////////// 로그인 , 비밀번호 찾기  ////////////////////////////////////////////// 
- 	///////////////////////////////////////////// 로그인 , 비밀번호 찾기  ////////////////////////////////////////////// 
- // http://localhost:8088/login
- 	@RequestMapping(value = "/login", method = RequestMethod.GET)
- 	public String snsLogin(Model model) {
- 		logger.debug(" Login page ");
- 		
- 		  SNSLogin snsLogin = new SNSLogin(naverSns);
- 		  
- 		  model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
- 		 
- 		
- 		return "login";
- 	}
- 	
- 	@RequestMapping( value ="/getSessionCheck" , method = RequestMethod.POST)
- 	public ResponseEntity<Map<String, String>> getSessionCheck(@RequestBody Map<String, String> request, HttpSession session) {
- 		String userId = (String) session.getAttribute("id");
- 		 String sessionCheckKey = request.get("sessionCheckKey");
- 		logger.debug(" @@@@@@@ userID + " + userId+ " key" + sessionCheckKey );
- 		if(mySessionListener.validateSessionKey(userId, sessionCheckKey)) {
- 			response.put("result", "true");
- 		}else {
- 			response.put("result", "false");
- 		}
- 		
- 		// result_code가 세션에 존재하는지 확인하고 제거
- 	    if (session.getAttribute("result_code") != null) {
- 	        session.removeAttribute("result_code");
- 	    } 		// result_code가 세션에 존재하는지 확인하고 제거
- 	    if (session.getAttribute("sessionCheckKey") != null) {
- 	        session.removeAttribute("sessionCheckKey");
- 	    }
- 		
-
- 		
- 		return ResponseEntity.ok(response);
- 		
- 		
- 	}
- 	
- 	
- 	// 로그인 
- 	@RequestMapping( value = "/login" , method= RequestMethod.POST )
- 	public ResponseEntity<Map<String, String>> login(@RequestBody MemberVO vo, HttpSession session) {
- 		response.clear(); // 메서드 시작 시 초기화
- 		logger.debug("로그인  VO :  " + vo );
- 		
- 		MemberVO result = mService.memberLoginCheck(vo);
- 		logger.debug("result :  " + result );
- 	
- 		if (result == null) {
- 		    // 아이디가 존재하지 않음
- 		    response.put("code", "NOT_REGISTERED");
- 		    response.put("message", "등록된 회원이 아닙니다.");
- 		} else if (result.getMember_pw() == null) {
- 		    // 비밀번호 틀림
- 		    response.put("code", "INVALID_PASSWORD");
- 		    response.put("message", "비밀번호가 일치하지 않습니다.");
- 		} else if(result.getApproval_status().equals("01")) {
- 		   response.put("code", "REGISTRATION_PENDING"); // "회원가입 승인 대기 중"
- 		    response.put("message", "회원가입 승인이 대기 중입니다.");
- 		} else {
- 			String sessionCheckKey = UUID.randomUUID().toString(); // 랜덤 키 생성
- 			
- 			mySessionListener.addSession(result.getMember_id(),sessionCheckKey);
- 			logger.debug("sessionCheckKey : " + sessionCheckKey);
- 			
- 	        // 세션 리스너에 사용자 ID와 세션 체크 키 추가
- 			sessionAdd(session, result);
-
- 		    // 로그인 성공
- 			response.put("sessionCheckKey", sessionCheckKey); // 키 넘김
- 			response.put("code", "SUCCESS");
- 		    response.put("message", "로그인 성공");
- 		}
-
- 		return ResponseEntity.ok(response);
- 	}
- 	
- 	
- 	// SNS 로그인
- 	@RequestMapping(value = "/auth/naver/callback", method = {RequestMethod.GET, RequestMethod.POST})
- 	public String loginCallback(@RequestParam String code, HttpSession session, RedirectAttributes rttr, Model model) throws Exception {
- 	    SNSLogin snsLogin = new SNSLogin(naverSns);
- 	    UserVO snsUser = snsLogin.getUserProfile(code);
- 	    
- 	    logger.debug("Profile >> " + snsUser);
- 	    
- 	    // sns로그인한 사용자의 전화번호를 DB에 있는 member 테이블과 비교함.
- 	    MemberVO result = uService.getBySns(snsUser.getTel());
- 	    
- 	    // 비교해서 member 없으면 -> 회원가입 페이지
- 	    if (result == null) {
- 	    	rttr.addFlashAttribute("isFirstVisit", "SNS"); // => 이걸 1회성인 model 객체임. 
- 	    	session.setAttribute("userInfo", snsUser); // 세션에 UserVO 객체 저장 
- 	        return "redirect:/notify"; // notify 페이지로 리다이렉트
- 	    } 
- 	    else if(result.getApproval_status().equals("01")) {
-			   
- 	    	session.setAttribute("result_code", "REGISTRATION_PENDING"); // 세션에 저장
- 		} else {
- 			String sessionCheckKey = UUID.randomUUID().toString(); // 랜덤 키 생성
- 			
- 			mySessionListener.addSession(result.getMember_id(),sessionCheckKey);
- 			logger.debug("sessionCheckKey : " + sessionCheckKey);
- 			
- 	        // 세션 리스너에 사용자 ID와 세션 체크 키 추가
- 			sessionAdd(session, result);
-
- 		    // 로그인 성공
- 			session.setAttribute("sessionCheckKey", sessionCheckKey); // 세션에 저장
- 	        session.setAttribute("result_code", "SUCCESS"); // 세션에 저장
- 		}
- 	    
- 	    return "/login"; // 메인 페이지로 리다이렉트
- 	};
- 	
- 	
- 	// http://localhost:8088/notify
- 	// sns로그인 -> 회원정보와 없으면  실행되는 중간다리 페이지.
- 	@RequestMapping(value = "/notify", method = RequestMethod.GET)
- 	public void notifyGET(Model model, HttpSession session) {
- 		// 세션에서 UserVO 객체 가져오기
- 	    UserVO userInfo = (UserVO) session.getAttribute("userInfo");
- 	   session.removeAttribute("result_code");
- 	    
- 	    // userInfo를 사용할 수 있습니다.
- 	    if (userInfo != null) {
- 	        model.addAttribute("userInfo", userInfo); // 뷰에서 사용하기 위해 다시 모델에 추가
- 	    }
- 	};
- 	
- 	// http://localhost:8088/notify
-  	// sns로그인 -> 회원정보와 없으면  실행되는 중간다리 페이지.
-  	@RequestMapping(value = "/pending", method = RequestMethod.GET)
-  	public void pendingGET(Model model, HttpSession session) {
-  		// 세션에서 UserVO 객체 가져오기
-  	    model.addAttribute("snsCode" , "REGISTRATION_PENDING");
-  	    session.removeAttribute("result_code");
-  	};
- 	
- 	// 비밀번호 찾기 페이지
- 	@RequestMapping(value = "pwInquiry" , method = RequestMethod.GET)
- 	public void pwInquiryGet() {
- 		logger.debug("pwInquiry");
- 		
- 	};
- 	
- 	// 아이디 찾기 페이지
+	// 아이디 찾기 페이지
  	@RequestMapping(value = "idInquiry" , method = RequestMethod.GET)
  	public void idInquiryGet() {
- 		logger.debug("idInquiry get");
- 		
  	};
  	
 
  	// 아이디 찾기 페이지
  	@RequestMapping(value = "idInquiry" , method = RequestMethod.POST)
  	public ResponseEntity<Map<String, String>> idInquiryPost(@RequestBody MemberVO vo) {
- 		logger.debug("idInquiry Post");
  		response.clear(); // 메서드 시작 시 초기화
  		
  		MemberVO result = mService.memberNameEmailSearch(vo);
@@ -366,31 +69,93 @@ public class MemberController {
   		response.put("id", result.getMember_id());
   		return ResponseEntity.ok(response);
  	};
- 	
- 	
- 	
+	 	
+ 	// 비밀번호 찾기 페이지
+ 	@RequestMapping(value = "pwInquiry" , method = RequestMethod.GET)
+ 	public void pwInquiryGet() {
+ 	};
+	 	
+	 	
  	// 비밀번호 찾기 페이지
   	@RequestMapping(value = "pwInquiry" , method = RequestMethod.POST)
   	public ResponseEntity<Map<String, String>> pwInquiryPost(@RequestBody MemberVO vo) {
-  		logger.debug("pwInquiry POST" + vo);
   		response.clear(); // 메서드 시작 시 초기화
-  		
   		int result = mService.memberUpdatePw(vo);
   		
   		if(result == 0) {
   			response.put("result", "false");
   			response.put("message", "비밀번호 변경중 오류가 발생하였습니다.");
   		}
-  		
   		response.put("result", "true");
   		response.put("message", "비밀번호가 변경되었습니다.");
   		return ResponseEntity.ok(response);
-  		
   	};
- 	
- 	
- 	
- 	///////////////////////////////////////////// 로그인 , 비밀번호 찾기  ////////////////////////////////////////////// 
- 	///////////////////////////////////////////// 로그인 , 비밀번호 찾기  ////////////////////////////////////////////// 
+  	
+  	// id 찾기에 사용되는 메서드
+    @PostMapping("/findMemberInfo")
+    public ResponseEntity<Map<String, String>> findMemberInfo(@RequestBody MemberVO vo) {
+		response.clear(); // 메서드 시작 시 초기화
+		MemberVO result = mService.memberIdEmailSearch(vo);
+		
+		
+		if(result == null) {
+			response.put("message", "등록된 정보와 다릅니다.");
+			response.put("result", "false");
+			return	ResponseEntity.ok(response); // 200 응답
+		}
+		
+		emailService.sendVerificationCode(result.getMember_email()); 
+		
+		response.put("result", "true");
+		response.put("message", "인증 코드가 이메일로 전송되었습니다!");
+		return ResponseEntity.ok(response); // 200 OK 응답  		
+    }
+  	
+  	// 비밀번호 찾기에 사용되는 메서드
+    @PostMapping("/sendEmailCode")
+    public ResponseEntity<Map<String, String>> sendEmailCode(@RequestBody MemberVO vo) {
+    	response.clear(); // 메서드 시작 시 초기화
+    	
+		try {
+			emailService.sendVerificationCode(vo.getMember_email());
+		    response.put("message", "인증 코드가 이메일로 전송되었습니다!");
+	        response.put("result", "true");
+	        return ResponseEntity.ok(response); // 200 OK 응답
+		} catch (Exception e) {
+	        response.put("message", "인증 코드 전송에 실패했습니다. 다시 시도해주세요.");
+	        response.put("result", "false");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response); // 500 Internal Server Error 응답
+		}
+    }
+
+
+	@PostMapping("/postInfo")
+    public ResponseEntity<Map<String, Object>> postInfo() {
+    	
+    	Map<String, Object> result	= mService.getInfo();
+    	
+        return ResponseEntity.ok(result);
+    }
+
+
+    @PostMapping("/updateMemberInfo")
+    public ResponseEntity<String> updateMemberInfo(@RequestBody Map<String, String> request , HttpSession session) {
+        // 요청 본문에서 데이터를 추출
+        String member_id = (String)session.getAttribute("id"); 
+        String field = request.get("field");
+        String newValue = request.get("new_value");
+
+        // 여기서 id, field, newValue를 사용하여 데이터베이스를 업데이트하는 로직을 추가합니다.
+        
+        MemberVO result = mService.memberUpdateInfo(member_id , field, newValue);
+        if(result.getMember_id() == null) {
+        	return ResponseEntity.ok("{\"success\": false }");
+        }
+        session.setAttribute("name", result.getMember_name());
+		session.setAttribute("tel", result.getMember_tel());
+
+        // 예시 응답
+        return ResponseEntity.ok("{\"success\": true }");
+    }
     
 }

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 import com.itwillbs.domain.CompanyVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MemberVO;
+import com.itwillbs.domain.PageVO;
+
 
 /**
  * 
@@ -190,19 +192,21 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.update(NAMESPACE + ".deleteMember", dvo);
 	}
 
-	// admin 회원 전체 조회.
+	
+	// admin 회원 목록 cnt
 	@Override
-	public List<MemberVO> getMemberList(String member_id, Criteria cri) {
-	    
+	public int getMemberTotalCount(String member_id, Criteria cri) {
 	    // 총 회원 수를 계산하기 위한 매개변수 준비
 	    Map<String, Object> countParams = new HashMap<>();
 	    countParams.put("member_id", member_id);
 	    countParams.put("keyword", cri.getKeyword()); // 검색 키워드 추가
-	    int totalCount = sqlSession.selectOne(NAMESPACE + ".getMemberListCount", countParams);
-	    
-	    // 총 회원 수를 Criteria에 설정 (페이지 수 계산을 위해)
-	    cri.setTotalCount(totalCount);
-
+		return sqlSession.selectOne(NAMESPACE+".getMemberListCount", countParams);
+	}
+	
+	
+	// admin 회원 전체 조회.
+	@Override
+	public List<MemberVO> getMemberList(String member_id, Criteria cri) {
 	    // 회원 목록 조회를 위한 매개변수 준비
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("member_id", member_id);
@@ -213,42 +217,48 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 	
 	@Override
-	public List<MemberVO> getCompanyMemberList(String member_id, Criteria cri) {
-	    
-	    // 총 회원 수를 계산하기 위한 매개변수 준비
+	public int getCompanyMemberTotalCount(String member_id, Criteria cri) {
+		// 총 회원 수를 계산하기 위한 매개변수 준비
 	    Map<String, Object> countParams = new HashMap<>();
 	    countParams.put("member_id", member_id);
 	    countParams.put("keyword", cri.getKeyword()); // 검색 키워드 추가
 	    int totalCount = sqlSession.selectOne(NAMESPACE + ".getCompanyMemberListCount", countParams);
 	    
-	    // 총 회원 수를 Criteria에 설정 (페이지 수 계산을 위해)
-	    cri.setTotalCount(totalCount);
-	    
-
+		return totalCount;
+	}
+	
+	
+	@Override
+	public List<MemberVO> getCompanyMemberList(String member_id, Criteria cri) {
 	    // 회원 목록 조회를 위한 매개변수 준비
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("member_id", member_id);
 	    params.put("startPage", cri.getStartPage());
 	    params.put("pageSize", cri.getPageSize());
 	    params.put("keyword", cri.getKeyword()); // 검색 키워드 추가
+	    
 	    return sqlSession.selectList(NAMESPACE + ".getCompanyMemberList", params);
 	}
 	
-
+	@Override
+	public int getWaitingMemberTotalCount(Criteria cri) {
+		int totalCount = sqlSession.selectOne(NAMESPACE + ".getWaitingMemberCount", cri);
+		return totalCount;
+	}
+	
 	
 	@Override
 	public List<MemberVO> getSignupRequestList(Criteria cri) {
 		List resultList = new ArrayList();
 		/* Criteria cri */
 			// 합쳐진 List결과를 리턴
-			int totalCount = sqlSession.selectOne(NAMESPACE + ".getWaitingMemberCount", cri);
+	
 			List resultWaitingMember = sqlSession.selectList(NAMESPACE + ".getWaitingMember", cri);
 			// 대기 회원이 없을 경우 빈 결과 반환
 		    if (resultWaitingMember.isEmpty()) {
 		    	resultList.add(resultWaitingMember);
 		    	resultList.add(new ArrayList<>()); // 빈 직원 목록
 		        resultList.add(new ArrayList<>()); // 빈 부서 목록
-		        resultList.add(totalCount); // 전체 회원 수
 		        return resultList;
 		    }
 			List resultEmpMap = sqlSession.selectList(NAMESPACE + ".getEmp_rank", "common_value");
@@ -258,7 +268,6 @@ public class MemberDAOImpl implements MemberDAO {
 			resultList.add(resultWaitingMember);
 		    resultList.add(resultEmpMap);
 		    resultList.add(resultDeptMap);
-		    resultList.add(totalCount); // 전체 대기 회원 수 추가
 			return resultList;
 
 	
@@ -368,6 +377,8 @@ public class MemberDAOImpl implements MemberDAO {
 			int result = sqlSession.delete(NAMESPACE+".deleteMembers" , vo);
 			return result;
 		}
+		
+		
 		
 		
 }

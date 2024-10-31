@@ -144,7 +144,7 @@
 </select>
 
  <select id="getMemberListCount" resultType="int">
-    SELECT COUNT(*) FROM member
+    SELECT COUNT(member_id) FROM member
     WHERE approval_status = '02' 
       AND member_code = '1' 
       AND member_id != #{member_id}
@@ -193,12 +193,13 @@
     LEFT JOIN
         company c ON m.member_code = c.company_code  
     WHERE
+    m.member_code != '1' and
         m.member_state != (
             SELECT common_value
             FROM common
             WHERE common_status = '퇴사' AND common_work = 'member_state'
         )
-        AND m.member_code != '1'
+        
         <if test="keyword != null and keyword != ''">
             AND c.company_manager LIKE CONCAT('%', #{keyword}, '%')
         </if>

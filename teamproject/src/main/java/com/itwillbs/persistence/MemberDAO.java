@@ -88,5 +88,13 @@ public interface MemberDAO {
 	
 	public int deleteCompanyMember(MemberVO vo); 
 	
+	public int getMemberTotalCount(String member_id, Criteria cri);
+	
+	public int getCompanyMemberTotalCount(String member_id, Criteria cri);
+	
+	public int getWaitingMemberTotalCount(Criteria cri);
+	
+	
+	
 	
 }

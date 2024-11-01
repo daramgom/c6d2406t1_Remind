@@ -2,6 +2,37 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Sidebar -->
+<script type="text/javascript">
+function WaitingMemberCount() {
+    const url = "/WaitingMember";
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({}) // 세션 체크 키를 요청 본문에 포함
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('네트워크 응답이 좋지 않습니다: ' + response.statusText);
+        }
+        return response.json(); // JSON 형태로 응답을 변환
+    })
+    .then(data => {
+    	// waitingCount 요소에 대기자 수를 추가
+    	document.getElementById("waitingCount").innerHTML = data; // data는 서버로부터 받은 대기자 수
+
+    })
+    .catch(error => {
+        console.error('문제가 발생했습니다:', error);
+    });
+}
+
+WaitingMemberCount();
+
+
+</script>
 <div class="sidebar" data-background-color="light">
 	<div class="sidebar-logo">
 		<!-- Logo Header -->
@@ -153,7 +184,11 @@
 					<div class="collapse" id="adminMenu">
 						<ul class="nav nav-collapse">
 							<li><a class="subMenu" id="a17" href="/admin/signReq"> <span
-									class="sub-item">회원 가입 신청 목록</span>
+									class="sub-item">회원 가입 신청 목록  <span id="waitingCount" style="    background-color: #a5a4b7 !important;
+    color: black;
+    padding: 5px;
+    border-radius: 13px;
+    margin-left: 3px;"></span></span>
 							</a></li>
 							<li><a class="subMenu" id="a18" href="/admin/MemberList">
 									<span class="sub-item">회원 목록</span>

@@ -109,19 +109,11 @@ public class MemberServiceImpl implements MemberService{
 	}
 	
 	
-	
-	
-	
-	
 	@Override
 	public MemberVO memberInfoTel(String tel) {
 		logger.debug("(●'◡'●) memberInfoTel(String Tel) 실행 " + tel);
 		return mdao.getMemberTel(tel);
 	}
-	
-	
-	
-	
 	
 	
 	@Override
@@ -157,5 +149,9 @@ public class MemberServiceImpl implements MemberService{
 		return mdao.getMemberNameEmailSearch(vo);
 	}
 	
+	@Override
+	public int getWaitingMemberTotalCount() {
+		return mdao.getWaitingMemberTotalCount();
+	}
 	
 }

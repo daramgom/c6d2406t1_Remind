@@ -48,6 +48,9 @@ public interface MemberService {
 	// 비밀번호 찾기에서 사용되는 새로운 비밀번호 설정
 	public int memberUpdatePw(MemberVO vo);
 	
+
+	// 사이드바 회원가입 신청 목록 조회
+	public int getWaitingMemberTotalCount();
 	
 	
 	

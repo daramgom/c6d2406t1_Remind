@@ -378,7 +378,11 @@ public class MemberDAOImpl implements MemberDAO {
 			return result;
 		}
 		
-		
+		// 사이드바 회원 가입신청 목록
+		@Override
+		public int getWaitingMemberTotalCount() {
+			return sqlSession.selectOne(NAMESPACE+ ".getWaitingMemberCount");
+		}
 		
 		
 }

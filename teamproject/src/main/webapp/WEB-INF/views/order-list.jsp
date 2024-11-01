@@ -546,7 +546,7 @@ $(document).ready(function() {
            <select id="prod_id" name="prod_id"  class="form-select form-control" required="required" style="width:850px;">
 			<!-- <option value="" >목록에서 값을 확인 후 선택하세요</option> -->
 			<c:forEach var="p" items="${pListVO }">
-				<option id="modalProdId" value="${p.prod_id }">${p.prod_id} / ${p.prod_name } / ${p.prod_category } / ${p.prod_brand } / ${p.company_code } / ${p.company_name } / ${p.company_tel }</option>
+				<option id="modalProdId" value="${p.prod_id }" data-category="${p.prod_category }" data-name="${p.prod_name }" data-code="${p.company_code }" >${p.prod_id} / ${p.prod_name } / ${p.prod_category } / ${p.prod_brand } / ${p.company_code } / ${p.company_name } / ${p.company_tel }</option>
 			</c:forEach>
 		</select>
 			<%-- <input id="selectedProdId" type="text" value="${p.prod_id} " name="prod_id" /> --%>
@@ -592,10 +592,44 @@ $(document).ready(function() {
           
          </form>
          
+         <button type="button" style="width:200px;" class="btn btn-secondary" onclick="downloadOrdExcel()">엑셀 다운로드</button>
+         
          <div id="buttonContainer"></div>
          
     </div>
 </div>
+
+<script type="text/javascript">
+    // 엑셀 다운로드 함수
+    function downloadOrdExcel() {
+       
+        const ordManagerId = document.getElementById('modalOrdManagerId').value;
+        const ordNumber = document.getElementById('modalOrdNumber').value;
+        const prodSelect = document.getElementById('prod_id');
+        const prodId = prodSelect.value;
+        const prodCategory = prodSelect.options[prodSelect.selectedIndex].getAttribute('data-category');
+        const prodName = prodSelect.options[prodSelect.selectedIndex].getAttribute('data-name');
+        const companyCode = prodSelect.options[prodSelect.selectedIndex].getAttribute('data-code');
+        const ordQuantity = document.getElementById('modalOrdQuantity').value;
+        const ordPrice = document.getElementById('modalOrdPrice').value;
+        const ordDate = document.getElementById('modalOrdDate').value;
+        const ordRemarks = document.getElementById('modalOrdText').value;
+
+        const url = "/downloadOrdExcel?" +
+        "ord_manager_id=" + ordManagerId +
+        "&ord_number=" + ordNumber +
+        "&prod_id=" + prodId +
+        "&prod_category=" + prodCategory +
+        "&prod_name=" + prodName +
+        "&company_code=" + companyCode +
+        "&ord_quantity=" + ordQuantity +
+        "&ord_price=" + ordPrice +
+        "&ord_date=" + ordDate +
+        "&ord_remarks=" + ordRemarks;
+
+    window.location.href = url;
+    }
+</script>
     
     
 

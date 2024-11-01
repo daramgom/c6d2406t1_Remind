@@ -47,5 +47,6 @@ public interface AdminService {
 	public int deleteCompanyMember(MemberVO vo);
 	
 	
+	
 
 }

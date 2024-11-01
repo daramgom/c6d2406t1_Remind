@@ -59,8 +59,10 @@ public class LoginController {
 	// 로그인 페이지 Get 요청
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String snsLogin(Model model) {
-		SNSLogin snsLogin = new SNSLogin(naverSns);
-		model.addAttribute("naver_url", snsLogin.getNaverAuthURL());
+		/*
+		 * SNSLogin snsLogin = new SNSLogin(naverSns); model.addAttribute("naver_url",
+		 * snsLogin.getNaverAuthURL());
+		 */
 		return "login";
 	}
 	
@@ -101,7 +103,7 @@ public class LoginController {
  	public void notifyGET(Model model, HttpSession session) {
  		// 세션에서 UserVO 객체 가져오기
  	    UserVO userInfo = (UserVO) session.getAttribute("userInfo");
- 	   session.removeAttribute("result_code");
+ 	    session.removeAttribute("result_code");
  	    
  	    // userInfo를 사용할 수 있습니다.
  	    if (userInfo != null) {

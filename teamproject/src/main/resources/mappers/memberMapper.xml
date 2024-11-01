@@ -173,6 +173,7 @@
 </select>
 
 
+
  <select id="getCompanyMemberListCount" resultType="int">
     SELECT COUNT(*) FROM member
     where member_code  != '1'

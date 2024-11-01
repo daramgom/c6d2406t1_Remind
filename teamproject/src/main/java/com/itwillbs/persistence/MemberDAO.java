@@ -94,6 +94,10 @@ public interface MemberDAO {
 	
 	public int getWaitingMemberTotalCount(Criteria cri);
 	
+	public int getWaitingMemberTotalCount();
+	
+	
+	
 	
 	
 	

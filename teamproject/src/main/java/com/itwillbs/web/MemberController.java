@@ -158,4 +158,11 @@ public class MemberController {
         return ResponseEntity.ok("{\"success\": true }");
     }
     
+    // 사이드바 회원 목록 대기자 수
+    @RequestMapping(value = "/WaitingMember", method = RequestMethod.POST)
+    public ResponseEntity<Integer> WaitingMember() {
+        int result = mService.getWaitingMemberTotalCount();
+        return ResponseEntity.ok(result); // 대기자 수를 문자열로 반환
+    }
+    
 }

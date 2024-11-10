@@ -43,6 +43,17 @@ public class MemberController {
 	
     @Autowired
     private EmailService emailService;
+    
+    @RequestMapping(value ="/logintest" , method = RequestMethod.GET)
+    public String LoginGet() {
+    	
+    	return "test";
+    }
+    @RequestMapping(value ="/loginPosttest" , method = RequestMethod.POST)
+    public void LoginPOST(@RequestParam("member_id") String[] member_id) {
+    	logger.info("user_id : {}" , member_id[0]);
+    	logger.info("user_id : {}" , member_id[1]);
+    }
 
 	
 	// 아이디 찾기 페이지

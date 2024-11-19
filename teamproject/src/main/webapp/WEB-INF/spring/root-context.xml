@@ -80,7 +80,7 @@
 	    <property name="host" value="smtp.gmail.com"/>
 	    <property name="port" value="587"/>
 	    <!-- 밑의 2개는 값을 숨김 -->
-	    <property name="username" value="kcw640213@gmail.com"/>
+	    <property name="username" value=""/>
 	    <property name="password" value=""/>
 	
 	    <property name="javaMailProperties">

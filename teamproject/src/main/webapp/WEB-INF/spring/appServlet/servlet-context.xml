@@ -24,14 +24,14 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	<beans:bean id="naverClientID" class="java.lang.String">
-		<beans:constructor-arg value="" />
+		<beans:constructor-arg value="2UmE3bxSNl4utnKSkC_l" />
 	</beans:bean>
 	<beans:bean id="naverClientSecret" class="java.lang.String">
-		<beans:constructor-arg value="" />
+		<beans:constructor-arg value="LYXyj1F7DW" />
 	</beans:bean>
 	<beans:bean id="naverRedirectUrl" class="java.lang.String">
-		<beans:constructor-arg value="http://localhost:8088/auth/naver/callback" />
-<!-- 		<beans:constructor-arg value="http://c6d2406t1.itwillbs.com/auth/naver/callback" /> -->
+		<!-- <beans:constructor-arg value="http://localhost:8088/auth/naver/callback" /> -->
+	<beans:constructor-arg value="http://c6d2406t1.itwillbs.com/auth/naver/callback" />
 	</beans:bean>
 	
 	
